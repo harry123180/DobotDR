@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCD1 視覺檢測系統 v4.0 - 運動控制握手版本 + 世界座標轉換</title>
+    <title>CCD1 視覺檢測系統 v4.1 - 運動控制握手版本 + 世界座標轉換 + 保護範圍</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <style>
         * {
@@ -538,6 +538,107 @@
             margin-left: 10px;
         }
 
+        /* 保護範圍相關樣式 v4.1 */
+        .protection-zone-panel {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #fff9c4 0%, #f0fff4 100%);
+            border: 2px solid #f6ad55;
+        }
+
+        .protection-zone-config {
+            margin-top: 15px;
+        }
+
+        .coordinate-settings {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .coordinate-settings.enabled {
+            opacity: 1 !important;
+            background: #f0fff4;
+            border: 1px solid #48bb78;
+        }
+
+        .protection-zone-info {
+            background: #e6fffa;
+            border: 1px solid #4fd1c7;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .protection-zone-info h4 {
+            color: #234e52;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .protection-zone-info ul {
+            color: #2d3748;
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+
+        .protection-zone-info li {
+            margin-bottom: 8px;
+        }
+
+        .zone-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .zone-indicator.enabled {
+            background: #e6fffa;
+            color: #234e52;
+            border: 1px solid #4fd1c7;
+        }
+
+        .zone-indicator.disabled {
+            background: #fef2f2;
+            color: #742a2a;
+            border: 1px solid #f56565;
+        }
+
+        /* 修改圓形結果顯示，支援保護範圍狀態 */
+        .circle-item.in-zone {
+            border-left-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .circle-item.out-zone {
+            border-left-color: #f56565;
+            background: #fef2f2;
+            opacity: 0.7;
+        }
+
+        .zone-status {
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .zone-status.valid {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .zone-status.filtered {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
         @media (max-width: 768px) {
             .grid {
                 grid-template-columns: 1fr;
@@ -569,15 +670,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌍 CCD1 視覺檢測系統 <span class="version-badge">v4.0</span></h1>
-            <div class="subtitle">運動控制握手版本 + 世界座標轉換 - 工業自動化專用</div>
+            <h1>CCD1 視覺檢測系統 <span class="version-badge">v4.1</span></h1>
+            <div class="subtitle">運動控制握手版本 + 世界座標轉換 + 保護範圍過濾 - 工業自動化專用</div>
         </div>
 
         <!-- 相機標定面板 -->
         <div class="panel calibration-panel">
             <h2>
                 <span class="status-indicator" id="calibrationStatus"></span>
-                🌍 相機標定與世界座標轉換
+                相機標定與世界座標轉換
             </h2>
             
             <div class="calibration-status">
@@ -600,13 +701,13 @@
             </div>
 
             <div style="text-align: center; margin: 20px 0;">
-                <button class="btn btn-info" onclick="scanCalibrationFiles()">🔍 掃描檔案</button>
-                <button class="btn btn-success" onclick="loadCalibrationData()" id="loadCalibBtn" disabled>✅ 確認導入</button>
-                <button class="btn btn-secondary" onclick="refreshCalibrationStatus()">🔄 刷新狀態</button>
+                <button class="btn btn-info" onclick="scanCalibrationFiles()">掃描檔案</button>
+                <button class="btn btn-success" onclick="loadCalibrationData()" id="loadCalibBtn" disabled>確認導入</button>
+                <button class="btn btn-secondary" onclick="refreshCalibrationStatus()">刷新狀態</button>
             </div>
 
             <div class="handshake-info">
-                <h4>📋 內外參檔案要求說明 (v4.0)</h4>
+                <h4>內外參檔案要求說明 (v4.1)</h4>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
                         <strong>內參檔案（嚴格命名）：</strong>
@@ -639,18 +740,145 @@
             </div>
         </div>
 
+        <!-- 保護範圍控制面板 v4.1 -->
+        <div class="panel protection-zone-panel">
+            <h2>
+                <span class="status-indicator" id="protectionZoneStatus"></span>
+                保護範圍控制 <span class="version-badge">v4.1</span>
+            </h2>
+            
+            <div class="protection-zone-config">
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="protectionZoneEnable" onchange="updateProtectionZoneEnable()" disabled>
+                        <strong>啟用保護範圍檢測</strong>
+                        <small style="color: #f56565; font-weight: normal;">(需要世界座標功能)</small>
+                    </label>
+                    <small style="color: #666; margin-top: 5px; display: block;">
+                        僅有效範圍內的物件會被識別為可夾取物件
+                    </small>
+                </div>
+
+                <div class="coordinate-settings" id="coordinateSettings" style="opacity: 0.5;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="coord-group">
+                            <h4 style="color: #4a5568; margin-bottom: 15px;">X軸範圍 (mm)</h4>
+                            <div class="form-group">
+                                <label>X最小值</label>
+                                <input type="number" id="xMin" value="-122" step="0.01" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>X最大值</label>
+                                <input type="number" id="xMax" value="-4" step="0.01" disabled>
+                            </div>
+                        </div>
+                        
+                        <div class="coord-group">
+                            <h4 style="color: #4a5568; margin-bottom: 15px;">Y軸範圍 (mm)</h4>
+                            <div class="form-group">
+                                <label>Y最小值</label>
+                                <input type="number" id="yMin" value="243" step="0.01" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Y最大值</label>
+                                <input type="number" id="yMax" value="341" step="0.01" disabled>
+                            </div>
+                        </div>
+                    </div>
+                                <label>X最小值</label>
+                                <input type="number" id="xMin" value="-122" step="0.01" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>X最大值</label>
+                                <input type="number" id="xMax" value="-4" step="0.01" disabled>
+                            </div>
+                        </div>
+                        
+                        <div class="coord-group">
+                            <h4 style="color: #4a5568; margin-bottom: 15px;">Y軸範圍 (mm)</h4>
+                            <div class="form-group">
+                                <label>Y最小值</label>
+                                <input type="number" id="yMin" value="243" step="0.01" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Y最大值</label>
+                                <input type="number" id="yMax" value="341" step="0.01" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 20px 0;">
+                    <button class="btn btn-primary" onclick="applyProtectionZone()" id="applyZoneBtn" disabled>
+                        應用設定
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetProtectionZone()">
+                        重置為默認值
+                    </button>
+                    <button class="btn btn-info" onclick="refreshProtectionZone()">
+                        刷新狀態
+                    </button>
+                </div>
+
+                <div class="protection-zone-info">
+                    <h4>保護範圍說明</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <strong>功能說明：</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.6;">
+                                <li>啟用後，只有在指定範圍內的物件才會被識別</li>
+                                <li>超出範圍的物件將被過濾，不會出現在檢測結果中</li>
+                                <li>需要載入世界座標標定數據才能使用此功能</li>
+                                <li>關閉時，所有檢測到的物件都會被顯示</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong>座標範圍設定：</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.6;">
+                                <li><strong>X軸:</strong> -122 ≤ X ≤ -4 (mm)</li>
+                                <li><strong>Y軸:</strong> 243 ≤ Y ≤ 341 (mm)</li>
+                                <li>單位：毫米 (mm)</li>
+                                <li>精度：支援到小數點後2位</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="protection-zone-status" style="margin-top: 20px;">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="label">保護範圍狀態</div>
+                            <div class="value" id="protectionZoneStatusText">關閉</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">有效物件數</div>
+                            <div class="value" id="validObjectCount">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">過濾物件數</div>
+                            <div class="value" id="filteredObjectCount">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">過濾效率</div>
+                            <div class="value" id="filterEfficiency">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 運動控制握手面板 -->
         <div class="panel handshake-panel">
             <h2>
                 <span class="status-indicator" id="handshakeStatus"></span>
-                🤝 運動控制握手控制 <span class="version-badge">v4.0</span>
+                運動控制握手控制 <span class="version-badge">v4.1</span>
                 <span class="world-coord-indicator" id="worldCoordIndicator">
-                    🌍 世界座標: 未啟用
+                    世界座標: 未啟用
                 </span>
             </h2>
             
             <div class="state-machine">
-                <h3>📊 系統狀態機 (狀態寄存器: <span id="statusRegisterValue">0</span>)</h3>
+                <h3>系統狀態機 (狀態寄存器: <span id="statusRegisterValue">0</span>)</h3>
                 <div class="state-bits">
                     <div class="state-bit" id="readyBit">
                         <div style="font-weight: bold; margin-bottom: 8px;">Ready</div>
@@ -677,7 +905,7 @@
 
             <div class="handshake-controls">
                 <div>
-                    <h4>🎛️ Modbus TCP 連接</h4>
+                    <h4>Modbus TCP 連接</h4>
                     <div class="input-group">
                         <div class="form-group" style="flex: 2; margin: 0;">
                             <label>PLC/HMI 服務器 IP</label>
@@ -696,7 +924,7 @@
                 </div>
 
                 <div>
-                    <h4>⚙️ 相機控制</h4>
+                    <h4>相機控制</h4>
                     <div class="form-group">
                         <label>相機 IP 地址</label>
                         <div class="input-group">
@@ -705,14 +933,14 @@
                         </div>
                     </div>
                     <div style="text-align: center; margin-top: 15px;">
-                        <button class="btn btn-primary" onclick="captureImage()">📸 拍照</button>
-                        <button class="btn btn-success" onclick="captureAndDetect()">🔍 拍照+檢測</button>
+                        <button class="btn btn-primary" onclick="captureImage()">拍照</button>
+                        <button class="btn btn-success" onclick="captureAndDetect()">拍照+檢測</button>
                     </div>
                 </div>
             </div>
 
             <div class="handshake-info">
-                <h4>🤝 運動控制握手邏輯說明 (v4.0)</h4>
+                <h4>運動控制握手邏輯說明 (v4.1)</h4>
                 <ol>
                     <li><strong>系統初始化完成</strong> → Ready=1，準備接受控制指令</li>
                     <li><strong>PLC下達控制指令</strong> → 系統檢查Ready=1才執行</li>
@@ -721,23 +949,23 @@
                     <li><strong>PLC清零控制指令</strong> → Ready=1，準備下次操作</li>
                     <li><strong>異常發生時</strong> → Alarm=1, Initialized=0</li>
                     <li><strong>v4.0: 世界座標轉換</strong> → 需要有效的內外參數據才能啟用</li>
-                    <li><strong>v4.0: 自動更新世界座標有效性標誌</strong> → 寄存器256</li>
+                    <li><strong>v4.1: 保護範圍過濾</strong> → 僅有效範圍內物件會被識別</li>
                 </ol>
             </div>
 
             <div style="text-align: center; margin: 20px 0;">
-                <h4>🎮 手動控制指令 (模擬PLC操作)</h4>
+                <h4>手動控制指令 (模擬PLC操作)</h4>
                 <div class="command-buttons">
                     <button class="btn btn-secondary" onclick="sendManualCommand(0)">清空控制 (0)</button>
                     <button class="btn btn-primary" onclick="sendManualCommand(8)">拍照 (8)</button>
-                    <button class="btn btn-success" onclick="sendManualCommand(16)">拍照+檢測+世界座標 (16)</button>
+                    <button class="btn btn-success" onclick="sendManualCommand(16)">拍照+檢測+保護範圍 (16)</button>
                     <button class="btn btn-warning" onclick="sendManualCommand(32)">重新初始化 (32)</button>
                 </div>
                 <div style="margin-top: 15px;">
-                    <button class="btn btn-secondary" onclick="refreshStatus()">🔄 刷新狀態</button>
-                    <button class="btn btn-secondary" onclick="refreshRegisters()">📊 刷新寄存器</button>
-                    <button class="btn btn-secondary" onclick="debugModbus()">🐛 調試信息</button>
-                    <button class="btn btn-secondary" onclick="testModbus()">🔧 測試連接</button>
+                    <button class="btn btn-secondary" onclick="refreshStatus()">刷新狀態</button>
+                    <button class="btn btn-secondary" onclick="refreshRegisters()">刷新寄存器</button>
+                    <button class="btn btn-secondary" onclick="debugModbus()">調試信息</button>
+                    <button class="btn btn-secondary" onclick="testModbus()">測試連接</button>
                 </div>
             </div>
         </div>
@@ -747,7 +975,7 @@
             <div class="panel">
                 <h2>
                     <span class="status-indicator" id="systemStatus"></span>
-                    📊 系統狀態 <span class="version-badge">v4.0</span>
+                    系統狀態 <span class="version-badge">v4.1</span>
                 </h2>
                 
                 <div class="info-grid">
@@ -762,6 +990,10 @@
                     <div class="info-item">
                         <div class="label">世界座標</div>
                         <div class="value" id="worldCoordStatus">未啟用</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">保護範圍</div>
+                        <div class="value" id="protectionZoneState">關閉</div>
                     </div>
                     <div class="info-item">
                         <div class="label">控制指令</div>
@@ -779,16 +1011,12 @@
                         <div class="label">最後操作</div>
                         <div class="value" id="lastOperation">無</div>
                     </div>
-                    <div class="info-item">
-                        <div class="label">標定狀態</div>
-                        <div class="value" id="calibrationStatusText">未載入</div>
-                    </div>
                 </div>
             </div>
 
             <!-- 檢測參數面板 -->
             <div class="panel">
-                <h2>⚙️ 檢測參數設定</h2>
+                <h2>檢測參數設定</h2>
                 
                 <div class="form-group">
                     <label>最小面積</label>
@@ -817,16 +1045,16 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="updateParams()">💾 更新參數</button>
+                    <button class="btn btn-primary" onclick="updateParams()">更新參數</button>
                 </div>
             </div>
         </div>
 
         <!-- 檢測結果面板 -->
         <div class="panel results-panel">
-            <h2>🎯 檢測結果 
+            <h2>檢測結果 
                 <span class="world-coord-indicator" id="resultWorldCoordIndicator">
-                    🌍 世界座標: 未啟用
+                    世界座標: 未啟用
                 </span>
             </h2>
             
@@ -868,11 +1096,11 @@
 
         <!-- Modbus 寄存器監控面板 -->
         <div class="panel results-panel">
-            <h2>📊 Modbus 寄存器監控 (v4.0: 運動控制握手 + 世界座標)</h2>
+            <h2>Modbus 寄存器監控 (v4.1: 運動控制握手 + 世界座標 + 保護範圍)</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
                 <span style="font-size: 14px; color: #666;">
-                    自動更新間隔: 3秒 | 最後更新: <span id="registersUpdateTime">--</span> | 版本: v4.0
+                    自動更新間隔: 3秒 | 最後更新: <span id="registersUpdateTime">--</span> | 版本: v4.1
                 </span>
             </div>
             
@@ -892,6 +1120,7 @@
         let registersUpdateInterval = null;
         let calibrationValid = false;
         let worldCoordEnabled = false;
+        let protectionZoneEnabled = false;
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
@@ -899,8 +1128,42 @@
             refreshCalibrationStatus();
             setInterval(refreshStatus, 3000);
             startRegistersAutoUpdate();
-            console.log('CCD1 視覺檢測系統 v4.0 已啟動');
+            console.log('CCD1 視覺檢測系統 v4.1 已啟動');
+            
+            // v4.1: 載入保護範圍狀態 (延遲執行避免與其他初始化衝突)
+            setTimeout(() => {
+                refreshProtectionZone();
+            }, 1500);
+            
+            // 初始化保護範圍checkbox狀態
+            updateProtectionZoneCheckboxState();
         });
+
+        // 新增: 根據世界座標狀態更新保護範圍checkbox可用性
+        function updateProtectionZoneCheckboxState() {
+            const checkbox = document.getElementById('protectionZoneEnable');
+            if (worldCoordEnabled) {
+                checkbox.disabled = false;
+                checkbox.parentElement.querySelector('small').style.color = '#666';
+                checkbox.parentElement.querySelector('small').textContent = '(世界座標已啟用)';
+            } else {
+                checkbox.disabled = true;
+                checkbox.checked = false;
+                protectionZoneEnabled = false;
+                checkbox.parentElement.querySelector('small').style.color = '#f56565';
+                checkbox.parentElement.querySelector('small').textContent = '(需要世界座標功能)';
+                
+                // 同時更新UI狀態
+                const coordinateSettings = document.getElementById('coordinateSettings');
+                const inputs = coordinateSettings.querySelectorAll('input');
+                const applyBtn = document.getElementById('applyZoneBtn');
+                
+                coordinateSettings.classList.remove('enabled');
+                coordinateSettings.style.opacity = '0.5';
+                inputs.forEach(input => input.disabled = true);
+                applyBtn.disabled = true;
+            }
+        }
 
         // Socket 事件處理
         socket.on('connect', function() {
@@ -934,7 +1197,7 @@
             fetch('/api/calibration/scan')
             .then(response => response.json())
             .then(data => {
-                console.log('v4.0 掃描結果:', data);
+                console.log('v4.1 掃描結果:', data);
                 updateCalibrationDisplay(data);
                 
                 // 更新工作目錄顯示
@@ -1004,7 +1267,7 @@
             })
             .finally(() => {
                 btn.disabled = false;
-                btn.innerHTML = '✅ 確認導入';
+                btn.innerHTML = '確認導入';
             });
         }
 
@@ -1064,10 +1327,8 @@
             const calibrationStatus = document.getElementById('calibrationStatus');
             if (statusData.calibration_loaded && statusData.transformer_ready) {
                 calibrationStatus.className = 'status-indicator status-connected';
-                document.getElementById('calibrationStatusText').textContent = '已載入';
             } else {
                 calibrationStatus.className = 'status-indicator status-disconnected';
-                document.getElementById('calibrationStatusText').textContent = '未載入';
             }
 
             // 更新轉換器狀態
@@ -1101,15 +1362,243 @@
             indicators.forEach(indicator => {
                 if (enabled) {
                     indicator.className = 'world-coord-indicator enabled';
-                    indicator.innerHTML = '🌍 世界座標: 已啟用';
+                    indicator.innerHTML = '世界座標: 已啟用';
                 } else {
                     indicator.className = 'world-coord-indicator disabled';
-                    indicator.innerHTML = '🌍 世界座標: 未啟用';
+                    indicator.innerHTML = '世界座標: 未啟用';
                 }
             });
 
             // 更新系統狀態中的世界座標狀態
             document.getElementById('worldCoordStatus').textContent = enabled ? '已啟用' : '未啟用';
+            
+            // v4.1: 同時更新保護範圍checkbox可用性
+            updateProtectionZoneCheckboxState();
+        }
+
+        // ===== 保護範圍相關函數 (v4.1) - 修正版本 =====
+        
+        // 更新保護範圍啟用狀態 (修正重複觸發問題)
+        function updateProtectionZoneEnable() {
+            const checkbox = document.getElementById('protectionZoneEnable');
+            protectionZoneEnabled = checkbox.checked;
+            
+            const coordinateSettings = document.getElementById('coordinateSettings');
+            const inputs = coordinateSettings.querySelectorAll('input');
+            const applyBtn = document.getElementById('applyZoneBtn');
+            
+            if (protectionZoneEnabled) {
+                coordinateSettings.classList.add('enabled');
+                coordinateSettings.style.opacity = '1';
+                inputs.forEach(input => input.disabled = false);
+                applyBtn.disabled = false;
+                
+                // 檢查世界座標是否啟用
+                if (!worldCoordEnabled) {
+                    showToast('警告：需要先載入世界座標標定數據才能使用保護範圍功能', false);
+                    // 自動取消勾選
+                    checkbox.checked = false;
+                    protectionZoneEnabled = false;
+                    coordinateSettings.classList.remove('enabled');
+                    coordinateSettings.style.opacity = '0.5';
+                    inputs.forEach(input => input.disabled = true);
+                    applyBtn.disabled = true;
+                    return; // 提前返回，不執行API調用
+                }
+            } else {
+                coordinateSettings.classList.remove('enabled');
+                coordinateSettings.style.opacity = '0.5';
+                inputs.forEach(input => input.disabled = true);
+                applyBtn.disabled = true;
+            }
+            
+            // 延遲執行，避免重複觸發
+            clearTimeout(window.protectionZoneTimeout);
+            window.protectionZoneTimeout = setTimeout(() => {
+                applyProtectionZone();
+            }, 300);
+        }
+
+        // 應用保護範圍設定 (增加錯誤處理和防重複調用)
+        function applyProtectionZone() {
+            // 防止重複調用
+            if (window.protectionZoneApplying) {
+                console.log('保護範圍設定正在處理中，跳過重複調用');
+                return;
+            }
+            
+            window.protectionZoneApplying = true;
+            
+            const enabled = document.getElementById('protectionZoneEnable').checked;
+            const xMin = parseFloat(document.getElementById('xMin').value);
+            const xMax = parseFloat(document.getElementById('xMax').value);
+            const yMin = parseFloat(document.getElementById('yMin').value);
+            const yMax = parseFloat(document.getElementById('yMax').value);
+            
+            // 驗證範圍設定
+            if (enabled) {
+                if (xMin >= xMax) {
+                    showToast('X軸最小值必須小於最大值', false);
+                    window.protectionZoneApplying = false;
+                    return;
+                }
+                if (yMin >= yMax) {
+                    showToast('Y軸最小值必須小於最大值', false);
+                    window.protectionZoneApplying = false;
+                    return;
+                }
+                
+                if (!worldCoordEnabled) {
+                    showToast('請先載入世界座標標定數據', false);
+                    // 自動取消勾選
+                    document.getElementById('protectionZoneEnable').checked = false;
+                    updateProtectionZoneEnable();
+                    window.protectionZoneApplying = false;
+                    return;
+                }
+            }
+            
+            const data = {
+                enabled: enabled,
+                x_min: xMin,
+                x_max: xMax,
+                y_min: yMin,
+                y_max: yMax
+            };
+            
+            // 檢查API是否存在
+            fetch('/api/protection_zone/set', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, true);
+                    updateProtectionZoneDisplay(data.config);
+                } else {
+                    showToast(data.message || '設置保護範圍失敗', false);
+                }
+            })
+            .catch(error => {
+                console.error('保護範圍API錯誤:', error);
+                if (error.message.includes('404')) {
+                    showToast('保護範圍功能尚未實現，請等待後端API完成', false);
+                } else if (error.message.includes('500')) {
+                    showToast('服務器內部錯誤，請檢查後端實現', false);
+                } else {
+                    showToast(`網路錯誤: ${error.message}`, false);
+                }
+            })
+            .finally(() => {
+                window.protectionZoneApplying = false;
+            });
+        }
+
+        function resetProtectionZone() {
+            document.getElementById('xMin').value = '-122';
+            document.getElementById('xMax').value = '-4';
+            document.getElementById('yMin').value = '243';
+            document.getElementById('yMax').value = '341';
+            
+            showToast('已重置為默認範圍值', true);
+        }
+
+        function refreshProtectionZone() {
+            fetch('/api/protection_zone/get')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateProtectionZoneDisplay(data.config);
+                    showToast('保護範圍狀態已刷新', true);
+                }
+            })
+            .catch(error => {
+                showToast('刷新保護範圍狀態失敗 - 可能後端API尚未實現', false);
+                console.error('Error:', error);
+            });
+        }
+
+        // 更新保護範圍顯示 (修正版本)
+        function updateProtectionZoneDisplay(config) {
+            // 更新checkbox狀態 (避免觸發事件)
+            const checkbox = document.getElementById('protectionZoneEnable');
+            checkbox.removeEventListener('change', updateProtectionZoneEnable);
+            checkbox.checked = config.enabled;
+            checkbox.addEventListener('change', updateProtectionZoneEnable);
+            
+            protectionZoneEnabled = config.enabled;
+            
+            // 更新數值
+            document.getElementById('xMin').value = config.x_min;
+            document.getElementById('xMax').value = config.x_max;
+            document.getElementById('yMin').value = config.y_min;
+            document.getElementById('yMax').value = config.y_max;
+            
+            // 更新UI狀態 (不觸發API調用)
+            const coordinateSettings = document.getElementById('coordinateSettings');
+            const inputs = coordinateSettings.querySelectorAll('input');
+            const applyBtn = document.getElementById('applyZoneBtn');
+            
+            if (config.enabled && worldCoordEnabled) {
+                coordinateSettings.classList.add('enabled');
+                coordinateSettings.style.opacity = '1';
+                inputs.forEach(input => input.disabled = false);
+                applyBtn.disabled = false;
+                checkbox.disabled = false;
+            } else {
+                coordinateSettings.classList.remove('enabled');
+                coordinateSettings.style.opacity = '0.5';
+                inputs.forEach(input => input.disabled = true);
+                applyBtn.disabled = true;
+                if (!worldCoordEnabled) {
+                    checkbox.disabled = true;
+                }
+            }
+            
+            // 更新狀態指示器
+            const statusIndicator = document.getElementById('protectionZoneStatus');
+            const statusText = document.getElementById('protectionZoneStatusText');
+            
+            if (config.enabled) {
+                statusIndicator.className = 'status-indicator status-connected';
+                statusText.textContent = '已啟用';
+                document.getElementById('protectionZoneState').textContent = '已啟用';
+            } else {
+                statusIndicator.className = 'status-indicator status-disconnected';
+                statusText.textContent = '關閉';
+                document.getElementById('protectionZoneState').textContent = '關閉';
+            }
+        }
+
+        function updateProtectionZoneStats(registers) {
+            const validCount = registers['303_有效範圍內物件數量'];
+            const filteredCount = registers['304_被過濾掉的物件數量'];
+            
+            if (validCount !== undefined) {
+                document.getElementById('validObjectCount').textContent = validCount;
+            }
+            
+            if (filteredCount !== undefined) {
+                document.getElementById('filteredObjectCount').textContent = filteredCount;
+            }
+            
+            // 計算過濾效率
+            if (validCount !== undefined && filteredCount !== undefined) {
+                const totalCount = validCount + filteredCount;
+                if (totalCount > 0) {
+                    const efficiency = ((filteredCount / totalCount) * 100).toFixed(1);
+                    document.getElementById('filterEfficiency').textContent = `${efficiency}%`;
+                } else {
+                    document.getElementById('filterEfficiency').textContent = '0%';
+                }
+            }
         }
 
         // 啟動寄存器自動更新
@@ -1171,7 +1660,7 @@
                 updateModbusButtons();
                 if (data.success) {
                     startRegistersAutoUpdate();
-                    console.log('Modbus v4.0 握手模式已啟動');
+                    console.log('Modbus v4.1 握手模式已啟動');
                 }
             })
             .catch(error => {
@@ -1231,7 +1720,7 @@
             const commandNames = {
                 0: "清空控制",
                 8: "拍照",
-                16: "拍照+檢測 (含世界座標)",
+                16: "拍照+檢測 (含世界座標+保護範圍)",
                 32: "重新初始化"
             };
 
@@ -1263,7 +1752,7 @@
             .then(data => {
                 const message = data.message + (data.error ? ` (${data.error})` : '');
                 showToast(message, data.success);
-                console.log('Modbus v4.0 測試結果:', data);
+                console.log('Modbus v4.1 測試結果:', data);
             })
             .catch(error => {
                 showToast('測試失敗', false);
@@ -1277,11 +1766,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log('🐛 v4.0 運動控制握手調試信息:', data.debug_info);
+                    console.log('v4.1 運動控制握手調試信息:', data.debug_info);
                     
-                    let debugText = '🐛 v4.0 運動控制握手調試信息:\n\n';
-                    debugText += `版本: ${data.debug_info.version || 'v4.0'}\n`;
+                    let debugText = 'v4.1 運動控制握手調試信息:\n\n';
+                    debugText += `版本: ${data.debug_info.version || 'v4.1'}\n`;
                     debugText += `世界座標支援: ${data.debug_info.world_coord_support}\n`;
+                    debugText += `保護範圍支援: ${data.debug_info.protection_zone_support || '已支援'}\n`;
                     debugText += `連接狀態: ${data.debug_info.connected}\n`;
                     debugText += `同步運行: ${data.debug_info.sync_running}\n`;
                     debugText += `同步線程: ${data.debug_info.sync_thread_alive}\n`;
@@ -1307,7 +1797,7 @@
                     }
                     
                     alert(debugText);
-                    showToast('v4.0 調試信息已顯示 (請查看控制台和彈窗)', true);
+                    showToast('v4.1 調試信息已顯示 (請查看控制台和彈窗)', true);
                 } else {
                     showToast(data.message, false);
                 }
@@ -1371,16 +1861,17 @@
             }
         }
 
-        // 更新寄存器顯示（v4.0 擴展世界座標）
+        // 更新寄存器顯示（v4.1 擴展保護範圍）
         function updateRegistersDisplay(registers) {
             const grid = document.getElementById('registersGrid');
             
-            // v4.0 寄存器分組
+            // v4.1 寄存器分組
             const groups = {
                 '核心握手寄存器 (200-201)': {},
                 '狀態位解析': {},
                 '檢測結果-像素座標 (240-255)': {},
-                '檢測結果-世界座標 (256-276) [v4.0新增]': {},
+                '檢測結果-世界座標 (256-276) [v4.0]': {},
+                '保護範圍配置 (294-305) [v4.1新增]': {},
                 '統計資訊 (280-299)': {}
             };
 
@@ -1393,7 +1884,9 @@
                 } else if (addr >= 240 && addr <= 255) {
                     groups['檢測結果-像素座標 (240-255)'][key] = value;
                 } else if ((addr >= 256 && addr <= 276) || key.includes('世界座標') || key.includes('世界X') || key.includes('世界Y') || key.includes('計算值')) {
-                    groups['檢測結果-世界座標 (256-276) [v4.0新增]'][key] = value;
+                    groups['檢測結果-世界座標 (256-276) [v4.0]'][key] = value;
+                } else if (addr >= 294 && addr <= 305) {
+                    groups['保護範圍配置 (294-305) [v4.1新增]'][key] = value;
                 } else if (addr >= 280 && addr <= 299) {
                     groups['統計資訊 (280-299)'][key] = value;
                 }
@@ -1411,10 +1904,12 @@
                         const isHighlighted = shouldHighlightRegister(key, value);
                         const valueClass = isHighlighted ? 'register-value highlight' : 'register-value';
                         
-                        // 特殊格式化世界座標計算值
+                        // 特殊格式化
                         let displayValue = value;
                         if (key.includes('計算值_mm')) {
                             displayValue = `${value} mm`;
+                        } else if (key.includes('保護範圍啟用')) {
+                            displayValue = value === 1 ? '啟用' : '關閉';
                         }
                         
                         html += `
@@ -1431,6 +1926,9 @@
             });
 
             updateKeyInfoFromRegisters(registers);
+            
+            // v4.1: 更新保護範圍統計
+            updateProtectionZoneStats(registers);
         }
 
         // 從寄存器更新關鍵信息
@@ -1478,7 +1976,7 @@
                 return true;
             }
             
-            if (key.includes('世界座標有效標誌')) {
+            if (key.includes('世界座標有效標誌') || key.includes('保護範圍啟用')) {
                 return value > 0;
             }
             
@@ -1526,7 +2024,7 @@
             });
         }
 
-        // 拍照+檢測（v4.0 包含世界座標）
+        // 拍照+檢測（v4.1 包含世界座標+保護範圍）
         function captureAndDetect() {
             const btn = event.target;
             btn.disabled = true;
@@ -1549,6 +2047,9 @@
                     } else {
                         operationText += ' (僅像素座標)';
                     }
+                    if (protectionZoneEnabled) {
+                        operationText += ' [保護範圍已啟用]';
+                    }
                 } else {
                     operationText = '檢測失敗';
                 }
@@ -1561,7 +2062,7 @@
             })
             .finally(() => {
                 btn.disabled = false;
-                btn.innerHTML = '🔍 拍照+檢測';
+                btn.innerHTML = '拍照+檢測';
             });
         }
 
@@ -1602,7 +2103,7 @@
             });
         }
 
-        // 更新狀態顯示（v4.0 包含標定狀態）
+        // 更新狀態顯示（v4.1 包含保護範圍狀態）
         function updateStatus(data) {
             // 更新相機狀態
             const systemStatus = document.getElementById('systemStatus');
@@ -1654,6 +2155,11 @@
                 updateWorldCoordIndicators(isValid);
             }
 
+            // v4.1: 更新保護範圍狀態
+            if (data.protection_zone) {
+                updateProtectionZoneDisplay(data.protection_zone);
+            }
+
             // 更新檢測參數
             if (data.detection_params) {
                 document.getElementById('minArea').value = data.detection_params.min_area;
@@ -1668,13 +2174,13 @@
                 updateDetectionResults(data.last_result);
             }
 
-            // v4.0: 檢查版本信息
+            // v4.1: 檢查版本信息
             if (data.version) {
                 console.log(`系統版本: ${data.version}`);
             }
         }
 
-        // 更新檢測結果（v4.0 包含世界座標顯示）
+        // 更新檢測結果（v4.1 包含保護範圍顯示）
         function updateDetectionResults(data) {
             document.getElementById('circleCount').textContent = data.circle_count || 0;
             document.getElementById('captureTime').textContent = `${data.capture_time_ms || 0} ms`;
@@ -1687,10 +2193,28 @@
                 let html = '';
                 data.circles.forEach((circle, index) => {
                     const hasWorldCoords = circle.world_coords && data.has_world_coords;
+                    const inProtectionZone = circle.in_protection_zone !== undefined ? circle.in_protection_zone : true;
+                    
+                    // 確定圓形項目的CSS類
+                    let circleItemClass = 'circle-item';
+                    if (hasWorldCoords && protectionZoneEnabled) {
+                        circleItemClass += inProtectionZone ? ' in-zone' : ' out-zone';
+                    }
+                    
+                    // 保護範圍狀態顯示
+                    let zoneStatusHtml = '';
+                    if (hasWorldCoords && protectionZoneEnabled) {
+                        if (inProtectionZone) {
+                            zoneStatusHtml = '<span class="zone-status valid">可夾取</span>';
+                        } else {
+                            zoneStatusHtml = '<span class="zone-status filtered">已過濾</span>';
+                        }
+                    }
                     
                     html += `
-                        <div class="circle-item">
+                        <div class="${circleItemClass}">
                             <strong>圓形 ${circle.id}</strong>
+                            ${zoneStatusHtml}
                             <div style="margin: 8px 0;">
                                 半徑: ${circle.radius} px | 面積: ${Math.round(circle.area)} px² | 圓度: ${circle.roundness.toFixed(3)}
                             </div>
@@ -1727,6 +2251,9 @@
                     message = `檢測完成，找到 ${data.circle_count} 個圓形`;
                     if (data.has_world_coords) {
                         message += ' (包含世界座標)';
+                        if (protectionZoneEnabled) {
+                            message += ' [保護範圍過濾已啟用]';
+                        }
                     } else {
                         message += ' (僅像素座標)';
                     }
@@ -1753,18 +2280,20 @@
             stopRegistersAutoUpdate();
         });
 
-        // v4.0: 初始化時自動掃描標定檔案
+        // v4.1: 初始化時自動掃描標定檔案
         setTimeout(() => {
             scanCalibrationFiles();
         }, 1000);
 
-        // v4.0: 系統啟動日誌
+        // v4.1: 系統啟動日誌
         console.log(`
-        🚀 CCD1 視覺檢測系統 v4.0 已啟動
-        🌍 新功能: 世界座標轉換支援
-        📡 運動控制握手模式已啟用
-        🔧 支援 NPY 內外參檔案管理
-        📊 擴展寄存器映射 (256-276)
+        CCD1 視覺檢測系統 v4.1 已啟動
+        保護範圍檢測過濾 (含錯誤處理優化)
+        世界座標轉換支援
+        運動控制握手模式已啟用
+        支援 NPY 內外參檔案管理
+        擴展寄存器映射 (256-276, 294-305)
+        修正重複觸發和依賴檢查問題
         `);
     </script>
 </body>

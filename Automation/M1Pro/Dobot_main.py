@@ -4,6 +4,7 @@
 Dobot_main.py - 機械臂主控制器 (修正版)
 整合狀態機管理、外部模組通訊、運動控制等功能
 基地址400，支援多流程執行與外部設備整合
+基於MVP.py的實際工作邏輯修正
 """
 
 import json
@@ -83,12 +84,16 @@ class ExternalModules:
     CCD3_ANGLE_H = 843        # 角度高位
     CCD3_ANGLE_L = 844        # 角度低位
     
-    # PGC夾爪模組
+    # PGC夾爪模組 (基於MVP.py的地址配置)
     PGC_BASE = 500
-    PGC_STATUS = 500          # 模組狀態
+    PGC_MODULE_STATUS = 500   # 模組狀態
+    PGC_CONNECT_STATUS = 501  # 連接狀態
+    PGC_DEVICE_STATUS = 502   # 設備狀態
+    PGC_GRIP_STATUS = 504     # 夾持狀態
     PGC_POSITION = 505        # 當前位置
     PGC_COMMAND = 520         # 指令代碼
     PGC_PARAM1 = 521          # 位置參數
+    PGC_PARAM2 = 522          # 參數2
     PGC_CMD_ID = 523          # 指令ID
 
 
@@ -131,7 +136,7 @@ class RobotPoint:
 
 
 class PointsManager:
-    """點位管理器"""
+    """點位管理器 - 修正版，支援cartesian格式"""
     
     def __init__(self, points_file: str = "saved_points/robot_points.json"):
         # 確保使用絕對路徑，相對於當前執行檔案的目錄
@@ -143,20 +148,12 @@ class PointsManager:
         self.points: Dict[str, RobotPoint] = {}
         
     def load_points(self) -> bool:
-        """載入點位數據"""
+        """載入點位數據 - 修正版，支援cartesian格式"""
         try:
             print(f"嘗試載入點位檔案: {self.points_file}")
             
             if not os.path.exists(self.points_file):
                 print(f"點位檔案不存在: {self.points_file}")
-                # 列出當前目錄和saved_points目錄的內容以供調試
-                current_dir = os.path.dirname(self.points_file)
-                parent_dir = os.path.dirname(current_dir)
-                print(f"當前目錄: {parent_dir}")
-                if os.path.exists(parent_dir):
-                    print(f"目錄內容: {os.listdir(parent_dir)}")
-                if os.path.exists(current_dir):
-                    print(f"saved_points目錄內容: {os.listdir(current_dir)}")
                 return False
                 
             with open(self.points_file, "r", encoding="utf-8") as f:
@@ -164,18 +161,48 @@ class PointsManager:
             
             self.points.clear()
             for point_data in points_list:
-                point = RobotPoint(
-                    name=point_data["name"],
-                    x=point_data["pose"]["x"],
-                    y=point_data["pose"]["y"],
-                    z=point_data["pose"]["z"],
-                    r=point_data["pose"]["r"],
-                    j1=point_data["joint"]["j1"],
-                    j2=point_data["joint"]["j2"],
-                    j3=point_data["joint"]["j3"],
-                    j4=point_data["joint"]["j4"]
-                )
-                self.points[point.name] = point
+                try:
+                    # 支援兩種格式：pose 或 cartesian
+                    if "pose" in point_data:
+                        # 原始格式
+                        pose_data = point_data["pose"]
+                    elif "cartesian" in point_data:
+                        # 新格式
+                        pose_data = point_data["cartesian"]
+                    else:
+                        print(f"點位 {point_data.get('name', 'unknown')} 缺少座標數據")
+                        continue
+                    
+                    # 檢查關節數據
+                    if "joint" not in point_data:
+                        print(f"點位 {point_data.get('name', 'unknown')} 缺少關節數據")
+                        continue
+                    
+                    joint_data = point_data["joint"]
+                    
+                    point = RobotPoint(
+                        name=point_data["name"],
+                        x=float(pose_data["x"]),
+                        y=float(pose_data["y"]),
+                        z=float(pose_data["z"]),
+                        r=float(pose_data["r"]),
+                        j1=float(joint_data["j1"]),
+                        j2=float(joint_data["j2"]),
+                        j3=float(joint_data["j3"]),
+                        j4=float(joint_data["j4"])
+                    )
+                    
+                    # 處理點位名稱的拼寫錯誤
+                    point_name = point.name
+                    if point_name == "stanby":
+                        point_name = "standby"
+                        print(f"自動修正點位名稱: stanby -> standby")
+                    
+                    self.points[point_name] = point
+                    
+                except Exception as e:
+                    print(f"處理點位 {point_data.get('name', 'unknown')} 時發生錯誤: {e}")
+                    continue
                 
             print(f"載入點位數據成功，共{len(self.points)}個點位: {list(self.points.keys())}")
             return True
@@ -202,27 +229,42 @@ class ExternalModuleController:
         self.command_id_counter = 1
         
     def read_register(self, offset: int) -> Optional[int]:
-        """讀取寄存器"""
+        """讀取寄存器 - PyModbus 3.9.2修正版"""
         try:
             result = self.modbus_client.read_holding_registers(
-                self.base_address + offset, count=1
+                address=self.base_address + offset, 
+                count=1
             )
-            if hasattr(result, 'registers') and len(result.registers) > 0:
+            
+            # PyModbus 3.x 正確的錯誤檢查方式
+            if hasattr(result, 'isError') and result.isError():
+                print(f"讀取寄存器{self.base_address + offset}錯誤: {result}")
+                return None
+            elif hasattr(result, 'registers') and len(result.registers) > 0:
                 return result.registers[0]
-            return None
+            else:
+                return None
+                
         except Exception as e:
-            print(f"讀取寄存器{self.base_address + offset}失敗: {e}")
+            print(f"讀取寄存器{self.base_address + offset}異常: {e}")
             return None
     
     def write_register(self, offset: int, value: int) -> bool:
-        """寫入寄存器"""
+        """寫入寄存器 - PyModbus 3.9.2修正版"""
         try:
             result = self.modbus_client.write_register(
-                self.base_address + offset, value
+                address=self.base_address + offset, 
+                value=value
             )
-            return not (hasattr(result, 'isError') and result.isError())
+            
+            # PyModbus 3.x 正確的錯誤檢查方式
+            if hasattr(result, 'isError') and result.isError():
+                return False
+            else:
+                return True
+                
         except Exception as e:
-            print(f"寫入寄存器{self.base_address + offset}失敗: {e}")
+            print(f"寫入寄存器{self.base_address + offset}={value}異常: {e}")
             return False
     
     def get_next_command_id(self) -> int:
@@ -232,22 +274,129 @@ class ExternalModuleController:
 
 
 class PGCGripperController(ExternalModuleController):
-    """PGC夾爪控制器"""
+    """PGC夾爪控制器 - 基於MVP.py的實際工作邏輯"""
     
     def __init__(self, modbus_client: ModbusTcpClient):
         super().__init__(modbus_client, ExternalModules.PGC_BASE)
         
+        # PGC指令映射 (來自MVP.py)
+        self.PGC_CMD_INIT = 1
+        self.PGC_CMD_STOP = 2
+        self.PGC_CMD_ABS_POS = 3
+        self.PGC_CMD_SET_FORCE = 5
+        self.PGC_CMD_SET_SPEED = 6
+        self.PGC_CMD_QUICK_OPEN = 7
+        self.PGC_CMD_QUICK_CLOSE = 8
+        
+        # PGC狀態映射
+        self.PGC_STATUS_MOVING = 0
+        self.PGC_STATUS_REACHED = 1
+        self.PGC_STATUS_GRIPPED = 2
+        self.PGC_STATUS_DROPPED = 3
+        
     def initialize(self) -> bool:
-        """初始化夾爪"""
-        return self.send_command(1, 0, timeout=10.0)  # 初始化指令
+        """初始化夾爪 - 基於MVP.py的邏輯"""
+        print("=== 初始化PGC夾爪 ===")
+        
+        # 檢查模組是否運行
+        if not self.check_module_status():
+            print("PGC模組未運行")
+            return False
+        
+        # 初始化重試機制
+        max_init_attempts = 3
+        for attempt in range(max_init_attempts):
+            print(f"初始化嘗試 {attempt + 1}/{max_init_attempts}")
+            
+            # 發送初始化指令
+            if not self.send_gripper_command_batch(self.PGC_CMD_INIT):
+                continue
+            
+            # 等待初始化完成
+            init_start = time.time()
+            while time.time() - init_start < 10.0:
+                device_status = self.read_register(2)  # 502: 設備狀態
+                if device_status == 1:
+                    print("夾爪初始化成功")
+                    
+                    # 設定最大速度和力道
+                    self.send_gripper_command_batch(self.PGC_CMD_SET_SPEED, 100)
+                    time.sleep(0.5)
+                    self.send_gripper_command_batch(self.PGC_CMD_SET_FORCE, 100)
+                    time.sleep(0.5)
+                    
+                    print("夾爪參數設定完成")
+                    return True
+                time.sleep(0.2)
+            
+            print(f"第{attempt + 1}次初始化超時")
+        
+        print("夾爪初始化失敗")
+        return False
         
     def open_to_position(self, position: int, timeout: float = 15.0) -> bool:
-        """打開到指定位置"""
-        return self.send_command(3, position, timeout=timeout)
+        """打開到指定位置 - 基於MVP.py的智能檢測邏輯"""
+        print(f"夾爪撐開到位置 {position}")
+        
+        # 記錄初始位置
+        initial_position = self.read_register(5) or 0  # 505: 當前位置
+        
+        # 發送位置指令
+        if not self.send_gripper_command_batch(self.PGC_CMD_ABS_POS, position):
+            return False
+        
+        # 等待位置到達 - 使用MVP.py的智能判斷邏輯
+        start_time = time.time()
+        max_position_reached = initial_position
+        
+        while time.time() - start_time < timeout:
+            current_position = self.read_register(5) or 0  # 505: 當前位置
+            grip_status = self.read_register(4)  # 504: 夾持狀態
+            
+            # 記錄最大位置
+            if current_position > max_position_reached:
+                max_position_reached = current_position
+            
+            position_diff = abs(current_position - position)
+            movement_from_start = abs(current_position - initial_position)
+            
+            # 智能判斷成功條件 (來自MVP.py)
+            if position_diff <= 20:
+                print(f"夾爪到達目標位置: {current_position}")
+                return True
+            elif movement_from_start > 100 and grip_status == self.PGC_STATUS_GRIPPED:
+                print(f"夾爪撐開固定物件: {current_position}")
+                return True
+            elif current_position == max_position_reached and movement_from_start > 50:
+                # 檢查位置穩定性
+                stable_count = 0
+                for _ in range(3):
+                    time.sleep(0.1)
+                    check_pos = self.read_register(5) or 0
+                    if check_pos == current_position:
+                        stable_count += 1
+                
+                if stable_count >= 2:
+                    print(f"夾爪位置穩定，撐開成功: {current_position}")
+                    return True
+            
+            time.sleep(0.2)
+        
+        # 超時檢查
+        final_position = self.read_register(5) or 0
+        final_movement = abs(final_position - initial_position)
+        
+        if final_movement > 100:
+            print(f"超時但有顯著移動，認為成功: {final_position}")
+            return True
+        
+        print(f"夾爪移動不足，失敗: {final_position}")
+        return False
         
     def close_fast(self) -> bool:
-        """快速關閉"""
-        return self.send_command(8, 0, wait_completion=False)  # 快速關閉不等待完成
+        """快速關閉 - 基於MVP.py的快速執行邏輯"""
+        print("夾爪快速關閉")
+        return self.send_gripper_command_batch(self.PGC_CMD_QUICK_CLOSE)
         
     def check_module_status(self) -> bool:
         """檢查夾爪模組狀態"""
@@ -256,43 +405,47 @@ class PGCGripperController(ExternalModuleController):
             connect_status = self.read_register(1)  # 501: 連接狀態
             
             if module_status == 1 and connect_status == 1:
+                print("PGC夾爪模組狀態正常")
                 return True
             else:
-                print(f"夾爪模組狀態異常: module={module_status}, connect={connect_status}")
+                print(f"PGC夾爪模組狀態異常: module={module_status}, connect={connect_status}")
                 return False
                 
         except Exception as e:
-            print(f"檢查夾爪模組狀態失敗: {e}")
-            return False
-        
-    def send_command(self, command: int, param1: int = 0, 
-                    timeout: float = 5.0, wait_completion: bool = True) -> bool:
-        """發送夾爪指令"""
-        try:
-            cmd_id = self.get_next_command_id()
-            
-            # 發送指令
-            self.write_register(20, command)      # 520: 指令代碼
-            self.write_register(21, param1)       # 521: 參數1
-            self.write_register(23, cmd_id)       # 523: 指令ID
-            
-            if not wait_completion:
-                return True
-                
-            # 等待指令完成
-            start_time = time.time()
-            while time.time() - start_time < timeout:
-                if self.read_register(23) == 0:  # 指令ID清零表示完成
-                    return True
-                time.sleep(0.05)
-                
-            print(f"PGC夾爪指令{command}執行超時")
-            return False
-            
-        except Exception as e:
-            print(f"PGC夾爪指令{command}執行失敗: {e}")
+            print(f"檢查PGC夾爪模組狀態失敗: {e}")
             return False
     
+    def send_gripper_command_batch(self, command: int, param1: int = 0, param2: int = 0) -> bool:
+        """使用批量寫入發送夾爪指令 - PyModbus 3.9.2修正版"""
+        try:
+            cmd_id = self.get_next_command_id()
+            command_base = 520
+            
+            # 構建指令數組 (10個寄存器)
+            values = [command, param1, param2, cmd_id, 0, 0, 0, 0, 0, 0]
+            
+            result = self.modbus_client.write_registers(
+                address=command_base,
+                values=values,
+                slave=1
+            )
+            
+            # PyModbus 3.x 正確的錯誤檢查
+            if hasattr(result, 'isError') and result.isError():
+                print(f"PGC批量指令發送錯誤: {result}")
+                return False
+            else:
+                return True
+                
+        except Exception as e:
+            print(f"PGC批量指令發送異常: {e}")
+            return False
+    
+    def send_command(self, command: int, param1: int = 0, 
+                    timeout: float = 5.0, wait_completion: bool = True) -> bool:
+        """發送夾爪指令 - 相容性方法"""
+        return self.send_gripper_command_batch(command, param1)
+        
     def get_current_position(self) -> int:
         """獲取當前位置"""
         return self.read_register(5) or 0  # 505: 當前位置
@@ -300,7 +453,7 @@ class PGCGripperController(ExternalModuleController):
     def check_reached(self) -> bool:
         """檢查是否到達位置"""
         grip_status = self.read_register(4)  # 504: 夾持狀態
-        return grip_status in [1, 2]  # 1=到達, 2=夾住
+        return grip_status in [self.PGC_STATUS_REACHED, self.PGC_STATUS_GRIPPED]
 
 
 class CCD1VisionController(ExternalModuleController):
@@ -311,10 +464,12 @@ class CCD1VisionController(ExternalModuleController):
         
     def initialize(self) -> bool:
         """初始化視覺系統"""
+        print("初始化CCD1視覺系統")
         return self.send_vision_command(32, timeout=10.0)  # 重新初始化
         
     def capture_and_detect(self, timeout: float = 10.0) -> bool:
         """拍照並檢測"""
+        print("CCD1拍照並檢測")
         return self.send_vision_command(16, timeout=timeout)  # 拍照+檢測
         
     def send_vision_command(self, command: int, timeout: float = 5.0) -> bool:
@@ -336,6 +491,7 @@ class CCD1VisionController(ExternalModuleController):
                 if status and not (status & 0x02):  # bit1=Running變為0
                     # 清除控制指令
                     self.write_register(0, 0)
+                    print(f"CCD1視覺指令{command}執行完成")
                     return True
                 time.sleep(0.1)
                 
@@ -396,10 +552,12 @@ class CCD3AngleController(ExternalModuleController):
         
     def initialize(self) -> bool:
         """初始化角度檢測系統"""
+        print("初始化CCD3角度檢測系統")
         return self.send_angle_command(32, timeout=10.0)  # 重新初始化
         
     def detect_angle(self, timeout: float = 10.0) -> bool:
         """檢測角度"""
+        print("CCD3角度檢測")
         return self.send_angle_command(16, timeout=timeout)  # 拍照+角度檢測
         
     def send_angle_command(self, command: int, timeout: float = 5.0) -> bool:
@@ -421,6 +579,7 @@ class CCD3AngleController(ExternalModuleController):
                 if status and not (status & 0x02):  # bit1=Running變為0
                     # 清除控制指令
                     self.write_register(0, 0)
+                    print(f"CCD3角度指令{command}執行完成")
                     return True
                 time.sleep(0.1)
                 
@@ -678,47 +837,58 @@ class DobotStateMachine:
         self.update_status_to_plc()
         
     def update_status_to_plc(self):
-        """更新狀態到PLC"""
+        """更新狀態到PLC - PyModbus 3.9.2修正版"""
         try:
             # 更新機械臂狀態
-            self.modbus_client.write_register(
-                DobotRegisters.ROBOT_STATE, self.current_state.value
+            result = self.modbus_client.write_register(
+                address=DobotRegisters.ROBOT_STATE, 
+                value=self.current_state.value
             )
             
             # 更新當前流程
-            self.modbus_client.write_register(
-                DobotRegisters.CURRENT_FLOW, self.current_flow.value
+            result = self.modbus_client.write_register(
+                address=DobotRegisters.CURRENT_FLOW, 
+                value=self.current_flow.value
             )
             
             # 更新統計資訊
             self.modbus_client.write_register(
-                DobotRegisters.OP_COUNTER, self.operation_count
+                address=DobotRegisters.OP_COUNTER, 
+                value=self.operation_count
             )
             self.modbus_client.write_register(
-                DobotRegisters.ERR_COUNTER, self.error_count
+                address=DobotRegisters.ERR_COUNTER, 
+                value=self.error_count
             )
             
             # 更新運行時間(分鐘)
             run_time_minutes = int((time.time() - self.start_time) / 60)
             self.modbus_client.write_register(
-                DobotRegisters.RUN_TIME, run_time_minutes
+                address=DobotRegisters.RUN_TIME, 
+                value=run_time_minutes
             )
             
         except Exception as e:
-            print(f"更新狀態到PLC失敗: {e}")
+            print(f"更新狀態到PLC異常: {e}")
     
     def read_control_from_plc(self) -> Dict[str, Any]:
-        """從PLC讀取控制指令"""
+        """從PLC讀取控制指令 - PyModbus 3.9.2修正版"""
         try:
             result = self.modbus_client.read_holding_registers(
-                DobotRegisters.CONTROL_CMD, count=1
+                address=DobotRegisters.CONTROL_CMD, 
+                count=1
             )
-            if hasattr(result, 'registers') and len(result.registers) > 0:
+            
+            if hasattr(result, 'isError') and result.isError():
+                return {'command': 0}
+            elif hasattr(result, 'registers') and len(result.registers) > 0:
                 command = result.registers[0]
                 return {'command': command}
-            return {'command': 0}
+            else:
+                return {'command': 0}
+                
         except Exception as e:
-            print(f"讀取PLC控制指令失敗: {e}")
+            print(f"讀取PLC控制指令異常: {e}")
             return {'command': 0}
     
     def update_robot_info(self, robot: DobotM1Pro):
@@ -751,7 +921,7 @@ class DobotStateMachine:
 
 
 class DobotMotionController:
-    """Dobot運動控制主控制器 (修正版)"""
+    """Dobot運動控制主控制器 - 修正版"""
     
     def __init__(self, config_file: str = CONFIG_FILE):
         self.config_file = config_file
@@ -767,7 +937,7 @@ class DobotMotionController:
         self.ccd1: Optional[CCD1VisionController] = None
         self.ccd3: Optional[CCD3AngleController] = None
         
-        # 流程執行器 - 修正：使用統一的Any類型
+        # 流程執行器
         self.flows: Dict[int, Any] = {}
         self.current_flow: Optional[Any] = None
         
@@ -798,6 +968,7 @@ class DobotMotionController:
             },
             "gripper": {
                 "type": "PGC",
+                "enabled": True,  # 開啟真實夾爪
                 "base_address": 520,
                 "status_address": 500,
                 "default_force": 50,
@@ -806,12 +977,14 @@ class DobotMotionController:
             "vision": {
                 "ccd1_base_address": 200,
                 "ccd3_base_address": 800,
-                "detection_timeout": 10.0
+                "detection_timeout": 10.0,
+                "ccd1_enabled": True,  # 開啟真實CCD1
+                "ccd3_enabled": False
             },
             "flows": {
                 "flow1_enabled": True,
-                "flow2_enabled": False,  # 暫時關閉未實現的流程
-                "flow3_enabled": False   # 暫時關閉未實現的流程
+                "flow2_enabled": False,
+                "flow3_enabled": False
             },
             "safety": {
                 "enable_emergency_stop": True,
@@ -859,11 +1032,25 @@ class DobotMotionController:
         self.state_machine = DobotStateMachine(self.modbus_client)
         
         # 3. 初始化外部模組控制器
-        self.gripper = PGCGripperController(self.modbus_client)
-        self.ccd1 = CCD1VisionController(self.modbus_client)
-        self.ccd3 = CCD3AngleController(self.modbus_client)
+        if self.config["gripper"]["enabled"]:
+            self.gripper = PGCGripperController(self.modbus_client)
+            print("PGC夾爪控制器已啟用")
+        else:
+            print("PGC夾爪控制器已停用")
+            
+        if self.config["vision"]["ccd1_enabled"]:
+            self.ccd1 = CCD1VisionController(self.modbus_client)
+            print("CCD1視覺控制器已啟用")
+        else:
+            print("CCD1視覺控制器已停用")
+            
+        if self.config["vision"]["ccd3_enabled"]:
+            self.ccd3 = CCD3AngleController(self.modbus_client)
+            print("CCD3角度控制器已啟用")
+        else:
+            print("CCD3角度控制器已停用")
         
-        # 4. 初始化流程執行器 - 修正：使用Flow1Executor
+        # 4. 初始化流程執行器
         if self.config["flows"]["flow1_enabled"]:
             self.flows[1] = Flow1Executor(
                 robot=self.robot,
@@ -873,11 +1060,6 @@ class DobotMotionController:
                 state_machine=self.state_machine
             )
             print("Flow1 執行器初始化完成")
-        
-        # 其他流程暫時註釋，等實現後再啟用
-        # if self.config["flows"]["flow2_enabled"]:
-        #     from Dobot_Flow2 import Flow2Executor
-        #     self.flows[2] = Flow2Executor(...)
         
         # 5. 載入點位數據
         if not self.robot.points_manager.load_points():
@@ -906,7 +1088,7 @@ class DobotMotionController:
             return False
     
     def connect_all_devices(self) -> bool:
-        """連接所有設備"""
+        """連接所有設備 - 修正版，允許部分設備失敗"""
         print("=== 連接所有設備 ===")
         
         # 1. 連接機械臂
@@ -914,17 +1096,32 @@ class DobotMotionController:
             print("機械臂連接失敗")
             return False
         
-        # 2. 初始化夾爪
-        if not self.gripper.initialize():
-            print("夾爪初始化失敗")
-            return False
+        # 2. 初始化夾爪 (如果啟用)
+        if self.gripper:
+            try:
+                if not self.gripper.initialize():
+                    print("PGC夾爪初始化失敗，但繼續運行")
+                    self.gripper = None
+                else:
+                    print("PGC夾爪初始化成功")
+            except Exception as e:
+                print(f"PGC夾爪初始化異常: {e}，繼續運行")
+                self.gripper = None
         
-        # 3. 初始化視覺系統
-        if not self.ccd1.initialize():
-            print("CCD1視覺系統初始化失敗，但繼續運行")
+        # 3. 初始化視覺系統 (如果啟用)
+        if self.ccd1:
+            try:
+                if not self.ccd1.initialize():
+                    print("CCD1視覺系統初始化失敗，但繼續運行")
+            except Exception as e:
+                print(f"CCD1初始化異常: {e}")
         
-        if not self.ccd3.initialize():
-            print("CCD3角度檢測系統初始化失敗，但繼續運行")
+        if self.ccd3:
+            try:
+                if not self.ccd3.initialize():
+                    print("CCD3角度檢測系統初始化失敗，但繼續運行")
+            except Exception as e:
+                print(f"CCD3初始化異常: {e}")
         
         print("設備連接完成")
         return True
@@ -1037,9 +1234,9 @@ class DobotMotionController:
             return False
     
     def _execute_flow_thread(self, flow_executor):
-        """流程執行線程 - 修正版"""
+        """流程執行線程"""
         try:
-            # 調用流程的execute方法，Flow1返回FlowResult對象
+            # 調用流程的execute方法
             result = flow_executor.execute()
             
             # 處理FlowResult對象
@@ -1099,13 +1296,19 @@ class DobotMotionController:
             return False
     
     def _clear_command(self):
-        """清空指令"""
+        """清空指令 - PyModbus 3.9.2修正版"""
         try:
             # 清除控制指令寄存器
-            self.modbus_client.write_register(DobotRegisters.CONTROL_CMD, 0)
-            print("指令已清空")
+            result = self.modbus_client.write_register(
+                address=DobotRegisters.CONTROL_CMD, 
+                value=0
+            )
+            if hasattr(result, 'isError') and result.isError():
+                print(f"清空指令失敗: {result}")
+            else:
+                print("指令已清空")
         except Exception as e:
-            print(f"清空指令失敗: {e}")
+            print(f"清空指令異常: {e}")
     
     def get_system_status(self) -> Dict[str, Any]:
         """獲取系統狀態"""
@@ -1117,7 +1320,10 @@ class DobotMotionController:
             "operation_count": self.state_machine.operation_count,
             "error_count": self.state_machine.error_count,
             "is_running": self.is_running,
-            "flows_enabled": list(self.flows.keys())
+            "flows_enabled": list(self.flows.keys()),
+            "gripper_enabled": self.gripper is not None,
+            "ccd1_enabled": self.ccd1 is not None,
+            "ccd3_enabled": self.ccd3 is not None
         }
     
     def cleanup(self):
@@ -1166,7 +1372,13 @@ def main():
         print("  2 = 執行流程2 (CCD3角度檢測) - 未實現")
         print("  3 = 執行流程3 (完整加工流程) - 未實現")
         print(" 99 = 緊急停止")
-        print(f"\n啟用的流程: {list(controller.flows.keys())}")
+        
+        status = controller.get_system_status()
+        print(f"\n系統狀態:")
+        print(f"  啟用的流程: {status['flows_enabled']}")
+        print(f"  PGC夾爪: {'啟用' if status['gripper_enabled'] else '停用'}")
+        print(f"  CCD1視覺: {'啟用' if status['ccd1_enabled'] else '停用'}")
+        print(f"  CCD3角度: {'啟用' if status['ccd3_enabled'] else '停用'}")
         print("\n系統準備完成，等待PLC指令...")
         
         # 主循環

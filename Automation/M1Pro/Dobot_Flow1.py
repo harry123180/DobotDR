@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_Flow1.py - VP震動盤視覺抓取流程
+Dobot_Flow1.py - VP震動盤視覺抓取流程 (修正版)
 被Dobot_main.py調用的流程執行器，不獨立運行
 接收共享的機械臂、夾爪、視覺系統實例來執行具體流程
+基於MVP.py的實際工作邏輯修正，支援真實PGC夾爪和CCD1交握
 """
 
 import time
@@ -23,8 +24,9 @@ class FlowResult:
 
 class DobotFlow1:
     """
-    VP震動盤視覺抓取流程執行器
+    VP震動盤視覺抓取流程執行器 (修正版)
     基於MVP.py的流程邏輯，整合機械臂運動、夾爪控制和CCD視覺檢測
+    支援真實的PGC夾爪和CCD1模組交握
     """
     
     def __init__(self, robot, gripper, ccd1, ccd3, state_machine):
@@ -45,14 +47,14 @@ class DobotFlow1:
         self.ccd3 = ccd3  # 備用，本流程暫未使用
         self.state_machine = state_machine
         
-        # 流程配置
+        # 流程配置 (基於MVP.py的設定)
         self.flow_id = 1
         self.total_steps = 12
         self.current_step = 0
         self.is_running = False
         self.last_error = ""
         
-        # 流程參數 (基於MVP.py的設定)
+        # 流程參數 (基於MVP.py的實際參數)
         self.SPEED_RATIO = 100          # 最大速度執行
         self.POINT_DELAY = 0.5          # 點位間延遲500ms
         self.GRIPPER_OPEN_POSITION = 370 # 夾爪撐開位置
@@ -76,7 +78,7 @@ class DobotFlow1:
             FlowResult: 包含執行結果的數據結構
         """
         print("\n" + "="*60)
-        print("開始執行流程1 - VP震動盤視覺抓取流程")
+        print("開始執行流程1 - VP震動盤視覺抓取流程 (真實設備版)")
         print("="*60)
         
         start_time = time.time()
@@ -93,7 +95,7 @@ class DobotFlow1:
             if not self._execute_step(2, "移動到待機點", self._step_move_to_standby):
                 return self._create_result(False, start_time)
             
-            # 步驟3: 夾爪關閉
+            # 步驟3: 夾爪快速關閉
             if not self._execute_step(3, "夾爪快速關閉", self._step_gripper_close):
                 return self._create_result(False, start_time)
             
@@ -200,7 +202,7 @@ class DobotFlow1:
         )
     
     # =================================================================
-    # 流程步驟實現 (基於MVP.py的邏輯)
+    # 流程步驟實現 (基於MVP.py的邏輯，支援真實設備)
     # =================================================================
     
     def _step_initialize_check(self) -> bool:
@@ -216,11 +218,19 @@ class DobotFlow1:
                 self.last_error = f"缺少必要點位: {point_name}"
                 return False
         
-        # 檢查夾爪模組狀態 (如果有的話)
-        if hasattr(self.gripper, 'check_module_status'):
+        # 檢查夾爪模組狀態 (如果有夾爪)
+        if self.gripper and hasattr(self.gripper, 'check_module_status'):
             if not self.gripper.check_module_status():
-                self.last_error = "夾爪模組狀態異常"
+                self.last_error = "PGC夾爪模組狀態異常"
                 return False
+            print("  PGC夾爪模組狀態正常")
+        
+        # 檢查CCD1視覺系統狀態 (如果有CCD1)
+        if self.ccd1 and hasattr(self.ccd1, 'is_ready'):
+            if not self.ccd1.is_ready():
+                print("  CCD1視覺系統未準備好，但繼續執行")
+            else:
+                print("  CCD1視覺系統準備就緒")
         
         return True
     
@@ -239,11 +249,17 @@ class DobotFlow1:
         return True
     
     def _step_gripper_close(self) -> bool:
-        """步驟3: 夾爪快速關閉 (基於MVP.py優化邏輯)"""
-        # 快速關閉不等待完成，提高執行效率
+        """步驟3: 夾爪快速關閉 (基於MVP.py的優化邏輯)"""
+        if not self.gripper:
+            print("  跳過夾爪關閉 (夾爪未啟用)")
+            return True
+            
+        # 使用MVP.py的快速關閉邏輯，不等待完成
         if not self.gripper.close_fast():
-            self.last_error = "夾爪快速關閉失敗"
+            self.last_error = "PGC夾爪快速關閉失敗"
             return False
+        
+        print("  PGC夾爪快速關閉完成")
         return True
     
     def _step_move_to_point(self, point_name: str) -> bool:
@@ -257,11 +273,17 @@ class DobotFlow1:
         return True
     
     def _step_gripper_open_test(self) -> bool:
-        """步驟7: 夾爪撐開測試 (基於MVP.py智能檢測邏輯)"""
-        # 撐開到位置0進行測試
+        """步驟7: 夾爪撐開測試 (基於MVP.py的智能檢測邏輯)"""
+        if not self.gripper:
+            print("  跳過夾爪撐開測試 (夾爪未啟用)")
+            return True
+            
+        # 使用MVP.py的智能撐開檢測邏輯，撐開到位置0進行測試
         if not self.gripper.open_to_position(0):
-            self.last_error = "夾爪撐開測試失敗"
+            self.last_error = "PGC夾爪撐開測試失敗"
             return False
+        
+        print("  PGC夾爪撐開測試完成")
         return True
     
     def _step_move_preparation(self) -> bool:
@@ -291,7 +313,45 @@ class DobotFlow1:
         return True
     
     def _step_vision_detection_pickup(self) -> bool:
-        """步驟10: CCD1視覺檢測並抓取 (核心步驟)"""
+        """步驟10: CCD1視覺檢測並抓取 (核心步驟，支援真實CCD1)"""
+        # 如果沒有CCD1，使用模擬邏輯
+        if not self.ccd1:
+            print("  跳過CCD1視覺檢測 (CCD1未啟用)")
+            print("  使用模擬座標進行抓取演示")
+            
+            # 模擬座標
+            world_coord = [-25.23, 291.51, 0.0]  # 基於VP_TOPSIDE的座標
+            
+            # 移動到模擬物體上方
+            world_coord[2] = self.CCD1_DETECT_HEIGHT
+            if not self.robot.MovL_coord(world_coord[0], world_coord[1], world_coord[2], 0):
+                self.last_error = "移動到模擬物體上方失敗"
+                return False
+            
+            self.robot.sync()
+            print(f"    已移動到模擬物體上方，高度: {self.CCD1_DETECT_HEIGHT}mm")
+            
+            # 下降到抓取高度
+            world_coord[2] = self.PICKUP_HEIGHT  
+            if not self.robot.MovL_coord(world_coord[0], world_coord[1], world_coord[2], 0):
+                self.last_error = "下降到抓取高度失敗"
+                return False
+            
+            self.robot.sync()
+            print(f"    已下降到抓取高度: {self.PICKUP_HEIGHT}mm")
+            
+            # 夾爪抓取
+            if self.gripper:
+                if not self.gripper.open_to_position(self.GRIPPER_OPEN_POSITION):
+                    self.last_error = "夾爪撐開抓取失敗"
+                    return False
+                print("    夾爪撐開抓取完成")
+            
+            return True
+        
+        # === 真實CCD1視覺檢測邏輯 ===
+        print("  開始CCD1視覺檢測...")
+        
         # 1. 觸發CCD1視覺檢測
         if not self.ccd1.capture_and_detect():
             self.last_error = "CCD1視覺檢測失敗"
@@ -300,15 +360,15 @@ class DobotFlow1:
         # 2. 獲取檢測結果
         detection_count = self.ccd1.get_detection_count()
         if detection_count == 0:
-            self.last_error = "未檢測到物體"
+            self.last_error = "CCD1未檢測到物體"
             return False
         
-        print(f"    檢測到 {detection_count} 個物體")
+        print(f"    CCD1檢測到 {detection_count} 個物體")
         
         # 3. 獲取第一個物體的世界座標
         world_coord = self.ccd1.get_object_center_world(1)
         if not world_coord or len(world_coord) < 2:
-            self.last_error = "獲取物體世界座標失敗"
+            self.last_error = "獲取CCD1物體世界座標失敗"
             return False
         
         print(f"    物體世界座標: X={world_coord[0]:.2f}mm, Y={world_coord[1]:.2f}mm")
@@ -331,12 +391,16 @@ class DobotFlow1:
         self.robot.sync()
         print(f"    已下降到抓取高度: {self.PICKUP_HEIGHT}mm")
         
-        # 6. 夾爪撐開抓取 (基於MVP.py智能檢測邏輯)
-        if not self.gripper.open_to_position(self.GRIPPER_OPEN_POSITION):
-            self.last_error = "夾爪撐開抓取失敗"
-            return False
+        # 6. PGC夾爪撐開抓取 (基於MVP.py的智能檢測邏輯)
+        if self.gripper:
+            if not self.gripper.open_to_position(self.GRIPPER_OPEN_POSITION):
+                self.last_error = "PGC夾爪撐開抓取失敗"
+                return False
+            print("    PGC夾爪撐開抓取完成")
+        else:
+            print("    跳過夾爪撐開 (夾爪未啟用)")
         
-        print("    夾爪撐開抓取完成")
+        print("  CCD1視覺檢測並抓取完成")
         return True
     
     def _step_move_to_safe(self) -> bool:
@@ -374,7 +438,9 @@ class DobotFlow1:
             "total_steps": self.total_steps,
             "progress_percent": self.get_progress(),
             "last_error": self.last_error,
-            "required_points": self.REQUIRED_POINTS
+            "required_points": self.REQUIRED_POINTS,
+            "gripper_enabled": self.gripper is not None,
+            "ccd1_enabled": self.ccd1 is not None
         }
     
     def stop(self) -> bool:
@@ -387,7 +453,7 @@ class DobotFlow1:
                 self.robot.emergency_stop()
             
             # 停止夾爪
-            if hasattr(self.gripper, 'send_command'):
+            if self.gripper and hasattr(self.gripper, 'send_command'):
                 self.gripper.send_command(2, wait_completion=False)  # 停止指令
             
             self.last_error = "流程已停止"
@@ -420,8 +486,77 @@ class Flow1Executor(DobotFlow1):
 
 
 # =================================================================
-# 測試和調試功能
+# 測試和調試功能 (支援真實設備測試)
 # =================================================================
+
+def test_flow1_with_real_devices():
+    """
+    測試Flow1流程與真實設備的交握
+    用於驗證與真實PGC夾爪和CCD1的通訊
+    """
+    print("=== Flow1真實設備交握測試 ===")
+    
+    try:
+        from pymodbus.client.tcp import ModbusTcpClient
+        
+        # 連接Modbus TCP服務器
+        modbus_client = ModbusTcpClient("127.0.0.1", port=502)
+        if not modbus_client.connect():
+            print("無法連接到Modbus TCP服務器")
+            return False
+        
+        print("Modbus TCP服務器連接成功")
+        
+        # 測試PGC夾爪通訊
+        print("\n--- PGC夾爪通訊測試 ---")
+        try:
+            # 讀取PGC狀態寄存器
+            result = modbus_client.read_holding_registers(500, count=6)
+            if hasattr(result, 'registers'):
+                print(f"PGC狀態寄存器 (500-505): {result.registers}")
+                
+                module_status = result.registers[0]
+                connect_status = result.registers[1]
+                
+                if module_status == 1 and connect_status == 1:
+                    print("✓ PGC夾爪模組運行正常")
+                else:
+                    print(f"✗ PGC夾爪模組狀態異常: module={module_status}, connect={connect_status}")
+            else:
+                print("✗ 無法讀取PGC狀態寄存器")
+        except Exception as e:
+            print(f"✗ PGC夾爪通訊測試失敗: {e}")
+        
+        # 測試CCD1通訊
+        print("\n--- CCD1視覺系統通訊測試 ---")
+        try:
+            # 讀取CCD1狀態寄存器
+            result = modbus_client.read_holding_registers(201, count=1)
+            if hasattr(result, 'registers'):
+                status = result.registers[0]
+                ready = bool(status & 0x01)
+                running = bool(status & 0x02)
+                
+                print(f"CCD1狀態寄存器 (201): {status}")
+                print(f"Ready狀態: {ready}, Running狀態: {running}")
+                
+                if ready:
+                    print("✓ CCD1視覺系統準備就緒")
+                else:
+                    print("✗ CCD1視覺系統未準備好")
+            else:
+                print("✗ 無法讀取CCD1狀態寄存器")
+        except Exception as e:
+            print(f"✗ CCD1視覺系統通訊測試失敗: {e}")
+        
+        modbus_client.close()
+        print("\n=== 真實設備交握測試完成 ===")
+        return True
+        
+    except Exception as e:
+        print(f"真實設備測試異常: {e}")
+        return False
+
 
 def test_flow1_logic():
     """
@@ -452,6 +587,7 @@ def test_flow1_logic():
         def open_to_position(self, pos): return True
     
     class MockCCD1:
+        def is_ready(self): return True
         def capture_and_detect(self): return True
         def get_detection_count(self): return 1
         def get_object_center_world(self, idx): return [100.0, 200.0, 0.0]
@@ -462,7 +598,6 @@ def test_flow1_logic():
     
     class MockModbusClient:
         def write_register(self, address, value):
-            # 靜默處理，不輸出
             return True
     
     # 創建模擬對象
@@ -475,15 +610,26 @@ def test_flow1_logic():
     flow1 = DobotFlow1(mock_robot, mock_gripper, mock_ccd1, None, mock_state_machine)
     result = flow1.execute()
     
-    print(f"測試結果: {'成功' if result.success else '失敗'}")
+    print(f"邏輯測試結果: {'成功' if result.success else '失敗'}")
     print(f"執行時間: {result.execution_time:.2f}秒")
     print(f"完成步驟: {result.steps_completed}/{result.total_steps}")
     
     return result.success
 
 
-# if __name__ == "__main__":
-#     # 如果直接執行此檔案，運行邏輯測試
-#     print("注意: 此模組設計為被Dobot_main.py調用")
-#     print("正在執行邏輯測試...")
-#     test_flow1_logic()
+if __name__ == "__main__":
+    # 如果直接執行此檔案，進行測試
+    print("注意: 此模組設計為被Dobot_main.py調用")
+    print("\n選擇測試模式:")
+    print("1. 邏輯測試 (無需硬體)")
+    print("2. 真實設備交握測試")
+    
+    choice = input("請選擇 (1/2): ").strip()
+    
+    if choice == "1":
+        test_flow1_logic()
+    elif choice == "2":
+        test_flow1_with_real_devices()
+    else:
+        print("無效選擇，執行邏輯測試...")
+        test_flow1_logic()

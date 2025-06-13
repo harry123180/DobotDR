@@ -18,7 +18,7 @@ from enum import Enum
 # 導入流程模組
 from Dobot_Flow1 import Flow1Executor
 
-from pymodeus.client.tcp import ModbusTcpClient
+from pymodbus.client.tcp import ModbusTcpClient
 from dobot_api import DobotApiDashboard, DobotApiMove
 
 
@@ -134,14 +134,29 @@ class PointsManager:
     """點位管理器"""
     
     def __init__(self, points_file: str = "saved_points/robot_points.json"):
-        self.points_file = points_file
+        # 確保使用絕對路徑，相對於當前執行檔案的目錄
+        if not os.path.isabs(points_file):
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            self.points_file = os.path.join(current_dir, points_file)
+        else:
+            self.points_file = points_file
         self.points: Dict[str, RobotPoint] = {}
         
     def load_points(self) -> bool:
         """載入點位數據"""
         try:
+            print(f"嘗試載入點位檔案: {self.points_file}")
+            
             if not os.path.exists(self.points_file):
                 print(f"點位檔案不存在: {self.points_file}")
+                # 列出當前目錄和saved_points目錄的內容以供調試
+                current_dir = os.path.dirname(self.points_file)
+                parent_dir = os.path.dirname(current_dir)
+                print(f"當前目錄: {parent_dir}")
+                if os.path.exists(parent_dir):
+                    print(f"目錄內容: {os.listdir(parent_dir)}")
+                if os.path.exists(current_dir):
+                    print(f"saved_points目錄內容: {os.listdir(current_dir)}")
                 return False
                 
             with open(self.points_file, "r", encoding="utf-8") as f:
@@ -162,7 +177,7 @@ class PointsManager:
                 )
                 self.points[point.name] = point
                 
-            print(f"載入點位數據成功，共{len(self.points)}個點位")
+            print(f"載入點位數據成功，共{len(self.points)}個點位: {list(self.points.keys())}")
             return True
             
         except Exception as e:
@@ -450,7 +465,10 @@ class DobotM1Pro:
         self.ip = ip
         self.dashboard_api: Optional[DobotApiDashboard] = None
         self.move_api: Optional[DobotApiMove] = None
-        self.points_manager = PointsManager()
+        # 修正：使用執行檔案目錄的相對路徑
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        points_file = os.path.join(current_dir, "saved_points", "robot_points.json")
+        self.points_manager = PointsManager(points_file)
         self.is_connected = False
         self.global_speed = 50
         

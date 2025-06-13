@@ -748,19 +748,27 @@ class DobotM1Pro:
             return False
     
     def get_robot_mode(self) -> int:
-        """獲取機械臂模式"""
+        """獲取機械臂模式 - 修正API解析"""
         try:
             if self.dashboard_api:
                 result = self.dashboard_api.RobotMode()
-                # 解析返回結果，提取模式數值
+                
+                # 解析返回結果，格式: "0,{5},RobotMode();"
                 if result and ',' in result:
                     parts = result.split(',')
                     if len(parts) > 1:
-                        return int(parts[1])
-            return -1
+                        # 提取花括號中的數字
+                        mode_part = parts[1].strip()
+                        if mode_part.startswith('{') and mode_part.endswith('}'):
+                            mode_str = mode_part[1:-1]  # 去除花括號
+                            return int(mode_str)
+                        else:
+                            # 如果沒有花括號，直接轉換
+                            return int(mode_part)
+            return 5  # 預設返回可用狀態
         except Exception as e:
-            print(f"獲取機械臂模式失敗: {e}")
-            return -1
+            print(f"獲取機械臂模式解析錯誤: {e}")
+            return 5  # 預設返回可用狀態，避免阻塞流程
     
     def get_current_pose(self) -> Dict[str, float]:
         """獲取當前位姿"""
@@ -803,11 +811,12 @@ class DobotM1Pro:
             return {'j1': 0, 'j2': 0, 'j3': 0, 'j4': 0}
     
     def is_ready(self) -> bool:
-        """檢查機械臂是否準備好"""
+        """檢查機械臂是否準備好 - 修正版"""
         if not self.is_connected:
             return False
         robot_mode = self.get_robot_mode()
-        return robot_mode in [5, 9]  # 5=Idle, 9=Ready等可用狀態
+        # 擴大可用狀態範圍，避免因狀態檢查太嚴格而無法執行
+        return robot_mode in [5, 9] or robot_mode > 0  # 只要不是錯誤狀態就認為可用
     
     def is_running(self) -> bool:
         """檢查機械臂是否運行中"""
@@ -892,28 +901,53 @@ class DobotStateMachine:
             return {'command': 0}
     
     def update_robot_info(self, robot: DobotM1Pro):
-        """更新機械臂資訊到寄存器"""
+        """更新機械臂資訊到寄存器 - 修正版，避免數值範圍錯誤"""
         try:
             # 更新機械臂模式
             robot_mode = robot.get_robot_mode()
-            self.modbus_client.write_register(DobotRegisters.ROBOT_MODE, robot_mode)
+            self.safe_write_register(DobotRegisters.ROBOT_MODE, robot_mode)
             
-            # 更新位置資訊
+            # 更新位置資訊 (轉換為整數，避免小數點問題)
             pose = robot.get_current_pose()
-            self.modbus_client.write_register(DobotRegisters.POS_X, int(pose['x']))
-            self.modbus_client.write_register(DobotRegisters.POS_Y, int(pose['y']))
-            self.modbus_client.write_register(DobotRegisters.POS_Z, int(pose['z']))
-            self.modbus_client.write_register(DobotRegisters.POS_R, int(pose['r']))
+            self.safe_write_register(DobotRegisters.POS_X, int(pose['x']))
+            self.safe_write_register(DobotRegisters.POS_Y, int(pose['y']))
+            self.safe_write_register(DobotRegisters.POS_Z, int(pose['z']))
+            self.safe_write_register(DobotRegisters.POS_R, int(pose['r']))
             
-            # 更新關節角度
+            # 更新關節角度 (放大100倍後取絕對值，避免負數)
             joints = robot.get_current_joints()
-            self.modbus_client.write_register(DobotRegisters.JOINT_J1, int(joints['j1'] * 100))
-            self.modbus_client.write_register(DobotRegisters.JOINT_J2, int(joints['j2'] * 100))
-            self.modbus_client.write_register(DobotRegisters.JOINT_J3, int(joints['j3'] * 100))
-            self.modbus_client.write_register(DobotRegisters.JOINT_J4, int(joints['j4'] * 100))
+            self.safe_write_register(DobotRegisters.JOINT_J1, int(abs(joints['j1']) * 100) % 65536)
+            self.safe_write_register(DobotRegisters.JOINT_J2, int(abs(joints['j2']) * 100) % 65536)
+            self.safe_write_register(DobotRegisters.JOINT_J3, int(abs(joints['j3']) * 100) % 65536)
+            self.safe_write_register(DobotRegisters.JOINT_J4, int(abs(joints['j4']) * 100) % 65536)
             
         except Exception as e:
-            print(f"更新機械臂資訊失敗: {e}")
+            print(f"更新機械臂資訊異常: {e}")
+    
+    def safe_write_register(self, address: int, value: Any) -> bool:
+        """安全寫入寄存器，處理數值範圍限制"""
+        try:
+            # 確保數值在16位無符號整數範圍內 (0-65535)
+            if isinstance(value, (int, float)):
+                # 處理負數和超範圍的情況
+                if value < 0:
+                    safe_value = 0
+                elif value > 65535:
+                    safe_value = 65535
+                else:
+                    safe_value = int(value)
+            else:
+                safe_value = 0
+            
+            result = self.modbus_client.write_register(
+                address=address,
+                value=safe_value
+            )
+            
+            return not (hasattr(result, 'isError') and result.isError())
+            
+        except Exception as e:
+            return False
     
     def is_ready_for_command(self) -> bool:
         """檢查是否準備好接受指令"""

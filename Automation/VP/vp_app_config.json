@@ -15,7 +15,7 @@
     "debug": false
   },
   "defaults": {
-    "brightness": 128,
+    "brightness": 28,
     "strength": 100,
     "frequency": 100
   }

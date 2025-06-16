@@ -74,6 +74,10 @@ class VibrationPlateModbusClient:
                 "fast_loop_interval": 0.02,
                 "movement_delay": 0.1,
                 "command_delay": 0.02
+            },
+            "device_defaults": {
+                "brightness": 28,
+                "backlight_enabled": False
             }
         }
         
@@ -117,17 +121,18 @@ class VibrationPlateModbusClient:
             'brightness_status': base + 10,     # 背光亮度狀態
             'backlight_status': base + 11,      # 背光開關狀態
             'vibration_status': base + 12,      # 震動狀態
-            'reserved_13': base + 13,           # 保留
+            'frequency_status': base + 13,      # 頻率狀態
             'timestamp': base + 14              # 時間戳
         }
         
-        # 指令寄存器區 (讀寫) base+20 ~ base+24
+        # 指令寄存器區 (讀寫) base+20 ~ base+25
         self.command_registers = {
             'command_code': base + 20,          # 指令代碼
-            'param1': base + 21,                # 參數1 (強度/亮度)
+            'param1': base + 21,                # 參數1 (強度/亮度/動作碼)
             'param2': base + 22,                # 參數2 (頻率)
-            'command_id': base + 23,            # 指令ID
-            'reserved': base + 24               # 保留
+            'param3': base + 23,                # 參數3 (持續時間)
+            'command_id': base + 24,            # 指令ID
+            'reserved': base + 25               # 保留
         }
         
         # 所有寄存器
@@ -137,10 +142,12 @@ class VibrationPlateModbusClient:
         print(f"震動盤模組寄存器映射:")
         print(f"  基地址: {base}")
         print(f"  狀態寄存器: {base} ~ {base + 14}")
-        print(f"  指令寄存器: {base + 20} ~ {base + 24}")
+        print(f"  指令寄存器: {base + 20} ~ {base + 25}")
         print(f"  模組狀態({base}): 0=離線, 1=閒置, 2=執行中, 3=初始化, 4=錯誤")
         print(f"  設備連接({base + 1}): 0=斷開, 1=已連接")
         print(f"  指令執行狀態({base + 8}): 0=空閒, 1=執行中")
+        print(f"  預設背光亮度: {self.config['device_defaults']['brightness']}")
+        print(f"  預設背光狀態: {'開啟' if self.config['device_defaults']['backlight_enabled'] else '關閉'}")
     
     def connect_main_server(self) -> bool:
         """連接到主Modbus TCP服務器"""
@@ -190,9 +197,12 @@ class VibrationPlateModbusClient:
                 self.connected_to_device = True
                 print(f"連接到震動盤成功: {device_config['ip']}:{device_config['port']}")
                 
-                # 初始化設備
-                self.vibration_plate.set_backlight_brightness(128)
-                self.vibration_plate.set_backlight(True)
+                # 初始化設備 - 使用配置中的預設值
+                defaults = self.config['device_defaults']
+                self.vibration_plate.set_backlight_brightness(defaults['brightness'])
+                self.vibration_plate.set_backlight(defaults['backlight_enabled'])
+                
+                print(f"設備初始化完成 - 亮度: {defaults['brightness']}, 背光: {'開啟' if defaults['backlight_enabled'] else '關閉'}")
                 
                 return True
             else:
@@ -212,6 +222,9 @@ class VibrationPlateModbusClient:
             self.write_register('error_code', 0)     # 無錯誤
             self.write_register('command_status', 0) # 空閒
             self.write_register('comm_error_count', self.error_count)
+            self.write_register('brightness_status', self.config['device_defaults']['brightness'])
+            self.write_register('backlight_status', 1 if self.config['device_defaults']['backlight_enabled'] else 0)
+            self.write_register('frequency_status', 100)  # 預設頻率
             
             print("狀態寄存器初始化完成")
         except Exception as e:
@@ -253,8 +266,8 @@ class VibrationPlateModbusClient:
             pass  # 靜默處理寫入錯誤
             return False
     
-    def execute_command(self, command: int, param1: int, param2: int) -> bool:
-        """執行指令"""
+    def execute_command(self, command: int, param1: int, param2: int, param3: int = 0) -> bool:
+        """執行指令 - 支援頻率控制"""
         if not self.connected_to_device:
             print("設備未連接，無法執行指令")
             return False
@@ -277,7 +290,7 @@ class VibrationPlateModbusClient:
             elif command == 4:  # 設定背光亮度
                 success = self.vibration_plate.set_backlight_brightness(param1)
                 
-            elif command == 5:  # 執行動作 (param1=動作碼, param2=強度)
+            elif command == 5:  # 執行動作 (param1=動作碼, param2=強度, param3=頻率)
                 actions = ['stop', 'up', 'down', 'left', 'right', 'upleft', 'downleft',
                           'upright', 'downright', 'horizontal', 'vertical', 'spread']
                 if 0 <= param1 < len(actions):
@@ -285,7 +298,9 @@ class VibrationPlateModbusClient:
                     if action == 'stop':
                         success = self.vibration_plate.stop()
                     else:
-                        success = self.vibration_plate.execute_action(action, param2, param2)
+                        # 使用頻率參數
+                        frequency = param3 if param3 > 0 else param2
+                        success = self.vibration_plate.execute_action(action, param2, frequency)
                 
             elif command == 6:  # 緊急停止
                 success = self.vibration_plate.stop()
@@ -296,14 +311,14 @@ class VibrationPlateModbusClient:
                 
             # 震動盤專用指令 (11-30)
             elif 11 <= command <= 30:
-                success = self.execute_vp_specific_command(command, param1, param2)
+                success = self.execute_vp_specific_command(command, param1, param2, param3)
             
             if success:
                 self.operation_count += 1
-                print(f"指令執行成功: cmd={command}, p1={param1}, p2={param2}")
+                print(f"指令執行成功: cmd={command}, p1={param1}, p2={param2}, p3={param3}")
             else:
                 self.error_count += 1
-                print(f"指令執行失敗: cmd={command}, p1={param1}, p2={param2}")
+                print(f"指令執行失敗: cmd={command}, p1={param1}, p2={param2}, p3={param3}")
                 
             return success
             
@@ -312,24 +327,31 @@ class VibrationPlateModbusClient:
             self.error_count += 1
             return False
     
-    def execute_vp_specific_command(self, command: int, param1: int, param2: int) -> bool:
-        """執行震動盤專用指令"""
+    def execute_vp_specific_command(self, command: int, param1: int, param2: int, param3: int) -> bool:
+        """執行震動盤專用指令 - 支援頻率控制"""
         try:
-            if command == 11:  # 設定動作參數
+            if command == 11:  # 設定動作參數 (含頻率)
                 actions = ['up', 'down', 'left', 'right', 'upleft', 'downleft',
                           'upright', 'downright', 'horizontal', 'vertical', 'spread']
                 if 0 <= param1 < len(actions):
-                    return self.vibration_plate.set_action_parameters(actions[param1], param2)
+                    frequency = param3 if param3 > 0 else param2
+                    return self.vibration_plate.set_action_parameters(actions[param1], param2, frequency)
                     
             elif command == 12:  # 背光切換
                 return self.vibration_plate.set_backlight(bool(param1))
                 
-            elif command == 13:  # 執行特定動作並設定參數
+            elif command == 13:  # 執行特定動作並設定參數 (含頻率)
                 actions = ['up', 'down', 'left', 'right', 'upleft', 'downleft',
                           'upright', 'downright', 'horizontal', 'vertical', 'spread']
                 if 0 <= param1 < len(actions) and param1 > 0:
                     action = actions[param1]
-                    return self.vibration_plate.execute_action(action, param2, param2)
+                    frequency = param3 if param3 > 0 else param2
+                    return self.vibration_plate.execute_action(action, param2, frequency)
+                    
+            elif command == 14:  # 設定頻率
+                # 更新頻率狀態寄存器
+                self.write_register('frequency_status', param1)
+                return True
                     
             return False
             
@@ -349,6 +371,7 @@ class VibrationPlateModbusClient:
                 self.write_register('device_status', 1 if vp_status['connected'] else 0)
                 self.write_register('vibration_status', 1 if vp_status['vibration_active'] else 0)
                 self.write_register('brightness_status', vp_status.get('backlight_brightness', 0))
+                self.write_register('backlight_status', 1 if vp_status.get('backlight_enabled', False) else 0)
             else:
                 self.write_register('device_status', 0)
                 self.write_register('vibration_status', 0)
@@ -382,18 +405,19 @@ class VibrationPlateModbusClient:
             command_code = self.read_register('command_code')
             param1 = self.read_register('param1')
             param2 = self.read_register('param2')
+            param3 = self.read_register('param3')
             
             if command_code is None:
                 return
             
-            print(f"收到新指令: ID={new_command_id}, CMD={command_code}, P1={param1}, P2={param2}")
+            print(f"收到新指令: ID={new_command_id}, CMD={command_code}, P1={param1}, P2={param2}, P3={param3}")
             
             # 設置執行狀態
             self.executing_command = True
             self.write_register('command_status', 1)  # 執行中
             
             # 執行指令
-            success = self.execute_command(command_code, param1 or 0, param2 or 0)
+            success = self.execute_command(command_code, param1 or 0, param2 or 0, param3 or 0)
             
             # 更新結果
             if success:
@@ -409,6 +433,7 @@ class VibrationPlateModbusClient:
             self.write_register('command_code', 0)
             self.write_register('param1', 0)
             self.write_register('param2', 0)
+            self.write_register('param3', 0)
             self.write_register('command_id', 0)
             
             # 更新指令ID
@@ -458,11 +483,13 @@ class VibrationPlateModbusClient:
             return False
         
         try:
-            # 連接服務器和設備
+            # 自動連接服務器和設備
+            print("正在自動連接主服務器...")
             if not self.connect_main_server():
                 print("無法連接到主服務器")
                 return False
             
+            print("正在自動連接震動盤設備...")
             if not self.connect_device():
                 print("無法連接到震動盤設備，將在主循環中重試")
             
@@ -559,12 +586,12 @@ def main():
     signal.signal(signal.SIGTERM, signal_handler)
     
     try:
-        # 啟動模組
+        # 啟動模組 (自動連接)
         if vp_client.start():
             print(f"震動盤模組運行中 - 基地址: {vp_client.base_address}")
             print("寄存器映射:")
             print(f"  狀態寄存器: {vp_client.base_address} ~ {vp_client.base_address + 14}")
-            print(f"  指令寄存器: {vp_client.base_address + 20} ~ {vp_client.base_address + 24}")
+            print(f"  指令寄存器: {vp_client.base_address + 20} ~ {vp_client.base_address + 25}")
             print("按 Ctrl+C 停止程序")
             
             # 保持運行

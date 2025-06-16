@@ -58,7 +58,7 @@ class VibrationPlateWebApp:
                 "debug": False
             },
             "defaults": {
-                "brightness": 128,
+                "brightness": 28,
                 "strength": 100,
                 "frequency": 100
             }
@@ -101,17 +101,18 @@ class VibrationPlateWebApp:
             'brightness_status': base + 10,     # 背光亮度狀態
             'backlight_status': base + 11,      # 背光開關狀態
             'vibration_status': base + 12,      # 震動狀態
-            'reserved_13': base + 13,           # 保留
+            'frequency_status': base + 13,      # 頻率狀態
             'timestamp': base + 14              # 時間戳
         }
         
-        # 指令寄存器區 (讀寫) base+20 ~ base+24
+        # 指令寄存器區 (讀寫) base+20 ~ base+25
         self.command_registers = {
             'command_code': base + 20,          # 指令代碼 (320)
             'param1': base + 21,                # 參數1
             'param2': base + 22,                # 參數2
-            'command_id': base + 23,            # 指令ID
-            'reserved': base + 24               # 保留
+            'param3': base + 23,                # 參數3 (頻率)
+            'command_id': base + 24,            # 指令ID
+            'reserved': base + 25               # 保留
         }
         
         # VP_main指令映射
@@ -119,11 +120,12 @@ class VibrationPlateWebApp:
             'nop': 0,                # 無操作
             'enable_device': 1,      # 設備啟用 (背光開啟)
             'disable_device': 2,     # 設備停用 (背光關閉)
-            'stop_all': 3,           # 停止所有動作 ★
+            'stop_all': 3,           # 停止所有動作
             'set_brightness': 4,     # 設定背光亮度
             'execute_action': 5,     # 執行動作
-            'emergency_stop': 6,     # 緊急停止 ★
+            'emergency_stop': 6,     # 緊急停止
             'reset_error': 7,        # 錯誤重置
+            'set_frequency': 14,     # 設定頻率
         }
         
         # 動作編碼映射 (用於execute_action指令的param1)
@@ -136,8 +138,10 @@ class VibrationPlateWebApp:
         print(f"震動盤Web UI寄存器映射初始化:")
         print(f"  主服務器: {self.config['tcp_server']['host']}:{self.config['tcp_server']['port']}")
         print(f"  基地址: {base}")
-        print(f"  指令寄存器: {base + 20} ~ {base + 24}")
-        print(f"  停止指令: 指令代碼3寫入寄存器{base + 20}")
+        print(f"  指令寄存器: {base + 20} ~ {base + 25}")
+        print(f"  預設亮度: {self.config['defaults']['brightness']}")
+        print(f"  預設強度: {self.config['defaults']['strength']}")
+        print(f"  預設頻率: {self.config['defaults']['frequency']}")
         
     def init_flask_app(self):
         """初始化Flask應用"""
@@ -230,7 +234,8 @@ class VibrationPlateWebApp:
                     })
                 
                 action = data.get('action')
-                strength = data.get('strength', 100)
+                strength = data.get('strength', self.config['defaults']['strength'])
+                frequency = data.get('frequency', self.config['defaults']['frequency'])
                 
                 if not action or action not in self.action_map:
                     return jsonify({
@@ -240,7 +245,7 @@ class VibrationPlateWebApp:
                 
                 # 發送execute_action指令 (指令5)
                 action_code = self.action_map[action]
-                result = self.send_command('execute_action', action_code, strength)
+                result = self.send_command('execute_action', action_code, strength, frequency)
                 
                 return jsonify(result)
             except Exception as e:
@@ -267,7 +272,8 @@ class VibrationPlateWebApp:
                     })
                 
                 action = data.get('action')
-                strength = data.get('strength', 100)
+                strength = data.get('strength', self.config['defaults']['strength'])
+                frequency = data.get('frequency', self.config['defaults']['frequency'])
                 
                 if not action or action not in self.action_map:
                     return jsonify({
@@ -277,7 +283,7 @@ class VibrationPlateWebApp:
                 
                 # 發送execute_action指令 (指令5)
                 action_code = self.action_map[action]
-                result = self.send_command('execute_action', action_code, strength)
+                result = self.send_command('execute_action', action_code, strength, frequency)
                 
                 return jsonify(result)
             except Exception as e:
@@ -348,7 +354,7 @@ class VibrationPlateWebApp:
                         'message': '無效的請求數據'
                     })
                 
-                brightness = data.get('brightness', 128)
+                brightness = data.get('brightness', self.config['defaults']['brightness'])
                 brightness = max(0, min(255, int(brightness)))
                 
                 # 發送set_brightness指令 (指令4)
@@ -392,6 +398,39 @@ class VibrationPlateWebApp:
                 return jsonify({
                     'success': False,
                     'message': f'設定背光時發生錯誤: {str(e)}'
+                })
+        
+        @self.app.route('/api/set_frequency', methods=['POST'])
+        def set_frequency():
+            """設定震動頻率"""
+            try:
+                if not self.connected_to_server:
+                    return jsonify({
+                        'success': False,
+                        'message': '主服務器未連接'
+                    })
+                
+                data = request.get_json()
+                if not data:
+                    return jsonify({
+                        'success': False,
+                        'message': '無效的請求數據'
+                    })
+                
+                frequency = data.get('frequency', self.config['defaults']['frequency'])
+                frequency = max(0, min(255, int(frequency)))
+                
+                # 發送set_frequency指令 (指令14)
+                result = self.send_command('set_frequency', frequency)
+                
+                if result['success']:
+                    self.config['defaults']['frequency'] = frequency
+                
+                return jsonify(result)
+            except Exception as e:
+                return jsonify({
+                    'success': False,
+                    'message': f'設定頻率時發生錯誤: {str(e)}'
                 })
         
         @self.app.route('/api/reset_error', methods=['POST'])
@@ -463,7 +502,8 @@ class VibrationPlateWebApp:
                     },
                     'command_map': self.command_map,
                     'action_map': self.action_map,
-                    'command_counter': self.command_id_counter
+                    'command_counter': self.command_id_counter,
+                    'defaults': self.config['defaults']
                 }
                 return jsonify(debug_data)
             except Exception as e:
@@ -611,8 +651,8 @@ class VibrationPlateWebApp:
             self.connected_to_server = False
             return False
     
-    def send_command(self, command: str, param1: int = 0, param2: int = 0) -> Dict[str, Any]:
-        """發送指令到VP_main模組"""
+    def send_command(self, command: str, param1: int = 0, param2: int = 0, param3: int = 0) -> Dict[str, Any]:
+        """發送指令到VP_main模組 - 支援頻率參數"""
         if not self.connected_to_server:
             return {
                 'success': False,
@@ -634,12 +674,13 @@ class VibrationPlateWebApp:
             write_results.append(self.write_register(self.command_registers['command_code'], command_code))
             write_results.append(self.write_register(self.command_registers['param1'], param1))
             write_results.append(self.write_register(self.command_registers['param2'], param2))
+            write_results.append(self.write_register(self.command_registers['param3'], param3))
             write_results.append(self.write_register(self.command_registers['command_id'], self.command_id_counter))
             
             success = all(write_results)
             
             if success:
-                print(f"發送指令成功: {command} (code={command_code}, p1={param1}, p2={param2}, id={self.command_id_counter})")
+                print(f"發送指令成功: {command} (code={command_code}, p1={param1}, p2={param2}, p3={param3}, id={self.command_id_counter})")
                 return {
                     'success': True,
                     'message': f'指令 {command} 發送成功',
@@ -647,6 +688,7 @@ class VibrationPlateWebApp:
                     'command_code': command_code,
                     'param1': param1,
                     'param2': param2,
+                    'param3': param3,
                     'command_id': self.command_id_counter
                 }
             else:
@@ -754,6 +796,12 @@ class VibrationPlateWebApp:
         # 創建templates目錄
         self.create_templates_directory()
         
+        # 自動連接主服務器
+        print("嘗試自動連接主服務器...")
+        result = self.connect_modbus_server()
+        if result['success']:
+            self.start_monitoring()
+        
         web_config = self.config['web_server']
         print(f"Web服務器啟動 - http://{web_config['host']}:{web_config['port']}")
         print(f"主Modbus服務器: {self.config['tcp_server']['host']}:{self.config['tcp_server']['port']}")
@@ -762,6 +810,7 @@ class VibrationPlateWebApp:
         print("功能列表:")
         print("  - VP_main模組寄存器監控")
         print("  - 震動動作控制 (11種震動模式)")
+        print("  - 強度/頻率調整")
         print("  - 停止功能 (指令3→VP_main→震動盤寄存器4)")
         print("  - 背光控制 (亮度調節/開關)")
         print("  - 錯誤重置")

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dobot主控制器 - 控制面板</title>
+    <title>Dobot主控制器 - 控制面板 (增強版)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
     <style>
         * {
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -83,17 +83,22 @@
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 25px;
             margin-bottom: 30px;
         }
 
-        .control-panel, .status-panel, .register-panel {
+        .control-panel, .status-panel, .register-panel, .ccd1-panel {
             background: white;
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid #e0e6ed;
+        }
+
+        /* 新增：CCD1佇列面板樣式 */
+        .ccd1-panel {
+            border-left: 4px solid #f39c12;
         }
 
         .panel-title {
@@ -103,6 +108,10 @@
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid #3498db;
+        }
+
+        .ccd1-panel .panel-title {
+            border-bottom-color: #f39c12;
         }
 
         .flow-buttons {
@@ -121,6 +130,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            position: relative;
         }
 
         .flow-btn:hover {
@@ -131,6 +141,18 @@
         .flow-btn.flow1 {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
+        }
+
+        /* 新增：Flow1 FIFO標識 */
+        .flow-btn.flow1::after {
+            content: 'FIFO';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
         }
 
         .flow-btn.flow2 {
@@ -202,6 +224,65 @@
             font-size: 1.2rem;
             font-weight: bold;
             color: #2c3e50;
+        }
+
+        /* 新增：CCD1佇列狀態樣式 */
+        .ccd1-status-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .ccd1-status-item {
+            padding: 12px;
+            background: #fff3cd;
+            border-radius: 8px;
+            border-left: 4px solid #f39c12;
+        }
+
+        .ccd1-status-item.ready {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .ccd1-status-item.alarm {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .queue-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .queue-count {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f39c12;
+        }
+
+        .world-coord-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .world-coord-status.valid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .world-coord-status.invalid {
+            background: #f8d7da;
+            color: #721c24;
         }
 
         .position-display, .joints-display {
@@ -320,13 +401,19 @@
             margin-right: 10px;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 1000px) {
             .main-content {
                 grid-template-columns: 1fr 1fr;
             }
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 700px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
@@ -344,8 +431,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Dobot主控制器</h1>
-            <div class="subtitle">機械臂運動控制系統 - 基地址400</div>
+            <h1>Dobot主控制器 (增強版)</h1>
+            <div class="subtitle">機械臂運動控制系統 - 基地址400 + CCD1佇列監控</div>
         </div>
 
         <div class="status-bar">
@@ -464,6 +551,46 @@
                 </div>
             </div>
 
+            <!-- 新增：CCD1佇列面板 -->
+            <div class="ccd1-panel">
+                <div class="panel-title">CCD1佇列狀態</div>
+                
+                <div class="ccd1-status-grid">
+                    <div class="ccd1-status-item" id="ccd1StatusItem">
+                        <div class="status-label">CCD1系統狀態</div>
+                        <div class="status-value" id="ccd1Status">未知</div>
+                    </div>
+                </div>
+
+                <div class="queue-indicator">
+                    <div>
+                        <div class="status-label">佇列中物體數量</div>
+                        <div class="queue-count" id="queueCount">0</div>
+                    </div>
+                    <div>
+                        <span class="world-coord-status" id="worldCoordStatus">未知</span>
+                    </div>
+                </div>
+
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-label">最後檢測數量</div>
+                        <div class="status-value" id="lastDetectionCount">0</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">佇列預估</div>
+                        <div class="status-value" id="queueEstimate">0</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px; font-size: 0.9rem; color: #6c757d;">
+                    <strong>FIFO模式說明：</strong><br>
+                    • 第一次執行流程1會觸發新檢測<br>
+                    • 後續執行會從佇列取得下個物體<br>
+                    • 佇列為空時自動觸發新檢測
+                </div>
+            </div>
+
             <!-- 寄存器面板 -->
             <div class="register-panel">
                 <div class="panel-title">寄存器操作</div>
@@ -503,7 +630,7 @@
 
         <!-- 日誌區域 -->
         <div class="log-container">
-            <div class="log-header">系統日誌</div>
+            <div class="log-header">系統日誌 (增強版 - 含CCD1佇列)</div>
             <div id="logContent"></div>
         </div>
     </div>
@@ -517,7 +644,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateCurrentTime();
             setInterval(updateCurrentTime, 1000);
-            addLog('Web介面已載入');
+            addLog('Web介面已載入 (增強版 - 支援CCD1佇列監控)');
         });
 
         // 更新當前時間
@@ -566,6 +693,41 @@
             }
         }
 
+        // 更新CCD1佇列狀態 (新增功能)
+        function updateCCD1QueueStatus(ccd1Queue) {
+            if (!ccd1Queue) return;
+
+            // 更新CCD1系統狀態
+            const statusItem = document.getElementById('ccd1StatusItem');
+            const statusText = document.getElementById('ccd1Status');
+            
+            if (ccd1Queue.ccd1_alarm) {
+                statusItem.className = 'ccd1-status-item alarm';
+                statusText.textContent = 'Alarm';
+            } else if (ccd1Queue.ccd1_ready) {
+                statusItem.className = 'ccd1-status-item ready';
+                statusText.textContent = ccd1Queue.ccd1_running ? 'Running' : 'Ready';
+            } else {
+                statusItem.className = 'ccd1-status-item';
+                statusText.textContent = '未連接';
+            }
+
+            // 更新佇列數量
+            document.getElementById('queueCount').textContent = ccd1Queue.queue_estimate || 0;
+            document.getElementById('queueEstimate').textContent = ccd1Queue.queue_estimate || 0;
+            document.getElementById('lastDetectionCount').textContent = ccd1Queue.circle_count || 0;
+
+            // 更新世界座標狀態
+            const worldCoordStatus = document.getElementById('worldCoordStatus');
+            if (ccd1Queue.world_coord_valid) {
+                worldCoordStatus.className = 'world-coord-status valid';
+                worldCoordStatus.textContent = '世界座標有效';
+            } else {
+                worldCoordStatus.className = 'world-coord-status invalid';
+                worldCoordStatus.textContent = '世界座標無效';
+            }
+        }
+
         // API請求函數
         async function apiRequest(url, method = 'GET', data = null) {
             try {
@@ -600,6 +762,7 @@
             if (result.success) {
                 updateConnectionStatus(true);
                 requestStatus();
+                addLog('開始監控CCD1佇列狀態', 'info');
             }
         }
 
@@ -609,11 +772,15 @@
             updateConnectionStatus(false);
         }
 
-        // 執行流程
+        // 執行流程 (增強版)
         async function executeFlow(flowId) {
             if (!isConnected) {
                 addLog('請先連接Modbus服務器', 'error');
                 return;
+            }
+            
+            if (flowId === 1) {
+                addLog('執行流程1 - 將使用CCD1 FIFO佇列模式', 'info');
             }
             
             const result = await apiRequest(`/api/flow/${flowId}`, 'POST');
@@ -663,10 +830,11 @@
         function requestStatus() {
             if (isConnected) {
                 socket.emit('request_status');
+                socket.emit('request_ccd1_queue');
             }
         }
 
-        // 更新狀態顯示
+        // 更新狀態顯示 (增強版)
         function updateStatusDisplay(status) {
             if (!status) return;
 
@@ -711,12 +879,17 @@
                     `DI:${status.io_status.di || 0} DO:${status.io_status.do || 0}`;
             }
 
+            // 新增：CCD1佇列狀態
+            if (status.ccd1_queue) {
+                updateCCD1QueueStatus(status.ccd1_queue);
+            }
+
             updateConnectionStatus(status.connection_status);
         }
 
-        // SocketIO事件處理
+        // SocketIO事件處理 (增強版)
         socket.on('connect', function() {
-            addLog('WebSocket連接已建立');
+            addLog('WebSocket連接已建立 (增強版)');
         });
 
         socket.on('disconnect', function() {
@@ -728,11 +901,16 @@
             updateStatusDisplay(status);
         });
 
+        socket.on('ccd1_queue_update', function(queueStatus) {
+            updateCCD1QueueStatus(queueStatus);
+            addLog(`CCD1佇列更新: 物體數量=${queueStatus.queue_estimate || 0}`, 'info');
+        });
+
         socket.on('command_result', function(result) {
             addLog(result.message, result.success ? 'success' : 'error');
         });
 
-        // 定期請求狀態更新（備用）
+        // 定期請求狀態更新（增強版）
         setInterval(function() {
             if (isConnected) {
                 requestStatus();

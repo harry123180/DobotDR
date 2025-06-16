@@ -1,6 +1,6 @@
 # modbus_tcp_server_production.py
 # 生產環境版本 - 支援分離檔案版本 (templates + static)
-# 更新：支援無符號 0-65535 範圍，加強錯誤處理和日誌記錄
+# 更新：支援無符號 0-65535 範圍，加強錯誤處理和定時日誌記錄
 
 import logging
 import threading
@@ -27,22 +27,22 @@ def get_base_path():
         # 開發環境路徑
         return os.path.dirname(os.path.abspath(__file__))
 
-# 設定日誌 - 生產環境配置
+# 設定日誌 - 生產環境配置（僅錯誤日誌）
 def setup_logging():
-    """設定生產環境日誌配置"""
+    """設定生產環境日誌配置 - 僅記錄錯誤"""
     log_formatter = logging.Formatter(
         '%(asctime)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s'
     )
     
-    # 檔案日誌處理器
-    file_handler = logging.FileHandler('modbus_server.log', encoding='utf-8')
+    # 檔案日誌處理器 - 只記錄ERROR
+    file_handler = logging.FileHandler('modbus_server_error.log', encoding='utf-8')
     file_handler.setFormatter(log_formatter)
-    file_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.ERROR)
     
-    # 控制台日誌處理器
+    # 控制台日誌處理器 - 只顯示重要資訊
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(log_formatter)
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging.WARNING)
     
     # 設定根記錄器
     root_logger = logging.getLogger()
@@ -50,9 +50,106 @@ def setup_logging():
     root_logger.addHandler(file_handler)
     root_logger.addHandler(console_handler)
     
-    # 抑制一些第三方庫的詳細日誌
-    logging.getLogger('werkzeug').setLevel(logging.WARNING)
-    logging.getLogger('pymodbus').setLevel(logging.WARNING)
+    # 抑制第三方庫的日誌
+    logging.getLogger('werkzeug').setLevel(logging.ERROR)
+    logging.getLogger('pymodbus').setLevel(logging.ERROR)
+
+class TimedLogger:
+    """定時日誌管理器 - 每分鐘記錄狀態，一小時後清空"""
+    
+    def __init__(self, server_app, log_file='modbus_status.log'):
+        self.server_app = server_app
+        self.log_file = log_file
+        self.log_start_time = time.time()
+        self.is_running = False
+        self.log_thread = None
+        
+    def start(self):
+        """啟動定時日誌"""
+        self.is_running = True
+        self.log_thread = threading.Thread(target=self._log_worker, daemon=True, name="TimedLogger")
+        self.log_thread.start()
+        print(f"✓ 定時日誌啟動: 每分鐘記錄到 {self.log_file}")
+        
+    def stop(self):
+        """停止定時日誌"""
+        self.is_running = False
+        if self.log_thread and self.log_thread.is_alive():
+            self.log_thread.join(timeout=1)
+        print("✓ 定時日誌已停止")
+    
+    def _log_worker(self):
+        """日誌工作線程"""
+        while self.is_running:
+            try:
+                # 檢查是否需要清空日誌（1小時 = 3600秒）
+                current_time = time.time()
+                if current_time - self.log_start_time >= 3600:
+                    self._clear_log()
+                    self.log_start_time = current_time
+                
+                # 記錄系統狀態
+                self._write_status_log()
+                
+                # 等待60秒（1分鐘）
+                for _ in range(60):
+                    if not self.is_running:
+                        break
+                    time.sleep(1)
+                    
+            except Exception as e:
+                logging.error(f"定時日誌錯誤: {e}")
+                time.sleep(60)  # 發生錯誤時等待1分鐘再重試
+    
+    def _clear_log(self):
+        """清空日誌檔案"""
+        try:
+            if os.path.exists(self.log_file):
+                with open(self.log_file, 'w', encoding='utf-8') as f:
+                    f.write(f"=== 日誌檔案已清空 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===\n")
+                print(f"✓ 日誌檔案已清空: {self.log_file}")
+        except Exception as e:
+            logging.error(f"清空日誌失敗: {e}")
+    
+    def _write_status_log(self):
+        """寫入系統狀態日誌"""
+        try:
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            status = self.server_app.get_register_status()
+            
+            # 計算額外統計資訊
+            non_zero_regs = status.get('non_zero_registers', {})
+            changed_registers = len(non_zero_regs)
+            
+            # 取得前10個非零暫存器作為範例
+            sample_regs = dict(list(non_zero_regs.items())[:10]) if non_zero_regs else {}
+            
+            log_entry = {
+                'timestamp': timestamp,
+                'server_running': status.get('server_running', False),
+                'slave_id': status.get('slave_id', 0),
+                'total_registers': status.get('total_registers', 0),
+                'changed_registers_count': changed_registers,
+                'uptime_seconds': int(status.get('uptime', 0)),
+                'sample_registers': sample_regs,
+                'memory_usage_mb': self._get_memory_usage()
+            }
+            
+            # 寫入日誌檔案
+            with open(self.log_file, 'a', encoding='utf-8') as f:
+                f.write(f"{json.dumps(log_entry, ensure_ascii=False, separators=(',', ':'))}\n")
+                
+        except Exception as e:
+            logging.error(f"寫入狀態日誌失敗: {e}")
+    
+    def _get_memory_usage(self):
+        """獲取記憶體使用量（MB）"""
+        try:
+            import psutil
+            process = psutil.Process()
+            return round(process.memory_info().rss / 1024 / 1024, 1)
+        except:
+            return 0.0
 
 class SynchronizedDataBlock(ModbusSequentialDataBlock):
     """同步化的數據塊，當外部修改時會更新主程式的暫存器陣列"""
@@ -72,7 +169,6 @@ class SynchronizedDataBlock(ModbusSequentialDataBlock):
                     reg_addr = address + i
                     if 0 <= reg_addr < len(self.server_app.registers):
                         self.server_app.registers[reg_addr] = value
-                        logging.info(f"外部更新暫存器 {reg_addr}: {value}")
             
             return result
         except Exception as e:
@@ -117,15 +213,18 @@ class ModbusTCPServerApp:
         self.server_running = False
         self.shutdown_event = threading.Event()
         
+        # 定時日誌器
+        self.timed_logger = TimedLogger(self)
+        
         # 註冊信號處理器
         self.setup_signal_handlers()
         
-        logging.info("Modbus TCP Server 應用程式初始化完成")
+        print("✓ Modbus TCP Server 應用程式初始化完成")
     
     def setup_signal_handlers(self):
         """設定信號處理器以優雅關閉"""
         def signal_handler(signum, frame):
-            logging.info(f"收到信號 {signum}，正在優雅關閉伺服器...")
+            print(f"\n收到信號 {signum}，正在優雅關閉伺服器...")
             self.shutdown()
             sys.exit(0)
         
@@ -148,7 +247,6 @@ class ModbusTCPServerApp:
             if os.path.exists(comments_file):
                 with open(comments_file, 'r', encoding='utf-8') as f:
                     self.register_comments = json.load(f)
-                logging.info(f"載入了 {len(self.register_comments)} 個暫存器註解")
         except Exception as e:
             logging.error(f"載入註解失敗: {e}")
             self.register_comments = {}
@@ -158,7 +256,6 @@ class ModbusTCPServerApp:
         try:
             with open('register_comments.json', 'w', encoding='utf-8') as f:
                 json.dump(self.register_comments, f, ensure_ascii=False, indent=2)
-            logging.debug("暫存器註解已保存")
         except Exception as e:
             logging.error(f"保存註解失敗: {e}")
     
@@ -200,8 +297,7 @@ class ModbusTCPServerApp:
                     
                     # 添加新的slave context
                     self.context[self.slave_id] = self.slave_context
-                    
-                logging.info(f"SlaveID 已更新: {old_slave_id} -> {new_slave_id}")
+                
                 return True
             else:
                 logging.error(f"無效的SlaveID: {new_slave_id}, 必須在1-247範圍內")
@@ -222,8 +318,8 @@ class ModbusTCPServerApp:
                             value = result[0]
                             self.registers[address] = value  # 同步到內部陣列
                             return value
-                    except Exception as e:
-                        logging.debug(f"從Modbus上下文讀取失敗: {e}")
+                    except Exception:
+                        pass
                 
                 # 如果Modbus上下文不可用，返回內部陣列的值
                 value = self.registers[address]
@@ -241,7 +337,6 @@ class ModbusTCPServerApp:
             if 0 <= address < self.register_count:
                 # 確保值在無符號16位範圍內 (0 to 65535)
                 if 0 <= value <= 65535:
-                    old_value = self.registers[address]
                     self.registers[address] = value
                     
                     # 同步更新到Modbus上下文
@@ -249,7 +344,6 @@ class ModbusTCPServerApp:
                         self.slave_context.setValues(3, address, [value])  # Function Code 3 (Holding Registers)
                         self.slave_context.setValues(4, address, [value])  # Function Code 4 (Input Registers)
                     
-                    logging.info(f"寫入暫存器 {address}: {old_value} -> {value}")
                     return True
                 else:
                     logging.error(f"暫存器值超出無符號16位範圍: {value} (需要 0-65535)")
@@ -285,15 +379,15 @@ class ModbusTCPServerApp:
     def get_register_status(self):
         """獲取暫存器狀態摘要"""
         try:
-            # 同步所有暫存器值
+            # 同步部分暫存器值（避免效能問題）
             if self.slave_context:
                 try:
-                    for addr in range(min(100, self.register_count)):  # 只同步前100個避免太慢
+                    for addr in range(min(100, self.register_count)):  # 只同步前100個
                         result = self.slave_context.getValues(3, addr, 1)
                         if result:
                             self.registers[addr] = result[0]
-                except Exception as e:
-                    logging.debug(f"同步暫存器值失敗: {e}")
+                except Exception:
+                    pass
             
             non_zero_registers = {addr: val for addr, val in enumerate(self.registers) if val != 0}
             return {
@@ -481,7 +575,7 @@ class ModbusTCPServerApp:
                 raise Exception("無法創建Modbus上下文")
             
             # 啟動伺服器 (這會阻塞當前線程)
-            logging.info(f"啟動Modbus TCP Server於 {self.server_host}:{self.server_port}, SlaveID: {self.slave_id}")
+            print(f"✓ Modbus TCP Server 啟動於 {self.server_host}:{self.server_port}, SlaveID: {self.slave_id}")
             self.server_running = True
             self.start_time = time.time()
             
@@ -498,7 +592,7 @@ class ModbusTCPServerApp:
     def start_web_server(self):
         """啟動Web管理介面"""
         try:
-            logging.info(f"啟動Web管理介面於 http://127.0.0.1:{self.web_port}")
+            print(f"✓ Web管理介面啟動於 http://127.0.0.1:{self.web_port}")
             self.flask_app.run(
                 host='0.0.0.0',
                 port=self.web_port,
@@ -543,33 +637,39 @@ class ModbusTCPServerApp:
                 self.register_comments[str(addr)] = comment
             
             self.save_comments()
-            logging.info("測試數據和註解初始化完成 (無符號 0-65535 範圍)")
+            print("✓ 測試數據和註解初始化完成")
         except Exception as e:
             logging.error(f"初始化測試數據失敗: {e}")
     
     def shutdown(self):
         """優雅關閉伺服器"""
         try:
-            logging.info("正在關閉伺服器...")
+            print("正在關閉伺服器...")
             self.shutdown_event.set()
             self.server_running = False
+            
+            # 停止定時日誌
+            self.timed_logger.stop()
             
             # 保存註解
             self.save_comments()
             
-            logging.info("伺服器已關閉")
+            print("✓ 伺服器已關閉")
         except Exception as e:
             logging.error(f"關閉伺服器時發生錯誤: {e}")
     
     def run(self):
         """主運行方法"""
         try:
-            logging.info("=== Modbus TCP Server 啟動 (生產環境) ===")
-            logging.info(f"Python 版本: {sys.version}")
-            logging.info(f"基礎路徑: {self.base_path}")
+            print("=== Modbus TCP Server 啟動 (生產環境 + 定時日誌) ===")
+            print(f"Python 版本: {sys.version}")
+            print(f"基礎路徑: {self.base_path}")
             
             # 初始化測試數據
             self.initialize_test_data()
+            
+            # 啟動定時日誌
+            self.timed_logger.start()
             
             # 啟動Web伺服器 (在單獨線程中)
             web_thread = threading.Thread(target=self.start_web_server, daemon=True, name="WebServer")
@@ -582,7 +682,7 @@ class ModbusTCPServerApp:
             self.start_modbus_server()
             
         except KeyboardInterrupt:
-            logging.info("收到中斷信號，正在關閉...")
+            print("收到中斷信號，正在關閉...")
         except Exception as e:
             logging.error(f"伺服器運行錯誤: {e}\n{traceback.format_exc()}")
         finally:
@@ -596,13 +696,14 @@ def main():
         
         # 打印啟動資訊
         print("=" * 60)
-        print("  Modbus TCP Server - 生產環境版本")
+        print("  Modbus TCP Server - 生產環境版本 + 定時日誌")
         print("=" * 60)
         print(f"  版本: 1.0.0")
         print(f"  數值範圍: 0-65535 (無符號 16 位)")
         print(f"  Modbus TCP 埠: 502")
         print(f"  Web 管理埠: 8000")
         print(f"  Web 管理網址: http://localhost:8000")
+        print(f"  狀態日誌: 每分鐘記錄，1小時清空")
         print("=" * 60)
         print("  按 Ctrl+C 可安全關閉伺服器")
         print("=" * 60)
@@ -614,7 +715,7 @@ def main():
     except Exception as e:
         logging.error(f"應用程式啟動失敗: {e}\n{traceback.format_exc()}")
         print(f"\n❌ 啟動失敗: {e}")
-        print("請檢查 modbus_server.log 檔案獲取詳細錯誤資訊")
+        print("請檢查 modbus_server_error.log 檔案獲取詳細錯誤資訊")
         input("按 Enter 鍵退出...")
         sys.exit(1)
 

@@ -6,7 +6,9 @@ Dobot_main.py - 機械臂主控制器 (修正API解析版)
 基地址400，支援多流程執行與外部設備整合
 修正GetPose和GetAngle API解析問題
 """
-
+# 在文件頂部修改import
+from CCD1HighLevel import CCD1HighLevelAPI
+from GripperHighLevel import GripperHighLevelAPI
 import json
 import os
 import time
@@ -992,9 +994,9 @@ class DobotMotionController:
         self.state_machine: Optional[DobotStateMachine] = None
         
         # 外部模組控制器
-        self.gripper: Optional[PGCGripperController] = None
-        self.ccd1: Optional[CCD1VisionController] = None
-        self.ccd3: Optional[CCD3AngleController] = None
+        self.gripper: Optional[GripperHighLevelAPI] = None
+        self.ccd1: Optional[CCD1HighLevelAPI] = None
+        self.ccd3: Optional[CCD3AngleController] = None  # 保持原有
         
         # 流程執行器
         self.flows: Dict[int, Any] = {}
@@ -1080,7 +1082,7 @@ class DobotMotionController:
                 base_dict[key] = value
     
     def initialize_system(self) -> bool:
-        """初始化系統"""
+        """初始化系統 - 修改為使用高層API"""
         print("=== 初始化Dobot運動控制系統 ===")
         
         # 1. 連接Modbus服務器
@@ -1090,18 +1092,24 @@ class DobotMotionController:
         # 2. 初始化狀態機
         self.state_machine = DobotStateMachine(self.modbus_client)
         
-        # 3. 初始化外部模組控制器
+        # 3. 初始化外部模組控制器 - 使用高層API
         if self.config["gripper"]["enabled"]:
-            self.gripper = PGCGripperController(self.modbus_client)
-            print("PGC夾爪控制器已啟用")
+            self.gripper = GripperHighLevelAPI(
+                modbus_host=self.config["modbus"]["server_ip"],
+                modbus_port=self.config["modbus"]["server_port"]
+            )
+            print("✓ PGC夾爪高層API已啟用")
         else:
-            print("PGC夾爪控制器已停用")
+            print("PGC夾爪高層API已停用")
             
         if self.config["vision"]["ccd1_enabled"]:
-            self.ccd1 = CCD1VisionController(self.modbus_client)
-            print("CCD1視覺控制器已啟用")
+            self.ccd1 = CCD1HighLevelAPI(
+                modbus_host=self.config["modbus"]["server_ip"],
+                modbus_port=self.config["modbus"]["server_port"]
+            )
+            print("✓ CCD1視覺高層API已啟用")
         else:
-            print("CCD1視覺控制器已停用")
+            print("CCD1視覺高層API已停用")
             
         if self.config["vision"]["ccd3_enabled"]:
             self.ccd3 = CCD3AngleController(self.modbus_client)
@@ -1113,18 +1121,74 @@ class DobotMotionController:
         if self.config["flows"]["flow1_enabled"]:
             self.flows[1] = Flow1Executor(
                 robot=self.robot,
-                gripper=self.gripper, 
-                ccd1=self.ccd1,
+                gripper=self.gripper,     # 傳入高層API實例
+                ccd1=self.ccd1,          # 傳入高層API實例
                 ccd3=self.ccd3,
                 state_machine=self.state_machine
             )
-            print("Flow1 執行器初始化完成")
+            print("✓ Flow1執行器初始化完成 (使用高層API)")
         
         # 5. 載入點位數據
         if not self.robot.points_manager.load_points():
             print("載入點位數據失敗，但繼續運行")
         
-        print("系統初始化完成")
+        print("系統初始化完成 (使用高層API)")
+        return True
+    
+    def connect_all_devices(self) -> bool:
+        """連接所有設備 - 簡化版本，高層API自動處理連接"""
+        print("=== 連接所有設備 ===")
+        
+        # 1. 連接機械臂
+        if not self.robot.initialize():
+            print("機械臂連接失敗")
+            return False
+        
+        # 2. 檢查夾爪連接 (高層API自動處理連接)
+        if self.gripper:
+            try:
+                status = self.gripper.get_status()
+                if status['connected']:
+                    print("✓ PGC夾爪高層API連接正常")
+                    
+                    # 自動初始化夾爪
+                    if not status['initialized']:
+                        print("夾爪未初始化，自動初始化...")
+                        if self.gripper.initialize(wait_completion=True):
+                            print("✓ PGC夾爪初始化成功")
+                        else:
+                            print("⚠️ PGC夾爪初始化失敗，但繼續運行")
+                else:
+                    print("⚠️ PGC夾爪連接異常，但繼續運行")
+            except Exception as e:
+                print(f"⚠️ PGC夾爪檢查異常: {e}，但繼續運行")
+        
+        # 3. 檢查CCD1連接 (高層API自動處理連接)
+        if self.ccd1:
+            try:
+                status = self.ccd1.get_system_status()
+                if status['connected']:
+                    print("✓ CCD1視覺高層API連接正常")
+                    if status['world_coord_valid']:
+                        print("✓ CCD1世界座標有效")
+                    else:
+                        print("⚠️ CCD1世界座標無效，可能缺少標定數據")
+                else:
+                    print("⚠️ CCD1視覺連接異常，但繼續運行")
+            except Exception as e:
+                print(f"⚠️ CCD1視覺檢查異常: {e}，但繼續運行")
+        
+        # 4. 檢查CCD3連接 (如果啟用)
+        if self.ccd3:
+            try:
+                if not self.ccd3.initialize():
+                    print("⚠️ CCD3角度檢測系統初始化失敗，但繼續運行")
+                else:
+                    print("✓ CCD3角度檢測系統初始化成功")
+            except Exception as e:
+                print(f"⚠️ CCD3初始化異常: {e}")
+        
+        print("設備連接完成 (使用高層API)")
         return True
     
     def _connect_modbus(self) -> bool:

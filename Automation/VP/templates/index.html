@@ -279,6 +279,13 @@
             color: #2c3e50;
         }
 
+        .parameter-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
         @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr 1fr;
@@ -301,6 +308,10 @@
             .action-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .parameter-group {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -308,7 +319,7 @@
     <div class="container">
         <div class="header">
             <h1>震動盤控制台</h1>
-            <p>Modbus TCP Client - VP模組控制介面</p>
+            <p>Modbus TCP Client - VP模組控制介面 (支援頻率調整)</p>
         </div>
 
         <div class="status-bar">
@@ -371,13 +382,22 @@
                     <button class="action-btn" onclick="executeAction('spread')">擴散</button>
                 </div>
                 
-                <div class="control-group">
-                    <label for="strengthSlider">強度: <span id="strengthValue">100</span></label>
-                    <input type="range" id="strengthSlider" class="brightness-slider" min="0" max="255" value="100" 
-                           oninput="updateStrengthValue()">
+                <div class="parameter-group">
+                    <div class="control-group">
+                        <label for="strengthSlider">強度: <span id="strengthValue">100</span></label>
+                        <input type="range" id="strengthSlider" class="brightness-slider" min="0" max="255" value="100" 
+                               oninput="updateStrengthValue()">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="frequencySlider">頻率: <span id="frequencyValue">100</span></label>
+                        <input type="range" id="frequencySlider" class="brightness-slider" min="0" max="255" value="100" 
+                               oninput="updateFrequencyValue()">
+                    </div>
                 </div>
                 
                 <div class="control-group">
+                    <button class="btn btn-primary" onclick="setFrequency()">設定頻率</button>
                     <button class="btn btn-danger" onclick="emergencyStop()">緊急停止</button>
                 </div>
             </div>
@@ -387,8 +407,8 @@
                 <div class="panel-title">背光控制</div>
                 
                 <div class="control-group">
-                    <label for="brightnessSlider">亮度: <span id="brightnessValue">128</span></label>
-                    <input type="range" id="brightnessSlider" class="brightness-slider" min="0" max="255" value="128" 
+                    <label for="brightnessSlider">亮度: <span id="brightnessValue">28</span></label>
+                    <input type="range" id="brightnessSlider" class="brightness-slider" min="0" max="255" value="28" 
                            oninput="updateBrightnessValue()">
                 </div>
                 
@@ -426,6 +446,14 @@
                     <tr>
                         <td>背光亮度</td>
                         <td class="status-value" id="backlightBrightness">--</td>
+                    </tr>
+                    <tr>
+                        <td>背光狀態</td>
+                        <td class="status-value" id="backlightStatus">--</td>
+                    </tr>
+                    <tr>
+                        <td>頻率狀態</td>
+                        <td class="status-value" id="frequencyStatus">--</td>
                     </tr>
                     <tr>
                         <td>錯誤代碼</td>
@@ -555,6 +583,11 @@
             document.getElementById('vibrationStatus').textContent = vibStatus;
             
             document.getElementById('backlightBrightness').textContent = status.brightness_status || '--';
+            
+            const backlightStatus = status.backlight_status ? '開啟' : '關閉';
+            document.getElementById('backlightStatus').textContent = backlightStatus;
+            
+            document.getElementById('frequencyStatus').textContent = status.frequency_status || '--';
             document.getElementById('errorCode').textContent = status.error_code || '0';
             
             const cmdStatus = status.command_status ? '執行中' : '空閒';
@@ -577,6 +610,12 @@
         function updateStrengthValue() {
             const slider = document.getElementById('strengthSlider');
             document.getElementById('strengthValue').textContent = slider.value;
+        }
+
+        // 更新頻率值顯示
+        function updateFrequencyValue() {
+            const slider = document.getElementById('frequencySlider');
+            document.getElementById('frequencyValue').textContent = slider.value;
         }
 
         // 添加日誌
@@ -608,7 +647,7 @@
                     httpMethod = 'POST';
                 } else {
                     // 對於這些端點，強制使用POST
-                    const postEndpoints = ['stop', 'emergency_stop', 'reset_error', 'connect', 'disconnect'];
+                    const postEndpoints = ['stop', 'emergency_stop', 'reset_error', 'connect', 'disconnect', 'set_frequency'];
                     httpMethod = postEndpoints.includes(endpoint) ? 'POST' : 'GET';
                 }
                 
@@ -668,7 +707,8 @@
 
         async function executeAction(action) {
             const strength = parseInt(document.getElementById('strengthSlider').value);
-            await apiCall('action', { action, strength });
+            const frequency = parseInt(document.getElementById('frequencySlider').value);
+            await apiCall('action', { action, strength, frequency });
         }
 
         async function stopAction() {
@@ -686,6 +726,11 @@
 
         async function setBacklight(state) {
             await apiCall('set_backlight', { state });
+        }
+
+        async function setFrequency() {
+            const frequency = parseInt(document.getElementById('frequencySlider').value);
+            await apiCall('set_frequency', { frequency });
         }
 
         async function resetError() {

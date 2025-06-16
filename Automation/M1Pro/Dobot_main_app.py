@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_main_app.py - Dobot主控制器Web介面
+Dobot_main_app.py - Dobot主控制器Web介面 (增強版)
 提供Web UI來控制和監控Dobot_main.py主控制器
-基地址400的寄存器操作界面
+基地址400的寄存器操作界面，新增FIFO佇列狀態顯示
 """
 
 import os
@@ -39,13 +39,19 @@ class DobotRegisters:
     ERR_COUNTER = 417     # 錯誤計數器
     RUN_TIME = 418        # 運行時間(分鐘)
 
+# CCD1寄存器映射 (用於FIFO佇列狀態查詢)
+class CCD1Registers:
+    STATUS_REGISTER = 201  # CCD1狀態寄存器
+    CIRCLE_COUNT = 240     # 檢測圓形數量
+    WORLD_COORD_VALID = 256 # 世界座標有效標誌
+
 # 狀態映射
 ROBOT_STATES = {
     0: "空閒", 1: "運行中", 2: "暫停", 3: "錯誤", 4: "緊急停止"
 }
 
 FLOW_TYPES = {
-    0: "無流程", 1: "VP視覺抓取", 2: "CCD3角度檢測", 3: "完整加工流程"
+    0: "無流程", 1: "VP視覺抓取(FIFO)", 2: "CCD3角度檢測", 3: "完整加工流程"
 }
 
 COMMANDS = {
@@ -53,7 +59,7 @@ COMMANDS = {
 }
 
 class DobotMainAppController:
-    """Dobot主控制器Web應用控制器"""
+    """Dobot主控制器Web應用控制器 (增強版)"""
     
     def __init__(self, config_file: str = CONFIG_FILE):
         self.config_file = config_file
@@ -84,7 +90,8 @@ class DobotMainAppController:
             },
             "ui_settings": {
                 "theme": "light",
-                "show_advanced": False
+                "show_advanced": True,  # 啟用進階功能顯示
+                "show_ccd1_queue": True  # 新增：顯示CCD1佇列狀態
             }
         }
         
@@ -164,8 +171,32 @@ class DobotMainAppController:
             print(f"寫入寄存器{address}={value}失敗: {e}")
             return False
     
+    def read_ccd1_queue_status(self) -> dict:
+        """讀取CCD1佇列狀態 (新增功能)"""
+        try:
+            if not self.is_connected:
+                return {}
+            
+            # 讀取CCD1相關寄存器
+            ccd1_status = self.read_register(CCD1Registers.STATUS_REGISTER)
+            circle_count = self.read_register(CCD1Registers.CIRCLE_COUNT)
+            world_coord_valid = self.read_register(CCD1Registers.WORLD_COORD_VALID)
+            
+            return {
+                "ccd1_ready": bool(ccd1_status & 0x01) if ccd1_status is not None else False,
+                "ccd1_running": bool(ccd1_status & 0x02) if ccd1_status is not None else False,
+                "ccd1_alarm": bool(ccd1_status & 0x04) if ccd1_status is not None else False,
+                "circle_count": circle_count if circle_count is not None else 0,
+                "world_coord_valid": bool(world_coord_valid) if world_coord_valid is not None else False,
+                "queue_estimate": circle_count if circle_count is not None else 0  # 佇列估計值
+            }
+            
+        except Exception as e:
+            print(f"讀取CCD1佇列狀態失敗: {e}")
+            return {}
+    
     def read_all_status(self) -> dict:
-        """讀取所有狀態寄存器"""
+        """讀取所有狀態寄存器 (增強版)"""
         try:
             if not self.is_connected:
                 return {}
@@ -178,7 +209,8 @@ class DobotMainAppController:
             
             registers = result.registers
             
-            return {
+            # 基本狀態數據
+            status_data = {
                 "control_cmd": registers[0],
                 "robot_state": registers[1],
                 "robot_state_text": ROBOT_STATES.get(registers[1], "未知"),
@@ -212,6 +244,13 @@ class DobotMainAppController:
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
             }
             
+            # 新增：CCD1佇列狀態 (如果啟用)
+            if self.config["ui_settings"].get("show_ccd1_queue", True):
+                ccd1_queue = self.read_ccd1_queue_status()
+                status_data["ccd1_queue"] = ccd1_queue
+            
+            return status_data
+            
         except Exception as e:
             print(f"讀取狀態失敗: {e}")
             return {}
@@ -237,7 +276,7 @@ class DobotMainAppController:
         self.monitoring = True
         self.monitor_thread = threading.Thread(target=self._monitor_loop, daemon=True)
         self.monitor_thread.start()
-        print("狀態監控已啟動")
+        print("狀態監控已啟動 (含CCD1佇列監控)")
     
     def stop_monitoring(self):
         """停止狀態監控"""
@@ -247,7 +286,7 @@ class DobotMainAppController:
         print("狀態監控已停止")
     
     def _monitor_loop(self):
-        """監控循環"""
+        """監控循環 (增強版)"""
         while self.monitoring:
             try:
                 if self.is_connected:
@@ -303,9 +342,15 @@ def disconnect():
 
 @app.route('/api/status', methods=['GET'])
 def get_status():
-    """獲取系統狀態"""
+    """獲取系統狀態 (增強版)"""
     status = controller.read_all_status()
     return jsonify(status)
+
+@app.route('/api/ccd1/queue', methods=['GET'])
+def get_ccd1_queue_status():
+    """獲取CCD1佇列狀態 (新增API)"""
+    queue_status = controller.read_ccd1_queue_status()
+    return jsonify(queue_status)
 
 @app.route('/api/command', methods=['POST'])
 def send_command():
@@ -333,9 +378,18 @@ def execute_flow(flow_id):
         return jsonify({'success': False, 'message': '無效的流程ID'})
     
     success = controller.send_command(flow_id)
+    
+    # 流程1的特殊處理提示
+    if flow_id == 1:
+        message = f'流程{flow_id}(VP視覺抓取FIFO){"啟動成功" if success else "啟動失敗"}'
+        if success:
+            message += " - 將從CCD1佇列獲取物體座標"
+    else:
+        message = f'流程{flow_id}{"啟動成功" if success else "啟動失敗"}'
+    
     return jsonify({
         'success': success,
-        'message': f'流程{flow_id}{"啟動成功" if success else "啟動失敗"}'
+        'message': message
     })
 
 @app.route('/api/emergency_stop', methods=['POST'])
@@ -392,7 +446,7 @@ def write_register_api():
 def on_connect():
     """客戶端連接"""
     print('客戶端已連接')
-    emit('connected', {'message': '已連接到Dobot主控制器'})
+    emit('connected', {'message': '已連接到Dobot主控制器 (增強版)'})
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -404,6 +458,12 @@ def on_request_status():
     """請求狀態更新"""
     status = controller.read_all_status()
     emit('status_update', status)
+
+@socketio.on('request_ccd1_queue')
+def on_request_ccd1_queue():
+    """請求CCD1佇列狀態 (新增事件)"""
+    queue_status = controller.read_ccd1_queue_status()
+    emit('ccd1_queue_update', queue_status)
 
 @socketio.on('send_command')
 def on_send_command(data):
@@ -419,7 +479,7 @@ def on_send_command(data):
 
 def main():
     """主函數"""
-    print("=== Dobot主控制器Web應用啟動中 ===")
+    print("=== Dobot主控制器Web應用啟動中 (增強版) ===")
     print(f"Web服務器: http://{controller.config['web_server']['host']}:{controller.config['web_server']['port']}")
     print(f"Modbus服務器: {controller.config['modbus']['server_ip']}:{controller.config['modbus']['server_port']}")
     print("控制寄存器映射:")
@@ -427,6 +487,9 @@ def main():
     print("  401: 機械臂狀態 (0=空閒, 1=運行, 2=暫停, 3=錯誤, 4=緊急停止)")
     print("  402: 當前流程ID")
     print("  403: 流程執行進度 (0-100%)")
+    print("新增功能:")
+    print("  - CCD1佇列狀態監控 (寄存器201, 240, 256)")
+    print("  - 流程1 FIFO模式支援")
     print("\n請在瀏覽器中打開Web介面進行控制")
     
     try:

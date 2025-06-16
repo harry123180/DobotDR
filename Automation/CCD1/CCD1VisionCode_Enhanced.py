@@ -1823,6 +1823,101 @@ class CCD1VisionController:
         
         self.logger.info("所有連接已斷開")
 
+def auto_initialize_system():
+    """自動初始化系統 - 在Web介面啟動前執行"""
+    print("🚀 開始自動初始化CCD1視覺系統...")
+    
+    initialization_success = {
+        'calibration': False,
+        'modbus': False,
+        'camera': False
+    }
+    
+    # 1. 自動掃描並載入標定檔案
+    print("\n📁 步驟1: 掃描內外參標定檔案...")
+    try:
+        scan_result = vision_controller.scan_calibration_files()
+        if scan_result['success'] and scan_result['total_intrinsic_pairs'] > 0 and scan_result['total_extrinsic_files'] > 0:
+            print(f"✅ 發現標定檔案: {scan_result['total_intrinsic_pairs']}組內參, {scan_result['total_extrinsic_files']}個外參")
+            
+            # 自動載入標定數據
+            load_result = vision_controller.load_calibration_data()
+            if load_result['success']:
+                print(f"✅ 標定數據載入成功:")
+                print(f"   • 內參檔案: {load_result['files']['camera_matrix']}")
+                print(f"   • 畸變係數: {load_result['files']['dist_coeffs']}")
+                print(f"   • 外參檔案: {load_result['files']['extrinsic']}")
+                print(f"   • 載入時間: {load_result['loaded_time']}")
+                initialization_success['calibration'] = True
+            else:
+                print(f"❌ 標定數據載入失敗: {load_result['error']}")
+        else:
+            print("⚠️ 未發現完整的標定檔案組合，將在無標定模式下運行")
+            if scan_result['success']:
+                print(f"   發現內參組合: {scan_result['total_intrinsic_pairs']}")
+                print(f"   發現外參檔案: {scan_result['total_extrinsic_files']}")
+            
+    except Exception as e:
+        print(f"❌ 標定檔案掃描異常: {e}")
+    
+    # 2. 自動連接ModbusTCP服務器
+    print("\n🔗 步驟2: 連接ModbusTCP服務器...")
+    try:
+        # 設置服務器地址
+        set_result = vision_controller.set_modbus_server("127.0.0.1", 502)
+        if set_result['success']:
+            print(f"✅ Modbus服務器地址設置: {set_result['server_ip']}:{set_result['server_port']}")
+            
+            # 連接服務器
+            connect_result = vision_controller.connect_modbus()
+            if connect_result['success']:
+                print("✅ ModbusTCP連接成功，運動控制握手模式已啟動")
+                print(f"   版本: {connect_result['version']}")
+                print(f"   握手模式: {connect_result['handshake_mode']}")
+                initialization_success['modbus'] = True
+            else:
+                print(f"❌ ModbusTCP連接失敗: {connect_result['message']}")
+        else:
+            print(f"❌ Modbus服務器地址設置失敗: {set_result['message']}")
+            
+    except Exception as e:
+        print(f"❌ ModbusTCP連接異常: {e}")
+    
+    # 3. 自動連接相機
+    print("\n📷 步驟3: 連接相機設備...")
+    try:
+        camera_result = vision_controller.initialize_camera("192.168.1.8")
+        if camera_result['success']:
+            print(f"✅ 相機連接成功: {camera_result['camera_ip']}")
+            print(f"   增益設定: {camera_result['gain_set']}")
+            initialization_success['camera'] = True
+        else:
+            print(f"❌ 相機連接失敗: {camera_result['message']}")
+            
+    except Exception as e:
+        print(f"❌ 相機連接異常: {e}")
+    
+    # 4. 總結初始化結果
+    print("\n📊 自動初始化完成，結果總結:")
+    print(f"   標定檔案: {'✅ 已載入' if initialization_success['calibration'] else '❌ 未載入'}")
+    print(f"   ModbusTCP: {'✅ 已連接' if initialization_success['modbus'] else '❌ 未連接'}")
+    print(f"   相機設備: {'✅ 已連接' if initialization_success['camera'] else '❌ 未連接'}")
+    
+    # 計算成功率
+    success_count = sum(initialization_success.values())
+    total_count = len(initialization_success)
+    success_rate = (success_count / total_count) * 100
+    
+    print(f"\n🎯 初始化成功率: {success_count}/{total_count} ({success_rate:.1f}%)")
+    
+    if success_count == total_count:
+        print("🎉 所有系統組件初始化成功！")
+    elif success_count >= 1:
+        print("⚠️ 部分系統組件初始化成功，可能影響功能")
+    else:
+        print("❌ 系統初始化失敗，請檢查連接狀態")
+    
+    return initialization_success
 
 # ==================== Flask應用設置 ====================
 app = Flask(__name__)
@@ -2620,6 +2715,7 @@ def main():
             print("   8. v4.1: 自動執行保護範圍過濾")
         else:
             print("⚠️ Modbus Client功能不可用 (使用模擬模式)")
+        initialization_result = auto_initialize_system()
         
         print("🌐 Web介面啟動中...")
         print("📱 訪問地址: http://localhost:5051")

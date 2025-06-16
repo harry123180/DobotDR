@@ -49,7 +49,7 @@ class AngleAppService:
             },
             "web_server": {
                 "host": "localhost",
-                "port": 5087,
+                "port": 5087,  # 修正為5087端口
                 "debug": False
             },
             "modbus_mapping": {
@@ -57,7 +57,7 @@ class AngleAppService:
                 "ccd3_base_address": 800
             },
             "ui_settings": {
-                "refresh_interval": 2.0,
+                "refresh_interval": 1.0,  # 改為1秒更新
                 "auto_refresh": True
             }
         }
@@ -78,9 +78,11 @@ class AngleAppService:
             self.server_port = config['modbus_tcp']['port']
             self.base_address = config['modbus_mapping']['base_address']
             self.ccd3_base_address = config['modbus_mapping']['ccd3_base_address']
+            self.refresh_interval = config['ui_settings']['refresh_interval']
             
         except Exception as e:
             print(f"配置檔案載入錯誤: {e}")
+            self.refresh_interval = 1.0  # 預設1秒
     
     def connect_modbus(self) -> bool:
         """連接Modbus TCP服務器"""
@@ -270,7 +272,7 @@ class AngleAppService:
             print("狀態監控已停止")
     
     def _monitor_loop(self):
-        """監控循環"""
+        """監控循環 - 修正為1秒更新間隔"""
         while self.monitoring:
             try:
                 if self.modbus_client and self.modbus_client.connected:
@@ -284,11 +286,11 @@ class AngleAppService:
                         'timestamp': time.time()
                     })
                 
-                time.sleep(2.0)  # 2秒更新間隔
+                time.sleep(self.refresh_interval)  # 使用配置的更新間隔
                 
             except Exception as e:
                 print(f"監控循環錯誤: {e}")
-                time.sleep(5.0)
+                time.sleep(2.0)
 
 # 全局服務實例
 angle_app_service = AngleAppService()
@@ -333,6 +335,15 @@ def get_status():
 def angle_correction():
     success = angle_app_service.send_command(1)  # 角度校正指令
     if success:
+        # 發送指令後，等待一段時間再自動清零，允許重複執行
+        import threading
+        def auto_clear_command():
+            import time
+            time.sleep(0.5)  # 等待0.5秒讓主程序接收指令
+            angle_app_service.send_command(0)  # 清零指令
+        
+        threading.Thread(target=auto_clear_command, daemon=True).start()
+        
         return jsonify({'success': True, 'message': '角度校正指令已發送'})
     else:
         return jsonify({'success': False, 'message': '指令發送失敗'})
@@ -341,6 +352,15 @@ def angle_correction():
 def motor_reset():
     success = angle_app_service.send_command(2)  # 馬達重置指令
     if success:
+        # 發送指令後自動清零
+        import threading
+        def auto_clear_command():
+            import time
+            time.sleep(0.5)
+            angle_app_service.send_command(0)
+        
+        threading.Thread(target=auto_clear_command, daemon=True).start()
+        
         return jsonify({'success': True, 'message': '馬達重置指令已發送'})
     else:
         return jsonify({'success': False, 'message': '指令發送失敗'})
@@ -349,6 +369,15 @@ def motor_reset():
 def error_reset():
     success = angle_app_service.send_command(7)  # 錯誤重置指令
     if success:
+        # 發送指令後自動清零
+        import threading
+        def auto_clear_command():
+            import time
+            time.sleep(0.5)
+            angle_app_service.send_command(0)
+        
+        threading.Thread(target=auto_clear_command, daemon=True).start()
+        
         return jsonify({'success': True, 'message': '錯誤重置指令已發送'})
     else:
         return jsonify({'success': False, 'message': '指令發送失敗'})
@@ -395,13 +424,13 @@ def handle_send_command(data):
 
 if __name__ == '__main__':
     print("角度調整系統Web應用啟動中...")
-    print(f"Web服務器: http://localhost:5087")
+    print(f"Web服務器: http://localhost:5087")  # 修正端口為5087
     print(f"Modbus服務器地址: {angle_app_service.server_ip}:{angle_app_service.server_port}")
     print(f"角度調整模組基地址: {angle_app_service.base_address}")
     print(f"CCD3模組基地址: {angle_app_service.ccd3_base_address}")
     
     try:
-        socketio.run(app, host='0.0.0.0', port=5087, debug=False)
+        socketio.run(app, host='localhost', port=5087, debug=False)  # 修正端口為5087
     except KeyboardInterrupt:
         print("\n正在關閉角度調整Web應用...")
         angle_app_service.disconnect_modbus()

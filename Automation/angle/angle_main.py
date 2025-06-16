@@ -315,6 +315,82 @@ class AngleAdjustmentService:
             self.state_machine.set_alarm(True)
             return False
     
+    def send_motor_init_params(self) -> bool:
+        """發送馬達初始化參數 - 參考GUI工具的設定"""
+        try:
+            print("發送馬達初始化參數...")
+            
+            # 按照GUI工具的參數設置 (寄存器6144-6155)
+            init_values = [
+                0,      # 6144: 0
+                2,      # 6145: 2  
+                0,      # 6146: 0
+                9000,   # 6147: 9000 (目標位置)
+                0,      # 6148: 0
+                0,      # 6149: 0 (運轉速度，修正為0)
+                15,     # 6150: 15
+                16960,  # 6151: 16960
+                15,     # 6152: 15
+                16960,  # 6153: 16960
+                0,      # 6154: 0
+                1000    # 6155: 1000
+            ]
+            
+            # 使用write_multiple_registers批次寫入
+            success = self.write_multiple_registers(6144, init_values)
+            
+            if success:
+                print("馬達初始化參數發送成功")
+                return True
+            else:
+                print("馬達初始化參數發送失敗")
+                return False
+                
+        except Exception as e:
+            print(f"發送馬達初始化參數錯誤: {e}")
+            return False
+    
+    def write_multiple_registers(self, start_addr: int, values: list) -> bool:
+        """寫入多個保持寄存器 - 參考GUI工具實現"""
+        try:
+            if not self.motor_rtu.serial_conn or not self.motor_rtu.serial_conn.is_open:
+                return False
+                
+            # 構建請求幀
+            register_count = len(values)
+            byte_count = register_count * 2
+            
+            frame = bytearray()
+            frame.append(self.motor_slave_id)        # 從站地址
+            frame.append(0x10)                       # 功能碼 (寫入多個寄存器)
+            frame.extend(start_addr.to_bytes(2, 'big'))  # 起始地址
+            frame.extend(register_count.to_bytes(2, 'big'))  # 寄存器數量
+            frame.append(byte_count)                 # 字節數
+            
+            # 添加數據
+            for value in values:
+                frame.extend(value.to_bytes(2, 'big'))
+            
+            # 計算並添加CRC
+            crc = self.motor_rtu.crc16(frame)
+            frame.extend(crc.to_bytes(2, 'little'))
+            
+            # 發送請求
+            self.motor_rtu.serial_conn.write(frame)
+            response = self.motor_rtu.serial_conn.read(8)  # 預期響應長度
+            
+            success = len(response) >= 8
+            if success:
+                print(f"批次寫入寄存器成功: 起始地址{start_addr}, 數量{register_count}")
+            else:
+                print(f"批次寫入寄存器失敗: 起始地址{start_addr}, 數量{register_count}")
+            
+            return success
+            
+        except Exception as e:
+            print(f"批次寫入寄存器異常: {e}")
+            return False
+    
     def connect_motor(self, port: str = "COM5", baudrate: int = 115200) -> bool:
         """連接馬達驅動器"""
         try:
@@ -326,6 +402,10 @@ class AngleAdjustmentService:
                 test_result = self.motor_rtu.read_holding_registers(self.motor_slave_id, 127, 1)
                 if test_result is not None:
                     print(f"馬達驅動器連接測試成功，狀態寄存器: {test_result[0]}")
+                    
+                    # 跳過初始化參數發送，使用預設參數
+                    print("使用預先設定的馬達參數，跳過初始化")
+                    
                     self.state_machine.set_initialized(True)
                     self.state_machine.set_alarm(False)
                     return True
@@ -391,11 +471,11 @@ class AngleAdjustmentService:
     def calculate_motor_position(self, ccd_angle: float) -> int:
         """計算馬達目標位置 - 按照需求公式計算"""
         try:
-            # 角度計算邏輯: (9000 - CCD3角度*10)
-            motor_position = 9000 - int(ccd_angle * 10)
+            # 角度計算邏輯: (9000 - CCD3角度*100)
+            motor_position = 9000 - int(ccd_angle * 100)
             
             print(f"角度計算: CCD3角度={ccd_angle:.2f}度, 馬達位置={motor_position}")
-            print(f"計算公式: 9000 - ({ccd_angle:.2f} × 10) = {motor_position}")
+            print(f"計算公式: 9000 - ({ccd_angle:.2f} × 100) = {motor_position}")
             
             return motor_position
             
@@ -403,22 +483,99 @@ class AngleAdjustmentService:
             print(f"角度計算錯誤: {e}")
             return 0
     
-    def send_motor_command(self, position: int) -> bool:
-        """發送馬達移動指令"""
+    def clear_motor_command(self) -> bool:
+        """清除馬達指令寄存器 - 確保馬達回到Ready狀態"""
         try:
-            print(f"發送馬達移動指令: 位置={position}")
+            print("清除馬達指令寄存器...")
+            success = self.motor_rtu.write_single_register(self.motor_slave_id, 125, 0)
+            if success:
+                print("馬達指令寄存器已清除")
+            else:
+                print("清除馬達指令寄存器失敗")
+            return success
+        except Exception as e:
+            print(f"清除馬達指令錯誤: {e}")
+            return False
+    
+    def wait_motor_ready(self, timeout: float = 10.0, check_interval: float = 0.1) -> bool:
+        """等待馬達準備就緒 - Ready=1, Alarm=0, Moving=0"""
+        try:
+            print(f"等待馬達準備就緒 (超時: {timeout}秒)...")
+            start_time = time.time()
             
-            # 步驟1: 設置目標位置 (寄存器6147)
+            while time.time() - start_time < timeout:
+                # 讀取馬達狀態
+                status = self.motor_rtu.read_holding_registers(self.motor_slave_id, 127, 1)
+                
+                if status is None:
+                    print("讀取馬達狀態失敗，重試...")
+                    time.sleep(check_interval)
+                    continue
+                
+                status_word = status[0]
+                ready = bool(status_word & (1 << 5))    # bit 5: 準備就緒
+                alarm = bool(status_word & (1 << 7))    # bit 7: 警報狀態
+                moving = bool(status_word & (1 << 13))  # bit 13: 運動中
+                
+                elapsed = time.time() - start_time
+                print(f"狀態檢查 ({elapsed:.1f}s): Ready={ready}, Alarm={alarm}, Moving={moving}, status_word={status_word}")
+                
+                # 如果出現警報，嘗試清除警報
+                if alarm:
+                    print("檢測到警報狀態，嘗試清除警報...")
+                    alm_rst_success = self.motor_rtu.write_single_register(self.motor_slave_id, 125, 128)
+                    if alm_rst_success:
+                        print("清除警報指令已發送")
+                        time.sleep(0.2)
+                        # 清除指令寄存器
+                        self.clear_motor_command()
+                        time.sleep(0.3)
+                        continue  # 重新檢查狀態
+                    else:
+                        print("清除警報指令發送失敗")
+                        return False
+                
+                # 檢查是否滿足發送指令的條件: Ready=1, Alarm=0, Moving=0
+                if ready and not alarm and not moving:
+                    print("馬達已準備就緒，可以發送指令")
+                    return True
+                
+                # 如果未Ready但沒有運動和警報，嘗試清除指令狀態
+                if not ready and not alarm and not moving:
+                    print("馬達未Ready但無運動和警報，嘗試清除指令狀態...")
+                    if self.clear_motor_command():
+                        time.sleep(0.2)  # 給馬達一點時間更新狀態
+                        continue
+                
+                time.sleep(check_interval)
+            
+            print(f"等待馬達準備就緒超時 ({timeout}秒)")
+            return False
+            
+        except Exception as e:
+            print(f"等待馬達準備就緒錯誤: {e}")
+            return False
+
+    def send_motor_command(self, position: int) -> bool:
+        """發送馬達移動指令 - 先等待Ready再發送"""
+        try:
+            print(f"準備發送馬達移動指令: 位置={position}")
+            
+            # 步驟1: 等待馬達準備就緒
+            if not self.wait_motor_ready(timeout=10.0):
+                print("馬達未準備就緒，無法發送移動指令")
+                return False
+            
+            # 步驟2: 設置目標位置 (寄存器6147)
             success1 = self.motor_rtu.write_single_register(self.motor_slave_id, 6147, position)
             
             if not success1:
                 print("設置馬達目標位置失敗")
                 return False
             
-            # 短暫延遲
-            time.sleep(0.1)
+            print(f"目標位置已設置: {position}")
             
-            # 步驟2: 發送移動指令 (寄存器125, 值8)
+            # 步驟3: 發送移動指令 (寄存器125, 值8)
             success2 = self.motor_rtu.write_single_register(self.motor_slave_id, 125, 8)
             
             if not success2:
@@ -433,49 +590,143 @@ class AngleAdjustmentService:
             return False
     
     def wait_motor_complete(self, timeout: float = 30.0) -> bool:
-        """等待馬達運動完成"""
+        """等待馬達運動完成 - 等待Moving=0且Ready=1，確保清除指令"""
+        clear_success = False
         try:
             print("等待馬達運動完成...")
             start_time = time.time()
             
+            # 等待運動完成：Moving=0
             while time.time() - start_time < timeout:
-                # 讀取馬達狀態寄存器127
                 status = self.motor_rtu.read_holding_registers(self.motor_slave_id, 127, 1)
                 
                 if status is None:
-                    print("讀取馬達狀態失敗")
-                    time.sleep(0.5)
+                    print("讀取馬達狀態失敗，重試...")
+                    time.sleep(0.2)
                     continue
                 
                 status_word = status[0]
                 moving = bool(status_word & (1 << 13))  # bit 13: 運動中
                 ready = bool(status_word & (1 << 5))    # bit 5: 準備就緒
+                alarm = bool(status_word & (1 << 7))    # bit 7: 警報狀態
                 
-                if not moving and ready:
-                    print("馬達運動完成")
-                    # 清除馬達指令寄存器
-                    self.motor_rtu.write_single_register(self.motor_slave_id, 125, 0)
-                    return True
+                elapsed = time.time() - start_time
+                print(f"運動狀態檢查 ({elapsed:.1f}s): Moving={moving}, Ready={ready}, Alarm={alarm}, status_word={status_word}")
                 
-                time.sleep(0.5)  # 500ms檢查間隔
+                # 如果有警報，嘗試清除警報
+                if alarm:
+                    print("檢測到警報狀態，發送清除警報指令...")
+                    alm_rst_success = self.motor_rtu.write_single_register(self.motor_slave_id, 125, 128)
+                    
+                    if alm_rst_success:
+                        print("清除警報指令已發送")
+                        time.sleep(0.2)
+                        clear_success = self.clear_motor_command()
+                        time.sleep(0.3)
+                        continue
+                    else:
+                        print("發送清除警報指令失敗")
+                        time.sleep(0.2)
+                        continue
+                
+                # 檢查運動是否完成：Moving=0
+                if not moving:
+                    print("馬達運動已完成")
+                    
+                    # 等待Ready狀態穩定
+                    stable_count = 0
+                    for i in range(5):  # 檢查5次，每次200ms
+                        time.sleep(0.2)
+                        status_check = self.motor_rtu.read_holding_registers(self.motor_slave_id, 127, 1)
+                        
+                        if status_check:
+                            status_word_check = status_check[0]
+                            ready_check = bool(status_word_check & (1 << 5))
+                            alarm_check = bool(status_word_check & (1 << 7))
+                            moving_check = bool(status_word_check & (1 << 13))
+                            
+                            print(f"穩定性檢查 {i+1}/5: Moving={moving_check}, Ready={ready_check}, Alarm={alarm_check}")
+                            
+                            # 如果狀態穩定 (不運動且無警報)
+                            if not moving_check and not alarm_check:
+                                stable_count += 1
+                            else:
+                                stable_count = 0
+                                break
+                    
+                    if stable_count >= 3:  # 至少3次穩定檢查
+                        print("馬達狀態穩定，運動完成")
+                        clear_success = self.clear_motor_command()
+                        return True
+                
+                time.sleep(0.1)  # 100ms檢查間隔
             
-            print(f"馬達運動超時 ({timeout}秒)")
+            print(f"等待馬達運動完成超時 ({timeout}秒)")
             return False
             
         except Exception as e:
             print(f"等待馬達完成錯誤: {e}")
             return False
+        
+        finally:
+            # 確保無論如何都清除指令寄存器
+            if not clear_success:
+                try:
+                    clear_success = self.clear_motor_command()
+                    if clear_success:
+                        print("finally塊: 馬達指令寄存器清除成功")
+                    else:
+                        print("finally塊: 馬達指令寄存器清除失敗")
+                except Exception as clear_error:
+                    print(f"finally塊: 清除馬達指令錯誤: {clear_error}")
     
     def trigger_ccd3_detection(self) -> bool:
-        """觸發CCD3角度檢測"""
+        """觸發CCD3角度檢測 - 修正：確保Ready後才發送指令"""
         try:
             if not self.modbus_client or not self.modbus_client.connected:
                 print("Modbus未連接，無法觸發CCD3檢測")
                 return False
             
-            print("觸發CCD3角度檢測...")
+            # 步驟1：先確保CCD3指令寄存器已清零
+            print("步驟1：確保CCD3指令寄存器已清零...")
+            clear_result = self.modbus_client.write_register(
+                address=self.ccd3_base_address, value=0, slave=1
+            )
+            if clear_result.isError():
+                print("清零CCD3指令失敗")
+                return False
             
-            # 發送拍照+角度檢測指令 (CCD3寄存器800, 值16)
+            # 步驟2：等待CCD3回到Ready狀態
+            print("步驟2：等待CCD3回到Ready狀態...")
+            ready_timeout = 3.0  # 3秒超時
+            start_time = time.time()
+            
+            while time.time() - start_time < ready_timeout:
+                # 讀取CCD3狀態
+                status_result = self.modbus_client.read_holding_registers(
+                    address=self.ccd3_base_address + 1, count=1, slave=1
+                )
+                
+                if not status_result.isError():
+                    status_register = status_result.registers[0]
+                    ready = bool(status_register & (1 << 0))    # bit 0: Ready
+                    running = bool(status_register & (1 << 1))  # bit 1: Running
+                    
+                    print(f"CCD3準備狀態檢查: Ready={ready}, Running={running}, status_register={status_register}")
+                    
+                    if ready and not running:
+                        print("CCD3已準備就緒")
+                        break
+                else:
+                    print("讀取CCD3狀態失敗")
+                
+                time.sleep(0.2)  # 200ms檢查間隔
+            else:
+                print("等待CCD3準備就緒超時")
+                return False
+            
+            # 步驟3：發送拍照+角度檢測指令
+            print("步驟3：發送CCD3拍照+角度檢測指令...")
             result = self.modbus_client.write_register(
                 address=self.ccd3_base_address, value=16, slave=1
             )
@@ -485,6 +736,22 @@ class AngleAdjustmentService:
                 return False
             
             print("CCD3檢測指令發送成功，等待檢測完成...")
+            
+            # 步驟4：確認CCD3開始Running
+            time.sleep(0.2)  # 給CCD3一點時間開始處理
+            confirm_result = self.modbus_client.read_holding_registers(
+                address=self.ccd3_base_address + 1, count=1, slave=1
+            )
+            
+            if not confirm_result.isError():
+                confirm_status = confirm_result.registers[0]
+                confirm_ready = bool(confirm_status & (1 << 0))
+                confirm_running = bool(confirm_status & (1 << 1))
+                print(f"指令發送後狀態確認: Ready={confirm_ready}, Running={confirm_running}, status_register={confirm_status}")
+                
+                if not confirm_running:
+                    print("警告：CCD3未進入Running狀態，可能指令未被接受")
+            
             return True
             
         except Exception as e:
@@ -492,7 +759,7 @@ class AngleAdjustmentService:
             return False
     
     def wait_ccd3_complete(self, timeout: float = 10.0) -> bool:
-        """等待CCD3檢測完成"""
+        """等待CCD3檢測完成 - 修正：手動清零指令確保Ready"""
         try:
             print("等待CCD3檢測完成...")
             start_time = time.time()
@@ -512,21 +779,44 @@ class AngleAdjustmentService:
                 ready = bool(status_register & (1 << 0))    # bit 0: Ready
                 running = bool(status_register & (1 << 1))  # bit 1: Running
                 
+                print(f"CCD3狀態檢查: Ready={ready}, Running={running}, status_register={status_register}")
+                
                 if ready and not running:
                     print("CCD3檢測完成")
-                    # 清除CCD3指令寄存器
-                    self.modbus_client.write_register(
+                    # 關鍵修正：手動清零CCD3指令寄存器，確保下次能重新檢測
+                    print("清零CCD3指令寄存器，確保下次重新檢測...")
+                    clear_result = self.modbus_client.write_register(
                         address=self.ccd3_base_address, value=0, slave=1
                     )
+                    if clear_result.isError():
+                        print("清零CCD3指令失敗")
+                    else:
+                        print("CCD3指令已清零，系統Ready可接受新指令")
                     return True
                 
                 time.sleep(0.5)  # 500ms檢查間隔
             
             print(f"CCD3檢測超時 ({timeout}秒)")
+            # 超時也要嘗試清零指令
+            try:
+                self.modbus_client.write_register(
+                    address=self.ccd3_base_address, value=0, slave=1
+                )
+                print("超時情況下已清零CCD3指令")
+            except:
+                pass
             return False
             
         except Exception as e:
             print(f"等待CCD3完成錯誤: {e}")
+            # 異常情況也要嘗試清零指令
+            try:
+                self.modbus_client.write_register(
+                    address=self.ccd3_base_address, value=0, slave=1
+                )
+                print("異常情況下已清零CCD3指令")
+            except:
+                pass
             return False
     
     def execute_angle_correction(self) -> AngleResult:
@@ -703,12 +993,12 @@ class AngleAdjustmentService:
             
             control_command = result.registers[0]
             
-            # 檢查新指令
-            if control_command != self.last_control_command and control_command != 0:
-                if not self.command_processing:
-                    print(f"收到新控制指令: {control_command} (上次: {self.last_control_command})")
-                    self._handle_control_command(control_command)
-                    self.last_control_command = control_command
+            # 檢查新指令 - 修正：允許重複執行相同指令
+            if control_command != 0 and not self.command_processing:
+                # 只要有非零指令且當前未處理，就執行
+                print(f"收到控制指令: {control_command} (上次: {self.last_control_command})")
+                self._handle_control_command(control_command)
+                self.last_control_command = control_command
             
             # PLC清零指令後恢復Ready
             elif control_command == 0 and self.last_control_command != 0:
@@ -721,8 +1011,19 @@ class AngleAdjustmentService:
     
     def _handle_control_command(self, command: int):
         """處理控制指令"""
+        # 檢查系統是否完全初始化
+        if not self.state_machine.is_initialized():
+            print(f"系統未完全初始化，無法執行指令 {command}")
+            return
+            
         if not self.state_machine.is_ready():
             print(f"系統未Ready，無法執行指令 {command}")
+            return
+        
+        # 檢查馬達連接狀態
+        if not (self.motor_rtu.serial_conn and self.motor_rtu.serial_conn.is_open):
+            print(f"馬達驅動器未連接，無法執行指令 {command}")
+            self.state_machine.set_alarm(True)
             return
         
         print(f"開始處理控制指令: {command}")
@@ -743,10 +1044,13 @@ class AngleAdjustmentService:
                 self.write_result_registers(result)
                 
             elif command == ControlCommand.MOTOR_RESET.value:
-                # 馬達重置指令
+                # 馬達重置指令 - 等待Ready後再清除
                 print("執行馬達重置指令")
-                # 發送馬達準備指令 (清除寄存器125)
-                self.motor_rtu.write_single_register(self.motor_slave_id, 125, 0)
+                if self.wait_motor_ready(timeout=5.0):
+                    self.clear_motor_command()
+                    print("馬達重置完成")
+                else:
+                    print("馬達重置失敗：等待Ready超時")
                 
             elif command == ControlCommand.ERROR_RESET.value:
                 # 錯誤重置指令
@@ -793,6 +1097,11 @@ class AngleAdjustmentService:
         
         if self.motor_rtu:
             print("正在關閉馬達驅動器RTU連接...")
+            # 在斷線前確保清除指令
+            try:
+                self.clear_motor_command()
+            except:
+                pass
             self.motor_rtu.disconnect()
         
         if self.modbus_client:
@@ -803,28 +1112,32 @@ class AngleAdjustmentService:
         print("角度調整系統已斷開所有連接")
 
 def auto_initialize_system():
-    """系統自動初始化"""
+    """系統自動初始化 - 修正順序"""
     print("=== 角度調整系統自動初始化開始 ===")
     
-    # 1. 自動連接Modbus服務器
-    print("步驟1: 自動連接Modbus服務器...")
+    # 1. 先連接馬達驅動器 (避免Modbus連接後立即接收指令)
+    print("步驟1: 自動連接馬達驅動器...")
+    motor_success = angle_service.connect_motor("COM5", 115200)
+    if motor_success:
+        print("✓ 馬達驅動器連接成功")
+    else:
+        print("✗ 馬達驅動器連接失敗")
+        return False
+    
+    # 2. 後連接Modbus服務器
+    print("步驟2: 自動連接Modbus服務器...")
     modbus_success = angle_service.connect_modbus()
     if modbus_success:
         print("✓ Modbus服務器連接成功")
         # 啟動握手服務
         angle_service.start_handshake_service()
         print("✓ 握手服務已啟動")
+        
+        # 3. 設置系統Ready狀態
+        angle_service.state_machine.set_ready(True)
+        print("✓ 系統狀態設置為Ready")
     else:
         print("✗ Modbus服務器連接失敗")
-        return False
-    
-    # 2. 自動連接馬達驅動器
-    print("步驟2: 自動連接馬達驅動器...")
-    motor_success = angle_service.connect_motor("COM5", 115200)
-    if motor_success:
-        print("✓ 馬達驅動器連接成功")
-    else:
-        print("✗ 馬達驅動器連接失敗")
         return False
     
     print("=== 角度調整系統自動初始化完成 ===")

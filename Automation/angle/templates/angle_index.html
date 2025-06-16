@@ -105,6 +105,11 @@
             background: #f8d7da;
         }
 
+        .status-item.ready {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
         .status-item.active {
             border-left-color: #ffc107;
             background: #fff3cd;
@@ -448,7 +453,7 @@
                 
                 <div class="control-buttons">
                     <button class="btn btn-primary" onclick="sendAngleCorrection()" id="btnAngleCorrection">
-                        角度校正
+                        一鍵檢測+校正
                     </button>
                     <button class="btn btn-warning" onclick="sendMotorReset()" id="btnMotorReset">
                         馬達重置
@@ -464,7 +469,7 @@
                 <div style="margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 8px;">
                     <h4 style="margin-bottom: 10px; color: #1976d2;">指令說明</h4>
                     <ul style="margin-left: 20px; color: #666;">
-                        <li><strong>角度校正</strong>: CCD3拍照 → 計算角度差 → 馬達補正</li>
+                        <li><strong>一鍵檢測+校正</strong>: CCD3拍照 → 計算角度差 → 馬達補正 (完整流程)</li>
                         <li><strong>馬達重置</strong>: 清除馬達指令狀態</li>
                         <li><strong>錯誤重置</strong>: 清除系統錯誤狀態</li>
                         <li><strong>清除指令</strong>: 手動清零控制指令</li>
@@ -537,6 +542,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             addLog('系統', '角度調整系統Web介面已載入', 'info');
             updateConnectionStatus(false);
+            
+            // 立即獲取一次狀態
+            setTimeout(function() {
+                if (isConnected) {
+                    socket.emit('get_status');
+                }
+            }, 500);
         });
 
         // Socket.IO 事件處理
@@ -579,6 +591,11 @@
                     isConnected = true;
                     updateConnectionStatus(true);
                     addLog('連接', data.message, 'success');
+                    
+                    // 連接成功後立即獲取狀態
+                    setTimeout(function() {
+                        socket.emit('get_status');
+                    }, 200);
                 } else {
                     addLog('連接', data.message, 'error');
                 }
@@ -740,11 +757,11 @@
                 if (isAlarm) {
                     element.classList.add('alarm');
                 } else {
-                    element.classList.add('active');
+                    element.classList.add('connected'); // 正常狀態使用綠色
                 }
             } else {
                 valueElement.textContent = falseText;
-                element.classList.add('disconnected');
+                element.classList.add('disconnected'); // 異常狀態使用紅色
             }
         }
 
@@ -795,12 +812,12 @@
             addLog('系統', '日誌已清除', 'info');
         }
 
-        // 定期獲取狀態
+        // 定期獲取狀態 - 改為1秒更新
         setInterval(function() {
             if (isConnected) {
                 socket.emit('get_status');
             }
-        }, 3000);
+        }, 1000); // 從3000改為1000毫秒
     </script>
 </body>
 </html>

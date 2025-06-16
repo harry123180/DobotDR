@@ -676,7 +676,14 @@ class CCD3AngleDetectionService:
                 contour_area=None, processing_time=0, capture_time=0, total_time=0,
                 error_message="相機未初始化"
             )
-        
+        if not getattr(self.camera, 'is_streaming', False):
+            print("錯誤: 相機串流未啟動")
+            return AngleResult(
+                success=False, center=None, angle=None,
+                major_axis=None, minor_axis=None, rect_width=None, rect_height=None,
+                contour_area=None, processing_time=0, capture_time=0, total_time=0,
+                error_message="相機串流未啟動"
+        )
         capture_start = time.perf_counter()  # 高精度計時
         
         try:
@@ -842,34 +849,43 @@ class CCD3AngleDetectionService:
                 all_registers[3] = (angle_int >> 16) & 0xFFFF
                 all_registers[4] = angle_int & 0xFFFF
                 
-                # 額外參數
+                # 額外參數 - 添加範圍檢查
                 if result.major_axis:
-                    all_registers[5] = int(result.major_axis)
+                    all_registers[5] = min(int(result.major_axis), 65535)
                 if result.minor_axis:
-                    all_registers[6] = int(result.minor_axis)
+                    all_registers[6] = min(int(result.minor_axis), 65535)
                 if result.rect_width:
-                    all_registers[7] = int(result.rect_width)
+                    all_registers[7] = min(int(result.rect_width), 65535)
                 if result.rect_height:
-                    all_registers[8] = int(result.rect_height)
+                    all_registers[8] = min(int(result.rect_height), 65535)
                 if result.contour_area:
-                    all_registers[9] = int(result.contour_area)
+                    # 輪廓面積可能很大，需要截斷或使用32位存儲
+                    area_value = int(result.contour_area)
+                    if area_value > 65535:
+                        # 使用32位存儲輪廓面積
+                        all_registers[9] = (area_value >> 16) & 0xFFFF  # 高位
+                        all_registers[10] = area_value & 0xFFFF         # 低位
+                    else:
+                        all_registers[9] = area_value
             
-            # 統計資訊區 (880-899對應20-39)
-            all_registers[20] = int(result.capture_time)
-            all_registers[21] = int(result.processing_time)
-            all_registers[22] = int(result.total_time)
-            all_registers[23] = self.operation_count
-            all_registers[24] = self.error_count
-            all_registers[25] = self.connection_count
+            # 統計資訊區 (880-899對應20-39) - 添加範圍檢查
+            all_registers[20] = min(int(result.capture_time), 65535)
+            all_registers[21] = min(int(result.processing_time), 65535)
+            all_registers[22] = min(int(result.total_time), 65535)
+            all_registers[23] = self.operation_count & 0xFFFF  # 只取低16位
+            all_registers[24] = min(self.error_count, 65535)
+            all_registers[25] = min(self.connection_count, 65535)
             all_registers[30] = 3  # 版本號
             all_registers[31] = 1  # 次版本號(優化版)
-            all_registers[32] = int((time.time() - self.start_time) // 3600)  # 運行小時
-            all_registers[33] = int((time.time() - self.start_time) % 3600 // 60)  # 運行分鐘
+            all_registers[32] = min(int((time.time() - self.start_time) // 3600), 65535)  # 運行小時
+            all_registers[33] = min(int((time.time() - self.start_time) % 3600 // 60), 65535)  # 運行分鐘
             
             # 優化17：批次寫入減少Modbus通訊次數
             self.modbus_client.write_registers(
                 address=self.base_address + 40, values=all_registers, slave=1
             )
+            
+            print(f"檢測結果已成功寫入寄存器")
             
         except Exception as e:
             print(f"寫入檢測結果錯誤: {e}")
@@ -1020,6 +1036,8 @@ class CCD3AngleDetectionService:
             print(f"控制指令 {command} 執行完成")
             self.command_processing = False
             self.state_machine.set_running(False)
+            if not self.state_machine.is_alarm():
+                self.state_machine.set_ready(True)
     
     def start_handshake_service(self):
         """啟動握手服務"""
@@ -1238,7 +1256,6 @@ def handle_get_status():
     emit('status_update', status)
 
 def auto_initialize_system():
-    """系統自動初始化"""
     print("=== CCD3角度檢測系統自動初始化開始 (優化版) ===")
     
     # 1. 自動連接Modbus服務器
@@ -1246,9 +1263,8 @@ def auto_initialize_system():
     modbus_success = ccd3_service.connect_modbus()
     if modbus_success:
         print("✓ Modbus服務器連接成功")
-        # 啟動握手服務
-        ccd3_service.start_handshake_service()
-        print("✓ 握手服務已啟動")
+        # 暫時不啟動握手服務，等相機初始化完成後再啟動
+        print("⏳ 握手服務將在相機初始化完成後啟動")
     else:
         print("✗ Modbus服務器連接失敗")
         return False
@@ -1260,13 +1276,23 @@ def auto_initialize_system():
         print("✓ 相機連接成功")
     else:
         print("✗ 相機連接失敗")
-        return False
+    
+    # 3. 現在才啟動握手服務
+    print("步驟3: 啟動握手服務...")
+    ccd3_service.start_handshake_service()
+    print("✓ 握手服務已啟動")
     
     print("=== CCD3角度檢測系統自動初始化完成 ===")
     print(f"狀態: Ready={ccd3_service.state_machine.is_ready()}")
     print(f"狀態: Initialized={ccd3_service.state_machine.is_initialized()}")
     print(f"狀態: Alarm={ccd3_service.state_machine.is_alarm()}")
     print("性能優化: 啟用快取機制、批次寫入、高精度計時")
+    
+    # 強制設置Ready狀態以確保系統可以接收指令
+    print("強制設置系統為Ready狀態...")
+    ccd3_service.state_machine.set_ready(True)
+    ccd3_service.state_machine.set_alarm(False)
+    print(f"最終狀態: Ready={ccd3_service.state_machine.is_ready()}")
     return True
 
 if __name__ == '__main__':

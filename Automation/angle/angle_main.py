@@ -350,9 +350,9 @@ class AngleAdjustmentService:
                 print("Modbus未連接，無法讀取CCD3角度")
                 return None
             
-            # 讀取CCD3檢測結果寄存器 (843-844: 32位角度)
+            # 修正：讀取CCD3檢測結果寄存器 (840-844)
             result = self.modbus_client.read_holding_registers(
-                address=self.ccd3_base_address + 43, count=3, slave=1
+                address=self.ccd3_base_address + 40, count=5, slave=1  # 修正為+40
             )
             
             if result.isError():
@@ -361,16 +361,18 @@ class AngleAdjustmentService:
             
             registers = result.registers
             success_flag = registers[0]  # 840: 檢測成功標誌
+            center_x = registers[1]      # 841: 中心X座標
+            center_y = registers[2]      # 842: 中心Y座標
+            angle_high = registers[3]    # 843: 角度高位
+            angle_low = registers[4]     # 844: 角度低位
+            
+            print(f"CCD3檢測結果: success={success_flag}, center=({center_x},{center_y}), angle_data=({angle_high},{angle_low})")
             
             if success_flag != 1:
                 print("CCD3檢測未成功，無有效角度數據")
                 return None
             
-            # 合併32位角度數據 (843高位, 844低位)
-            angle_high = registers[1]  # 843: 角度高位
-            angle_low = registers[2]   # 844: 角度低位
-            
-            # 32位角度合併與精度恢復
+            # 合併32位角度數據
             angle_int = (angle_high << 16) | angle_low
             
             # 處理有符號數值
@@ -766,6 +768,8 @@ class AngleAdjustmentService:
             self.state_machine.set_running(False)
             self.state_machine.set_ccd_detecting(False)
             self.state_machine.set_motor_moving(False)
+            if not self.state_machine.is_alarm():
+                self.state_machine.set_ready(True)
     
     def start_handshake_service(self):
         """啟動握手服務"""

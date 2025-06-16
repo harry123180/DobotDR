@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_main.py - 機械臂主控制器 (修正API解析版)
+Dobot_main.py - 機械臂主控制器 (狀態機交握實現版)
 整合狀態機管理、外部模組通訊、運動控制等功能
 基地址400，支援多流程執行與外部設備整合
-修正GetPose和GetAngle API解析問題
+實現完整的狀態機交握協議
 """
 # 在文件頂部修改import
 from CCD1HighLevel import CCD1HighLevelAPI
@@ -30,37 +30,44 @@ from dobot_api import DobotApiDashboard, DobotApiMove
 DOBOT_BASE_ADDR = 400
 CONFIG_FILE = "dobot_config.json"
 
-# Modbus寄存器映射 (基地址400)
+# Modbus寄存器映射 (基地址400) - 狀態機交握版
 class DobotRegisters:
-    # 控制寄存器
-    CONTROL_CMD = DOBOT_BASE_ADDR + 0      # 400: 控制指令
-    ROBOT_STATE = DOBOT_BASE_ADDR + 1      # 401: 機械臂狀態
-    CURRENT_FLOW = DOBOT_BASE_ADDR + 2     # 402: 當前流程ID
-    FLOW_PROGRESS = DOBOT_BASE_ADDR + 3    # 403: 流程執行進度
-    ERROR_CODE = DOBOT_BASE_ADDR + 4       # 404: 錯誤代碼
-    ROBOT_MODE = DOBOT_BASE_ADDR + 5       # 405: 機械臂模式
+    # 狀態寄存器 (400-419) - 只讀
+    STATUS_REGISTER = DOBOT_BASE_ADDR + 0     # 400: 主狀態寄存器 (bit0=Ready, bit1=Running, bit2=Alarm, bit3=Initialized)
+    ROBOT_STATE = DOBOT_BASE_ADDR + 1         # 401: 機械臂狀態
+    CURRENT_FLOW = DOBOT_BASE_ADDR + 2        # 402: 當前流程ID
+    FLOW_PROGRESS = DOBOT_BASE_ADDR + 3       # 403: 流程執行進度
+    ERROR_CODE = DOBOT_BASE_ADDR + 4          # 404: 錯誤代碼
+    ROBOT_MODE = DOBOT_BASE_ADDR + 5          # 405: 機械臂模式
     
-    # 位置資訊寄存器
-    POS_X = DOBOT_BASE_ADDR + 6           # 406: 當前X座標
-    POS_Y = DOBOT_BASE_ADDR + 7           # 407: 當前Y座標  
-    POS_Z = DOBOT_BASE_ADDR + 8           # 408: 當前Z座標
-    POS_R = DOBOT_BASE_ADDR + 9           # 409: 當前R座標
+    # 位置資訊寄存器 (406-409)
+    POS_X = DOBOT_BASE_ADDR + 6               # 406: 當前X座標
+    POS_Y = DOBOT_BASE_ADDR + 7               # 407: 當前Y座標  
+    POS_Z = DOBOT_BASE_ADDR + 8               # 408: 當前Z座標
+    POS_R = DOBOT_BASE_ADDR + 9               # 409: 當前R座標
     
-    # 關節角度寄存器
-    JOINT_J1 = DOBOT_BASE_ADDR + 10       # 410: J1角度
-    JOINT_J2 = DOBOT_BASE_ADDR + 11       # 411: J2角度
-    JOINT_J3 = DOBOT_BASE_ADDR + 12       # 412: J3角度
-    JOINT_J4 = DOBOT_BASE_ADDR + 13       # 413: J4角度
+    # 關節角度寄存器 (410-413)
+    JOINT_J1 = DOBOT_BASE_ADDR + 10           # 410: J1角度
+    JOINT_J2 = DOBOT_BASE_ADDR + 11           # 411: J2角度
+    JOINT_J3 = DOBOT_BASE_ADDR + 12           # 412: J3角度
+    JOINT_J4 = DOBOT_BASE_ADDR + 13           # 413: J4角度
     
-    # IO狀態寄存器
-    DI_STATUS = DOBOT_BASE_ADDR + 14      # 414: 數位輸入狀態
-    DO_STATUS = DOBOT_BASE_ADDR + 15      # 415: 數位輸出狀態
+    # IO狀態寄存器 (414-415)
+    DI_STATUS = DOBOT_BASE_ADDR + 14          # 414: 數位輸入狀態
+    DO_STATUS = DOBOT_BASE_ADDR + 15          # 415: 數位輸出狀態
     
-    # 統計寄存器
-    OP_COUNTER = DOBOT_BASE_ADDR + 16     # 416: 操作計數器
-    ERR_COUNTER = DOBOT_BASE_ADDR + 17    # 417: 錯誤計數器
-    RUN_TIME = DOBOT_BASE_ADDR + 18       # 418: 運行時間(分鐘)
-    RESERVED = DOBOT_BASE_ADDR + 19       # 419: 保留
+    # 統計寄存器 (416-419)
+    OP_COUNTER = DOBOT_BASE_ADDR + 16         # 416: 操作計數器
+    ERR_COUNTER = DOBOT_BASE_ADDR + 17        # 417: 錯誤計數器
+    RUN_TIME = DOBOT_BASE_ADDR + 18           # 418: 運行時間(分鐘)
+    RESERVED = DOBOT_BASE_ADDR + 19           # 419: 保留
+    
+    # 控制寄存器 (440-449) - 讀寫
+    VP_CONTROL = DOBOT_BASE_ADDR + 40         # 440: VP視覺取料控制
+    UNLOAD_CONTROL = DOBOT_BASE_ADDR + 41     # 441: 出料控制
+    CLEAR_ALARM = DOBOT_BASE_ADDR + 42        # 442: 清除警報控制
+    EMERGENCY_STOP = DOBOT_BASE_ADDR + 43     # 443: 緊急停止控制
+    MANUAL_COMMAND = DOBOT_BASE_ADDR + 44     # 444: 手動指令 (Web端使用)
 
 
 # 外部模組寄存器地址
@@ -112,7 +119,7 @@ class RobotState(Enum):
 class FlowType(Enum):
     NONE = 0          # 無流程
     FLOW_1 = 1        # 流程1 - VP視覺抓取
-    FLOW_2 = 2        # 流程2 - 出料流程  # 新增這行
+    FLOW_2 = 2        # 流程2 - 出料流程
     FLOW_3 = 3        # 流程3 - 完整加工流程
 
 
@@ -274,354 +281,6 @@ class ExternalModuleController:
         """獲取下一個指令ID"""
         self.command_id_counter += 1
         return self.command_id_counter
-
-
-class PGCGripperController(ExternalModuleController):
-    """PGC夾爪控制器 - 基於MVP.py的實際工作邏輯"""
-    
-    def __init__(self, modbus_client: ModbusTcpClient):
-        super().__init__(modbus_client, ExternalModules.PGC_BASE)
-        
-        # PGC指令映射 (來自MVP.py)
-        self.PGC_CMD_INIT = 1
-        self.PGC_CMD_STOP = 2
-        self.PGC_CMD_ABS_POS = 3
-        self.PGC_CMD_SET_FORCE = 5
-        self.PGC_CMD_SET_SPEED = 6
-        self.PGC_CMD_QUICK_OPEN = 7
-        self.PGC_CMD_QUICK_CLOSE = 8
-        
-        # PGC狀態映射
-        self.PGC_STATUS_MOVING = 0
-        self.PGC_STATUS_REACHED = 1
-        self.PGC_STATUS_GRIPPED = 2
-        self.PGC_STATUS_DROPPED = 3
-        
-    def initialize(self) -> bool:
-        """初始化夾爪 - 基於MVP.py的邏輯"""
-        print("=== 初始化PGC夾爪 ===")
-        
-        # 檢查模組是否運行
-        if not self.check_module_status():
-            print("PGC模組未運行")
-            return False
-        
-        # 初始化重試機制
-        max_init_attempts = 3
-        for attempt in range(max_init_attempts):
-            print(f"初始化嘗試 {attempt + 1}/{max_init_attempts}")
-            
-            # 發送初始化指令
-            if not self.send_gripper_command_batch(self.PGC_CMD_INIT):
-                continue
-            
-            # 等待初始化完成
-            init_start = time.time()
-            while time.time() - init_start < 10.0:
-                device_status = self.read_register(2)  # 502: 設備狀態
-                if device_status == 1:
-                    print("夾爪初始化成功")
-                    
-                    # 設定最大速度和力道
-                    self.send_gripper_command_batch(self.PGC_CMD_SET_SPEED, 100)
-                    time.sleep(0.5)
-                    self.send_gripper_command_batch(self.PGC_CMD_SET_FORCE, 20)
-                    time.sleep(0.5)
-                    
-                    print("夾爪參數設定完成")
-                    return True
-                time.sleep(0.2)
-            
-            print(f"第{attempt + 1}次初始化超時")
-        
-        print("夾爪初始化失敗")
-        return False
-        
-    def open_to_position(self, position: int, timeout: float = 15.0) -> bool:
-        """打開到指定位置 - 基於MVP.py的智能檢測邏輯"""
-        print(f"夾爪撐開到位置 {position}")
-        
-        # 記錄初始位置
-        initial_position = self.read_register(5) or 0  # 505: 當前位置
-        
-        # 發送位置指令
-        if not self.send_gripper_command_batch(self.PGC_CMD_ABS_POS, position):
-            return False
-        
-        # 等待位置到達 - 使用MVP.py的智能判斷邏輯
-        start_time = time.time()
-        max_position_reached = initial_position
-        
-        while time.time() - start_time < timeout:
-            current_position = self.read_register(5) or 0  # 505: 當前位置
-            grip_status = self.read_register(4)  # 504: 夾持狀態
-            
-            # 記錄最大位置
-            if current_position > max_position_reached:
-                max_position_reached = current_position
-            
-            position_diff = abs(current_position - position)
-            movement_from_start = abs(current_position - initial_position)
-            
-            # 智能判斷成功條件 (來自MVP.py)
-            if position_diff <= 20:
-                print(f"夾爪到達目標位置: {current_position}")
-                return True
-            elif movement_from_start > 100 and grip_status == self.PGC_STATUS_GRIPPED:
-                print(f"夾爪撐開固定物件: {current_position}")
-                return True
-            elif current_position == max_position_reached and movement_from_start > 50:
-                # 檢查位置穩定性
-                stable_count = 0
-                for _ in range(3):
-                    time.sleep(0.1)
-                    check_pos = self.read_register(5) or 0
-                    if check_pos == current_position:
-                        stable_count += 1
-                
-                if stable_count >= 2:
-                    print(f"夾爪位置穩定，撐開成功: {current_position}")
-                    return True
-            
-            time.sleep(0.2)
-        
-        # 超時檢查
-        final_position = self.read_register(5) or 0
-        final_movement = abs(final_position - initial_position)
-        
-        if final_movement > 100:
-            print(f"超時但有顯著移動，認為成功: {final_position}")
-            return True
-        
-        print(f"夾爪移動不足，失敗: {final_position}")
-        return False
-        
-    def close_fast(self) -> bool:
-        """快速關閉 - 基於MVP.py的快速執行邏輯"""
-        print("夾爪快速關閉")
-        return self.send_gripper_command_batch(self.PGC_CMD_QUICK_CLOSE)
-        
-    def check_module_status(self) -> bool:
-        """檢查夾爪模組狀態"""
-        try:
-            module_status = self.read_register(0)  # 500: 模組狀態
-            connect_status = self.read_register(1)  # 501: 連接狀態
-            
-            if module_status == 1 and connect_status == 1:
-                print("PGC夾爪模組狀態正常")
-                return True
-            else:
-                print(f"PGC夾爪模組狀態異常: module={module_status}, connect={connect_status}")
-                return False
-                
-        except Exception as e:
-            print(f"檢查PGC夾爪模組狀態失敗: {e}")
-            return False
-    
-    def send_gripper_command_batch(self, command: int, param1: int = 0, param2: int = 0) -> bool:
-        """使用批量寫入發送夾爪指令 - PyModbus 3.9.2修正版"""
-        try:
-            cmd_id = self.get_next_command_id()
-            command_base = 520
-            
-            # 構建指令數組 (10個寄存器)
-            values = [command, param1, param2, cmd_id, 0, 0, 0, 0, 0, 0]
-            
-            result = self.modbus_client.write_registers(
-                address=command_base,
-                values=values,
-                slave=1
-            )
-            
-            # PyModbus 3.x 正確的錯誤檢查
-            if hasattr(result, 'isError') and result.isError():
-                print(f"PGC批量指令發送錯誤: {result}")
-                return False
-            else:
-                return True
-                
-        except Exception as e:
-            print(f"PGC批量指令發送異常: {e}")
-            return False
-    
-    def send_command(self, command: int, param1: int = 0, 
-                    timeout: float = 5.0, wait_completion: bool = True) -> bool:
-        """發送夾爪指令 - 相容性方法"""
-        return self.send_gripper_command_batch(command, param1)
-        
-    def get_current_position(self) -> int:
-        """獲取當前位置"""
-        return self.read_register(5) or 0  # 505: 當前位置
-        
-    def check_reached(self) -> bool:
-        """檢查是否到達位置"""
-        grip_status = self.read_register(4)  # 504: 夾持狀態
-        return grip_status in [self.PGC_STATUS_REACHED, self.PGC_STATUS_GRIPPED]
-
-
-class CCD1VisionController(ExternalModuleController):
-    """CCD1視覺檢測控制器"""
-    
-    def __init__(self, modbus_client: ModbusTcpClient):
-        super().__init__(modbus_client, ExternalModules.CCD1_BASE)
-        
-    def initialize(self) -> bool:
-        """初始化視覺系統"""
-        print("初始化CCD1視覺系統")
-        return self.send_vision_command(32, timeout=10.0)  # 重新初始化
-        
-    def capture_and_detect(self, timeout: float = 10.0) -> bool:
-        """拍照並檢測"""
-        print("CCD1拍照並檢測")
-        return self.send_vision_command(16, timeout=timeout)  # 拍照+檢測
-        
-    def send_vision_command(self, command: int, timeout: float = 5.0) -> bool:
-        """發送視覺指令"""
-        try:
-            # 檢查Ready狀態
-            status = self.read_register(1)  # 201: 狀態寄存器
-            if not (status and (status & 0x01)):  # bit0=Ready
-                print("CCD1視覺系統未準備好")
-                return False
-                
-            # 發送指令
-            self.write_register(0, command)  # 200: 控制指令
-            
-            # 等待執行完成
-            start_time = time.time()
-            while time.time() - start_time < timeout:
-                status = self.read_register(1)  # 201: 狀態寄存器
-                if status and not (status & 0x02):  # bit1=Running變為0
-                    # 清除控制指令
-                    self.write_register(0, 0)
-                    print(f"CCD1視覺指令{command}執行完成")
-                    return True
-                time.sleep(0.1)
-                
-            print(f"CCD1視覺指令{command}執行超時")
-            return False
-            
-        except Exception as e:
-            print(f"CCD1視覺指令{command}執行失敗: {e}")
-            return False
-    
-    def get_detection_count(self) -> int:
-        """獲取檢測到的物體數量"""
-        return self.read_register(40) or 0  # 240: 檢測數量
-        
-    def get_object_center_world(self, object_index: int) -> Optional[List[float]]:
-        """獲取物體世界座標中心點"""
-        try:
-            # 檢查世界座標有效性
-            world_valid = self.read_register(56)  # 256: 世界座標有效標誌
-            if not world_valid:
-                return None
-                
-            if object_index < 1 or object_index > 5:
-                return None
-                
-            # 計算寄存器偏移 (每個物體占用4個寄存器，X高位/低位, Y高位/低位)
-            base_offset = 57 + (object_index - 1) * 4  # 257開始
-            
-            # 讀取X座標 (高位/低位)
-            x_high = self.read_register(base_offset) or 0
-            x_low = self.read_register(base_offset + 1) or 0
-            x_int = (x_high << 16) | x_low
-            if x_int >= 2**31:  # 如果是負數（最高位為1）
-                x_int = x_int - 2**32  # 轉換為負數
-            x_world = x_int / 100.0
-            
-            # 讀取Y座標 (高位/低位)
-            y_high = self.read_register(base_offset + 2) or 0
-            y_low = self.read_register(base_offset + 3) or 0
-            y_int = (y_high << 16) | y_low
-            if y_int >= 2**31:  # 如果是負數（最高位為1）
-                y_int = y_int - 2**32  # 轉換為負數
-            y_world = y_int / 100.0
-            
-            return [x_world, y_world, 0.0]  # Z=0平面
-            
-        except Exception as e:
-            print(f"獲取物體{object_index}世界座標失敗: {e}")
-            return None
-    
-    def is_ready(self) -> bool:
-        """檢查是否準備好"""
-        status = self.read_register(1)  # 201: 狀態寄存器
-        return bool(status and (status & 0x01))  # bit0=Ready
-
-
-class CCD3AngleController(ExternalModuleController):
-    """CCD3角度檢測控制器"""
-    
-    def __init__(self, modbus_client: ModbusTcpClient):
-        super().__init__(modbus_client, ExternalModules.CCD3_BASE)
-        
-    def initialize(self) -> bool:
-        """初始化角度檢測系統"""
-        print("初始化CCD3角度檢測系統")
-        return self.send_angle_command(32, timeout=10.0)  # 重新初始化
-        
-    def detect_angle(self, timeout: float = 10.0) -> bool:
-        """檢測角度"""
-        print("CCD3角度檢測")
-        return self.send_angle_command(16, timeout=timeout)  # 拍照+角度檢測
-        
-    def send_angle_command(self, command: int, timeout: float = 5.0) -> bool:
-        """發送角度檢測指令"""
-        try:
-            # 檢查Ready狀態
-            status = self.read_register(1)  # 801: 狀態寄存器
-            if not (status and (status & 0x01)):  # bit0=Ready
-                print("CCD3角度檢測系統未準備好")
-                return False
-                
-            # 發送指令
-            self.write_register(0, command)  # 800: 控制指令
-            
-            # 等待執行完成
-            start_time = time.time()
-            while time.time() - start_time < timeout:
-                status = self.read_register(1)  # 801: 狀態寄存器
-                if status and not (status & 0x02):  # bit1=Running變為0
-                    # 清除控制指令
-                    self.write_register(0, 0)
-                    print(f"CCD3角度指令{command}執行完成")
-                    return True
-                time.sleep(0.1)
-                
-            print(f"CCD3角度指令{command}執行超時")
-            return False
-            
-        except Exception as e:
-            print(f"CCD3角度指令{command}執行失敗: {e}")
-            return False
-    
-    def get_detected_angle(self) -> Optional[float]:
-        """獲取檢測到的角度"""
-        try:
-            # 檢查檢測成功標誌
-            success = self.read_register(40)  # 840: 檢測成功標誌
-            if not success:
-                return None
-                
-            # 讀取角度 (高位/低位)
-            angle_high = self.read_register(43) or 0  # 843: 角度高位
-            angle_low = self.read_register(44) or 0   # 844: 角度低位
-            
-            angle_int = (angle_high << 16) | angle_low
-            angle = angle_int / 100.0  # 恢復小數點
-            
-            return angle
-            
-        except Exception as e:
-            print(f"獲取檢測角度失敗: {e}")
-            return None
-    
-    def is_ready(self) -> bool:
-        """檢查是否準備好"""
-        status = self.read_register(1)  # 801: 狀態寄存器
-        return bool(status and (status & 0x01))  # bit0=Ready
 
 
 class DobotM1Pro:
@@ -853,7 +512,7 @@ class DobotM1Pro:
 
 
 class DobotStateMachine:
-    """Dobot狀態機管理"""
+    """Dobot狀態機管理 - 狀態機交握實現版"""
     
     def __init__(self, modbus_client: ModbusTcpClient):
         self.modbus_client = modbus_client
@@ -863,8 +522,91 @@ class DobotStateMachine:
         self.error_count = 0
         self.start_time = time.time()
         
+        # 狀態機交握核心 - 二進制位控制
+        self.status_register = 0b1001  # 初始: Ready=1, Initialized=1
+        self.lock = threading.Lock()   # 線程安全保護
+        
+    # === 狀態機交握核心方法 ===
+    def get_status_bit(self, bit_pos: int) -> bool:
+        """獲取狀態位"""
+        with self.lock:
+            return bool(self.status_register & (1 << bit_pos))
+    
+    def set_status_bit(self, bit_pos: int, value: bool):
+        """設置狀態位"""
+        with self.lock:
+            if value:
+                self.status_register |= (1 << bit_pos)
+            else:
+                self.status_register &= ~(1 << bit_pos)
+    
+    def is_ready(self) -> bool:
+        """檢查Ready狀態 (bit0)"""
+        return self.get_status_bit(0)
+    
+    def is_running(self) -> bool:
+        """檢查Running狀態 (bit1)"""
+        return self.get_status_bit(1)
+    
+    def is_alarm(self) -> bool:
+        """檢查Alarm狀態 (bit2)"""
+        return self.get_status_bit(2)
+    
+    def is_initialized(self) -> bool:
+        """檢查Initialized狀態 (bit3)"""
+        return self.get_status_bit(3)
+    
+    def set_ready(self, ready: bool):
+        """設置Ready狀態"""
+        if ready:
+            self.set_status_bit(0, True)   # 設置Ready=1
+            self.set_status_bit(1, False)  # 清除Running=0
+            self.set_status_bit(2, False)  # 清除Alarm=0
+        else:
+            self.set_status_bit(0, False)  # 清除Ready=0
+        print(f"狀態機Ready設置為: {ready}, 當前狀態寄存器: {self.status_register:04b}")
+    
+    def set_running(self, running: bool):
+        """設置Running狀態"""
+        if running:
+            self.set_status_bit(1, True)   # 設置Running=1
+            self.set_status_bit(0, False)  # 清除Ready=0
+        else:
+            self.set_status_bit(1, False)  # 清除Running=0
+            # 注意: 不自動設置Ready=1，等待控制指令清零
+        print(f"狀態機Running設置為: {running}, 當前狀態寄存器: {self.status_register:04b}")
+    
+    def set_alarm(self, alarm: bool):
+        """設置Alarm狀態"""
+        if alarm:
+            self.set_status_bit(2, True)   # 設置Alarm=1
+            self.set_status_bit(0, False)  # 清除Ready=0
+            self.set_status_bit(1, False)  # 清除Running=0
+        else:
+            self.set_status_bit(2, False)  # 清除Alarm=0
+        print(f"狀態機Alarm設置為: {alarm}, 當前狀態寄存器: {self.status_register:04b}")
+    
+    def set_initialized(self, initialized: bool):
+        """設置Initialized狀態"""
+        self.set_status_bit(3, initialized)
+        print(f"狀態機Initialized設置為: {initialized}")
+    
+    def clear_alarm_state(self):
+        """清除警報狀態 - 專用方法"""
+        print("收到清除警報指令")
+        self.set_alarm(False)
+        # 清除警報後恢復Ready狀態
+        if not self.is_running():
+            self.set_ready(True)
+        print("警報狀態已清除")
+    
+    def is_ready_for_command(self) -> bool:
+        """檢查是否準備好接受指令"""
+        return self.is_ready() and not self.is_running() and not self.is_alarm()
+    
+    # === 原有方法保持相容性 ===
     def set_state(self, new_state: RobotState):
-        """設置機械臂狀態"""
+        """設置機械臂狀態 - 相容性方法"""
         self.current_state = new_state
         self.update_status_to_plc()
         
@@ -872,18 +614,43 @@ class DobotStateMachine:
         """設置當前流程"""
         self.current_flow = flow_type
         self.update_status_to_plc()
-        
-    def update_status_to_plc(self):
-        """更新狀態到PLC - PyModbus 3.9.2修正版"""
+    
+    def read_control_register(self, register_offset: int) -> int:
+        """讀取控制寄存器"""
         try:
-            # 更新機械臂狀態
+            result = self.modbus_client.read_holding_registers(
+                address=DobotRegisters.VP_CONTROL + register_offset, 
+                count=1
+            )
+            
+            if hasattr(result, 'isError') and result.isError():
+                return 0
+            elif hasattr(result, 'registers') and len(result.registers) > 0:
+                return result.registers[0]
+            else:
+                return 0
+                
+        except Exception as e:
+            print(f"讀取控制寄存器{DobotRegisters.VP_CONTROL + register_offset}異常: {e}")
+            return 0
+    
+    def update_status_to_plc(self):
+        """更新狀態到PLC - 狀態機交握版本"""
+        try:
+            # 更新主狀態寄存器 (400)
             result = self.modbus_client.write_register(
+                address=DobotRegisters.STATUS_REGISTER, 
+                value=self.status_register
+            )
+            
+            # 更新機械臂狀態 (401)
+            self.modbus_client.write_register(
                 address=DobotRegisters.ROBOT_STATE, 
                 value=self.current_state.value
             )
             
-            # 更新當前流程
-            result = self.modbus_client.write_register(
+            # 更新當前流程 (402)
+            self.modbus_client.write_register(
                 address=DobotRegisters.CURRENT_FLOW, 
                 value=self.current_flow.value
             )
@@ -907,26 +674,6 @@ class DobotStateMachine:
             
         except Exception as e:
             print(f"更新狀態到PLC異常: {e}")
-    
-    def read_control_from_plc(self) -> Dict[str, Any]:
-        """從PLC讀取控制指令 - PyModbus 3.9.2修正版"""
-        try:
-            result = self.modbus_client.read_holding_registers(
-                address=DobotRegisters.CONTROL_CMD, 
-                count=1
-            )
-            
-            if hasattr(result, 'isError') and result.isError():
-                return {'command': 0}
-            elif hasattr(result, 'registers') and len(result.registers) > 0:
-                command = result.registers[0]
-                return {'command': command}
-            else:
-                return {'command': 0}
-                
-        except Exception as e:
-            print(f"讀取PLC控制指令異常: {e}")
-            return {'command': 0}
     
     def update_robot_info(self, robot: DobotM1Pro):
         """更新機械臂資訊到寄存器 - 修正版，避免數值範圍錯誤"""
@@ -976,14 +723,10 @@ class DobotStateMachine:
             
         except Exception as e:
             return False
-    
-    def is_ready_for_command(self) -> bool:
-        """檢查是否準備好接受指令"""
-        return self.current_state == RobotState.IDLE
 
 
 class DobotMotionController:
-    """Dobot運動控制主控制器 - 修正版"""
+    """Dobot運動控制主控制器 - 狀態機交握實現版"""
     
     def __init__(self, config_file: str = CONFIG_FILE):
         self.config_file = config_file
@@ -997,7 +740,7 @@ class DobotMotionController:
         # 外部模組控制器
         self.gripper: Optional[GripperHighLevelAPI] = None
         self.ccd1: Optional[CCD1HighLevelAPI] = None
-        self.ccd3: Optional[CCD3AngleController] = None  # 保持原有
+        self.ccd3: Optional[Any] = None  # 保持原有
         
         # 流程執行器
         self.flows: Dict[int, Any] = {}
@@ -1084,7 +827,7 @@ class DobotMotionController:
     
     def initialize_system(self) -> bool:
         """初始化系統 - 修改為使用高層API"""
-        print("=== 初始化Dobot運動控制系統 ===")
+        print("=== 初始化Dobot運動控制系統 (狀態機交握版) ===")
         
         # 1. 連接Modbus服務器
         if not self._connect_modbus():
@@ -1111,12 +854,6 @@ class DobotMotionController:
             print("✓ CCD1視覺高層API已啟用")
         else:
             print("CCD1視覺高層API已停用")
-            
-        if self.config["vision"]["ccd3_enabled"]:
-            self.ccd3 = CCD3AngleController(self.modbus_client)
-            print("CCD3角度控制器已啟用")
-        else:
-            print("CCD3角度控制器已停用")
         
         # 4. 初始化流程執行器
         if self.config["flows"]["flow1_enabled"]:
@@ -1128,7 +865,7 @@ class DobotMotionController:
                 state_machine=self.state_machine
             )
             print("✓ Flow1執行器初始化完成 (使用高層API)")
-        # 新增Flow2初始化
+        
         if self.config["flows"]["flow2_enabled"]:
             self.flows[2] = Flow2Executor(
                 robot=self.robot,
@@ -1138,11 +875,12 @@ class DobotMotionController:
                 state_machine=self.state_machine
             )
             print("✓ Flow2執行器初始化完成 (出料流程)")
+        
         # 5. 載入點位數據
         if not self.robot.points_manager.load_points():
             print("載入點位數據失敗，但繼續運行")
         
-        print("系統初始化完成 (使用高層API)")
+        print("系統初始化完成 (狀態機交握版)")
         return True
     
     def connect_all_devices(self) -> bool:
@@ -1188,16 +926,6 @@ class DobotMotionController:
             except Exception as e:
                 print(f"⚠️ CCD1視覺檢查異常: {e}，但繼續運行")
         
-        # 4. 檢查CCD3連接 (如果啟用)
-        if self.ccd3:
-            try:
-                if not self.ccd3.initialize():
-                    print("⚠️ CCD3角度檢測系統初始化失敗，但繼續運行")
-                else:
-                    print("✓ CCD3角度檢測系統初始化成功")
-            except Exception as e:
-                print(f"⚠️ CCD3初始化異常: {e}")
-        
         print("設備連接完成 (使用高層API)")
         return True
     
@@ -1220,45 +948,6 @@ class DobotMotionController:
             print(f"Modbus連接異常: {e}")
             return False
     
-    def connect_all_devices(self) -> bool:
-        """連接所有設備 - 修正版，允許部分設備失敗"""
-        print("=== 連接所有設備 ===")
-        
-        # 1. 連接機械臂
-        if not self.robot.initialize():
-            print("機械臂連接失敗")
-            return False
-        
-        # 2. 初始化夾爪 (如果啟用)
-        if self.gripper:
-            try:
-                if not self.gripper.initialize():
-                    print("PGC夾爪初始化失敗，但繼續運行")
-                    self.gripper = None
-                else:
-                    print("PGC夾爪初始化成功")
-            except Exception as e:
-                print(f"PGC夾爪初始化異常: {e}，繼續運行")
-                self.gripper = None
-        
-        # 3. 初始化視覺系統 (如果啟用)
-        if self.ccd1:
-            try:
-                if not self.ccd1.initialize():
-                    print("CCD1視覺系統初始化失敗，但繼續運行")
-            except Exception as e:
-                print(f"CCD1初始化異常: {e}")
-        
-        if self.ccd3:
-            try:
-                if not self.ccd3.initialize():
-                    print("CCD3角度檢測系統初始化失敗，但繼續運行")
-            except Exception as e:
-                print(f"CCD3初始化異常: {e}")
-        
-        print("設備連接完成")
-        return True
-    
     def start_handshake_sync(self):
         """啟動狀態機交握同步"""
         if self.is_running:
@@ -1280,25 +969,79 @@ class DobotMotionController:
         print("狀態機交握同步停止")
     
     def _handshake_loop(self):
-        """狀態機交握主循環 - 增強版本，避免重複處理"""
+        """狀態機交握主循環 - 狀態機交握實現版"""
         print("狀態機交握循環開始")
-        last_command = 0  # 追蹤上次處理的指令
+        
+        # 追蹤指令狀態，避免重複處理
+        last_vp_control = 0
+        last_unload_control = 0
+        last_clear_alarm = 0
+        last_emergency_stop = 0
+        last_manual_command = 0
         
         while self.is_running:
             try:
-                # 讀取PLC控制指令
-                control_data = self.state_machine.read_control_from_plc()
-                command = control_data.get('command', 0)
+                # 讀取控制寄存器
+                vp_control = self.state_machine.read_control_register(0)      # 440: VP視覺取料控制
+                unload_control = self.state_machine.read_control_register(1)  # 441: 出料控制
+                clear_alarm = self.state_machine.read_control_register(2)     # 442: 清除警報控制
+                emergency_stop = self.state_machine.read_control_register(3)  # 443: 緊急停止控制
+                manual_command = self.state_machine.read_control_register(4)  # 444: 手動指令
                 
-                # 只處理新指令（避免重複處理）
-                if command != 0 and command != last_command:
-                    print(f"檢測到新指令: {command} (上次: {last_command})")
-                    self._handle_plc_command(command)
-                    last_command = command
-                elif command == 0 and last_command != 0:
-                    # 指令被清除
-                    print(f"指令已清除 (上次: {last_command})")
-                    last_command = 0
+                # 處理緊急停止 (最高優先級)
+                if emergency_stop == 1 and last_emergency_stop != 1:
+                    print("收到緊急停止指令")
+                    self.emergency_stop_all()
+                    last_emergency_stop = 1
+                elif emergency_stop == 0:
+                    last_emergency_stop = 0
+                
+                # 處理警報清除
+                if clear_alarm == 1 and last_clear_alarm != 1:
+                    self.state_machine.clear_alarm_state()
+                    last_clear_alarm = 1
+                elif clear_alarm == 0:
+                    last_clear_alarm = 0
+                
+                # 處理VP視覺取料指令 (Flow1)
+                if vp_control == 1 and last_vp_control != 1:
+                    if self.state_machine.is_ready_for_command():
+                        print("收到VP視覺取料指令，啟動Flow1")
+                        self.execute_flow1_async()
+                    else:
+                        print(f"系統未Ready，無法執行Flow1 (狀態: {self.state_machine.status_register:04b})")
+                    last_vp_control = 1
+                elif vp_control == 0:
+                    # VP控制清零，檢查是否需要恢復Ready
+                    if last_vp_control == 1 and not self.state_machine.is_running() and not self.state_machine.is_alarm():
+                        print("VP控制指令已清零，恢復Ready狀態")
+                        self.state_machine.set_ready(True)
+                    last_vp_control = 0
+                
+                # 處理出料指令 (Flow2) - 需要Ready且VP控制已清零
+                if unload_control == 1 and last_unload_control != 1:
+                    if self.state_machine.is_ready_for_command() and vp_control == 0:
+                        print("收到出料指令，啟動Flow2")
+                        self.execute_flow2_async()
+                    else:
+                        if not self.state_machine.is_ready_for_command():
+                            print(f"系統未Ready，無法執行Flow2 (狀態: {self.state_machine.status_register:04b})")
+                        if vp_control != 0:
+                            print(f"VP控制未清零({vp_control})，無法執行Flow2")
+                    last_unload_control = 1
+                elif unload_control == 0:
+                    # 出料控制清零，檢查是否需要恢復Ready
+                    if last_unload_control == 1 and not self.state_machine.is_running() and not self.state_machine.is_alarm():
+                        print("出料控制指令已清零，恢復Ready狀態")
+                        self.state_machine.set_ready(True)
+                    last_unload_control = 0
+                
+                # 處理Web端手動指令
+                if manual_command != 0 and manual_command != last_manual_command:
+                    self.handle_manual_command(manual_command)
+                    last_manual_command = manual_command
+                elif manual_command == 0:
+                    last_manual_command = 0
                 
                 # 更新機械臂資訊
                 if self.robot.is_connected:
@@ -1319,121 +1062,137 @@ class DobotMotionController:
         
         print("狀態機交握循環結束")
     
-    def _handle_plc_command(self, command: int):
-        """處理PLC指令 - 修正指令清除邏輯"""
-        try:
-            print(f"收到PLC指令: {command}")
-            
-            if command == CommandType.EMERGENCY_STOP.value:
-                print("收到緊急停止指令")
-                self.emergency_stop_all()
-                # 立即清除指令
-                self._clear_command()
-                
-            elif command in [CommandType.FLOW_1.value, CommandType.FLOW_2.value, CommandType.FLOW_3.value]:
-                if self.state_machine.is_ready_for_command():
-                    print(f"收到流程{command}執行指令")
-                    
-                    # 🔥 關鍵修正：立即清除指令，避免重複執行
-                    self._clear_command()
-                    
-                    # 然後執行流程
-                    self.execute_flow(command)
-                else:
-                    current_state = self.state_machine.current_state.name
-                    print(f"系統忙碌，無法執行流程{command} (當前狀態: {current_state})")
-                    
-                    # 如果系統忙碌，也清除指令避免重複
-                    self._clear_command()
-                    
-            elif command == CommandType.CLEAR.value:
-                print("收到清空指令")
-                self._clear_command()
-                
-        except Exception as e:
-            print(f"處理PLC指令{command}失敗: {e}")
-            # 發生異常時也清除指令
-            self._clear_command()
+    def execute_flow1_async(self):
+        """異步執行Flow1 - 狀態機交握版本"""
+        threading.Thread(target=self._flow1_execution_thread, daemon=True).start()
     
-    def execute_flow(self, flow_id: int) -> bool:
-        """執行指定流程 - 增強版本"""
-        if flow_id not in self.flows:
-            print(f"流程{flow_id}未啟用或不存在")
-            return False
-        
-        if self.current_flow and hasattr(self.current_flow, 'is_running') and self.current_flow.is_running:
-            print("有流程正在執行中")
-            return False
-        
-        try:
-            print(f"開始執行流程{flow_id}")
-            
-            # 設置狀態
-            self.state_machine.set_state(RobotState.RUNNING)
-            self.state_machine.set_flow(FlowType(flow_id))
-            
-            # 執行流程
-            self.current_flow = self.flows[flow_id]
-            
-            # 在新線程中執行流程
-            flow_thread = threading.Thread(
-                target=self._execute_flow_thread,
-                args=(self.current_flow,),
-                daemon=True
-            )
-            flow_thread.start()
-            
-            print(f"流程{flow_id}線程已啟動")
-            return True
-            
-        except Exception as e:
-            print(f"啟動流程{flow_id}失敗: {e}")
-            self.state_machine.set_state(RobotState.ERROR)
-            return False
+    def execute_flow2_async(self):
+        """異步執行Flow2 - 狀態機交握版本"""
+        threading.Thread(target=self._flow2_execution_thread, daemon=True).start()
     
-    def _execute_flow_thread(self, flow_executor):
-        """流程執行線程 - 增強錯誤處理版本"""
-        flow_name = type(flow_executor).__name__
-        
+    def _flow1_execution_thread(self):
+        """Flow1執行線程 - 狀態機交握版本"""
         try:
-            print(f"流程線程開始執行: {flow_name}")
+            print("=== Flow1執行線程開始 ===")
             
-            # 調用流程的execute方法
-            result = flow_executor.execute()
+            # 設置執行狀態
+            self.state_machine.set_running(True)
+            self.state_machine.set_flow(FlowType.FLOW_1)
+            self.current_flow = self.flows[1]
             
-            # 處理FlowResult對象
+            # 執行Flow1
+            result = self.flows[1].execute()
+            
+            # 處理執行結果
             if hasattr(result, 'success'):
                 if result.success:
-                    print(f"流程{flow_name}執行成功，耗時: {result.execution_time:.2f}秒")
-                    print(f"完成步驟: {result.steps_completed}/{result.total_steps}")
+                    print(f"Flow1執行成功，耗時: {result.execution_time:.2f}秒")
                     self.state_machine.operation_count += 1
-                    self.state_machine.set_state(RobotState.IDLE)
+                    self.state_machine.set_running(False)  # Running=0, Ready保持=0，等待PLC清零
+                    print("Flow1完成，等待PLC清零VP控制指令後恢復Ready")
                 else:
-                    print(f"流程{flow_name}執行失敗: {result.error_message}")
-                    print(f"失敗於步驟: {result.steps_completed}/{result.total_steps}")
+                    print(f"Flow1執行失敗: {result.error_message}")
                     self.state_machine.error_count += 1
-                    self.state_machine.set_state(RobotState.ERROR)
+                    self.state_machine.set_alarm(True)
+                    print("Flow1失敗，系統進入Alarm狀態")
             else:
                 # 處理舊版本的bool返回值
                 if result:
-                    print(f"流程{flow_name}執行成功")
+                    print("Flow1執行成功")
                     self.state_machine.operation_count += 1
-                    self.state_machine.set_state(RobotState.IDLE)
+                    self.state_machine.set_running(False)
+                    print("Flow1完成，等待PLC清零VP控制指令後恢復Ready")
                 else:
-                    print(f"流程{flow_name}執行失敗")
+                    print("Flow1執行失敗")
                     self.state_machine.error_count += 1
-                    self.state_machine.set_state(RobotState.ERROR)
+                    self.state_machine.set_alarm(True)
+                    print("Flow1失敗，系統進入Alarm狀態")
                     
         except Exception as e:
-            print(f"流程{flow_name}執行異常: {e}")
+            print(f"Flow1執行異常: {e}")
             traceback.print_exc()
             self.state_machine.error_count += 1
-            self.state_machine.set_state(RobotState.ERROR)
+            self.state_machine.set_alarm(True)
+            print("Flow1異常，系統進入Alarm狀態")
         finally:
             # 確保狀態機正確重置
             self.state_machine.set_flow(FlowType.NONE)
             self.current_flow = None
-            print(f"流程線程結束: {flow_name}")
+            print("=== Flow1執行線程結束 ===")
+    
+    def _flow2_execution_thread(self):
+        """Flow2執行線程 - 狀態機交握版本"""
+        try:
+            print("=== Flow2執行線程開始 ===")
+            
+            # 設置執行狀態
+            self.state_machine.set_running(True)
+            self.state_machine.set_flow(FlowType.FLOW_2)
+            self.current_flow = self.flows[2]
+            
+            # 執行Flow2
+            result = self.flows[2].execute()
+            
+            # 處理執行結果
+            if hasattr(result, 'success'):
+                if result.success:
+                    print(f"Flow2執行成功，耗時: {result.execution_time:.2f}秒")
+                    self.state_machine.operation_count += 1
+                    self.state_machine.set_running(False)  # Running=0, Ready保持=0，等待PLC清零
+                    print("Flow2完成，等待PLC清零出料控制指令後恢復Ready")
+                else:
+                    print(f"Flow2執行失敗: {result.error_message}")
+                    self.state_machine.error_count += 1
+                    self.state_machine.set_alarm(True)
+                    print("Flow2失敗，系統進入Alarm狀態")
+            else:
+                # 處理舊版本的bool返回值
+                if result:
+                    print("Flow2執行成功")
+                    self.state_machine.operation_count += 1
+                    self.state_machine.set_running(False)
+                    print("Flow2完成，等待PLC清零出料控制指令後恢復Ready")
+                else:
+                    print("Flow2執行失敗")
+                    self.state_machine.error_count += 1
+                    self.state_machine.set_alarm(True)
+                    print("Flow2失敗，系統進入Alarm狀態")
+                    
+        except Exception as e:
+            print(f"Flow2執行異常: {e}")
+            traceback.print_exc()
+            self.state_machine.error_count += 1
+            self.state_machine.set_alarm(True)
+            print("Flow2異常，系統進入Alarm狀態")
+        finally:
+            # 確保狀態機正確重置
+            self.state_machine.set_flow(FlowType.NONE)
+            self.current_flow = None
+            print("=== Flow2執行線程結束 ===")
+    
+    def handle_manual_command(self, command: int):
+        """處理Web端手動指令"""
+        try:
+            print(f"收到Web端手動指令: {command}")
+            
+            if command == 1:  # 手動Flow1
+                if self.state_machine.is_ready_for_command():
+                    print("Web端手動執行Flow1")
+                    self.execute_flow1_async()
+                else:
+                    print("系統未Ready，無法執行Web端Flow1")
+            elif command == 2:  # 手動Flow2
+                if self.state_machine.is_ready_for_command():
+                    print("Web端手動執行Flow2")
+                    self.execute_flow2_async()
+                else:
+                    print("系統未Ready，無法執行Web端Flow2")
+            elif command == 99:  # Web端緊急停止
+                print("Web端緊急停止")
+                self.emergency_stop_all()
+                
+        except Exception as e:
+            print(f"處理Web端手動指令{command}失敗: {e}")
     
     def emergency_stop_all(self) -> bool:
         """緊急停止所有設備"""
@@ -1452,8 +1211,9 @@ class DobotMotionController:
             if self.current_flow and hasattr(self.current_flow, 'stop'):
                 self.current_flow.stop()
             
-            # 設置緊急停止狀態
+            # 設置系統狀態
             self.state_machine.set_state(RobotState.EMERGENCY)
+            self.state_machine.set_alarm(True)
             
             print("緊急停止完成")
             return True
@@ -1462,34 +1222,8 @@ class DobotMotionController:
             print(f"緊急停止失敗: {e}")
             return False
     
-    def _clear_command(self):
-        """清空指令 - 增強版本，確保清除成功"""
-        try:
-            # 清除控制指令寄存器
-            result = self.modbus_client.write_register(
-                address=DobotRegisters.CONTROL_CMD, 
-                value=0
-            )
-            if hasattr(result, 'isError') and result.isError():
-                print(f"清空指令失敗: {result}")
-            else:
-                print("指令已清空")
-                
-            # 額外確認：讀取寄存器確保清除成功
-            read_result = self.modbus_client.read_holding_registers(
-                address=DobotRegisters.CONTROL_CMD, 
-                count=1
-            )
-            if hasattr(read_result, 'registers') and len(read_result.registers) > 0:
-                actual_value = read_result.registers[0]
-                if actual_value != 0:
-                    print(f"警告：指令清除後寄存器值仍為 {actual_value}")
-                    
-        except Exception as e:
-            print(f"清空指令異常: {e}")
-    
     def get_system_status(self) -> Dict[str, Any]:
-        """獲取系統狀態 - 增加更多診斷信息"""
+        """獲取系統狀態 - 狀態機交握版本"""
         return {
             "robot_connected": self.robot.is_connected,
             "robot_ready": self.robot.is_ready() if self.robot.is_connected else False,
@@ -1502,8 +1236,14 @@ class DobotMotionController:
             "gripper_enabled": self.gripper is not None,
             "ccd1_enabled": self.ccd1 is not None,
             "ccd3_enabled": self.ccd3 is not None,
-            # 新增診斷信息
-            "is_ready_for_command": self.state_machine.is_ready_for_command(),
+            # 狀態機交握專用狀態
+            "status_register": self.state_machine.status_register,
+            "status_register_binary": f"{self.state_machine.status_register:04b}",
+            "ready": self.state_machine.is_ready(),
+            "running": self.state_machine.is_running(),
+            "alarm": self.state_machine.is_alarm(),
+            "initialized": self.state_machine.is_initialized(),
+            "ready_for_command": self.state_machine.is_ready_for_command(),
             "current_flow_object": str(type(self.current_flow).__name__) if self.current_flow else None,
             "handshake_thread_alive": self.handshake_thread.is_alive() if self.handshake_thread else False
         }
@@ -1523,11 +1263,8 @@ class DobotMotionController:
             # 重置狀態機
             self.state_machine.set_state(RobotState.IDLE)
             self.state_machine.set_flow(FlowType.NONE)
-            print("狀態機已重置為IDLE")
-            
-            # 清除PLC指令
-            self._clear_command()
-            print("已清除PLC指令")
+            self.state_machine.set_ready(True)  # 強制設置Ready
+            print("狀態機已重置為Ready")
             
             print("強制狀態重置完成")
             return True
@@ -1538,12 +1275,32 @@ class DobotMotionController:
     
     def diagnose_system_state(self):
         """系統狀態診斷 - 詳細檢查"""
-        print("\n=== 系統狀態診斷 ===")
+        print("\n=== 系統狀態診斷 (狀態機交握版) ===")
         
         # 狀態機診斷
-        print(f"狀態機當前狀態: {self.state_machine.current_state.name}")
-        print(f"狀態機當前流程: {self.state_machine.current_flow.name}")
-        print(f"是否準備好接受指令: {self.state_machine.is_ready_for_command()}")
+        print(f"狀態寄存器值: {self.state_machine.status_register} (二進制: {self.state_machine.status_register:04b})")
+        print(f"Ready狀態: {self.state_machine.is_ready()}")
+        print(f"Running狀態: {self.state_machine.is_running()}")
+        print(f"Alarm狀態: {self.state_machine.is_alarm()}")
+        print(f"Initialized狀態: {self.state_machine.is_initialized()}")
+        print(f"準備接受指令: {self.state_machine.is_ready_for_command()}")
+        print(f"當前流程: {self.state_machine.current_flow.name}")
+        
+        # 控制寄存器狀態
+        try:
+            vp_control = self.state_machine.read_control_register(0)
+            unload_control = self.state_machine.read_control_register(1)
+            clear_alarm = self.state_machine.read_control_register(2)
+            emergency_stop = self.state_machine.read_control_register(3)
+            manual_command = self.state_machine.read_control_register(4)
+            
+            print(f"VP控制寄存器(440): {vp_control}")
+            print(f"出料控制寄存器(441): {unload_control}")
+            print(f"清除警報寄存器(442): {clear_alarm}")
+            print(f"緊急停止寄存器(443): {emergency_stop}")
+            print(f"手動指令寄存器(444): {manual_command}")
+        except Exception as e:
+            print(f"讀取控制寄存器失敗: {e}")
         
         # 流程執行器診斷
         if self.current_flow:
@@ -1618,34 +1375,67 @@ def main():
         # 啟動狀態機交握
         controller.start_handshake_sync()
         
-        print("\n=== Dobot運動控制系統啟動完成 ===")
+        print("\n=== Dobot運動控制系統啟動完成 (狀態機交握版) ===")
         print(f"基地址: {DOBOT_BASE_ADDR}")
-        print(f"控制指令地址: {DobotRegisters.CONTROL_CMD}")
-        print(f"機械臂狀態地址: {DobotRegisters.ROBOT_STATE}")
-        print("指令映射:")
-        print("  0 = 清空指令")
-        print("  1 = 執行流程1 (VP視覺抓取)")
-        print("  2 = 執行流程2 (CCD3角度檢測) - 未實現")
-        print("  3 = 執行流程3 (完整加工流程) - 未實現")
-        print(" 99 = 緊急停止")
+        print("=== 狀態機交握寄存器映射 ===")
+        print(f"主狀態寄存器: {DobotRegisters.STATUS_REGISTER} (bit0=Ready, bit1=Running, bit2=Alarm)")
+        print(f"機械臂狀態: {DobotRegisters.ROBOT_STATE}")
+        print(f"當前流程ID: {DobotRegisters.CURRENT_FLOW}")
+        print("=== 控制寄存器映射 ===")
+        print(f"VP視覺取料控制: {DobotRegisters.VP_CONTROL} (0=清空, 1=啟動Flow1)")
+        print(f"出料控制: {DobotRegisters.UNLOAD_CONTROL} (0=清空, 1=啟動Flow2)")
+        print(f"清除警報控制: {DobotRegisters.CLEAR_ALARM} (0=無動作, 1=清除Alarm)")
+        print(f"緊急停止控制: {DobotRegisters.EMERGENCY_STOP} (0=正常, 1=緊急停止)")
+        print(f"手動指令: {DobotRegisters.MANUAL_COMMAND} (Web端使用)")
+        
+        print("\n=== 狀態機交握流程說明 ===")
+        print("Flow1 (VP視覺取料):")
+        print("  1. 檢查400寄存器Ready=1")
+        print("  2. 寫入440=1觸發Flow1")
+        print("  3. 系統執行: 400=10 (Running=1)")
+        print("  4. 執行完成: 400=8 (Ready=0, Running=0)")
+        print("  5. PLC清零: 寫入440=0")
+        print("  6. 系統恢復: 400=9 (Ready=1)")
+        
+        print("\nFlow2 (出料流程):")
+        print("  前提: 400=9 且 440=0 (Flow1已完成且清零)")
+        print("  1. 檢查400寄存器Ready=1, 440=0")
+        print("  2. 寫入441=1觸發Flow2")
+        print("  3. 系統執行: 400=10 (Running=1)")
+        print("  4. 執行完成: 400=8 (Ready=0, Running=0)")
+        print("  5. PLC清零: 寫入441=0")
+        print("  6. 系統恢復: 400=9 (Ready=1)")
+        
+        print("\n錯誤處理:")
+        print("  檢測Alarm: 400=12 (bit2=1)")
+        print("  清除警報: 寫入442=1")
+        print("  確認清除: 400=9 (Alarm清除)")
+        print("  清零指令: 寫入442=0")
         
         status = controller.get_system_status()
-        print(f"\n系統狀態:")
-        print(f"  啟用的流程: {status['flows_enabled']}")
-        print(f"  PGC夾爪: {'啟用' if status['gripper_enabled'] else '停用'}")
-        print(f"  CCD1視覺: {'啟用' if status['ccd1_enabled'] else '停用'}")
-        print(f"  CCD3角度: {'啟用' if status['ccd3_enabled'] else '停用'}")
-        print("\n系統準備完成，等待PLC指令...")
+        print(f"\n=== 系統當前狀態 ===")
+        print(f"狀態寄存器: {status['status_register']} (二進制: {status['status_register_binary']})")
+        print(f"Ready: {status['ready']}")
+        print(f"Running: {status['running']}")
+        print(f"Alarm: {status['alarm']}")
+        print(f"Initialized: {status['initialized']}")
+        print(f"準備接受指令: {status['ready_for_command']}")
+        print(f"啟用的流程: {status['flows_enabled']}")
+        print(f"PGC夾爪: {'啟用' if status['gripper_enabled'] else '停用'}")
+        print(f"CCD1視覺: {'啟用' if status['ccd1_enabled'] else '停用'}")
+        print(f"CCD3角度: {'啟用' if status['ccd3_enabled'] else '停用'}")
+        print("\n系統準備完成，等待PLC狀態機交握指令...")
         print("  Flow1: VP視覺抓取 (FIFO佇列模式)")
-        print("  Flow2: 出料流程 (standby→撐開→組裝→放下→standby)")  # 新增這行
+        print("  Flow2: 出料流程 (standby→撐開→組裝→放下→standby)")
+        print("  Web端: 可通過444寄存器手動控制")
         
         # 主循環
         while True:
             try:
                 time.sleep(1)
                 status = controller.get_system_status()
-                if status["current_state"] != "IDLE":
-                    print(f"系統狀態: {status['current_state']}, 當前流程: {status['current_flow']}")
+                if status["ready"] or status["running"] or status["alarm"]:
+                    print(f"狀態更新: Ready={status['ready']}, Running={status['running']}, Alarm={status['alarm']}, Flow={status['current_flow']}")
                     
             except KeyboardInterrupt:
                 print("\n收到中斷信號，準備退出...")

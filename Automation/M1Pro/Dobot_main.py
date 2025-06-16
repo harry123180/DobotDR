@@ -60,7 +60,7 @@ class DobotRegisters:
     OP_COUNTER = DOBOT_BASE_ADDR + 16         # 416: 操作計數器
     ERR_COUNTER = DOBOT_BASE_ADDR + 17        # 417: 錯誤計數器
     RUN_TIME = DOBOT_BASE_ADDR + 18           # 418: 運行時間(分鐘)
-    RESERVED = DOBOT_BASE_ADDR + 19           # 419: 保留
+    GLOBAL_SPEED = DOBOT_BASE_ADDR + 19       # 419: 全局速度設定值 (新增)
     
     # 控制寄存器 (440-449) - 讀寫
     VP_CONTROL = DOBOT_BASE_ADDR + 40         # 440: VP視覺取料控制
@@ -68,6 +68,9 @@ class DobotRegisters:
     CLEAR_ALARM = DOBOT_BASE_ADDR + 42        # 442: 清除警報控制
     EMERGENCY_STOP = DOBOT_BASE_ADDR + 43     # 443: 緊急停止控制
     MANUAL_COMMAND = DOBOT_BASE_ADDR + 44     # 444: 手動指令 (Web端使用)
+    SPEED_COMMAND = DOBOT_BASE_ADDR + 45      # 445: 速度控制指令 (新增)
+    SPEED_VALUE = DOBOT_BASE_ADDR + 46        # 446: 速度數值 (新增)
+    SPEED_CMD_ID = DOBOT_BASE_ADDR + 47       # 447: 速度指令ID (新增)
 
 
 # 外部模組寄存器地址
@@ -295,26 +298,24 @@ class DobotM1Pro:
         points_file = os.path.join(current_dir, "saved_points", "robot_points.json")
         self.points_manager = PointsManager(points_file)
         self.is_connected = False
-        self.global_speed = 100
+        self.global_speed = 50  # 預設全局速度
+        self.last_set_speed = 50  # 追蹤最後設定的速度
         
     def initialize(self) -> bool:
-        """初始化機械臂連接"""
+        """初始化機械臂連接 - 增強版"""
         try:
             self.dashboard_api = DobotApiDashboard(self.ip, 29999)
-            
             self.move_api = DobotApiMove(self.ip, 30003)
             
             # 機械臂初始化設置
             self.dashboard_api.ClearError()
             self.dashboard_api.EnableRobot()
-            self.dashboard_api.SpeedFactor(self.global_speed)  # 全局速度比例
-            self.dashboard_api.SpeedJ(self.global_speed)       # 關節運動速度
-            self.dashboard_api.SpeedL(self.global_speed)       # 直線運動速度
-            self.dashboard_api.AccJ(self.global_speed)         # 關節運動加速度
-            self.dashboard_api.AccL(self.global_speed)         # 直線運動加速度
+            
+            # 設定初始速度
+            self.set_global_speed(self.global_speed)
             
             self.is_connected = True
-            print(f"機械臂初始化成功: {self.ip}")
+            print(f"機械臂初始化成功: {self.ip}, 初始速度: {self.global_speed}%")
             return True
             
         except Exception as e:
@@ -356,16 +357,35 @@ class DobotM1Pro:
             return False
     
     def set_global_speed(self, speed: int) -> bool:
-        """設置全局速度"""
+        """設置全局速度 - 增強版"""
         try:
+            if speed < 1 or speed > 100:
+                print(f"速度值超出範圍(1-100): {speed}")
+                return False
+                
             if self.dashboard_api:
-                self.dashboard_api.SpeedFactor(speed)
+                # 同時設定所有速度相關參數
+                self.dashboard_api.SpeedFactor(speed)     # 全局速度比例
+                self.dashboard_api.SpeedJ(speed)          # 關節運動速度
+                self.dashboard_api.SpeedL(speed)          # 直線運動速度
+                self.dashboard_api.AccJ(speed)            # 關節運動加速度
+                self.dashboard_api.AccL(speed)            # 直線運動加速度
+                
                 self.global_speed = speed
-            return True
+                self.last_set_speed = speed
+                print(f"全局速度已設定為: {speed}%")
+                return True
+            else:
+                print("機械臂API未連接，無法設定速度")
+                return False
+                
         except Exception as e:
             print(f"設置全局速度失敗: {e}")
             return False
-    
+    def get_global_speed(self) -> int:
+        """獲取當前全局速度"""
+        return self.global_speed
+
     def MovJ(self, point_name: str, **kwargs) -> bool:
         """關節運動到指定點位"""
         point = self.points_manager.get_point(point_name)
@@ -525,13 +545,68 @@ class DobotStateMachine:
         # 狀態機交握核心 - 二進制位控制
         self.status_register = 0b1001  # 初始: Ready=1, Initialized=1
         self.lock = threading.Lock()   # 線程安全保護
+        # 速度控制狀態機 (新增)
+        self.current_global_speed = 50  # 當前全局速度
+        self.last_speed_cmd_id = 0      # 最後處理的速度指令ID
         
     # === 狀態機交握核心方法 ===
     def get_status_bit(self, bit_pos: int) -> bool:
         """獲取狀態位"""
         with self.lock:
             return bool(self.status_register & (1 << bit_pos))
-    
+    def update_global_speed_register(self, speed: int):
+        """更新全局速度寄存器"""
+        try:
+            self.current_global_speed = speed
+            self.safe_write_register(DobotRegisters.GLOBAL_SPEED, speed)
+            print(f"全局速度寄存器已更新: {speed}%")
+        except Exception as e:
+            print(f"更新全局速度寄存器失敗: {e}")
+    def process_speed_command(self, robot: DobotM1Pro) -> bool:
+        """處理速度控制指令 - 狀態機交握"""
+        try:
+            # 讀取速度控制指令
+            speed_command = self.read_control_register(5)      # 445: 速度控制指令
+            speed_value = self.read_control_register(6)        # 446: 速度數值
+            speed_cmd_id = self.read_control_register(7)       # 447: 速度指令ID
+            
+            # 檢查是否有新的速度指令
+            if (speed_command == 1 and 
+                speed_cmd_id != 0 and 
+                speed_cmd_id != self.last_speed_cmd_id):
+                
+                print(f"收到速度設定指令: {speed_value}%, ID: {speed_cmd_id}")
+                
+                # 驗證速度範圍
+                if speed_value < 1 or speed_value > 100:
+                    print(f"速度值超出範圍: {speed_value}")
+                    # 清除無效指令
+                    self.safe_write_register(DobotRegisters.SPEED_COMMAND, 0)
+                    return False
+                
+                # 設定機械臂速度
+                success = robot.set_global_speed(speed_value)
+                
+                if success:
+                    # 更新速度寄存器
+                    self.update_global_speed_register(speed_value)
+                    print(f"全局速度設定成功: {speed_value}%")
+                else:
+                    print(f"全局速度設定失敗: {speed_value}%")
+                
+                # 更新最後處理的指令ID
+                self.last_speed_cmd_id = speed_cmd_id
+                
+                # 清除速度控制指令
+                self.safe_write_register(DobotRegisters.SPEED_COMMAND, 0)
+                
+                return success
+                
+            return True  # 沒有新指令，返回成功
+            
+        except Exception as e:
+            print(f"處理速度控制指令異常: {e}")
+            return False
     def set_status_bit(self, bit_pos: int, value: bool):
         """設置狀態位"""
         with self.lock:
@@ -616,7 +691,7 @@ class DobotStateMachine:
         self.update_status_to_plc()
     
     def read_control_register(self, register_offset: int) -> int:
-        """讀取控制寄存器"""
+        """讀取控制寄存器 - 增強版"""
         try:
             result = self.modbus_client.read_holding_registers(
                 address=DobotRegisters.VP_CONTROL + register_offset, 
@@ -635,10 +710,10 @@ class DobotStateMachine:
             return 0
     
     def update_status_to_plc(self):
-        """更新狀態到PLC - 狀態機交握版本"""
+        """更新狀態到PLC - 增強版含速度"""
         try:
             # 更新主狀態寄存器 (400)
-            result = self.modbus_client.write_register(
+            self.modbus_client.write_register(
                 address=DobotRegisters.STATUS_REGISTER, 
                 value=self.status_register
             )
@@ -670,6 +745,12 @@ class DobotStateMachine:
             self.modbus_client.write_register(
                 address=DobotRegisters.RUN_TIME, 
                 value=run_time_minutes
+            )
+            
+            # 更新全局速度 (419) - 新增
+            self.modbus_client.write_register(
+                address=DobotRegisters.GLOBAL_SPEED, 
+                value=self.current_global_speed
             )
             
         except Exception as e:
@@ -969,8 +1050,8 @@ class DobotMotionController:
         print("狀態機交握同步停止")
     
     def _handshake_loop(self):
-        """狀態機交握主循環 - 狀態機交握實現版"""
-        print("狀態機交握循環開始")
+        """狀態機交握主循環 - 新增速度控制"""
+        print("狀態機交握循環開始 (含速度控制)")
         
         # 追蹤指令狀態，避免重複處理
         last_vp_control = 0
@@ -987,7 +1068,9 @@ class DobotMotionController:
                 clear_alarm = self.state_machine.read_control_register(2)     # 442: 清除警報控制
                 emergency_stop = self.state_machine.read_control_register(3)  # 443: 緊急停止控制
                 manual_command = self.state_machine.read_control_register(4)  # 444: 手動指令
-                
+                # === 新增: 處理速度控制指令 ===
+                if self.robot.is_connected:
+                    self.state_machine.process_speed_command(self.robot)
                 # 處理緊急停止 (最高優先級)
                 if emergency_stop == 1 and last_emergency_stop != 1:
                     print("收到緊急停止指令")
@@ -1171,7 +1254,7 @@ class DobotMotionController:
             print("=== Flow2執行線程結束 ===")
     
     def handle_manual_command(self, command: int):
-        """處理Web端手動指令"""
+        """處理Web端手動指令 - 增強版"""
         try:
             print(f"收到Web端手動指令: {command}")
             
@@ -1190,6 +1273,15 @@ class DobotMotionController:
             elif command == 99:  # Web端緊急停止
                 print("Web端緊急停止")
                 self.emergency_stop_all()
+            elif command >= 10 and command <= 100:  # 速度設定指令 (新增)
+                print(f"Web端速度設定: {command}%")
+                if self.robot.is_connected:
+                    success = self.robot.set_global_speed(command)
+                    if success:
+                        self.state_machine.update_global_speed_register(command)
+                        print(f"Web端速度設定成功: {command}%")
+                    else:
+                        print(f"Web端速度設定失敗: {command}%")
                 
         except Exception as e:
             print(f"處理Web端手動指令{command}失敗: {e}")
@@ -1223,7 +1315,7 @@ class DobotMotionController:
             return False
     
     def get_system_status(self) -> Dict[str, Any]:
-        """獲取系統狀態 - 狀態機交握版本"""
+        """獲取系統狀態 - 增強版含速度"""
         return {
             "robot_connected": self.robot.is_connected,
             "robot_ready": self.robot.is_ready() if self.robot.is_connected else False,
@@ -1236,7 +1328,8 @@ class DobotMotionController:
             "gripper_enabled": self.gripper is not None,
             "ccd1_enabled": self.ccd1 is not None,
             "ccd3_enabled": self.ccd3 is not None,
-            # 狀態機交握專用狀態
+            
+            # 狀態機交握狀態
             "status_register": self.state_machine.status_register,
             "status_register_binary": f"{self.state_machine.status_register:04b}",
             "ready": self.state_machine.is_ready(),
@@ -1245,9 +1338,42 @@ class DobotMotionController:
             "initialized": self.state_machine.is_initialized(),
             "ready_for_command": self.state_machine.is_ready_for_command(),
             "current_flow_object": str(type(self.current_flow).__name__) if self.current_flow else None,
-            "handshake_thread_alive": self.handshake_thread.is_alive() if self.handshake_thread else False
+            "handshake_thread_alive": self.handshake_thread.is_alive() if self.handshake_thread else False,
+            
+            # 速度控制狀態 (新增)
+            "global_speed": self.state_machine.current_global_speed,
+            "robot_speed": self.robot.get_global_speed() if self.robot.is_connected else 0,
+            "last_speed_cmd_id": self.state_machine.last_speed_cmd_id,
+            "speed_control_available": True
         }
-    
+    def set_global_speed_via_handshake(self, speed: int) -> bool:
+        """透過狀態機交握設定全局速度 - 測試用"""
+        try:
+            if speed < 1 or speed > 100:
+                print(f"速度值超出範圍(1-100): {speed}")
+                return False
+            
+            # 生成指令ID
+            import random
+            cmd_id = random.randint(1, 65535)
+            
+            # 寫入速度控制寄存器
+            success1 = self.state_machine.safe_write_register(DobotRegisters.SPEED_VALUE, speed)
+            success2 = self.state_machine.safe_write_register(DobotRegisters.SPEED_CMD_ID, cmd_id)
+            success3 = self.state_machine.safe_write_register(DobotRegisters.SPEED_COMMAND, 1)
+            
+            success = success1 and success2 and success3
+            
+            if success:
+                print(f"透過狀態機交握設定速度: {speed}%, ID: {cmd_id}")
+            else:
+                print(f"透過狀態機交握設定速度失敗: {speed}%")
+            
+            return success
+            
+        except Exception as e:
+            print(f"透過狀態機交握設定速度異常: {e}")
+            return False
     def force_reset_state(self):
         """強制重置狀態機 - 緊急恢復用"""
         try:
@@ -1387,6 +1513,10 @@ def main():
         print(f"清除警報控制: {DobotRegisters.CLEAR_ALARM} (0=無動作, 1=清除Alarm)")
         print(f"緊急停止控制: {DobotRegisters.EMERGENCY_STOP} (0=正常, 1=緊急停止)")
         print(f"手動指令: {DobotRegisters.MANUAL_COMMAND} (Web端使用)")
+        print("=== 速度控制寄存器映射 (新增) ===")
+        print(f"速度控制指令: {DobotRegisters.SPEED_COMMAND} (0=無動作, 1=設定速度)")
+        print(f"速度數值: {DobotRegisters.SPEED_VALUE} (1-100)")
+        print(f"速度指令ID: {DobotRegisters.SPEED_CMD_ID} (防重複執行)")
         
         print("\n=== 狀態機交握流程說明 ===")
         print("Flow1 (VP視覺取料):")
@@ -1406,6 +1536,15 @@ def main():
         print("  5. PLC清零: 寫入441=0")
         print("  6. 系統恢復: 400=9 (Ready=1)")
         
+        print("\n=== 速度控制流程 (新增) ===")
+        print("設定全局速度:")
+        print("  1. 寫入446=速度值 (1-100)")
+        print("  2. 寫入447=指令ID (唯一識別)")
+        print("  3. 寫入445=1 (觸發速度設定)")
+        print("  4. 系統處理: 設定機械臂速度")
+        print("  5. 更新419=新速度值")
+        print("  6. 系統清零: 445=0")
+        
         print("\n錯誤處理:")
         print("  檢測Alarm: 400=12 (bit2=1)")
         print("  清除警報: 寫入442=1")
@@ -1420,14 +1559,24 @@ def main():
         print(f"Alarm: {status['alarm']}")
         print(f"Initialized: {status['initialized']}")
         print(f"準備接受指令: {status['ready_for_command']}")
+        print(f"當前全局速度: {status['global_speed']}%")
+        print(f"機械臂速度: {status['robot_speed']}%")
         print(f"啟用的流程: {status['flows_enabled']}")
         print(f"PGC夾爪: {'啟用' if status['gripper_enabled'] else '停用'}")
         print(f"CCD1視覺: {'啟用' if status['ccd1_enabled'] else '停用'}")
         print(f"CCD3角度: {'啟用' if status['ccd3_enabled'] else '停用'}")
+        print(f"速度控制: {'啟用' if status['speed_control_available'] else '停用'}")
+        
         print("\n系統準備完成，等待PLC狀態機交握指令...")
         print("  Flow1: VP視覺抓取 (FIFO佇列模式)")
-        print("  Flow2: 出料流程 (standby→撐開→組裝→放下→standby)")
+        print("  Flow2: 出料流程 (standby→撈料→組裝→放下→standby)")
+        print("  Speed: 全局速度控制 (1-100%)")
         print("  Web端: 可通過444寄存器手動控制")
+        
+        print("\n=== 測試指令範例 ===")
+        print("測試速度設定: controller.set_global_speed_via_handshake(75)")
+        print("速度寄存器檢查: 讀取419查看當前速度")
+        print("狀態診斷: controller.diagnose_system_state()")
         
         # 主循環
         while True:
@@ -1435,7 +1584,8 @@ def main():
                 time.sleep(1)
                 status = controller.get_system_status()
                 if status["ready"] or status["running"] or status["alarm"]:
-                    print(f"狀態更新: Ready={status['ready']}, Running={status['running']}, Alarm={status['alarm']}, Flow={status['current_flow']}")
+                    speed_info = f", Speed={status['global_speed']}%"
+                    print(f"狀態更新: Ready={status['ready']}, Running={status['running']}, Alarm={status['alarm']}, Flow={status['current_flow']}{speed_info}")
                     
             except KeyboardInterrupt:
                 print("\n收到中斷信號，準備退出...")
@@ -1450,3 +1600,40 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+# =========================== 使用說明 ===========================
+# 
+# 1. 速度控制寄存器映射:
+#    445 (SPEED_COMMAND): 速度控制指令 (0=無動作, 1=設定速度)
+#    446 (SPEED_VALUE): 速度數值 (1-100)
+#    447 (SPEED_CMD_ID): 速度指令ID (防重複執行)
+#    419 (GLOBAL_SPEED): 當前全局速度 (只讀狀態)
+# 
+# 2. 速度設定流程:
+#    步驟1: 寫入446=速度值
+#    步驟2: 寫入447=唯一指令ID
+#    步驟3: 寫入445=1 (觸發設定)
+#    步驟4: 系統自動處理並更新419寄存器
+#    步驟5: 系統自動清零445寄存器
+# 
+# 3. Web端可用的手動指令 (444寄存器):
+#    1: 手動Flow1
+#    2: 手動Flow2
+#    10-100: 直接速度設定
+#    99: 緊急停止
+# 
+# 4. 測試方法:
+#    python Dobot_main.py test_speed  # 運行速度控制測試
+#    python Dobot_main.py             # 正常運行
+# 
+# 5. 速度控制特點:
+#    - 線程安全的狀態機交握
+#    - 防重複執行機制
+#    - 自動同步機械臂和寄存器
+#    - 範圍檢查 (1-100%)
+#    - 錯誤處理和恢復

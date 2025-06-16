@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_main_app.py - Dobot主控制器Web介面 (增強版)
+Dobot_main_app.py - Dobot主控制器Web介面 (狀態機交握版本)
 提供Web UI來控制和監控Dobot_main.py主控制器
-基地址400的寄存器操作界面，新增FIFO佇列狀態顯示
+完全使用狀態機交握協議進行控制
 """
 
 import os
@@ -17,33 +17,39 @@ from pymodbus.client.tcp import ModbusTcpClient
 # 配置檔案
 CONFIG_FILE = "dobot_main_app_config.json"
 
-# Modbus寄存器映射 (基地址400)
+# Modbus寄存器映射 (狀態機交握版本)
 class DobotRegisters:
-    CONTROL_CMD = 400      # 控制指令
-    ROBOT_STATE = 401      # 機械臂狀態
-    CURRENT_FLOW = 402     # 當前流程ID
-    FLOW_PROGRESS = 403    # 流程執行進度
-    ERROR_CODE = 404       # 錯誤代碼
-    ROBOT_MODE = 405       # 機械臂模式
-    POS_X = 406           # 當前X座標
-    POS_Y = 407           # 當前Y座標
-    POS_Z = 408           # 當前Z座標
-    POS_R = 409           # 當前R座標
-    JOINT_J1 = 410        # J1角度
-    JOINT_J2 = 411        # J2角度
-    JOINT_J3 = 412        # J3角度
-    JOINT_J4 = 413        # J4角度
-    DI_STATUS = 414       # 數位輸入狀態
-    DO_STATUS = 415       # 數位輸出狀態
-    OP_COUNTER = 416      # 操作計數器
-    ERR_COUNTER = 417     # 錯誤計數器
-    RUN_TIME = 418        # 運行時間(分鐘)
-
-# CCD1寄存器映射 (用於FIFO佇列狀態查詢)
-class CCD1Registers:
-    STATUS_REGISTER = 201  # CCD1狀態寄存器
-    CIRCLE_COUNT = 240     # 檢測圓形數量
-    WORLD_COORD_VALID = 256 # 世界座標有效標誌
+    # 狀態寄存器 (400-419) - 只讀
+    STATUS_REGISTER = 400     # 主狀態寄存器 (bit0=Ready, bit1=Running, bit2=Alarm, bit3=Initialized)
+    ROBOT_STATE = 401         # 機械臂狀態
+    CURRENT_FLOW = 402        # 當前流程ID
+    FLOW_PROGRESS = 403       # 流程執行進度
+    ERROR_CODE = 404          # 錯誤代碼
+    ROBOT_MODE = 405          # 機械臂模式
+    POS_X = 406              # 當前X座標
+    POS_Y = 407              # 當前Y座標
+    POS_Z = 408              # 當前Z座標
+    POS_R = 409              # 當前R座標
+    JOINT_J1 = 410           # J1角度
+    JOINT_J2 = 411           # J2角度
+    JOINT_J3 = 412           # J3角度
+    JOINT_J4 = 413           # J4角度
+    DI_STATUS = 414          # 數位輸入狀態
+    DO_STATUS = 415          # 數位輸出狀態
+    OP_COUNTER = 416         # 操作計數器
+    ERR_COUNTER = 417        # 錯誤計數器
+    RUN_TIME = 418           # 運行時間(分鐘)
+    GLOBAL_SPEED = 419       # 全局速度設定值 (新增)
+    
+    # 控制寄存器 (440-449) - 讀寫
+    VP_CONTROL = 440         # VP視覺取料控制
+    UNLOAD_CONTROL = 441     # 出料控制
+    CLEAR_ALARM = 442        # 清除警報控制
+    EMERGENCY_STOP = 443     # 緊急停止控制
+    MANUAL_COMMAND = 444     # 手動指令 (Web端使用)
+    SPEED_COMMAND = 445      # 速度控制指令 (新增)
+    SPEED_VALUE = 446        # 速度數值 (新增)
+    SPEED_CMD_ID = 447       # 速度指令ID (新增)
 
 # 狀態映射
 ROBOT_STATES = {
@@ -54,12 +60,19 @@ FLOW_TYPES = {
     0: "無流程", 1: "VP視覺抓取(FIFO)", 2: "出料流程", 3: "完整加工流程"
 }
 
-COMMANDS = {
-    0: "清空指令", 1: "執行流程1", 2: "執行流程2(出料)", 3: "執行流程3", 99: "緊急停止"
+# 狀態機交握指令
+HANDSHAKE_COMMANDS = {
+    "vp_pickup": 1,          # VP視覺取料
+    "unload": 2,             # 出料流程
+    "clear_alarm": 1,        # 清除警報
+    "emergency_stop": 1,     # 緊急停止
+    "manual_flow1": 1,       # 手動Flow1
+    "manual_flow2": 2,       # 手動Flow2
+    "set_speed": 1           # 設定速度
 }
 
-class DobotMainAppController:
-    """Dobot主控制器Web應用控制器 (增強版)"""
+class DobotHandshakeController:
+    """Dobot狀態機交握控制器"""
     
     def __init__(self, config_file: str = CONFIG_FILE):
         self.config_file = config_file
@@ -68,6 +81,7 @@ class DobotMainAppController:
         self.is_connected = False
         self.monitoring = False
         self.monitor_thread = None
+        self.speed_cmd_id_counter = 1
         
     def _load_config(self) -> dict:
         """載入配置檔案"""
@@ -88,10 +102,15 @@ class DobotMainAppController:
                 "refresh_interval": 1.0,
                 "auto_start": True
             },
-            "ui_settings": {
-                "theme": "light",
-                "show_advanced": True,  # 啟用進階功能顯示
-                "show_ccd1_queue": True  # 新增：顯示CCD1佇列狀態
+            "handshake_settings": {
+                "command_timeout": 5.0,
+                "retry_count": 3,
+                "auto_clear_commands": True
+            },
+            "speed_control": {
+                "min_speed": 1,
+                "max_speed": 100,
+                "default_speed": 50
             }
         }
         
@@ -171,47 +190,50 @@ class DobotMainAppController:
             print(f"寫入寄存器{address}={value}失敗: {e}")
             return False
     
-    def read_ccd1_queue_status(self) -> dict:
-        """讀取CCD1佇列狀態 (新增功能)"""
-        try:
-            if not self.is_connected:
-                return {}
-            
-            # 讀取CCD1相關寄存器
-            ccd1_status = self.read_register(CCD1Registers.STATUS_REGISTER)
-            circle_count = self.read_register(CCD1Registers.CIRCLE_COUNT)
-            world_coord_valid = self.read_register(CCD1Registers.WORLD_COORD_VALID)
-            
-            return {
-                "ccd1_ready": bool(ccd1_status & 0x01) if ccd1_status is not None else False,
-                "ccd1_running": bool(ccd1_status & 0x02) if ccd1_status is not None else False,
-                "ccd1_alarm": bool(ccd1_status & 0x04) if ccd1_status is not None else False,
-                "circle_count": circle_count if circle_count is not None else 0,
-                "world_coord_valid": bool(world_coord_valid) if world_coord_valid is not None else False,
-                "queue_estimate": circle_count if circle_count is not None else 0  # 佇列估計值
-            }
-            
-        except Exception as e:
-            print(f"讀取CCD1佇列狀態失敗: {e}")
+    def get_status_bits(self) -> dict:
+        """解析狀態寄存器位元"""
+        status_register = self.read_register(DobotRegisters.STATUS_REGISTER)
+        if status_register is None:
             return {}
+        
+        return {
+            "ready": bool(status_register & 0x01),      # bit0
+            "running": bool(status_register & 0x02),    # bit1
+            "alarm": bool(status_register & 0x04),      # bit2
+            "initialized": bool(status_register & 0x08), # bit3
+            "status_register_value": status_register,
+            "status_register_binary": f"{status_register:04b}"
+        }
+    
+    def is_ready_for_command(self) -> bool:
+        """檢查系統是否準備好接受指令"""
+        status_bits = self.get_status_bits()
+        return (status_bits.get("ready", False) and 
+                not status_bits.get("running", False) and 
+                not status_bits.get("alarm", False))
     
     def read_all_status(self) -> dict:
-        """讀取所有狀態寄存器 (增強版)"""
+        """讀取所有狀態寄存器"""
         try:
             if not self.is_connected:
                 return {}
                 
-            # 讀取所有狀態寄存器 (400-418)
-            result = self.modbus_client.read_holding_registers(DobotRegisters.CONTROL_CMD, count=19)
+            # 讀取狀態寄存器 (400-419)
+            result = self.modbus_client.read_holding_registers(DobotRegisters.STATUS_REGISTER, count=20)
             
-            if not (hasattr(result, 'registers') and len(result.registers) >= 19):
+            if not (hasattr(result, 'registers') and len(result.registers) >= 20):
                 return {}
             
             registers = result.registers
+            status_bits = self.get_status_bits()
             
             # 基本狀態數據
             status_data = {
-                "control_cmd": registers[0],
+                # 狀態機交握狀態
+                "handshake_status": status_bits,
+                "ready_for_command": self.is_ready_for_command(),
+                
+                # 機械臂狀態
                 "robot_state": registers[1],
                 "robot_state_text": ROBOT_STATES.get(registers[1], "未知"),
                 "current_flow": registers[2],
@@ -219,35 +241,40 @@ class DobotMainAppController:
                 "flow_progress": registers[3],
                 "error_code": registers[4],
                 "robot_mode": registers[5],
+                "global_speed": registers[19],  # 新增: 全局速度
+                
+                # 位置資訊
                 "position": {
                     "x": registers[6],
                     "y": registers[7],
                     "z": registers[8],
                     "r": registers[9]
                 },
+                
+                # 關節角度
                 "joints": {
-                    "j1": registers[10] / 100.0,  # 恢復小數點
+                    "j1": registers[10] / 100.0,
                     "j2": registers[11] / 100.0,
                     "j3": registers[12] / 100.0,
                     "j4": registers[13] / 100.0
                 },
+                
+                # IO狀態
                 "io_status": {
                     "di": registers[14],
                     "do": registers[15]
                 },
+                
+                # 統計資訊
                 "statistics": {
                     "operation_count": registers[16],
                     "error_count": registers[17],
                     "run_time_minutes": registers[18]
                 },
+                
                 "connection_status": self.is_connected,
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
             }
-            
-            # 新增：CCD1佇列狀態 (如果啟用)
-            if self.config["ui_settings"].get("show_ccd1_queue", True):
-                ccd1_queue = self.read_ccd1_queue_status()
-                status_data["ccd1_queue"] = ccd1_queue
             
             return status_data
             
@@ -255,18 +282,276 @@ class DobotMainAppController:
             print(f"讀取狀態失敗: {e}")
             return {}
     
-    def send_command(self, command: int) -> bool:
-        """發送控制指令"""
+    def read_control_registers(self) -> dict:
+        """讀取控制寄存器狀態"""
         try:
-            success = self.write_register(DobotRegisters.CONTROL_CMD, command)
-            if success:
-                print(f"發送指令成功: {command} ({COMMANDS.get(command, '未知指令')})")
-            else:
-                print(f"發送指令失敗: {command}")
-            return success
+            if not self.is_connected:
+                return {}
+            
+            control_data = {
+                "vp_control": self.read_register(DobotRegisters.VP_CONTROL),
+                "unload_control": self.read_register(DobotRegisters.UNLOAD_CONTROL),
+                "clear_alarm": self.read_register(DobotRegisters.CLEAR_ALARM),
+                "emergency_stop": self.read_register(DobotRegisters.EMERGENCY_STOP),
+                "manual_command": self.read_register(DobotRegisters.MANUAL_COMMAND),
+                "speed_command": self.read_register(DobotRegisters.SPEED_COMMAND),
+                "speed_value": self.read_register(DobotRegisters.SPEED_VALUE),
+                "speed_cmd_id": self.read_register(DobotRegisters.SPEED_CMD_ID)
+            }
+            
+            return control_data
+            
         except Exception as e:
-            print(f"發送指令{command}異常: {e}")
-            return False
+            print(f"讀取控制寄存器失敗: {e}")
+            return {}
+    
+    # === 狀態機交握指令方法 ===
+    
+    def execute_vp_pickup(self) -> dict:
+        """執行VP視覺取料 (Flow1)"""
+        try:
+            if not self.is_ready_for_command():
+                return {
+                    "success": False,
+                    "message": "系統未Ready，無法執行VP視覺取料"
+                }
+            
+            success = self.write_register(DobotRegisters.VP_CONTROL, 1)
+            return {
+                "success": success,
+                "message": "VP視覺取料指令已發送" if success else "VP視覺取料指令發送失敗",
+                "flow_description": "從CCD1佇列獲取物體座標並執行抓取動作"
+            }
+            
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"VP視覺取料執行失敗: {e}"
+            }
+    
+    def execute_unload_flow(self) -> dict:
+        """執行出料流程 (Flow2)"""
+        try:
+            if not self.is_ready_for_command():
+                return {
+                    "success": False,
+                    "message": "系統未Ready，無法執行出料流程"
+                }
+            
+            # 檢查VP控制是否已清零
+            vp_control = self.read_register(DobotRegisters.VP_CONTROL)
+            if vp_control != 0:
+                return {
+                    "success": False,
+                    "message": f"VP控制未清零({vp_control})，無法執行出料流程"
+                }
+            
+            success = self.write_register(DobotRegisters.UNLOAD_CONTROL, 1)
+            return {
+                "success": success,
+                "message": "出料流程指令已發送" if success else "出料流程指令發送失敗",
+                "flow_description": "從standby點開始的完整出料作業流程"
+            }
+            
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"出料流程執行失敗: {e}"
+            }
+    
+    def clear_vp_pickup(self) -> dict:
+        """清零VP視覺取料指令"""
+        try:
+            success = self.write_register(DobotRegisters.VP_CONTROL, 0)
+            return {
+                "success": success,
+                "message": "VP視覺取料指令已清零" if success else "VP視覺取料指令清零失敗"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"清零VP視覺取料指令失敗: {e}"
+            }
+    
+    def clear_unload_flow(self) -> dict:
+        """清零出料流程指令"""
+        try:
+            success = self.write_register(DobotRegisters.UNLOAD_CONTROL, 0)
+            return {
+                "success": success,
+                "message": "出料流程指令已清零" if success else "出料流程指令清零失敗"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"清零出料流程指令失敗: {e}"
+            }
+    
+    def clear_alarm(self) -> dict:
+        """清除警報"""
+        try:
+            success = self.write_register(DobotRegisters.CLEAR_ALARM, 1)
+            return {
+                "success": success,
+                "message": "清除警報指令已發送" if success else "清除警報指令發送失敗"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"清除警報失敗: {e}"
+            }
+    
+    def emergency_stop(self) -> dict:
+        """緊急停止"""
+        try:
+            success = self.write_register(DobotRegisters.EMERGENCY_STOP, 1)
+            return {
+                "success": success,
+                "message": "緊急停止指令已發送" if success else "緊急停止指令發送失敗"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"緊急停止失敗: {e}"
+            }
+    
+    def manual_execute_flow(self, flow_id: int) -> dict:
+        """Web端手動執行流程"""
+        try:
+            if not self.is_ready_for_command():
+                return {
+                    "success": False,
+                    "message": "系統未Ready，無法執行手動指令"
+                }
+            
+            success = self.write_register(DobotRegisters.MANUAL_COMMAND, flow_id)
+            flow_name = FLOW_TYPES.get(flow_id, f"流程{flow_id}")
+            
+            return {
+                "success": success,
+                "message": f"手動執行{flow_name}指令已發送" if success else f"手動執行{flow_name}指令發送失敗"
+            }
+            
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"手動執行流程{flow_id}失敗: {e}"
+            }
+    
+    def set_global_speed(self, speed: int) -> dict:
+        """設定全局速度"""
+        try:
+            # 檢查速度範圍
+            min_speed = self.config["speed_control"]["min_speed"]
+            max_speed = self.config["speed_control"]["max_speed"]
+            
+            if speed < min_speed or speed > max_speed:
+                return {
+                    "success": False,
+                    "message": f"速度值超出範圍({min_speed}-{max_speed})"
+                }
+            
+            # 生成指令ID
+            self.speed_cmd_id_counter += 1
+            if self.speed_cmd_id_counter > 65535:
+                self.speed_cmd_id_counter = 1
+            
+            # 發送速度設定指令
+            success1 = self.write_register(DobotRegisters.SPEED_VALUE, speed)
+            success2 = self.write_register(DobotRegisters.SPEED_CMD_ID, self.speed_cmd_id_counter)
+            success3 = self.write_register(DobotRegisters.SPEED_COMMAND, 1)
+            
+            success = success1 and success2 and success3
+            
+            return {
+                "success": success,
+                "message": f"全局速度設定為{speed}%" if success else "全局速度設定失敗",
+                "speed_value": speed,
+                "command_id": self.speed_cmd_id_counter
+            }
+            
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"設定全局速度失敗: {e}"
+            }
+    
+    def get_global_speed(self) -> dict:
+        """獲取當前全局速度"""
+        try:
+            current_speed = self.read_register(DobotRegisters.GLOBAL_SPEED)
+            if current_speed is None:
+                return {
+                    "success": False,
+                    "message": "讀取全局速度失敗"
+                }
+            
+            return {
+                "success": True,
+                "current_speed": current_speed,
+                "message": f"當前全局速度: {current_speed}%"
+            }
+            
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"獲取全局速度失敗: {e}"
+            }
+    
+    def check_flow_preconditions(self, flow_id: int) -> dict:
+        """檢查流程執行前置條件"""
+        try:
+            status = self.read_all_status()
+            if not status:
+                return {
+                    "ready": False,
+                    "message": "無法讀取系統狀態"
+                }
+            
+            handshake_status = status.get("handshake_status", {})
+            
+            # 基本檢查
+            checks = {
+                "modbus_connected": self.is_connected,
+                "system_ready": handshake_status.get("ready", False),
+                "not_running": not handshake_status.get("running", False),
+                "no_alarm": not handshake_status.get("alarm", False),
+                "robot_not_error": status.get("robot_state") != 3
+            }
+            
+            # Flow2特殊檢查
+            if flow_id == 2:
+                vp_control = self.read_register(DobotRegisters.VP_CONTROL)
+                checks["vp_control_cleared"] = (vp_control == 0)
+            
+            all_ready = all(checks.values())
+            
+            # 生成檢查報告
+            messages = []
+            if not checks["modbus_connected"]:
+                messages.append("Modbus未連接")
+            if not checks["system_ready"]:
+                messages.append("系統未Ready")
+            if not checks["not_running"]:
+                messages.append("系統執行中")
+            if not checks["no_alarm"]:
+                messages.append("系統警報中")
+            if not checks["robot_not_error"]:
+                messages.append("機械臂錯誤狀態")
+            if flow_id == 2 and not checks.get("vp_control_cleared", True):
+                messages.append("VP控制未清零")
+            
+            return {
+                "ready": all_ready,
+                "checks": checks,
+                "message": f"Flow{flow_id}可以執行" if all_ready else "; ".join(messages)
+            }
+            
+        except Exception as e:
+            return {
+                "ready": False,
+                "message": f"檢查前置條件失敗: {e}"
+            }
     
     def start_monitoring(self):
         """啟動狀態監控"""
@@ -276,7 +561,7 @@ class DobotMainAppController:
         self.monitoring = True
         self.monitor_thread = threading.Thread(target=self._monitor_loop, daemon=True)
         self.monitor_thread.start()
-        print("狀態監控已啟動 (含CCD1佇列監控)")
+        print("狀態監控已啟動 (狀態機交握版)")
     
     def stop_monitoring(self):
         """停止狀態監控"""
@@ -286,7 +571,7 @@ class DobotMainAppController:
         print("狀態監控已停止")
     
     def _monitor_loop(self):
-        """監控循環 (增強版)"""
+        """監控循環"""
         while self.monitoring:
             try:
                 if self.is_connected:
@@ -300,62 +585,19 @@ class DobotMainAppController:
             except Exception as e:
                 print(f"監控循環錯誤: {e}")
                 time.sleep(1)
-    def get_flow2_status(self) -> dict:
-        """獲取Flow2出料流程專用狀態"""
-        try:
-            if not self.is_connected:
-                return {"error": "未連接"}
-            
-            # 讀取基本狀態
-            basic_status = self.read_all_status()
-            if not basic_status:
-                return {"error": "讀取狀態失敗"}
-            
-            # Flow2專用狀態解析
-            flow2_status = {
-                "is_flow2_running": basic_status.get("current_flow") == 2,
-                "flow2_progress": basic_status.get("flow_progress", 0),
-                "flow2_step": f"{basic_status.get('flow_progress', 0)*16//100}/16" if basic_status.get("current_flow") == 2 else "0/16",
-                "robot_at_standby": self._check_robot_at_standby(basic_status),
-                "gripper_ready": self._check_gripper_ready(),
-                "last_flow2_execution": basic_status.get("statistics", {}).get("operation_count", 0)
-            }
-            
-            # 合併基本狀態和Flow2專用狀態
-            return {**basic_status, **flow2_status}
-            
-        except Exception as e:
-            return {"error": f"獲取Flow2狀態失敗: {e}"}
-    def _check_robot_at_standby(self, status: dict) -> bool:
-        """檢查機械臂是否在standby點附近"""
-        try:
-            # 這裡可以根據需要實現更精確的位置檢查
-            # 暫時簡單判斷機械臂是否處於IDLE狀態
-            return status.get("robot_state") == 0  # IDLE狀態
-        except:
-            return False
-
-    def _check_gripper_ready(self) -> bool:
-        """檢查夾爪是否準備好"""
-        try:
-            # 可以透過額外的Modbus讀取檢查夾爪狀態
-            # 這裡暫時返回連接狀態
-            return True  # 簡化處理
-        except:
-            return False
 
 # 初始化Flask應用
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dobot_main_controller_secret_key'
+app.config['SECRET_KEY'] = 'dobot_handshake_controller_secret_key'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # 初始化控制器
-controller = DobotMainAppController()
+controller = DobotHandshakeController()
 
 @app.route('/')
 def index():
     """主頁面"""
-    return render_template('dobot_main_index.html')
+    return render_template('dobot_handshake_index.html')
 
 @app.route('/api/connect', methods=['POST'])
 def connect():
@@ -384,212 +626,101 @@ def disconnect():
 
 @app.route('/api/status', methods=['GET'])
 def get_status():
-    """獲取系統狀態 (增強版)"""
+    """獲取系統狀態"""
     status = controller.read_all_status()
     return jsonify(status)
 
-@app.route('/api/ccd1/queue', methods=['GET'])
-def get_ccd1_queue_status():
-    """獲取CCD1佇列狀態 (新增API)"""
-    queue_status = controller.read_ccd1_queue_status()
-    return jsonify(queue_status)
+@app.route('/api/control_registers', methods=['GET'])
+def get_control_registers():
+    """獲取控制寄存器狀態"""
+    control_status = controller.read_control_registers()
+    return jsonify(control_status)
 
-@app.route('/api/command', methods=['POST'])
-def send_command():
-    """發送控制指令"""
-    data = request.get_json()
-    command = data.get('command')
-    
-    if command is None:
-        return jsonify({'success': False, 'message': '缺少command參數'})
-    
-    try:
-        command = int(command)
-        success = controller.send_command(command)
-        return jsonify({
-            'success': success,
-            'message': f'指令{command}發送{"成功" if success else "失敗"}'
-        })
-    except ValueError:
-        return jsonify({'success': False, 'message': 'command必須是數字'})
+# === 狀態機交握API路由 ===
 
-@app.route('/api/flow/<int:flow_id>', methods=['POST'])
-def execute_flow(flow_id):
-    """執行指定流程"""
-    if flow_id not in [1, 2, 3]:
-        return jsonify({'success': False, 'message': '無效的流程ID'})
-    
-    success = controller.send_command(flow_id)
-    
-     # 不同流程的特殊處理提示
-    if flow_id == 1:
-        message = f'流程{flow_id}(VP視覺抓取FIFO){"啟動成功" if success else "啟動失敗"}'
-        if success:
-            message += " - 將從CCD1佇列獲取物體座標"
-    elif flow_id == 2:  # 新增Flow2處理
-        message = f'流程{flow_id}(出料流程){"啟動成功" if success else "啟動失敗"}'
-        if success:
-            message += " - 從standby點開始完整出料作業"
-    else:
-        message = f'流程{flow_id}{"啟動成功" if success else "啟動失敗"}'
-    
-    return jsonify({
-        'success': success,
-        'message': message
-    })
+@app.route('/api/handshake/vp_pickup', methods=['POST'])
+def handshake_vp_pickup():
+    """執行VP視覺取料"""
+    result = controller.execute_vp_pickup()
+    return jsonify(result)
 
-@app.route('/api/emergency_stop', methods=['POST'])
-def emergency_stop():
+@app.route('/api/handshake/unload_flow', methods=['POST'])
+def handshake_unload_flow():
+    """執行出料流程"""
+    result = controller.execute_unload_flow()
+    return jsonify(result)
+
+@app.route('/api/handshake/clear_vp', methods=['POST'])
+def handshake_clear_vp():
+    """清零VP視覺取料指令"""
+    result = controller.clear_vp_pickup()
+    return jsonify(result)
+
+@app.route('/api/handshake/clear_unload', methods=['POST'])
+def handshake_clear_unload():
+    """清零出料流程指令"""
+    result = controller.clear_unload_flow()
+    return jsonify(result)
+
+@app.route('/api/handshake/clear_alarm', methods=['POST'])
+def handshake_clear_alarm():
+    """清除警報"""
+    result = controller.clear_alarm()
+    return jsonify(result)
+
+@app.route('/api/handshake/emergency_stop', methods=['POST'])
+def handshake_emergency_stop():
     """緊急停止"""
-    success = controller.send_command(99)
-    return jsonify({
-        'success': success,
-        'message': '緊急停止指令已發送' if success else '緊急停止指令發送失敗'
-    })
+    result = controller.emergency_stop()
+    return jsonify(result)
 
-@app.route('/api/clear', methods=['POST'])
-def clear_command():
-    """清空指令"""
-    success = controller.send_command(0)
-    return jsonify({
-        'success': success,
-        'message': '清空指令已發送' if success else '清空指令發送失敗'
-    })
+@app.route('/api/handshake/manual_flow/<int:flow_id>', methods=['POST'])
+def handshake_manual_flow(flow_id):
+    """手動執行流程"""
+    result = controller.manual_execute_flow(flow_id)
+    return jsonify(result)
 
-@app.route('/api/register/read/<int:address>', methods=['GET'])
-def read_register_api(address):
-    """讀取指定寄存器"""
-    value = controller.read_register(address)
-    return jsonify({
-        'success': value is not None,
-        'address': address,
-        'value': value
-    })
-
-@app.route('/api/register/write', methods=['POST'])
-def write_register_api():
-    """寫入指定寄存器"""
+@app.route('/api/handshake/set_speed', methods=['POST'])
+def handshake_set_speed():
+    """設定全局速度"""
     data = request.get_json()
-    address = data.get('address')
-    value = data.get('value')
+    speed = data.get('speed')
     
-    if address is None or value is None:
-        return jsonify({'success': False, 'message': '缺少address或value參數'})
-    
-    try:
-        address = int(address)
-        value = int(value)
-        success = controller.write_register(address, value)
-        return jsonify({
-            'success': success,
-            'message': f'寄存器{address}寫入{"成功" if success else "失敗"}'
-        })
-    except ValueError:
-        return jsonify({'success': False, 'message': 'address和value必須是數字'})
-@app.route('/api/flow2/status', methods=['GET'])
-def get_flow2_status_api():
-    """獲取Flow2出料流程專用狀態"""
-    status = controller.get_flow2_status()
-    return jsonify(status)
-
-@app.route('/api/flow2/execute', methods=['POST'])
-def execute_flow2():
-    """執行Flow2出料流程"""
-    try:
-        # 檢查系統狀態
-        status = controller.read_all_status()
-        if not status:
-            return jsonify({
-                'success': False,
-                'message': 'Modbus連接失敗，無法執行Flow2'
-            })
-        
-        # 檢查機械臂狀態
-        robot_state = status.get("robot_state", -1)
-        if robot_state != 0:  # 不是IDLE狀態
-            return jsonify({
-                'success': False,
-                'message': f'機械臂狀態不允許執行Flow2 (當前狀態: {ROBOT_STATES.get(robot_state, "未知")})'
-            })
-        
-        # 檢查是否有其他流程在運行
-        current_flow = status.get("current_flow", 0)
-        if current_flow != 0:
-            return jsonify({
-                'success': False,
-                'message': f'有其他流程在運行 ({FLOW_TYPES.get(current_flow, "未知流程")})'
-            })
-        
-        # 發送Flow2執行指令
-        success = controller.send_command(2)
-        
-        return jsonify({
-            'success': success,
-            'message': 'Flow2出料流程啟動成功' if success else 'Flow2出料流程啟動失敗',
-            'flow_description': '從standby點開始的完整出料作業流程'
-        })
-        
-    except Exception as e:
+    if speed is None:
         return jsonify({
             'success': False,
-            'message': f'執行Flow2失敗: {e}'
+            'message': '缺少speed參數'
+        })
+    
+    try:
+        speed = int(speed)
+        result = controller.set_global_speed(speed)
+        return jsonify(result)
+    except ValueError:
+        return jsonify({
+            'success': False,
+            'message': 'speed必須是數字'
         })
 
-@app.route('/api/flow2/check_preconditions', methods=['GET'])
-def check_flow2_preconditions():
-    """檢查Flow2執行前置條件"""
-    try:
-        status = controller.read_all_status()
-        if not status:
-            return jsonify({
-                'ready': False,
-                'message': 'Modbus連接失敗'
-            })
-        
-        checks = {
-            'modbus_connected': controller.is_connected,
-            'robot_idle': status.get("robot_state") == 0,
-            'no_other_flow': status.get("current_flow") == 0,
-            'robot_mode_ok': status.get("robot_mode", 0) > 0,
-            'low_error_count': status.get("statistics", {}).get("error_count", 0) < 5
-        }
-        
-        all_ready = all(checks.values())
-        
-        # 生成檢查報告
-        messages = []
-        if not checks['modbus_connected']:
-            messages.append("Modbus未連接")
-        if not checks['robot_idle']:
-            messages.append(f"機械臂非空閒狀態 ({ROBOT_STATES.get(status.get('robot_state'), '未知')})")
-        if not checks['no_other_flow']:
-            messages.append(f"有其他流程運行中 ({FLOW_TYPES.get(status.get('current_flow'), '未知')})")
-        if not checks['robot_mode_ok']:
-            messages.append("機械臂模式異常")
-        if not checks['low_error_count']:
-            messages.append("錯誤次數過多，建議重置")
-        
-        return jsonify({
-            'ready': all_ready,
-            'checks': checks,
-            'message': '所有前置條件滿足，可以執行Flow2' if all_ready else '; '.join(messages),
-            'required_points': [
-                "stanby", "Rotate_V2", "Rotate_top", "Rotate_down",
-                "back_stanby_from_asm", "put_asm_Pre", "put_asm_top", "put_asm_down"
-            ]
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'ready': False,
-            'message': f'檢查前置條件失敗: {e}'
-        })
-# SocketIO事件處理
+@app.route('/api/handshake/get_speed', methods=['GET'])
+def handshake_get_speed():
+    """獲取當前全局速度"""
+    result = controller.get_global_speed()
+    return jsonify(result)
+
+@app.route('/api/handshake/check_preconditions/<int:flow_id>', methods=['GET'])
+def handshake_check_preconditions(flow_id):
+    """檢查流程執行前置條件"""
+    result = controller.check_flow_preconditions(flow_id)
+    return jsonify(result)
+
+# === SocketIO事件處理 ===
+
 @socketio.on('connect')
 def on_connect():
     """客戶端連接"""
     print('客戶端已連接')
-    emit('connected', {'message': '已連接到Dobot主控制器 (增強版)'})
+    emit('connected', {'message': '已連接到Dobot狀態機交握控制器'})
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -602,83 +733,85 @@ def on_request_status():
     status = controller.read_all_status()
     emit('status_update', status)
 
-@socketio.on('request_ccd1_queue')
-def on_request_ccd1_queue():
-    """請求CCD1佇列狀態 (新增事件)"""
-    queue_status = controller.read_ccd1_queue_status()
-    emit('ccd1_queue_update', queue_status)
+@socketio.on('request_control_status')
+def on_request_control_status():
+    """請求控制寄存器狀態"""
+    control_status = controller.read_control_registers()
+    emit('control_status_update', control_status)
 
-@socketio.on('send_command')
-def on_send_command(data):
-    """SocketIO發送指令"""
-    command = data.get('command')
-    if command is not None:
-        success = controller.send_command(int(command))
-        emit('command_result', {
-            'success': success,
-            'command': command,
-            'message': f'指令{command}{"發送成功" if success else "發送失敗"}'
-        })
-@socketio.on('request_flow2_status')
-def on_request_flow2_status():
-    """請求Flow2專用狀態更新"""
-    status = controller.get_flow2_status()
-    emit('flow2_status_update', status)
+@socketio.on('handshake_vp_pickup')
+def on_handshake_vp_pickup():
+    """SocketIO VP視覺取料"""
+    result = controller.execute_vp_pickup()
+    emit('handshake_result', result)
 
-@socketio.on('execute_flow2')
-def on_execute_flow2():
-    """SocketIO執行Flow2"""
-    try:
-        # 檢查前置條件
-        preconditions = check_flow2_preconditions()
-        precondition_data = preconditions.get_json()
-        
-        if not precondition_data['ready']:
-            emit('flow2_execution_result', {
-                'success': False,
-                'message': f"前置條件不滿足: {precondition_data['message']}"
-            })
-            return
-        
-        # 執行Flow2
-        success = controller.send_command(2)
-        emit('flow2_execution_result', {
-            'success': success,
-            'message': 'Flow2出料流程啟動成功' if success else 'Flow2出料流程啟動失敗',
-            'flow_description': '從standby點開始的完整出料作業流程 (16步驟)'
-        })
-        
-    except Exception as e:
-        emit('flow2_execution_result', {
-            'success': False,
-            'message': f'執行Flow2失敗: {e}'
-        })
+@socketio.on('handshake_unload_flow')
+def on_handshake_unload_flow():
+    """SocketIO 出料流程"""
+    result = controller.execute_unload_flow()
+    emit('handshake_result', result)
 
-@socketio.on('check_flow2_preconditions')
-def on_check_flow2_preconditions():
-    """檢查Flow2前置條件"""
-    preconditions = check_flow2_preconditions()
-    emit('flow2_preconditions_result', preconditions.get_json())
+@socketio.on('handshake_clear_alarm')
+def on_handshake_clear_alarm():
+    """SocketIO 清除警報"""
+    result = controller.clear_alarm()
+    emit('handshake_result', result)
 
+@socketio.on('handshake_emergency_stop')
+def on_handshake_emergency_stop():
+    """SocketIO 緊急停止"""
+    result = controller.emergency_stop()
+    emit('handshake_result', result)
+
+@socketio.on('handshake_manual_flow')
+def on_handshake_manual_flow(data):
+    """SocketIO 手動執行流程"""
+    flow_id = data.get('flow_id')
+    if flow_id is not None:
+        result = controller.manual_execute_flow(int(flow_id))
+        emit('handshake_result', result)
+
+@socketio.on('handshake_set_speed')
+def on_handshake_set_speed(data):
+    """SocketIO 設定全局速度"""
+    speed = data.get('speed')
+    if speed is not None:
+        result = controller.set_global_speed(int(speed))
+        emit('speed_update_result', result)
+
+@socketio.on('handshake_get_speed')
+def on_handshake_get_speed():
+    """SocketIO 獲取全局速度"""
+    result = controller.get_global_speed()
+    emit('speed_status_update', result)
 
 def main():
     """主函數"""
-    print("=== Dobot主控制器Web應用啟動中 (增強版) ===")
+    print("=== Dobot狀態機交握控制器Web應用啟動中 ===")
     print(f"Web服務器: http://{controller.config['web_server']['host']}:{controller.config['web_server']['port']}")
     print(f"Modbus服務器: {controller.config['modbus']['server_ip']}:{controller.config['modbus']['server_port']}")
-    print("控制寄存器映射:")
-    print("  400: 控制指令 (0=清空, 1=流程1, 2=流程2, 3=流程3, 99=緊急停止)")
-    print("  401: 機械臂狀態 (0=空閒, 1=運行, 2=暫停, 3=錯誤, 4=緊急停止)")
-    print("  402: 當前流程ID")
-    print("  403: 流程執行進度 (0-100%)")
-    print("新增功能:")
-    print("  - Flow2出料流程控制和監控")
-    print("  - Flow2前置條件檢查")
-    print("  - Flow2專用狀態顯示")
-    print("流程說明:")
-    print("  - Flow1: VP視覺抓取 (FIFO佇列模式)")
-    print("  - Flow2: 出料流程 (standby→撈料→組裝→放下→standby)")
-    print("\n請在瀏覽器中打開Web介面進行控制")
+    print("\n=== 狀態機交握寄存器映射 ===")
+    print(f"主狀態寄存器: {DobotRegisters.STATUS_REGISTER} (bit0=Ready, bit1=Running, bit2=Alarm)")
+    print(f"機械臂狀態: {DobotRegisters.ROBOT_STATE}")
+    print(f"當前流程ID: {DobotRegisters.CURRENT_FLOW}")
+    print(f"全局速度: {DobotRegisters.GLOBAL_SPEED}")
+    print("\n=== 控制寄存器映射 ===")
+    print(f"VP視覺取料控制: {DobotRegisters.VP_CONTROL}")
+    print(f"出料控制: {DobotRegisters.UNLOAD_CONTROL}")
+    print(f"清除警報控制: {DobotRegisters.CLEAR_ALARM}")
+    print(f"緊急停止控制: {DobotRegisters.EMERGENCY_STOP}")
+    print(f"手動指令: {DobotRegisters.MANUAL_COMMAND}")
+    print(f"速度控制指令: {DobotRegisters.SPEED_COMMAND}")
+    print(f"速度數值: {DobotRegisters.SPEED_VALUE}")
+    print(f"速度指令ID: {DobotRegisters.SPEED_CMD_ID}")
+    
+    print("\n=== 狀態機交握流程 ===")
+    print("VP視覺取料: 檢查Ready → 寫入440=1 → 執行 → 寫入440=0 → 恢復Ready")
+    print("出料流程: 檢查Ready且440=0 → 寫入441=1 → 執行 → 寫入441=0 → 恢復Ready")
+    print("速度設定: 寫入446=速度值 → 寫入447=指令ID → 寫入445=1 → 等待執行完成")
+    print("警報清除: 檢測Alarm → 寫入442=1 → 確認清除 → 寫入442=0")
+    
+    print("\n請在瀏覽器中打開Web介面進行狀態機交握控制")
     
     try:
         socketio.run(
@@ -697,16 +830,30 @@ def main():
 
 if __name__ == "__main__":
     main()
-# ==================== API路由總覽 ====================
-# 新增的Flow2專用API：
-# GET  /api/flow2/status              - 獲取Flow2專用狀態
-# POST /api/flow2/execute             - 執行Flow2出料流程
-# GET  /api/flow2/check_preconditions - 檢查Flow2前置條件
 
-# 新增的SocketIO事件：
-# request_flow2_status       - 請求Flow2狀態
-# execute_flow2             - 執行Flow2
-# check_flow2_preconditions - 檢查Flow2前置條件
-# flow2_status_update       - Flow2狀態更新 (emit)
-# flow2_execution_result    - Flow2執行結果 (emit)
-# flow2_preconditions_result - Flow2前置條件結果 (emit)
+# ==================== 狀態機交握API路由總覽 ====================
+# 
+# === 流程控制 ===
+# POST /api/handshake/vp_pickup         - 執行VP視覺取料 (寫入440=1)
+# POST /api/handshake/unload_flow        - 執行出料流程 (寫入441=1)
+# POST /api/handshake/clear_vp           - 清零VP指令 (寫入440=0)
+# POST /api/handshake/clear_unload       - 清零出料指令 (寫入441=0)
+# POST /api/handshake/manual_flow/<id>   - 手動執行流程 (寫入444=id)
+# 
+# === 系統控制 ===
+# POST /api/handshake/clear_alarm        - 清除警報 (寫入442=1)
+# POST /api/handshake/emergency_stop     - 緊急停止 (寫入443=1)
+# 
+# === 速度控制 ===
+# POST /api/handshake/set_speed          - 設定全局速度 (寫入445=1, 446=速度, 447=ID)
+# GET  /api/handshake/get_speed          - 獲取當前全局速度 (讀取419)
+# 
+# === 狀態查詢 ===
+# GET  /api/status                       - 獲取完整系統狀態
+# GET  /api/control_registers            - 獲取控制寄存器狀態
+# GET  /api/handshake/check_preconditions/<id> - 檢查流程前置條件
+# 
+# === SocketIO事件 ===
+# handshake_vp_pickup, handshake_unload_flow, handshake_clear_alarm
+# handshake_emergency_stop, handshake_manual_flow, handshake_set_speed
+# handshake_get_speed, request_status, request_control_status

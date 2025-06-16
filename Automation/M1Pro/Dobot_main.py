@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_main.py - 機械臂主控制器 (修正版)
+Dobot_main.py - 機械臂主控制器 (修正API解析版)
 整合狀態機管理、外部模組通訊、運動控制等功能
 基地址400，支援多流程執行與外部設備整合
-基於MVP.py的實際工作邏輯修正
+修正GetPose和GetAngle API解析問題
 """
 
 import json
@@ -322,7 +322,7 @@ class PGCGripperController(ExternalModuleController):
                     # 設定最大速度和力道
                     self.send_gripper_command_batch(self.PGC_CMD_SET_SPEED, 100)
                     time.sleep(0.5)
-                    self.send_gripper_command_batch(self.PGC_CMD_SET_FORCE, 100)
+                    self.send_gripper_command_batch(self.PGC_CMD_SET_FORCE, 20)
                     time.sleep(0.5)
                     
                     print("夾爪參數設定完成")
@@ -524,13 +524,17 @@ class CCD1VisionController(ExternalModuleController):
             x_high = self.read_register(base_offset) or 0
             x_low = self.read_register(base_offset + 1) or 0
             x_int = (x_high << 16) | x_low
-            x_world = x_int / 100.0  # 恢復小數點
+            if x_int >= 2**31:  # 如果是負數（最高位為1）
+                x_int = x_int - 2**32  # 轉換為負數
+            x_world = x_int / 100.0
             
             # 讀取Y座標 (高位/低位)
             y_high = self.read_register(base_offset + 2) or 0
             y_low = self.read_register(base_offset + 3) or 0
             y_int = (y_high << 16) | y_low
-            y_world = y_int / 100.0  # 恢復小數點
+            if y_int >= 2**31:  # 如果是負數（最高位為1）
+                y_int = y_int - 2**32  # 轉換為負數
+            y_world = y_int / 100.0
             
             return [x_world, y_world, 0.0]  # Z=0平面
             
@@ -618,7 +622,7 @@ class CCD3AngleController(ExternalModuleController):
 
 
 class DobotM1Pro:
-    """Dobot M1Pro機械臂核心控制類"""
+    """Dobot M1Pro機械臂核心控制類 - 修正API解析版"""
     
     def __init__(self, ip: str = "192.168.1.6"):
         self.ip = ip
@@ -629,20 +633,23 @@ class DobotM1Pro:
         points_file = os.path.join(current_dir, "saved_points", "robot_points.json")
         self.points_manager = PointsManager(points_file)
         self.is_connected = False
-        self.global_speed = 50
+        self.global_speed = 100
         
     def initialize(self) -> bool:
         """初始化機械臂連接"""
         try:
             self.dashboard_api = DobotApiDashboard(self.ip, 29999)
+            
             self.move_api = DobotApiMove(self.ip, 30003)
             
             # 機械臂初始化設置
             self.dashboard_api.ClearError()
             self.dashboard_api.EnableRobot()
-            self.dashboard_api.SpeedFactor(self.global_speed)
-            self.dashboard_api.SpeedJ(self.global_speed)
-            self.dashboard_api.AccJ(self.global_speed)
+            self.dashboard_api.SpeedFactor(100)  # 全局速度比例
+            self.dashboard_api.SpeedJ(100)       # 關節運動速度
+            self.dashboard_api.SpeedL(100)       # 直線運動速度
+            self.dashboard_api.AccJ(100)         # 關節運動加速度
+            self.dashboard_api.AccL(100)         # 直線運動加速度
             
             self.is_connected = True
             print(f"機械臂初始化成功: {self.ip}")
@@ -748,12 +755,12 @@ class DobotM1Pro:
             return False
     
     def get_robot_mode(self) -> int:
-        """獲取機械臂模式 - 修正API解析"""
+        """獲取機械臂模式 - 修正API解析版本"""
         try:
             if self.dashboard_api:
                 result = self.dashboard_api.RobotMode()
                 
-                # 解析返回結果，格式: "0,{5},RobotMode();"
+                # 修正的解析方法，參照logic.py
                 if result and ',' in result:
                     parts = result.split(',')
                     if len(parts) > 1:
@@ -767,47 +774,65 @@ class DobotM1Pro:
                             return int(mode_part)
             return 5  # 預設返回可用狀態
         except Exception as e:
-            print(f"獲取機械臂模式解析錯誤: {e}")
+            #print(f"獲取機械臂模式解析錯誤: {e}, 原始回應: {result if 'result' in locals() else '無回應'}")
             return 5  # 預設返回可用狀態，避免阻塞流程
     
     def get_current_pose(self) -> Dict[str, float]:
-        """獲取當前位姿"""
+        """獲取當前位姿 - 修正API解析版本"""
         try:
             if self.dashboard_api:
                 result = self.dashboard_api.GetPose()
-                # 解析座標數據
-                if result and ',' in result:
-                    parts = result.split(',')
-                    if len(parts) >= 5:
-                        return {
-                            'x': float(parts[1]),
-                            'y': float(parts[2]),
-                            'z': float(parts[3]),
-                            'r': float(parts[4])
-                        }
+                
+                # 修正的解析方法，參照logic.py
+                # 格式: "0,{223.071971,189.311344,238.825226,-227.592615,0.000000,0.000000,Right},GetPose();"
+                if result and '{' in result and '}' in result:
+                    # 提取花括號中的內容
+                    start = result.find('{')
+                    end = result.find('}')
+                    if start != -1 and end != -1:
+                        data_str = result[start+1:end]
+                        # 分割數據，忽略最後的"Right"
+                        parts = data_str.split(',')
+                        if len(parts) >= 4:
+                            return {
+                                'x': float(parts[0]),
+                                'y': float(parts[1]),
+                                'z': float(parts[2]),
+                                'r': float(parts[3])
+                            }
+                            
             return {'x': 0, 'y': 0, 'z': 0, 'r': 0}
         except Exception as e:
-            print(f"獲取當前位姿失敗: {e}")
+            print(f"獲取當前位姿失敗: {e}, 原始回應: {result if 'result' in locals() else '無回應'}")
             return {'x': 0, 'y': 0, 'z': 0, 'r': 0}
     
     def get_current_joints(self) -> Dict[str, float]:
-        """獲取當前關節角度"""
+        """獲取當前關節角度 - 修正API解析版本"""
         try:
             if self.dashboard_api:
                 result = self.dashboard_api.GetAngle()
-                # 解析關節角度數據
-                if result and ',' in result:
-                    parts = result.split(',')
-                    if len(parts) >= 5:
-                        return {
-                            'j1': float(parts[1]),
-                            'j2': float(parts[2]),
-                            'j3': float(parts[3]),
-                            'j4': float(parts[4])
-                        }
+                
+                # 修正的解析方法，參照logic.py
+                # 格式: "0,{-2.673262,85.986069,238.825302,-310.905426,0.000000,0.000000},GetAngle();"
+                if result and '{' in result and '}' in result:
+                    # 提取花括號中的內容
+                    start = result.find('{')
+                    end = result.find('}')
+                    if start != -1 and end != -1:
+                        data_str = result[start+1:end]
+                        # 分割數據
+                        parts = data_str.split(',')
+                        if len(parts) >= 4:
+                            return {
+                                'j1': float(parts[0]),
+                                'j2': float(parts[1]),
+                                'j3': float(parts[2]),
+                                'j4': float(parts[3])
+                            }
+                            
             return {'j1': 0, 'j2': 0, 'j3': 0, 'j4': 0}
         except Exception as e:
-            print(f"獲取當前關節角度失敗: {e}")
+            print(f"獲取當前關節角度失敗: {e}, 原始回應: {result if 'result' in locals() else '無回應'}")
             return {'j1': 0, 'j2': 0, 'j3': 0, 'j4': 0}
     
     def is_ready(self) -> bool:
@@ -1181,8 +1206,9 @@ class DobotMotionController:
         print("狀態機交握同步停止")
     
     def _handshake_loop(self):
-        """狀態機交握主循環"""
+        """狀態機交握主循環 - 增強版本，避免重複處理"""
         print("狀態機交握循環開始")
+        last_command = 0  # 追蹤上次處理的指令
         
         while self.is_running:
             try:
@@ -1190,9 +1216,15 @@ class DobotMotionController:
                 control_data = self.state_machine.read_control_from_plc()
                 command = control_data.get('command', 0)
                 
-                # 處理控制指令
-                if command != 0:
+                # 只處理新指令（避免重複處理）
+                if command != 0 and command != last_command:
+                    print(f"檢測到新指令: {command} (上次: {last_command})")
                     self._handle_plc_command(command)
+                    last_command = command
+                elif command == 0 and last_command != 0:
+                    # 指令被清除
+                    print(f"指令已清除 (上次: {last_command})")
+                    last_command = 0
                 
                 # 更新機械臂資訊
                 if self.robot.is_connected:
@@ -1214,18 +1246,31 @@ class DobotMotionController:
         print("狀態機交握循環結束")
     
     def _handle_plc_command(self, command: int):
-        """處理PLC指令"""
+        """處理PLC指令 - 修正指令清除邏輯"""
         try:
+            print(f"收到PLC指令: {command}")
+            
             if command == CommandType.EMERGENCY_STOP.value:
                 print("收到緊急停止指令")
                 self.emergency_stop_all()
+                # 立即清除指令
+                self._clear_command()
                 
             elif command in [CommandType.FLOW_1.value, CommandType.FLOW_2.value, CommandType.FLOW_3.value]:
                 if self.state_machine.is_ready_for_command():
                     print(f"收到流程{command}執行指令")
+                    
+                    # 🔥 關鍵修正：立即清除指令，避免重複執行
+                    self._clear_command()
+                    
+                    # 然後執行流程
                     self.execute_flow(command)
                 else:
-                    print(f"系統忙碌，無法執行流程{command}")
+                    current_state = self.state_machine.current_state.name
+                    print(f"系統忙碌，無法執行流程{command} (當前狀態: {current_state})")
+                    
+                    # 如果系統忙碌，也清除指令避免重複
+                    self._clear_command()
                     
             elif command == CommandType.CLEAR.value:
                 print("收到清空指令")
@@ -1233,9 +1278,11 @@ class DobotMotionController:
                 
         except Exception as e:
             print(f"處理PLC指令{command}失敗: {e}")
+            # 發生異常時也清除指令
+            self._clear_command()
     
     def execute_flow(self, flow_id: int) -> bool:
-        """執行指定流程"""
+        """執行指定流程 - 增強版本"""
         if flow_id not in self.flows:
             print(f"流程{flow_id}未啟用或不存在")
             return False
@@ -1245,6 +1292,8 @@ class DobotMotionController:
             return False
         
         try:
+            print(f"開始執行流程{flow_id}")
+            
             # 設置狀態
             self.state_machine.set_state(RobotState.RUNNING)
             self.state_machine.set_flow(FlowType(flow_id))
@@ -1260,6 +1309,7 @@ class DobotMotionController:
             )
             flow_thread.start()
             
+            print(f"流程{flow_id}線程已啟動")
             return True
             
         except Exception as e:
@@ -1268,39 +1318,48 @@ class DobotMotionController:
             return False
     
     def _execute_flow_thread(self, flow_executor):
-        """流程執行線程"""
+        """流程執行線程 - 增強錯誤處理版本"""
+        flow_name = type(flow_executor).__name__
+        
         try:
+            print(f"流程線程開始執行: {flow_name}")
+            
             # 調用流程的execute方法
             result = flow_executor.execute()
             
             # 處理FlowResult對象
             if hasattr(result, 'success'):
                 if result.success:
-                    print(f"流程執行成功，耗時: {result.execution_time:.2f}秒")
+                    print(f"流程{flow_name}執行成功，耗時: {result.execution_time:.2f}秒")
                     print(f"完成步驟: {result.steps_completed}/{result.total_steps}")
                     self.state_machine.operation_count += 1
                     self.state_machine.set_state(RobotState.IDLE)
                 else:
-                    print(f"流程執行失敗: {result.error_message}")
+                    print(f"流程{flow_name}執行失敗: {result.error_message}")
                     print(f"失敗於步驟: {result.steps_completed}/{result.total_steps}")
+                    self.state_machine.error_count += 1
                     self.state_machine.set_state(RobotState.ERROR)
             else:
                 # 處理舊版本的bool返回值
                 if result:
-                    print("流程執行成功")
+                    print(f"流程{flow_name}執行成功")
                     self.state_machine.operation_count += 1
                     self.state_machine.set_state(RobotState.IDLE)
                 else:
-                    print("流程執行失敗")
+                    print(f"流程{flow_name}執行失敗")
+                    self.state_machine.error_count += 1
                     self.state_machine.set_state(RobotState.ERROR)
-                
+                    
         except Exception as e:
-            print(f"流程執行異常: {e}")
+            print(f"流程{flow_name}執行異常: {e}")
             traceback.print_exc()
+            self.state_machine.error_count += 1
             self.state_machine.set_state(RobotState.ERROR)
         finally:
+            # 確保狀態機正確重置
             self.state_machine.set_flow(FlowType.NONE)
             self.current_flow = None
+            print(f"流程線程結束: {flow_name}")
     
     def emergency_stop_all(self) -> bool:
         """緊急停止所有設備"""
@@ -1330,7 +1389,7 @@ class DobotMotionController:
             return False
     
     def _clear_command(self):
-        """清空指令 - PyModbus 3.9.2修正版"""
+        """清空指令 - 增強版本，確保清除成功"""
         try:
             # 清除控制指令寄存器
             result = self.modbus_client.write_register(
@@ -1341,11 +1400,22 @@ class DobotMotionController:
                 print(f"清空指令失敗: {result}")
             else:
                 print("指令已清空")
+                
+            # 額外確認：讀取寄存器確保清除成功
+            read_result = self.modbus_client.read_holding_registers(
+                address=DobotRegisters.CONTROL_CMD, 
+                count=1
+            )
+            if hasattr(read_result, 'registers') and len(read_result.registers) > 0:
+                actual_value = read_result.registers[0]
+                if actual_value != 0:
+                    print(f"警告：指令清除後寄存器值仍為 {actual_value}")
+                    
         except Exception as e:
             print(f"清空指令異常: {e}")
     
     def get_system_status(self) -> Dict[str, Any]:
-        """獲取系統狀態"""
+        """獲取系統狀態 - 增加更多診斷信息"""
         return {
             "robot_connected": self.robot.is_connected,
             "robot_ready": self.robot.is_ready() if self.robot.is_connected else False,
@@ -1357,8 +1427,86 @@ class DobotMotionController:
             "flows_enabled": list(self.flows.keys()),
             "gripper_enabled": self.gripper is not None,
             "ccd1_enabled": self.ccd1 is not None,
-            "ccd3_enabled": self.ccd3 is not None
+            "ccd3_enabled": self.ccd3 is not None,
+            # 新增診斷信息
+            "is_ready_for_command": self.state_machine.is_ready_for_command(),
+            "current_flow_object": str(type(self.current_flow).__name__) if self.current_flow else None,
+            "handshake_thread_alive": self.handshake_thread.is_alive() if self.handshake_thread else False
         }
+    
+    def force_reset_state(self):
+        """強制重置狀態機 - 緊急恢復用"""
+        try:
+            print("=== 執行強制狀態重置 ===")
+            
+            # 停止當前流程
+            if self.current_flow:
+                if hasattr(self.current_flow, 'stop'):
+                    self.current_flow.stop()
+                self.current_flow = None
+                print("已停止當前流程")
+            
+            # 重置狀態機
+            self.state_machine.set_state(RobotState.IDLE)
+            self.state_machine.set_flow(FlowType.NONE)
+            print("狀態機已重置為IDLE")
+            
+            # 清除PLC指令
+            self._clear_command()
+            print("已清除PLC指令")
+            
+            print("強制狀態重置完成")
+            return True
+            
+        except Exception as e:
+            print(f"強制狀態重置失敗: {e}")
+            return False
+    
+    def diagnose_system_state(self):
+        """系統狀態診斷 - 詳細檢查"""
+        print("\n=== 系統狀態診斷 ===")
+        
+        # 狀態機診斷
+        print(f"狀態機當前狀態: {self.state_machine.current_state.name}")
+        print(f"狀態機當前流程: {self.state_machine.current_flow.name}")
+        print(f"是否準備好接受指令: {self.state_machine.is_ready_for_command()}")
+        
+        # 流程執行器診斷
+        if self.current_flow:
+            print(f"當前流程對象: {type(self.current_flow).__name__}")
+            if hasattr(self.current_flow, 'is_running'):
+                print(f"流程內部運行狀態: {self.current_flow.is_running}")
+            if hasattr(self.current_flow, 'current_step'):
+                print(f"流程當前步驟: {self.current_flow.current_step}")
+        else:
+            print("當前流程對象: None")
+        
+        # 線程診斷
+        if self.handshake_thread:
+            print(f"握手線程存活: {self.handshake_thread.is_alive()}")
+        else:
+            print("握手線程: 未啟動")
+        
+        # 機械臂診斷
+        print(f"機械臂連接狀態: {self.robot.is_connected}")
+        if self.robot.is_connected:
+            print(f"機械臂準備狀態: {self.robot.is_ready()}")
+            robot_mode = self.robot.get_robot_mode()
+            print(f"機械臂模式: {robot_mode}")
+        
+        # Modbus診斷
+        if self.modbus_client:
+            print(f"Modbus連接狀態: {self.modbus_client.connected}")
+        
+        # 外部模組診斷
+        if self.gripper:
+            print("PGC夾爪: 已啟用")
+        if self.ccd1:
+            print("CCD1視覺: 已啟用")
+        if self.ccd3:
+            print("CCD3角度: 已啟用")
+        
+        print("=== 診斷完成 ===\n")
     
     def cleanup(self):
         """清理資源"""

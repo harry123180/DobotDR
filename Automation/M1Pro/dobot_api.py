@@ -133,7 +133,7 @@ class DobotApi:
 
     def send_data(self, string):
         try:
-            self.log(f"發送至 {self.ip}:{self.port}: {string}")
+            #self.log(f"發送至 {self.ip}:{self.port}: {string}")
             self.socket_dobot.send(str.encode(string, 'utf-8'))
         except Exception as e:
             print(e)
@@ -153,7 +153,7 @@ class DobotApi:
                 data_str = data
             else:
                 data_str = str(data, encoding="utf-8")
-                self.log(f'接收自 {self.ip}:{self.port}: {data_str}')
+                #self.log(f'接收自 {self.ip}:{self.port}: {data_str}')
             return data_str
 
     def close(self):
@@ -768,7 +768,7 @@ class DobotApiMove(DobotApi):
         # 範例： MovJIO(0,50,0,0,0,0,(0,50,1,0),(1,1,2,1))
         string = "MovJIO({:f},{:f},{:f},{:f}".format(
             x, y, z, r)
-        self.log("發送至 192.168.1.6:29999:" + string)
+        #self.log("發送至 192.168.1.6:29999:" + string)
         for params in dynParams:
             string = string + "," + str(params)
         string = string + ")"

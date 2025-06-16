@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_Flow1.py - VP震動盤視覺抓取流程 (修正版)
+Dobot_Flow1.py - VP震動盤視覺抓取流程 (修正版 - 使用JointMovJ)
 被Dobot_main.py調用的流程執行器，不獨立運行
 接收共享的機械臂、夾爪、視覺系統實例來執行具體流程
 基於MVP.py的實際工作邏輯修正，支援真實PGC夾爪和CCD1交握
+修正：所有點位移動使用JointMovJ，只有CCD1檢測後的精確移動使用MovL
 """
 
 import time
@@ -24,9 +25,10 @@ class FlowResult:
 
 class DobotFlow1:
     """
-    VP震動盤視覺抓取流程執行器 (修正版)
+    VP震動盤視覺抓取流程執行器 (修正版 - 使用JointMovJ)
     基於MVP.py的流程邏輯，整合機械臂運動、夾爪控制和CCD視覺檢測
     支援真實的PGC夾爪和CCD1模組交握
+    所有點位移動使用JointMovJ避免手勢切換問題
     """
     
     def __init__(self, robot, gripper, ccd1, ccd3, state_machine):
@@ -57,7 +59,7 @@ class DobotFlow1:
         # 流程參數 (基於MVP.py的實際參數)
         self.SPEED_RATIO = 100          # 最大速度執行
         self.POINT_DELAY = 0.5          # 點位間延遲500ms
-        self.GRIPPER_OPEN_POSITION = 370 # 夾爪撐開位置
+        self.GRIPPER_OPEN_POSITION = 420 # 夾爪撐開位置
         self.CCD1_DETECT_HEIGHT = 238.86 # CCD1檢測高度
         self.PICKUP_HEIGHT = 137.52     # 物體抓取高度
         
@@ -78,7 +80,7 @@ class DobotFlow1:
             FlowResult: 包含執行結果的數據結構
         """
         print("\n" + "="*60)
-        print("開始執行流程1 - VP震動盤視覺抓取流程 (真實設備版)")
+        print("開始執行流程1 - VP震動盤視覺抓取流程 (JointMovJ版)")
         print("="*60)
         
         start_time = time.time()
@@ -91,7 +93,7 @@ class DobotFlow1:
             if not self._execute_step(1, "初始化檢查", self._step_initialize_check):
                 return self._create_result(False, start_time)
             
-            # 步驟2: 機械臂回到待機點  
+            # 步驟2: 機械臂回到待機點 (使用JointMovJ)
             if not self._execute_step(2, "移動到待機點", self._step_move_to_standby):
                 return self._create_result(False, start_time)
             
@@ -99,35 +101,35 @@ class DobotFlow1:
             if not self._execute_step(3, "夾爪快速關閉", self._step_gripper_close):
                 return self._create_result(False, start_time)
             
-            # 步驟4-6: 測試動作序列 (基於MVP.py)
+            # 步驟4-6: 測試動作序列 (使用JointMovJ)
             test_points = ["Rotate_V2", "Rotate_top", "Rotate_down"]
             for i, point in enumerate(test_points):
                 step_num = 4 + i
                 if not self._execute_step(step_num, f"移動到{point}", 
-                                        lambda p=point: self._step_move_to_point(p)):
+                                        lambda p=point: self._step_move_to_point_joint(p)):
                     return self._create_result(False, start_time)
             
             # 步驟7: 夾爪撐開測試
             if not self._execute_step(7, "夾爪撐開測試", self._step_gripper_open_test):
                 return self._create_result(False, start_time)
             
-            # 步驟8: 移動序列 - Rotate_top -> standby
+            # 步驟8: 移動序列 - Rotate_top -> standby (使用JointMovJ)
             if not self._execute_step(8, "移動準備序列", self._step_move_preparation):
                 return self._create_result(False, start_time)
             
-            # 步驟9: 移動到VP檢測位置
+            # 步驟9: 移動到VP檢測位置 (使用JointMovJ)
             if not self._execute_step(9, "移動到VP檢測位置", self._step_move_to_vp):
                 return self._create_result(False, start_time)
             
-            # 步驟10: CCD1視覺檢測並抓取 (核心步驟)
+            # 步驟10: CCD1視覺檢測並抓取 (核心步驟，CCD1檢測後使用MovL)
             if not self._execute_step(10, "視覺檢測並抓取", self._step_vision_detection_pickup):
                 return self._create_result(False, start_time)
             
-            # 步驟11: 移動到安全位置
+            # 步驟11: 移動到安全位置 (使用JointMovJ)
             if not self._execute_step(11, "移動到安全位置", self._step_move_to_safe):
                 return self._create_result(False, start_time)
             
-            # 步驟12: 回到待機點
+            # 步驟12: 回到待機點 (使用JointMovJ)
             if not self._execute_step(12, "回到待機點", self._step_return_standby):
                 return self._create_result(False, start_time)
             
@@ -202,7 +204,7 @@ class DobotFlow1:
         )
     
     # =================================================================
-    # 流程步驟實現 (基於MVP.py的邏輯，支援真實設備)
+    # 流程步驟實現 (修正版 - 使用JointMovJ)
     # =================================================================
     
     def _step_initialize_check(self) -> bool:
@@ -235,17 +237,18 @@ class DobotFlow1:
         return True
     
     def _step_move_to_standby(self) -> bool:
-        """步驟2: 移動到待機點"""
+        """步驟2: 移動到待機點 (使用JointMovJ)"""
         # 設置全局速度為最大
         self.robot.set_global_speed(self.SPEED_RATIO)
         
-        # 移動到待機點
-        if not self.robot.MovL("standby"):
-            self.last_error = "移動到待機點失敗"
+        # 🔥 修正：使用JointMovJ移動到待機點
+        if not self.robot.MovJ("standby"):
+            self.last_error = "關節運動到待機點失敗"
             return False
         
         # 等待運動完成
         self.robot.sync()
+        print("  使用JointMovJ移動到待機點")
         return True
     
     def _step_gripper_close(self) -> bool:
@@ -262,14 +265,16 @@ class DobotFlow1:
         print("  PGC夾爪快速關閉完成")
         return True
     
-    def _step_move_to_point(self, point_name: str) -> bool:
-        """移動到指定點位"""
-        if not self.robot.MovL(point_name):
-            self.last_error = f"移動到{point_name}失敗"
+    def _step_move_to_point_joint(self, point_name: str) -> bool:
+        """移動到指定點位 (使用JointMovJ)"""
+        # 🔥 修正：使用JointMovJ而非MovL
+        if not self.robot.MovJ(point_name):
+            self.last_error = f"關節運動到{point_name}失敗"
             return False
         
         self.robot.sync()
         time.sleep(self.POINT_DELAY)  # 點位間延遲
+        print(f"  使用JointMovJ移動到{point_name}")
         return True
     
     def _step_gripper_open_test(self) -> bool:
@@ -278,8 +283,8 @@ class DobotFlow1:
             print("  跳過夾爪撐開測試 (夾爪未啟用)")
             return True
             
-        # 使用MVP.py的智能撐開檢測邏輯，撐開到位置0進行測試
-        if not self.gripper.open_to_position(0):
+        # 使用MVP.py的智能撐開檢測邏輯，撐開到位置370進行測試
+        if not self.gripper.open_to_position(370):
             self.last_error = "PGC夾爪撐開測試失敗"
             return False
         
@@ -287,33 +292,41 @@ class DobotFlow1:
         return True
     
     def _step_move_preparation(self) -> bool:
-        """步驟8: 移動準備序列 (基於MVP.py流程)"""
-        # Rotate_top -> standby 移動序列
-        if not self.robot.MovL("Rotate_top"):
-            self.last_error = "移動到Rotate_top失敗"
+        """步驟8: 移動準備序列 (使用JointMovJ)"""
+        # 🔥 修正：使用JointMovJ - Rotate_top -> standby 移動序列
+        if not self.robot.MovJ("Rotate_top"):
+            self.last_error = "關節運動到Rotate_top失敗"
             return False
         
         self.robot.sync()
         time.sleep(self.POINT_DELAY)
+        print("  使用JointMovJ移動到Rotate_top")
         
-        if not self.robot.MovL("standby"):
-            self.last_error = "移動到standby失敗"  
+        if not self.robot.MovJ("standby"):
+            self.last_error = "關節運動到standby失敗"  
             return False
         
         self.robot.sync()
+        print("  使用JointMovJ移動到standby")
         return True
     
     def _step_move_to_vp(self) -> bool:
-        """步驟9: 移動到VP檢測位置"""
-        if not self.robot.MovL("VP_TOPSIDE"):
-            self.last_error = "移動到VP_TOPSIDE失敗"
+        """步驟9: 移動到VP檢測位置 (使用JointMovJ)"""
+        # 🔥 修正：先執行夾爪快速關閉
+        if not self._step_gripper_close():
+            return False
+            
+        # 🔥 修正：使用JointMovJ移動到VP檢測位置
+        if not self.robot.MovJ("VP_TOPSIDE"):
+            self.last_error = "關節運動到VP_TOPSIDE失敗"
             return False
         
         self.robot.sync()
+        print("  使用JointMovJ移動到VP_TOPSIDE")
         return True
     
     def _step_vision_detection_pickup(self) -> bool:
-        """步驟10: CCD1視覺檢測並抓取 (核心步驟，支援真實CCD1)"""
+        """步驟10: CCD1視覺檢測並抓取 (核心步驟，CCD1檢測後使用MovL)"""
         # 如果沒有CCD1，使用模擬邏輯
         if not self.ccd1:
             print("  跳過CCD1視覺檢測 (CCD1未啟用)")
@@ -322,23 +335,24 @@ class DobotFlow1:
             # 模擬座標
             world_coord = [-25.23, 291.51, 0.0]  # 基於VP_TOPSIDE的座標
             
+            # 🔥 CCD1檢測後的精確移動使用MovL_coord
             # 移動到模擬物體上方
             world_coord[2] = self.CCD1_DETECT_HEIGHT
             if not self.robot.MovL_coord(world_coord[0], world_coord[1], world_coord[2], 0):
-                self.last_error = "移動到模擬物體上方失敗"
+                self.last_error = "直線運動到模擬物體上方失敗"
                 return False
             
             self.robot.sync()
-            print(f"    已移動到模擬物體上方，高度: {self.CCD1_DETECT_HEIGHT}mm")
+            print(f"    使用MovL移動到模擬物體上方，高度: {self.CCD1_DETECT_HEIGHT}mm")
             
             # 下降到抓取高度
             world_coord[2] = self.PICKUP_HEIGHT  
             if not self.robot.MovL_coord(world_coord[0], world_coord[1], world_coord[2], 0):
-                self.last_error = "下降到抓取高度失敗"
+                self.last_error = "直線運動下降到抓取高度失敗"
                 return False
             
             self.robot.sync()
-            print(f"    已下降到抓取高度: {self.PICKUP_HEIGHT}mm")
+            print(f"    使用MovL下降到抓取高度: {self.PICKUP_HEIGHT}mm")
             
             # 夾爪抓取
             if self.gripper:
@@ -373,23 +387,24 @@ class DobotFlow1:
         
         print(f"    物體世界座標: X={world_coord[0]:.2f}mm, Y={world_coord[1]:.2f}mm")
         
-        # 4. 移動到物體上方 (CCD1檢測高度)
+        # 🔥 關鍵修正：CCD1檢測後的精確移動使用MovL_coord
+        # 4. 直線運動到物體上方 (CCD1檢測高度)
         world_coord[2] = self.CCD1_DETECT_HEIGHT
         if not self.robot.MovL_coord(world_coord[0], world_coord[1], world_coord[2], 0):
-            self.last_error = "移動到物體上方失敗"
+            self.last_error = "直線運動到物體上方失敗"
             return False
         
         self.robot.sync()
-        print(f"    已移動到物體上方，高度: {self.CCD1_DETECT_HEIGHT}mm")
+        print(f"    使用MovL移動到物體上方，高度: {self.CCD1_DETECT_HEIGHT}mm")
         
-        # 5. 下降到抓取高度
+        # 5. 直線下降到抓取高度
         world_coord[2] = self.PICKUP_HEIGHT  
         if not self.robot.MovL_coord(world_coord[0], world_coord[1], world_coord[2], 0):
-            self.last_error = "下降到抓取高度失敗"
+            self.last_error = "直線運動下降到抓取高度失敗"
             return False
         
         self.robot.sync()
-        print(f"    已下降到抓取高度: {self.PICKUP_HEIGHT}mm")
+        print(f"    使用MovL下降到抓取高度: {self.PICKUP_HEIGHT}mm")
         
         # 6. PGC夾爪撐開抓取 (基於MVP.py的智能檢測邏輯)
         if self.gripper:
@@ -404,21 +419,25 @@ class DobotFlow1:
         return True
     
     def _step_move_to_safe(self) -> bool:
-        """步驟11: 移動到安全位置"""
-        if not self.robot.MovL("VP_TOPSIDE"):
-            self.last_error = "移動到安全位置失敗"
+        """步驟11: 移動到安全位置 (使用JointMovJ)"""
+        # 🔥 修正：使用JointMovJ移動到安全位置
+        if not self.robot.MovJ("VP_TOPSIDE"):
+            self.last_error = "關節運動到安全位置失敗"
             return False
         
         self.robot.sync()
+        print("  使用JointMovJ移動到安全位置")
         return True
     
     def _step_return_standby(self) -> bool:
-        """步驟12: 回到待機點"""
-        if not self.robot.MovL("standby"):
-            self.last_error = "回到待機點失敗"
+        """步驟12: 回到待機點 (使用JointMovJ)"""
+        # 🔥 修正：使用JointMovJ回到待機點
+        if not self.robot.MovJ("standby"):
+            self.last_error = "關節運動回到待機點失敗"
             return False
         
         self.robot.sync()
+        print("  使用JointMovJ回到待機點")
         return True
     
     # =================================================================
@@ -563,7 +582,7 @@ def test_flow1_logic():
     測試Flow1流程邏輯 (不需要實際硬體)
     用於開發階段的邏輯驗證
     """
-    print("=== Flow1邏輯測試 ===")
+    print("=== Flow1邏輯測試 (JointMovJ版) ===")
     
     class MockRobot:
         def __init__(self):
@@ -571,8 +590,12 @@ def test_flow1_logic():
         
         def is_ready(self): return True
         def set_global_speed(self, speed): return True
-        def MovL(self, point): return True
-        def MovL_coord(self, x, y, z, r): return True
+        def MovJ(self, point): 
+            print(f"    Mock JointMovJ to {point}")
+            return True
+        def MovL_coord(self, x, y, z, r): 
+            print(f"    Mock MovL_coord to ({x:.1f}, {y:.1f}, {z:.1f}, {r:.1f})")
+            return True
         def sync(self): pass
         def emergency_stop(self): return True
     

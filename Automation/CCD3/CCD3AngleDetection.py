@@ -488,9 +488,22 @@ class CCD3AngleDetectionService:
         self.connection_count = 0
         self.start_time = time.time()
         
+        # 預設檢測參數 - 設定DR模式為默認
+        self.default_detection_params = {
+            'detection_mode': 1,        # 改為DR模式1 (最小外接矩形模式)
+            'min_area_rate': 50,        # 0.05 → 50 (存儲時×1000)
+            'sequence_mode': 0,         # 0=最大輪廓, 1=序列輪廓
+            'gaussian_kernel': 3,       # 高斯模糊核大小
+            'threshold_mode': 0,        # 0=OTSU自動, 1=手動
+            'manual_threshold': 127     # 手動閾值 (0-255)
+        }
+        
         # 配置檔案
         self.config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ccd3_config.json')
         self.load_config()
+        
+        # 預設參數已寫入標誌
+        self.default_params_written = False
     
     def _ensure_debug_dir(self):
         """確保調試圖像目錄存在"""
@@ -667,8 +680,75 @@ class CCD3AngleDetectionService:
             self.state_machine.set_initialized(False)
             return False
     
-    def capture_and_detect_angle(self, mode: int = 0) -> AngleResult:
-        """優化版拍照並檢測角度 - 加入調試圖像保存"""
+    def write_default_detection_params(self) -> bool:
+        """寫入預設檢測參數到ModbusTCP Server"""
+        try:
+            if not self.modbus_client or not self.modbus_client.connected:
+                print("❌ 無法寫入預設參數: Modbus Client未連接")
+                return False
+            
+            print(f"\n{'='*60}")
+            print(f"📝 寫入預設檢測參數到ModbusTCP Server")
+            print(f"{'='*60}")
+            print(f"🎯 基地址: {self.base_address}")
+            print(f"📋 參數寄存器範圍: {self.base_address + 10} ~ {self.base_address + 15}")
+            
+            # 準備寄存器數據 (810-815，共6個寄存器)
+            params_registers = [
+                self.default_detection_params['detection_mode'],     # 810: 檢測模式
+                self.default_detection_params['min_area_rate'],      # 811: 最小面積比例
+                self.default_detection_params['sequence_mode'],      # 812: 序列模式
+                self.default_detection_params['gaussian_kernel'],    # 813: 高斯模糊核大小
+                self.default_detection_params['threshold_mode'],     # 814: 閾值處理模式
+                self.default_detection_params['manual_threshold']    # 815: 手動閾值
+            ]
+            
+            print(f"✅ 準備寫入預設參數:")
+            print(f"   寄存器 {self.base_address + 10}: 檢測模式 = {params_registers[0]} ({'CASE橢圓擬合' if params_registers[0] == 0 else 'DR最小外接矩形'})")
+            print(f"   寄存器 {self.base_address + 11}: 最小面積比例 = {params_registers[1]} (實際比例: {params_registers[1]/1000.0:.3f})")
+            print(f"   寄存器 {self.base_address + 12}: 序列模式 = {params_registers[2]} ({'最大輪廓' if params_registers[2] == 0 else '序列輪廓'})")
+            print(f"   寄存器 {self.base_address + 13}: 高斯模糊核 = {params_registers[3]}")
+            print(f"   寄存器 {self.base_address + 14}: 閾值模式 = {params_registers[4]} ({'OTSU自動' if params_registers[4] == 0 else '手動'})")
+            print(f"   寄存器 {self.base_address + 15}: 手動閾值 = {params_registers[5]}")
+            
+            # 批次寫入檢測參數
+            print(f"\n🚀 開始批次寫入檢測參數:")
+            print(f"   目標地址: {self.base_address + 10} ~ {self.base_address + 15}")
+            print(f"   寫入數量: 6個寄存器")
+            print(f"   Unit ID: 1")
+            
+            write_result = self.modbus_client.write_registers(
+                address=self.base_address + 10, 
+                values=params_registers, 
+                slave=1
+            )
+            
+            if write_result.isError():
+                print(f"❌ 預設參數寫入失敗: {write_result}")
+                return False
+            else:
+                print(f"✅ 預設檢測參數已成功批次寫入到ModbusTCP Server")
+                print(f"   成功寫入6個參數寄存器到地址 {self.base_address + 10}-{self.base_address + 15}")
+                print(f"   默認使用: DR模式1 (最小外接矩形角度檢測)")
+                self.default_params_written = True
+                
+                # 立即更新本地檢測器參數
+                print(f"\n🔧 同步更新本地檢測器參數:")
+                self.angle_detector.update_params(**self.default_detection_params)
+                
+                print(f"{'='*60}\n")
+                return True
+                
+        except Exception as e:
+            print(f"❌ 寫入預設參數發生異常: {e}")
+            print(f"   基地址: {self.base_address}")
+            print(f"   連接狀態: {self.modbus_client.connected if self.modbus_client else 'None'}")
+            import traceback
+            traceback.print_exc()
+            return False
+    
+    def capture_and_detect_angle(self, mode: int = 1) -> AngleResult:
+        """優化版拍照並檢測角度 - 默認DR模式1"""
         if not self.camera:
             return AngleResult(
                 success=False, center=None, angle=None,
@@ -719,7 +799,7 @@ class CCD3AngleDetectionService:
                     self.debug_images['binary'] = result.copy()
                     return result
                 
-                def detect_angle(self, image, mode=0):
+                def detect_angle(self, image, mode=1):  # 默認DR模式1
                     result = super().detect_angle(image, mode)
                     return result
             
@@ -830,73 +910,167 @@ class CCD3AngleDetectionService:
         return params
     
     def write_detection_result(self, result: AngleResult):
-        """優化版結果寫入 - 批次寫入減少通訊次數"""
+        """優化版結果寫入 - 批次寫入減少通訊次數 + 調試訊息"""
         try:
             if not self.modbus_client or not self.modbus_client.connected:
+                print("❌ 無法寫入檢測結果: Modbus Client未連接")
                 return
             
             # 優化16：一次性準備所有寄存器數據
             all_registers = [0] * 40  # 結果區(20) + 統計區(20)
             
+            print(f"\n{'='*60}")
+            print(f"📊 CCD3檢測結果寫入到ModbusTCP Server")
+            print(f"{'='*60}")
+            print(f"🎯 基地址: {self.base_address}")
+            print(f"📝 檢測成功: {result.success}")
+            
             # 檢測結果區 (840-859對應0-19)
             if result.success and result.center and result.angle is not None:
+                print(f"✅ 檢測成功，準備寫入結果:")
+                
                 all_registers[0] = 1  # 成功標誌
+                print(f"   寄存器 {self.base_address + 40 + 0}: 成功標誌 = 1")
+                
                 all_registers[1] = int(result.center[0])  # X座標
                 all_registers[2] = int(result.center[1])  # Y座標
+                print(f"   寄存器 {self.base_address + 40 + 1}: 中心X座標 = {int(result.center[0])}")
+                print(f"   寄存器 {self.base_address + 40 + 2}: 中心Y座標 = {int(result.center[1])}")
                 
                 # 角度32位存儲
                 angle_int = int(result.angle * 100)
-                all_registers[3] = (angle_int >> 16) & 0xFFFF
-                all_registers[4] = angle_int & 0xFFFF
+                angle_high = (angle_int >> 16) & 0xFFFF
+                angle_low = angle_int & 0xFFFF
+                all_registers[3] = angle_high
+                all_registers[4] = angle_low
+                print(f"   寄存器 {self.base_address + 40 + 3}: 角度高位 = {angle_high}")
+                print(f"   寄存器 {self.base_address + 40 + 4}: 角度低位 = {angle_low}")
+                print(f"   📐 原始角度: {result.angle:.2f}°, 存儲值: {angle_int} (32位), 恢復值: {angle_int/100.0:.2f}°")
                 
                 # 額外參數 - 添加範圍檢查
                 if result.major_axis:
-                    all_registers[5] = min(int(result.major_axis), 65535)
+                    major_axis_val = min(int(result.major_axis), 65535)
+                    all_registers[5] = major_axis_val
+                    print(f"   寄存器 {self.base_address + 40 + 5}: 長軸 = {major_axis_val}")
+                    
                 if result.minor_axis:
-                    all_registers[6] = min(int(result.minor_axis), 65535)
+                    minor_axis_val = min(int(result.minor_axis), 65535)
+                    all_registers[6] = minor_axis_val
+                    print(f"   寄存器 {self.base_address + 40 + 6}: 短軸 = {minor_axis_val}")
+                    
                 if result.rect_width:
-                    all_registers[7] = min(int(result.rect_width), 65535)
+                    rect_width_val = min(int(result.rect_width), 65535)
+                    all_registers[7] = rect_width_val
+                    print(f"   寄存器 {self.base_address + 40 + 7}: 矩形寬度 = {rect_width_val}")
+                    
                 if result.rect_height:
-                    all_registers[8] = min(int(result.rect_height), 65535)
+                    rect_height_val = min(int(result.rect_height), 65535)
+                    all_registers[8] = rect_height_val
+                    print(f"   寄存器 {self.base_address + 40 + 8}: 矩形高度 = {rect_height_val}")
+                    
                 if result.contour_area:
                     # 輪廓面積可能很大，需要截斷或使用32位存儲
                     area_value = int(result.contour_area)
                     if area_value > 65535:
                         # 使用32位存儲輪廓面積
-                        all_registers[9] = (area_value >> 16) & 0xFFFF  # 高位
-                        all_registers[10] = area_value & 0xFFFF         # 低位
+                        area_high = (area_value >> 16) & 0xFFFF
+                        area_low = area_value & 0xFFFF
+                        all_registers[9] = area_high  # 高位
+                        all_registers[10] = area_low  # 低位
+                        print(f"   寄存器 {self.base_address + 40 + 9}: 面積高位 = {area_high}")
+                        print(f"   寄存器 {self.base_address + 40 + 10}: 面積低位 = {area_low}")
+                        print(f"   📏 輪廓面積: {result.contour_area:.0f} px², 32位存儲, 恢復值: {area_value}")
                     else:
                         all_registers[9] = area_value
+                        print(f"   寄存器 {self.base_address + 40 + 9}: 輪廓面積 = {area_value}")
+            else:
+                print(f"❌ 檢測失敗，寫入失敗標誌:")
+                all_registers[0] = 0  # 失敗標誌
+                print(f"   寄存器 {self.base_address + 40 + 0}: 成功標誌 = 0")
+                if result.error_message:
+                    print(f"   錯誤訊息: {result.error_message}")
             
             # 統計資訊區 (880-899對應20-39) - 添加範圍檢查
-            all_registers[20] = min(int(result.capture_time), 65535)
-            all_registers[21] = min(int(result.processing_time), 65535)
-            all_registers[22] = min(int(result.total_time), 65535)
-            all_registers[23] = self.operation_count & 0xFFFF  # 只取低16位
-            all_registers[24] = min(self.error_count, 65535)
-            all_registers[25] = min(self.connection_count, 65535)
+            print(f"\n📈 統計資訊:")
+            
+            capture_time_val = min(int(result.capture_time), 65535)
+            processing_time_val = min(int(result.processing_time), 65535)
+            total_time_val = min(int(result.total_time), 65535)
+            
+            all_registers[20] = capture_time_val
+            all_registers[21] = processing_time_val
+            all_registers[22] = total_time_val
+            print(f"   寄存器 {self.base_address + 80 + 0}: 拍照時間 = {capture_time_val} ms")
+            print(f"   寄存器 {self.base_address + 80 + 1}: 處理時間 = {processing_time_val} ms")
+            print(f"   寄存器 {self.base_address + 80 + 2}: 總時間 = {total_time_val} ms")
+            
+            operation_count_val = self.operation_count & 0xFFFF  # 只取低16位
+            error_count_val = min(self.error_count, 65535)
+            connection_count_val = min(self.connection_count, 65535)
+            
+            all_registers[23] = operation_count_val
+            all_registers[24] = error_count_val
+            all_registers[25] = connection_count_val
+            print(f"   寄存器 {self.base_address + 80 + 3}: 操作計數 = {operation_count_val}")
+            print(f"   寄存器 {self.base_address + 80 + 4}: 錯誤計數 = {error_count_val}")
+            print(f"   寄存器 {self.base_address + 80 + 5}: 連接計數 = {connection_count_val}")
+            
             all_registers[30] = 3  # 版本號
             all_registers[31] = 1  # 次版本號(優化版)
-            all_registers[32] = min(int((time.time() - self.start_time) // 3600), 65535)  # 運行小時
-            all_registers[33] = min(int((time.time() - self.start_time) % 3600 // 60), 65535)  # 運行分鐘
+            uptime_hours = min(int((time.time() - self.start_time) // 3600), 65535)
+            uptime_minutes = min(int((time.time() - self.start_time) % 3600 // 60), 65535)
+            all_registers[32] = uptime_hours  # 運行小時
+            all_registers[33] = uptime_minutes  # 運行分鐘
+            print(f"   寄存器 {self.base_address + 80 + 10}: 版本主號 = 3")
+            print(f"   寄存器 {self.base_address + 80 + 11}: 版本次號 = 1")
+            print(f"   寄存器 {self.base_address + 80 + 12}: 運行小時 = {uptime_hours}")
+            print(f"   寄存器 {self.base_address + 80 + 13}: 運行分鐘 = {uptime_minutes}")
             
             # 優化17：批次寫入減少Modbus通訊次數
-            self.modbus_client.write_registers(
+            print(f"\n🚀 開始批次寫入到ModbusTCP Server:")
+            print(f"   目標地址: {self.base_address + 40} ~ {self.base_address + 40 + 39}")
+            print(f"   寫入數量: 40個寄存器")
+            print(f"   Unit ID: 1")
+            
+            write_result = self.modbus_client.write_registers(
                 address=self.base_address + 40, values=all_registers, slave=1
             )
             
-            print(f"檢測結果已成功寫入寄存器")
+            if write_result.isError():
+                print(f"❌ 寫入失敗: {write_result}")
+            else:
+                print(f"✅ 檢測結果已成功批次寫入到ModbusTCP Server")
+                print(f"   成功寫入40個寄存器到地址 {self.base_address + 40}-{self.base_address + 79}")
+            
+            print(f"{'='*60}\n")
             
         except Exception as e:
-            print(f"寫入檢測結果錯誤: {e}")
+            print(f"❌ 寫入檢測結果發生異常: {e}")
+            print(f"   基地址: {self.base_address}")
+            print(f"   連接狀態: {self.modbus_client.connected if self.modbus_client else 'None'}")
+            import traceback
+            traceback.print_exc()
     
     def _handshake_sync_loop(self):
-        """握手同步循環"""
+        """握手同步循環 - 修改版：包含參數寫入重試邏輯"""
         print("CCD3握手同步線程啟動")
+        retry_count = 0
+        max_retries = 3
         
         while not self.stop_handshake:
             try:
                 if self.modbus_client and self.modbus_client.connected:
+                    # 檢查並重試寫入預設參數
+                    if not self.default_params_written and retry_count < max_retries:
+                        print(f"🔄 重試寫入預設參數 (第{retry_count + 1}次)")
+                        success = self.write_default_detection_params()
+                        if success:
+                            print("✅ 預設參數重試寫入成功")
+                        else:
+                            retry_count += 1
+                            if retry_count >= max_retries:
+                                print("⚠️ 預設參數寫入重試已達上限，停止重試")
+                    
                     # 更新狀態寄存器
                     self._update_status_register()
                     
@@ -934,7 +1108,7 @@ class CCD3AngleDetectionService:
             print(f"狀態寄存器更新錯誤: {e}")
     
     def _process_control_commands(self):
-        """處理控制指令"""
+        """處理控制指令 - 增加調試訊息"""
         try:
             # 讀取控制指令 (800)
             result = self.modbus_client.read_holding_registers(
@@ -949,103 +1123,144 @@ class CCD3AngleDetectionService:
             # 檢查新指令
             if control_command != self.last_control_command and control_command != 0:
                 if not self.command_processing:
-                    print(f"收到新控制指令: {control_command} (上次: {self.last_control_command})")
+                    print(f"\n📨 收到新控制指令:")
+                    print(f"   地址: {self.base_address} (控制指令寄存器)")
+                    print(f"   指令值: {control_command}")
+                    print(f"   上次指令: {self.last_control_command}")
+                    print(f"   指令處理中: {self.command_processing}")
                     self._handle_control_command(control_command)
                     self.last_control_command = control_command
+                else:
+                    print(f"⚠️ 收到新指令 {control_command} 但系統正在處理指令中，忽略")
             
             # PLC清零指令後恢復Ready
             elif control_command == 0 and self.last_control_command != 0:
-                print("PLC已清零指令，恢復Ready狀態")
+                print(f"🟢 PLC已清零指令，恢復Ready狀態")
+                print(f"   指令值變化: {self.last_control_command} → 0")
                 self.state_machine.set_ready(True)
                 self.last_control_command = 0
                 
         except Exception as e:
-            print(f"控制指令處理錯誤: {e}")
+            print(f"❌ 控制指令處理異常: {e}")
+            import traceback
+            traceback.print_exc()
     
     def _handle_control_command(self, command: int):
-        """處理控制指令"""
+        """處理控制指令 - 修正 f-string 格式錯誤"""
         if not self.state_machine.is_ready():
-            print(f"系統未Ready，無法執行指令 {command}")
+            print(f"⚠️ 系統未Ready，無法執行指令 {command}")
+            print(f"   當前狀態: Ready={self.state_machine.is_ready()}, Running={self.state_machine.is_running()}, Alarm={self.state_machine.is_alarm()}")
             return
         
-        print(f"開始處理控制指令: {command}")
+        print(f"🎯 開始處理控制指令: {command}")
+        
+        # 修正：將字典拆分出來，避免 f-string 解析錯誤
+        command_mapping = {8: '拍照', 16: '拍照+檢測', 32: '重新初始化'}
+        command_desc = command_mapping.get(command, '未知指令')
+        print(f"   指令對應: {command_desc}")
+        
         self.command_processing = True
         self.state_machine.set_ready(False)
         self.state_machine.set_running(True)
         
+        print(f"   狀態變更: Ready=False, Running=True")
+        
         # 異步執行指令
         threading.Thread(target=self._execute_command_async, args=(command,), daemon=True).start()
+        print(f"   已啟動異步執行線程")
     
     def _execute_command_async(self, command: int):
-        """異步執行指令"""
+        """異步執行指令 - 修改版：默認使用DR模式1"""
         try:
+            print(f"\n🔧 開始異步執行指令: {command}")
+            
             if command == 8:
                 # 單純拍照
-                print("執行拍照指令")
+                print("📸 執行拍照指令...")
                 if self.camera and getattr(self.camera, 'is_streaming', False):
                     frame_data = self.camera.capture_frame()
                     if frame_data is not None:
-                        print(f"拍照完成，圖像尺寸: {frame_data.data.shape}")
+                        print(f"✅ 拍照完成，圖像尺寸: {frame_data.data.shape}")
                     else:
-                        print("拍照失敗: 無法捕獲圖像")
+                        print("❌ 拍照失敗: 無法捕獲圖像")
                         self.error_count += 1
                 else:
-                    print("拍照失敗: 相機未初始化或串流未啟動")
+                    print("❌ 拍照失敗: 相機未初始化或串流未啟動")
                     self.error_count += 1
                         
             elif command == 16:
                 # 拍照+角度檢測
-                print("執行拍照+角度檢測指令")
+                print("🔍 執行拍照+角度檢測指令...")
                 
-                # 讀取檢測模式 (810)
+                # 讀取檢測模式 (810) - 默認使用DR模式1
                 mode_result = self.modbus_client.read_holding_registers(
                     address=self.base_address + 10, count=1, slave=1
                 )
-                detection_mode = 0
+                detection_mode = 1  # 默認DR模式1
                 if not mode_result.isError():
                     detection_mode = mode_result.registers[0]
+                    print(f"📋 從寄存器讀取檢測模式: {detection_mode}")
+                else:
+                    print(f"📋 寄存器讀取失敗，使用默認檢測模式: {detection_mode}")
                 
-                print(f"檢測模式: {detection_mode}")
+                print(f"🎯 使用檢測模式: {detection_mode} ({'CASE橢圓擬合' if detection_mode == 0 else 'DR最小外接矩形'})")
                 
+                # 執行檢測
                 result = self.capture_and_detect_angle(detection_mode)
+                
+                # 寫入結果
+                print(f"📝 準備將檢測結果寫入ModbusTCP Server...")
                 self.write_detection_result(result)
                 
                 if result.success:
-                    print(f"角度檢測完成: 中心{result.center}, 角度{result.angle:.2f}度, 耗時{result.total_time:.1f}ms")
+                    print(f"🎉 角度檢測完成: 中心{result.center}, 角度{result.angle:.2f}度, 耗時{result.total_time:.1f}ms")
                 else:
-                    print(f"角度檢測失敗: {result.error_message}")
+                    print(f"💥 角度檢測失敗: {result.error_message}")
                     
             elif command == 32:
                 # 重新初始化
-                print("執行重新初始化指令")
+                print("🔄 執行重新初始化指令...")
                 success = self.initialize_camera()
                 if success:
-                    print("重新初始化成功")
+                    print("✅ 重新初始化成功")
+                    # 重新初始化後重新寫入預設參數
+                    self.default_params_written = False
                 else:
-                    print("重新初始化失敗")
+                    print("❌ 重新初始化失敗")
             
             else:
-                print(f"未知指令: {command}")
+                print(f"❓ 未知指令: {command}")
                 
         except Exception as e:
-            print(f"指令執行錯誤: {e}")
+            print(f"❌ 指令執行發生異常: {e}")
+            import traceback
+            traceback.print_exc()
             self.error_count += 1
             self.state_machine.set_alarm(True)
         
         finally:
-            print(f"控制指令 {command} 執行完成")
+            print(f"🏁 控制指令 {command} 執行完成")
             self.command_processing = False
             self.state_machine.set_running(False)
             if not self.state_machine.is_alarm():
                 self.state_machine.set_ready(True)
     
     def start_handshake_service(self):
-        """啟動握手服務"""
+        """啟動握手服務 - 修改版：自動寫入預設參數"""
         if not self.handshake_thread or not self.handshake_thread.is_alive():
             self.stop_handshake = False
             self.handshake_thread = threading.Thread(target=self._handshake_sync_loop, daemon=True)
             self.handshake_thread.start()
             print("握手服務已啟動")
+            
+            # 如果還未寫入預設參數，則自動寫入
+            if not self.default_params_written:
+                print("🔄 自動寫入預設檢測參數...")
+                success = self.write_default_detection_params()
+                if success:
+                    print("✅ 預設參數自動寫入成功")
+                else:
+                    print("⚠️ 預設參數自動寫入失敗，將在下次握手循環中重試")
     
     def stop_handshake_service(self):
         """停止握手服務"""
@@ -1248,7 +1463,7 @@ def get_registers():
 
 @socketio.on('connect')
 def handle_connect():
-    emit('status_update', {'message': 'CCD3角度檢測系統已連接 (優化版)'})
+    emit('status_update', {'message': 'CCD3角度檢測系統已連接 (調試版)'})
 
 @socketio.on('get_status')
 def handle_get_status():
@@ -1256,14 +1471,13 @@ def handle_get_status():
     emit('status_update', status)
 
 def auto_initialize_system():
-    print("=== CCD3角度檢測系統自動初始化開始 (優化版) ===")
+    print("=== CCD3角度檢測系統自動初始化開始 (DR模式默認版) ===")
     
     # 1. 自動連接Modbus服務器
     print("步驟1: 自動連接Modbus服務器...")
     modbus_success = ccd3_service.connect_modbus()
     if modbus_success:
         print("✓ Modbus服務器連接成功")
-        # 暫時不啟動握手服務，等相機初始化完成後再啟動
         print("⏳ 握手服務將在相機初始化完成後啟動")
     else:
         print("✗ Modbus服務器連接失敗")
@@ -1277,16 +1491,31 @@ def auto_initialize_system():
     else:
         print("✗ 相機連接失敗")
     
-    # 3. 現在才啟動握手服務
-    print("步驟3: 啟動握手服務...")
+    # 3. 啟動握手服務並自動寫入預設參數
+    print("步驟3: 啟動握手服務並寫入預設參數...")
     ccd3_service.start_handshake_service()
     print("✓ 握手服務已啟動")
+    
+    # 4. 等待參數寫入完成
+    print("步驟4: 等待預設參數寫入完成...")
+    import time
+    for i in range(10):  # 最多等待5秒
+        if ccd3_service.default_params_written:
+            print("✓ 預設參數寫入完成")
+            break
+        time.sleep(0.5)
+        print(f"   等待中... ({i+1}/10)")
+    
+    if not ccd3_service.default_params_written:
+        print("⚠️ 預設參數寫入超時，但系統仍可手動設置")
     
     print("=== CCD3角度檢測系統自動初始化完成 ===")
     print(f"狀態: Ready={ccd3_service.state_machine.is_ready()}")
     print(f"狀態: Initialized={ccd3_service.state_machine.is_initialized()}")
     print(f"狀態: Alarm={ccd3_service.state_machine.is_alarm()}")
-    print("性能優化: 啟用快取機制、批次寫入、高精度計時")
+    print(f"預設參數: 已寫入={ccd3_service.default_params_written}")
+    print("默認模式: DR模式1 (最小外接矩形角度檢測)")
+    print("調試功能: 已啟用詳細的寫入訊息打印")
     
     # 強制設置Ready狀態以確保系統可以接收指令
     print("強制設置系統為Ready狀態...")
@@ -1296,18 +1525,21 @@ def auto_initialize_system():
     return True
 
 if __name__ == '__main__':
-    print("CCD3角度辨識系統啟動中 (性能優化版)...")
+    print("CCD3角度辨識系統啟動中 (DR模式默認版)...")
     print(f"系統架構: Modbus TCP Client - 運動控制握手模式")
     print(f"基地址: {ccd3_service.base_address}")
     print(f"Modbus服務器: {ccd3_service.server_ip}:{ccd3_service.server_port}")
     print(f"相機IP: 192.168.1.10")
-    print(f"檢測模式: 支援CASE模式(0)和DR模式(1)")
-    print(f"性能優化: 圖像處理快取、參數快取、批次寫入、高精度計時")
+    print(f"檢測模式: 默認DR模式1 (最小外接矩形)，支援CASE模式(0)切換")
+    print(f"預設參數: 將自動寫入到寄存器810-815")
+    print(f"調試功能: 詳細的寄存器寫入訊息打印")
     
     # 執行自動初始化
     auto_success = auto_initialize_system()
     if auto_success:
         print("系統已就緒，等待PLC指令...")
+        print("預設使用DR模式1進行角度檢測")
+        print("當收到指令16時，將顯示詳細的檢測和寫入過程")
     else:
         print("系統初始化失敗，但Web介面仍可使用")
     

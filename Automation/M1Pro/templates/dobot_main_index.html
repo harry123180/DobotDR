@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dobot主控制器 - 控制面板 (增強版)</title>
+    <title>Dobot主控制器 - 控制面板 (支援Flow2出料)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
     <style>
         * {
@@ -160,9 +160,96 @@
             color: white;
         }
 
+        /* 新增：Flow2出料標識 */
+        .flow-btn.flow2::after {
+            content: '出料';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
         .flow-btn.flow3 {
             background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             color: white;
+        }
+
+        /* 新增：Flow2前置條件檢查按鈕 */
+        .flow2-controls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .check-btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffa726 0%, #ff7043 100%);
+            color: white;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .check-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 新增：Flow2前置條件顯示 */
+        .flow2-preconditions {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .flow2-preconditions.show {
+            display: block;
+        }
+
+        .flow2-preconditions.ready {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flow2-preconditions.not-ready {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .precondition-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 0.85rem;
+        }
+
+        .precondition-status {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .precondition-status.pass {
+            color: #28a745;
+        }
+
+        .precondition-status.fail {
+            color: #dc3545;
         }
 
         .control-buttons {
@@ -431,8 +518,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Dobot主控制器 (增強版)</h1>
-            <div class="subtitle">機械臂運動控制系統 - 基地址400 + CCD1佇列監控</div>
+            <h1>Dobot主控制器 (支援Flow2出料)</h1>
+            <div class="subtitle">機械臂運動控制系統 - 基地址400 + Flow1(VP視覺) + Flow2(出料流程)</div>
         </div>
 
         <div class="status-bar">
@@ -452,12 +539,45 @@
                     <button class="flow-btn flow1" onclick="executeFlow(1)">
                         流程1 - VP視覺抓取
                     </button>
-                    <button class="flow-btn flow2" onclick="executeFlow(2)">
-                        流程2 - CCD3角度檢測
+                    
+                    <!-- Flow2控制區域（新增） -->
+                    <div class="flow2-controls">
+                        <button class="check-btn" onclick="checkFlow2Preconditions()" id="checkFlow2Btn">
+                            檢查Flow2前置條件
+                        </button>
+                    </div>
+                    
+                    <button class="flow-btn flow2" onclick="executeFlow2()" id="flow2Btn" disabled>
+                        流程2 - 出料流程
                     </button>
+                    
                     <button class="flow-btn flow3" onclick="executeFlow(3)">
                         流程3 - 完整加工流程
                     </button>
+                </div>
+
+                <!-- Flow2前置條件顯示區域（新增） -->
+                <div class="flow2-preconditions" id="flow2Preconditions">
+                    <div style="font-weight: bold; margin-bottom: 8px; color: #2c3e50;">前置條件檢查</div>
+                    <div class="precondition-item">
+                        <span>機械臂在standby點</span>
+                        <span class="precondition-status" id="standbyCheck">-</span>
+                    </div>
+                    <div class="precondition-item">
+                        <span>夾爪連接正常</span>
+                        <span class="precondition-status" id="gripperCheck">-</span>
+                    </div>
+                    <div class="precondition-item">
+                        <span>系統空閒狀態</span>
+                        <span class="precondition-status" id="idleCheck">-</span>
+                    </div>
+                    <div class="precondition-item">
+                        <span>錯誤計數正常</span>
+                        <span class="precondition-status" id="errorCheck">-</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #6c757d; margin-top: 8px;">
+                        Flow2路徑：standby→撈料→組裝→放下→standby (16步驟)
+                    </div>
                 </div>
 
                 <div class="control-buttons">
@@ -551,7 +671,7 @@
                 </div>
             </div>
 
-            <!-- 新增：CCD1佇列面板 -->
+            <!-- CCD1佇列面板 -->
             <div class="ccd1-panel">
                 <div class="panel-title">CCD1佇列狀態</div>
                 
@@ -585,8 +705,8 @@
 
                 <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px; font-size: 0.9rem; color: #6c757d;">
                     <strong>FIFO模式說明：</strong><br>
-                    • 第一次執行流程1會觸發新檢測<br>
-                    • 後續執行會從佇列取得下個物體<br>
+                    • Flow1：VP視覺抓取 (FIFO佇列)<br>
+                    • Flow2：出料流程 (standby循環)<br>
                     • 佇列為空時自動觸發新檢測
                 </div>
             </div>
@@ -630,7 +750,7 @@
 
         <!-- 日誌區域 -->
         <div class="log-container">
-            <div class="log-header">系統日誌 (增強版 - 含CCD1佇列)</div>
+            <div class="log-header">系統日誌 (Flow1+Flow2支援版)</div>
             <div id="logContent"></div>
         </div>
     </div>
@@ -644,7 +764,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateCurrentTime();
             setInterval(updateCurrentTime, 1000);
-            addLog('Web介面已載入 (增強版 - 支援CCD1佇列監控)');
+            addLog('Web介面已載入 (Flow1+Flow2支援版)');
         });
 
         // 更新當前時間
@@ -693,7 +813,7 @@
             }
         }
 
-        // 更新CCD1佇列狀態 (新增功能)
+        // 更新CCD1佇列狀態 (保持原有功能)
         function updateCCD1QueueStatus(ccd1Queue) {
             if (!ccd1Queue) return;
 
@@ -725,6 +845,89 @@
             } else {
                 worldCoordStatus.className = 'world-coord-status invalid';
                 worldCoordStatus.textContent = '世界座標無效';
+            }
+        }
+
+        // 新增：Flow2前置條件檢查
+        async function checkFlow2Preconditions() {
+            if (!isConnected) {
+                addLog('請先連接Modbus服務器', 'error');
+                return;
+            }
+
+            const checkBtn = document.getElementById('checkFlow2Btn');
+            checkBtn.disabled = true;
+            checkBtn.textContent = '檢查中...';
+
+            try {
+                const response = await fetch('/api/flow2/check_preconditions');
+                const result = await response.json();
+                
+                updateFlow2Preconditions(result);
+                addLog(`Flow2前置條件檢查：${result.ready ? '通過' : '未通過'}`, result.ready ? 'success' : 'error');
+                
+            } catch (error) {
+                addLog(`Flow2前置條件檢查失敗: ${error.message}`, 'error');
+            } finally {
+                checkBtn.disabled = false;
+                checkBtn.textContent = '檢查Flow2前置條件';
+            }
+        }
+
+        // 新增：更新Flow2前置條件顯示
+        function updateFlow2Preconditions(data) {
+            const preconditionsDiv = document.getElementById('flow2Preconditions');
+            const flow2Btn = document.getElementById('flow2Btn');
+            
+            // 顯示前置條件檢查結果
+            preconditionsDiv.classList.add('show');
+            
+            if (data.ready) {
+                preconditionsDiv.className = 'flow2-preconditions show ready';
+                flow2Btn.disabled = false;
+            } else {
+                preconditionsDiv.className = 'flow2-preconditions show not-ready';
+                flow2Btn.disabled = true;
+            }
+            
+            // 更新各項檢查結果
+            if (data.checks) {
+                document.getElementById('standbyCheck').textContent = data.checks.robot_idle ? '✓' : '✗';
+                document.getElementById('standbyCheck').className = data.checks.robot_idle ? 'precondition-status pass' : 'precondition-status fail';
+                
+                document.getElementById('gripperCheck').textContent = data.checks.modbus_connected ? '✓' : '✗';
+                document.getElementById('gripperCheck').className = data.checks.modbus_connected ? 'precondition-status pass' : 'precondition-status fail';
+                
+                document.getElementById('idleCheck').textContent = data.checks.no_other_flow ? '✓' : '✗';
+                document.getElementById('idleCheck').className = data.checks.no_other_flow ? 'precondition-status pass' : 'precondition-status fail';
+                
+                document.getElementById('errorCheck').textContent = data.checks.low_error_count ? '✓' : '✗';
+                document.getElementById('errorCheck').className = data.checks.low_error_count ? 'precondition-status pass' : 'precondition-status fail';
+            }
+        }
+
+        // 新增：執行Flow2
+        async function executeFlow2() {
+            if (!isConnected) {
+                addLog('請先連接Modbus服務器', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/flow2/execute', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}
+                });
+                const result = await response.json();
+                
+                addLog(result.message, result.success ? 'success' : 'error');
+                
+                if (result.success) {
+                    addLog('Flow2出料流程已啟動 - 路徑：standby→撈料→組裝→放下→standby', 'info');
+                }
+                
+            } catch (error) {
+                addLog(`Flow2執行失敗: ${error.message}`, 'error');
             }
         }
 
@@ -879,7 +1082,7 @@
                     `DI:${status.io_status.di || 0} DO:${status.io_status.do || 0}`;
             }
 
-            // 新增：CCD1佇列狀態
+            // CCD1佇列狀態
             if (status.ccd1_queue) {
                 updateCCD1QueueStatus(status.ccd1_queue);
             }
@@ -887,9 +1090,9 @@
             updateConnectionStatus(status.connection_status);
         }
 
-        // SocketIO事件處理 (增強版)
+        // SocketIO事件處理 (Flow2增強版)
         socket.on('connect', function() {
-            addLog('WebSocket連接已建立 (增強版)');
+            addLog('WebSocket連接已建立 (Flow1+Flow2支援版)');
         });
 
         socket.on('disconnect', function() {
@@ -910,7 +1113,16 @@
             addLog(result.message, result.success ? 'success' : 'error');
         });
 
-        // 定期請求狀態更新（增強版）
+        // 新增：Flow2專用SocketIO事件
+        socket.on('flow2_execution_result', function(result) {
+            addLog(result.message, result.success ? 'success' : 'error');
+        });
+
+        socket.on('flow2_preconditions_result', function(result) {
+            updateFlow2Preconditions(result);
+        });
+
+        // 定期請求狀態更新
         setInterval(function() {
             if (isConnected) {
                 requestStatus();

@@ -51,11 +51,11 @@ ROBOT_STATES = {
 }
 
 FLOW_TYPES = {
-    0: "無流程", 1: "VP視覺抓取(FIFO)", 2: "CCD3角度檢測", 3: "完整加工流程"
+    0: "無流程", 1: "VP視覺抓取(FIFO)", 2: "出料流程", 3: "完整加工流程"
 }
 
 COMMANDS = {
-    0: "清空指令", 1: "執行流程1", 2: "執行流程2", 3: "執行流程3", 99: "緊急停止"
+    0: "清空指令", 1: "執行流程1", 2: "執行流程2(出料)", 3: "執行流程3", 99: "緊急停止"
 }
 
 class DobotMainAppController:
@@ -300,7 +300,49 @@ class DobotMainAppController:
             except Exception as e:
                 print(f"監控循環錯誤: {e}")
                 time.sleep(1)
+    def get_flow2_status(self) -> dict:
+        """獲取Flow2出料流程專用狀態"""
+        try:
+            if not self.is_connected:
+                return {"error": "未連接"}
+            
+            # 讀取基本狀態
+            basic_status = self.read_all_status()
+            if not basic_status:
+                return {"error": "讀取狀態失敗"}
+            
+            # Flow2專用狀態解析
+            flow2_status = {
+                "is_flow2_running": basic_status.get("current_flow") == 2,
+                "flow2_progress": basic_status.get("flow_progress", 0),
+                "flow2_step": f"{basic_status.get('flow_progress', 0)*16//100}/16" if basic_status.get("current_flow") == 2 else "0/16",
+                "robot_at_standby": self._check_robot_at_standby(basic_status),
+                "gripper_ready": self._check_gripper_ready(),
+                "last_flow2_execution": basic_status.get("statistics", {}).get("operation_count", 0)
+            }
+            
+            # 合併基本狀態和Flow2專用狀態
+            return {**basic_status, **flow2_status}
+            
+        except Exception as e:
+            return {"error": f"獲取Flow2狀態失敗: {e}"}
+    def _check_robot_at_standby(self, status: dict) -> bool:
+        """檢查機械臂是否在standby點附近"""
+        try:
+            # 這裡可以根據需要實現更精確的位置檢查
+            # 暫時簡單判斷機械臂是否處於IDLE狀態
+            return status.get("robot_state") == 0  # IDLE狀態
+        except:
+            return False
 
+    def _check_gripper_ready(self) -> bool:
+        """檢查夾爪是否準備好"""
+        try:
+            # 可以透過額外的Modbus讀取檢查夾爪狀態
+            # 這裡暫時返回連接狀態
+            return True  # 簡化處理
+        except:
+            return False
 
 # 初始化Flask應用
 app = Flask(__name__)
@@ -379,11 +421,15 @@ def execute_flow(flow_id):
     
     success = controller.send_command(flow_id)
     
-    # 流程1的特殊處理提示
+     # 不同流程的特殊處理提示
     if flow_id == 1:
         message = f'流程{flow_id}(VP視覺抓取FIFO){"啟動成功" if success else "啟動失敗"}'
         if success:
             message += " - 將從CCD1佇列獲取物體座標"
+    elif flow_id == 2:  # 新增Flow2處理
+        message = f'流程{flow_id}(出料流程){"啟動成功" if success else "啟動失敗"}'
+        if success:
+            message += " - 從standby點開始完整出料作業"
     else:
         message = f'流程{flow_id}{"啟動成功" if success else "啟動失敗"}'
     
@@ -440,7 +486,104 @@ def write_register_api():
         })
     except ValueError:
         return jsonify({'success': False, 'message': 'address和value必須是數字'})
+@app.route('/api/flow2/status', methods=['GET'])
+def get_flow2_status_api():
+    """獲取Flow2出料流程專用狀態"""
+    status = controller.get_flow2_status()
+    return jsonify(status)
 
+@app.route('/api/flow2/execute', methods=['POST'])
+def execute_flow2():
+    """執行Flow2出料流程"""
+    try:
+        # 檢查系統狀態
+        status = controller.read_all_status()
+        if not status:
+            return jsonify({
+                'success': False,
+                'message': 'Modbus連接失敗，無法執行Flow2'
+            })
+        
+        # 檢查機械臂狀態
+        robot_state = status.get("robot_state", -1)
+        if robot_state != 0:  # 不是IDLE狀態
+            return jsonify({
+                'success': False,
+                'message': f'機械臂狀態不允許執行Flow2 (當前狀態: {ROBOT_STATES.get(robot_state, "未知")})'
+            })
+        
+        # 檢查是否有其他流程在運行
+        current_flow = status.get("current_flow", 0)
+        if current_flow != 0:
+            return jsonify({
+                'success': False,
+                'message': f'有其他流程在運行 ({FLOW_TYPES.get(current_flow, "未知流程")})'
+            })
+        
+        # 發送Flow2執行指令
+        success = controller.send_command(2)
+        
+        return jsonify({
+            'success': success,
+            'message': 'Flow2出料流程啟動成功' if success else 'Flow2出料流程啟動失敗',
+            'flow_description': '從standby點開始的完整出料作業流程'
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'執行Flow2失敗: {e}'
+        })
+
+@app.route('/api/flow2/check_preconditions', methods=['GET'])
+def check_flow2_preconditions():
+    """檢查Flow2執行前置條件"""
+    try:
+        status = controller.read_all_status()
+        if not status:
+            return jsonify({
+                'ready': False,
+                'message': 'Modbus連接失敗'
+            })
+        
+        checks = {
+            'modbus_connected': controller.is_connected,
+            'robot_idle': status.get("robot_state") == 0,
+            'no_other_flow': status.get("current_flow") == 0,
+            'robot_mode_ok': status.get("robot_mode", 0) > 0,
+            'low_error_count': status.get("statistics", {}).get("error_count", 0) < 5
+        }
+        
+        all_ready = all(checks.values())
+        
+        # 生成檢查報告
+        messages = []
+        if not checks['modbus_connected']:
+            messages.append("Modbus未連接")
+        if not checks['robot_idle']:
+            messages.append(f"機械臂非空閒狀態 ({ROBOT_STATES.get(status.get('robot_state'), '未知')})")
+        if not checks['no_other_flow']:
+            messages.append(f"有其他流程運行中 ({FLOW_TYPES.get(status.get('current_flow'), '未知')})")
+        if not checks['robot_mode_ok']:
+            messages.append("機械臂模式異常")
+        if not checks['low_error_count']:
+            messages.append("錯誤次數過多，建議重置")
+        
+        return jsonify({
+            'ready': all_ready,
+            'checks': checks,
+            'message': '所有前置條件滿足，可以執行Flow2' if all_ready else '; '.join(messages),
+            'required_points': [
+                "stanby", "Rotate_V2", "Rotate_top", "Rotate_down",
+                "back_stanby_from_asm", "put_asm_Pre", "put_asm_top", "put_asm_down"
+            ]
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'ready': False,
+            'message': f'檢查前置條件失敗: {e}'
+        })
 # SocketIO事件處理
 @socketio.on('connect')
 def on_connect():
@@ -476,6 +619,47 @@ def on_send_command(data):
             'command': command,
             'message': f'指令{command}{"發送成功" if success else "發送失敗"}'
         })
+@socketio.on('request_flow2_status')
+def on_request_flow2_status():
+    """請求Flow2專用狀態更新"""
+    status = controller.get_flow2_status()
+    emit('flow2_status_update', status)
+
+@socketio.on('execute_flow2')
+def on_execute_flow2():
+    """SocketIO執行Flow2"""
+    try:
+        # 檢查前置條件
+        preconditions = check_flow2_preconditions()
+        precondition_data = preconditions.get_json()
+        
+        if not precondition_data['ready']:
+            emit('flow2_execution_result', {
+                'success': False,
+                'message': f"前置條件不滿足: {precondition_data['message']}"
+            })
+            return
+        
+        # 執行Flow2
+        success = controller.send_command(2)
+        emit('flow2_execution_result', {
+            'success': success,
+            'message': 'Flow2出料流程啟動成功' if success else 'Flow2出料流程啟動失敗',
+            'flow_description': '從standby點開始的完整出料作業流程 (16步驟)'
+        })
+        
+    except Exception as e:
+        emit('flow2_execution_result', {
+            'success': False,
+            'message': f'執行Flow2失敗: {e}'
+        })
+
+@socketio.on('check_flow2_preconditions')
+def on_check_flow2_preconditions():
+    """檢查Flow2前置條件"""
+    preconditions = check_flow2_preconditions()
+    emit('flow2_preconditions_result', preconditions.get_json())
+
 
 def main():
     """主函數"""
@@ -488,8 +672,12 @@ def main():
     print("  402: 當前流程ID")
     print("  403: 流程執行進度 (0-100%)")
     print("新增功能:")
-    print("  - CCD1佇列狀態監控 (寄存器201, 240, 256)")
-    print("  - 流程1 FIFO模式支援")
+    print("  - Flow2出料流程控制和監控")
+    print("  - Flow2前置條件檢查")
+    print("  - Flow2專用狀態顯示")
+    print("流程說明:")
+    print("  - Flow1: VP視覺抓取 (FIFO佇列模式)")
+    print("  - Flow2: 出料流程 (standby→撈料→組裝→放下→standby)")
     print("\n請在瀏覽器中打開Web介面進行控制")
     
     try:
@@ -509,3 +697,16 @@ def main():
 
 if __name__ == "__main__":
     main()
+# ==================== API路由總覽 ====================
+# 新增的Flow2專用API：
+# GET  /api/flow2/status              - 獲取Flow2專用狀態
+# POST /api/flow2/execute             - 執行Flow2出料流程
+# GET  /api/flow2/check_preconditions - 檢查Flow2前置條件
+
+# 新增的SocketIO事件：
+# request_flow2_status       - 請求Flow2狀態
+# execute_flow2             - 執行Flow2
+# check_flow2_preconditions - 檢查Flow2前置條件
+# flow2_status_update       - Flow2狀態更新 (emit)
+# flow2_execution_result    - Flow2執行結果 (emit)
+# flow2_preconditions_result - Flow2前置條件結果 (emit)

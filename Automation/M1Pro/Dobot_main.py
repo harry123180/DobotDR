@@ -20,6 +20,7 @@ from enum import Enum
 
 # 導入流程模組
 from Dobot_Flow1 import Flow1Executor
+from Dobot_Flow2 import Flow2Executor
 
 from pymodbus.client.tcp import ModbusTcpClient
 from dobot_api import DobotApiDashboard, DobotApiMove
@@ -111,7 +112,7 @@ class RobotState(Enum):
 class FlowType(Enum):
     NONE = 0          # 無流程
     FLOW_1 = 1        # 流程1 - VP視覺抓取
-    FLOW_2 = 2        # 流程2 - CCD3角度檢測
+    FLOW_2 = 2        # 流程2 - 出料流程  # 新增這行
     FLOW_3 = 3        # 流程3 - 完整加工流程
 
 
@@ -647,11 +648,11 @@ class DobotM1Pro:
             # 機械臂初始化設置
             self.dashboard_api.ClearError()
             self.dashboard_api.EnableRobot()
-            self.dashboard_api.SpeedFactor(100)  # 全局速度比例
-            self.dashboard_api.SpeedJ(100)       # 關節運動速度
-            self.dashboard_api.SpeedL(100)       # 直線運動速度
-            self.dashboard_api.AccJ(100)         # 關節運動加速度
-            self.dashboard_api.AccL(100)         # 直線運動加速度
+            self.dashboard_api.SpeedFactor(self.global_speed)  # 全局速度比例
+            self.dashboard_api.SpeedJ(self.global_speed)       # 關節運動速度
+            self.dashboard_api.SpeedL(self.global_speed)       # 直線運動速度
+            self.dashboard_api.AccJ(self.global_speed)         # 關節運動加速度
+            self.dashboard_api.AccL(self.global_speed)         # 直線運動加速度
             
             self.is_connected = True
             print(f"機械臂初始化成功: {self.ip}")
@@ -1044,7 +1045,7 @@ class DobotMotionController:
             },
             "flows": {
                 "flow1_enabled": True,
-                "flow2_enabled": False,
+                "flow2_enabled": True,
                 "flow3_enabled": False
             },
             "safety": {
@@ -1127,7 +1128,16 @@ class DobotMotionController:
                 state_machine=self.state_machine
             )
             print("✓ Flow1執行器初始化完成 (使用高層API)")
-        
+        # 新增Flow2初始化
+        if self.config["flows"]["flow2_enabled"]:
+            self.flows[2] = Flow2Executor(
+                robot=self.robot,
+                gripper=self.gripper,
+                ccd1=self.ccd1,
+                ccd3=self.ccd3,
+                state_machine=self.state_machine
+            )
+            print("✓ Flow2執行器初始化完成 (出料流程)")
         # 5. 載入點位數據
         if not self.robot.points_manager.load_points():
             print("載入點位數據失敗，但繼續運行")
@@ -1626,6 +1636,8 @@ def main():
         print(f"  CCD1視覺: {'啟用' if status['ccd1_enabled'] else '停用'}")
         print(f"  CCD3角度: {'啟用' if status['ccd3_enabled'] else '停用'}")
         print("\n系統準備完成，等待PLC指令...")
+        print("  Flow1: VP視覺抓取 (FIFO佇列模式)")
+        print("  Flow2: 出料流程 (standby→撐開→組裝→放下→standby)")  # 新增這行
         
         # 主循環
         while True:

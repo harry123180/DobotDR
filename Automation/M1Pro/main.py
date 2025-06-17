@@ -7,7 +7,7 @@ from PyQt5.QtGui import *
 from logic import RobotController, PointDataValidator, LABEL_ROBOT_MODE
 
 class PointEditDialog(QDialog):
-    """點位編輯對話框"""
+    """點位編輯對話框 - 修正版本，完全移除上下限拘束"""
     def __init__(self, point_data=None, parent=None):
         super().__init__(parent)
         self.point_data = point_data or {}
@@ -26,20 +26,28 @@ class PointEditDialog(QDialog):
         name_layout.addWidget(self.name_edit)
         layout.addLayout(name_layout)
         
-        # 笛卡爾座標
+        # 笛卡爾座標 - 完全移除範圍限制
         cart_group = QGroupBox("笛卡爾座標 (mm/度)")
         cart_layout = QGridLayout()
+        
+        # X軸 - 無限制範圍
         self.x_spin = QDoubleSpinBox()
-        self.x_spin.setRange(-1000, 1000)
+        self.x_spin.setRange(-999999.99, 999999.99)
         self.x_spin.setDecimals(2)
+        
+        # Y軸 - 無限制範圍
         self.y_spin = QDoubleSpinBox()
-        self.y_spin.setRange(-1000, 1000)
+        self.y_spin.setRange(-999999.99, 999999.99)
         self.y_spin.setDecimals(2)
+        
+        # Z軸 - 無限制範圍
         self.z_spin = QDoubleSpinBox()
-        self.z_spin.setRange(-100, 800)
+        self.z_spin.setRange(-999999.99, 999999.99)
         self.z_spin.setDecimals(2)
+        
+        # R軸 - 無限制範圍
         self.r_spin = QDoubleSpinBox()
-        self.r_spin.setRange(-180, 180)
+        self.r_spin.setRange(-999999.99, 999999.99)
         self.r_spin.setDecimals(2)
         
         cart_layout.addWidget(QLabel("X:"), 0, 0)
@@ -53,20 +61,28 @@ class PointEditDialog(QDialog):
         cart_group.setLayout(cart_layout)
         layout.addWidget(cart_group)
         
-        # 關節座標
+        # 關節座標 - 完全移除範圍限制
         joint_group = QGroupBox("關節座標 (度)")
         joint_layout = QGridLayout()
+        
+        # J1軸 - 無限制範圍
         self.j1_spin = QDoubleSpinBox()
-        self.j1_spin.setRange(-180, 180)
+        self.j1_spin.setRange(-999999.99, 999999.99)
         self.j1_spin.setDecimals(2)
+        
+        # J2軸 - 無限制範圍
         self.j2_spin = QDoubleSpinBox()
-        self.j2_spin.setRange(-135, 135)
+        self.j2_spin.setRange(-999999.99, 999999.99)
         self.j2_spin.setDecimals(2)
+        
+        # J3軸 - 無限制範圍
         self.j3_spin = QDoubleSpinBox()
-        self.j3_spin.setRange(-135, 135)
+        self.j3_spin.setRange(-999999.99, 999999.99)
         self.j3_spin.setDecimals(2)
+        
+        # J4軸 - 無限制範圍
         self.j4_spin = QDoubleSpinBox()
-        self.j4_spin.setRange(-180, 180)
+        self.j4_spin.setRange(-999999.99, 999999.99)
         self.j4_spin.setDecimals(2)
         
         joint_layout.addWidget(QLabel("J1:"), 0, 0)
@@ -524,35 +540,35 @@ class RobotUI(QMainWindow):
                 pass  # 靜默處理UI更新錯誤
         
     def create_move_group(self):
-        """建立運動控制群組"""
+        """建立運動控制群組 - 修正版本，完全移除上下限拘束"""
         group = QGroupBox("運動控制")
         layout = QGridLayout()
         
-        # 笛卡爾座標輸入
+        # 笛卡爾座標輸入 - 完全移除範圍限制
         layout.addWidget(QLabel("X:"), 0, 0)
         self.x_spin = QDoubleSpinBox()
-        self.x_spin.setRange(-1000, 1000)
+        self.x_spin.setRange(-999999.99, 999999.99)
         self.x_spin.setValue(600)
         self.x_spin.setDecimals(2)
         layout.addWidget(self.x_spin, 0, 1)
         
         layout.addWidget(QLabel("Y:"), 0, 2)
         self.y_spin = QDoubleSpinBox()
-        self.y_spin.setRange(-1000, 1000)
+        self.y_spin.setRange(-999999.99, 999999.99)
         self.y_spin.setValue(-260)
         self.y_spin.setDecimals(2)
         layout.addWidget(self.y_spin, 0, 3)
         
         layout.addWidget(QLabel("Z:"), 0, 4)
         self.z_spin = QDoubleSpinBox()
-        self.z_spin.setRange(-100, 800)
+        self.z_spin.setRange(-999999.99, 999999.99)
         self.z_spin.setValue(380)
         self.z_spin.setDecimals(2)
         layout.addWidget(self.z_spin, 0, 5)
         
         layout.addWidget(QLabel("R:"), 0, 6)
         self.r_spin = QDoubleSpinBox()
-        self.r_spin.setRange(-180, 180)
+        self.r_spin.setRange(-999999.99, 999999.99)
         self.r_spin.setValue(170)
         self.r_spin.setDecimals(2)
         layout.addWidget(self.r_spin, 0, 7)
@@ -580,31 +596,31 @@ class RobotUI(QMainWindow):
             lambda v: self.speed_label.setText(f"{v}%"))
         layout.addWidget(self.speed_label, 1, 5)
         
-        # 關節座標輸入
+        # 關節座標輸入 - 完全移除範圍限制
         layout.addWidget(QLabel("J1:"), 2, 0)
         self.j1_spin = QDoubleSpinBox()
-        self.j1_spin.setRange(-180, 180)
+        self.j1_spin.setRange(-999999.99, 999999.99)
         self.j1_spin.setValue(0)
         self.j1_spin.setDecimals(2)
         layout.addWidget(self.j1_spin, 2, 1)
         
         layout.addWidget(QLabel("J2:"), 2, 2)
         self.j2_spin = QDoubleSpinBox()
-        self.j2_spin.setRange(-135, 135)
+        self.j2_spin.setRange(-999999.99, 999999.99)
         self.j2_spin.setValue(-20)
         self.j2_spin.setDecimals(2)
         layout.addWidget(self.j2_spin, 2, 3)
         
         layout.addWidget(QLabel("J3:"), 2, 4)
         self.j3_spin = QDoubleSpinBox()
-        self.j3_spin.setRange(-135, 135)
+        self.j3_spin.setRange(-999999.99, 999999.99)
         self.j3_spin.setValue(-80)
         self.j3_spin.setDecimals(2)
         layout.addWidget(self.j3_spin, 2, 5)
         
         layout.addWidget(QLabel("J4:"), 2, 6)
         self.j4_spin = QDoubleSpinBox()
-        self.j4_spin.setRange(-180, 180)
+        self.j4_spin.setRange(-999999.99, 999999.99)
         self.j4_spin.setValue(30)
         self.j4_spin.setDecimals(2)
         layout.addWidget(self.j4_spin, 2, 7)

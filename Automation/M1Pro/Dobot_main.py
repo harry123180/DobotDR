@@ -61,7 +61,8 @@ class DobotRegisters:
     ERR_COUNTER = DOBOT_BASE_ADDR + 17        # 417: 錯誤計數器
     RUN_TIME = DOBOT_BASE_ADDR + 18           # 418: 運行時間(分鐘)
     GLOBAL_SPEED = DOBOT_BASE_ADDR + 19       # 419: 全局速度設定值 (新增)
-    
+    FLOW1_COMPLETE = DOBOT_BASE_ADDR + 20     # 420: Flow1完成狀態(0=未完成,1=完成且角度較鄭成功)
+
     # 控制寄存器 (440-449) - 讀寫
     VP_CONTROL = DOBOT_BASE_ADDR + 40         # 440: VP視覺取料控制
     UNLOAD_CONTROL = DOBOT_BASE_ADDR + 41     # 441: 出料控制
@@ -541,14 +542,33 @@ class DobotStateMachine:
         self.operation_count = 0
         self.error_count = 0
         self.start_time = time.time()
-        
+        self.flow1_complete_status = 0 #新增:Flow1完成狀態追蹤
+
         # 狀態機交握核心 - 二進制位控制
         self.status_register = 0b1001  # 初始: Ready=1, Initialized=1
         self.lock = threading.Lock()   # 線程安全保護
         # 速度控制狀態機 (新增)
         self.current_global_speed = 50  # 當前全局速度
         self.last_speed_cmd_id = 0      # 最後處理的速度指令ID
-        
+    def set_flow1_complete(self, complete: bool):
+        """設置Flow1完成狀態"""
+        self.flow1_complete_status = 1 if complete else 0
+        try:
+            self.modbus_client.write_register(
+                address=DobotRegisters.FLOW1_COMPLETE,
+                value=self.flow1_complete_status
+            )
+            print(f"Flow1完成狀態已設置: {self.flow1_complete_status}")
+        except Exception as e:
+            print(f"設置Flow1完成狀態失敗: {e}")
+    
+    def get_flow1_complete(self) -> bool:
+        """獲取Flow1完成狀態"""
+        return self.flow1_complete_status == 1
+    
+    def clear_flow1_complete(self):
+        """清除Flow1完成狀態 (用於重新開始流程)"""
+        self.set_flow1_complete(False)    
     # === 狀態機交握核心方法 ===
     def get_status_bit(self, bit_pos: int) -> bool:
         """獲取狀態位"""
@@ -752,7 +772,11 @@ class DobotStateMachine:
                 address=DobotRegisters.GLOBAL_SPEED, 
                 value=self.current_global_speed
             )
-            
+             # 新增: 更新Flow1完成狀態 (420)
+            self.modbus_client.write_register(
+            address=DobotRegisters.FLOW1_COMPLETE,
+            value=self.flow1_complete_status
+            )
         except Exception as e:
             print(f"更新狀態到PLC異常: {e}")
     
@@ -830,6 +854,13 @@ class DobotMotionController:
         # 運行狀態
         self.is_running = False
         self.handshake_thread: Optional[threading.Thread] = None
+        # === 新增: 握手狀態追蹤變量 ===
+        self.last_vp_control = 0
+        self.last_unload_control = 0
+        self.last_clear_alarm = 0
+        self.last_emergency_stop = 0
+        self.last_manual_command = 0
+        self.last_speed_cmd_id = 0  # 新增速度指令ID追蹤
         
     def _load_config(self) -> Dict[str, Any]:
         """載入配置檔案"""
@@ -1071,6 +1102,61 @@ class DobotMotionController:
                 # === 新增: 處理速度控制指令 ===
                 if self.robot.is_connected:
                     self.state_machine.process_speed_command(self.robot)
+                 # === 新增: Flow1完成狀態自動管理 ===
+                # 當Flow1執行時自動清除完成狀態
+                if (vp_control == 1 and 
+                    self.state_machine.is_ready_for_command() and 
+                    self.state_machine.get_flow1_complete()):
+                    print("檢測到新的Flow1指令，清除之前的完成狀態")
+                    self.state_machine.clear_flow1_complete()
+                
+                # 處理VP視覺取料控制 (Flow1)
+                if (vp_control == 1 and 
+                    self.state_machine.is_ready_for_command() and 
+                    self.last_vp_control != vp_control):
+                    
+                    print("收到VP視覺取料指令 (Flow1)")
+                    self.state_machine.set_running(True)
+                    self.state_machine.set_current_flow(1)
+                    self.last_vp_control = vp_control
+                    
+                    # 異步執行Flow1
+                    threading.Thread(target=self.execute_flow1_async, daemon=True).start()
+                
+                # Flow1完成後的狀態處理 - Flow1內部會自動設置完成狀態
+                # 這裡只需要處理PLC清零指令
+                elif vp_control == 0 and self.last_vp_control == 1:
+                    print("PLC已清零VP取料指令")
+                    self.last_vp_control = 0
+                    if not self.state_machine.is_running():
+                        self.state_machine.set_ready(True)
+                        self.state_machine.set_current_flow(0)
+                
+                # 處理出料控制 (Flow2) - 需要檢查Flow1完成狀態
+                if (unload_control == 1 and 
+                    self.state_machine.is_ready_for_command() and 
+                    self.last_unload_control != unload_control and
+                    vp_control == 0):  # 確保VP控制已清零
+                    
+                    # 檢查Flow1是否已完成 (可選條件，根據業務需求決定)
+                    if self.state_machine.get_flow1_complete():
+                        print("收到出料指令 (Flow2) - Flow1已完成")
+                    else:
+                        print("收到出料指令 (Flow2) - Flow1未完成，但允許執行")
+                    
+                    self.state_machine.set_running(True)
+                    self.state_machine.set_current_flow(2)
+                    self.last_unload_control = unload_control
+                    
+                    # 異步執行Flow2
+                    threading.Thread(target=self.execute_flow2_async, daemon=True).start()
+                
+                elif unload_control == 0 and self.last_unload_control == 1:
+                    print("PLC已清零出料指令")
+                    self.last_unload_control = 0
+                    if not self.state_machine.is_running():
+                        self.state_machine.set_ready(True)
+                        self.state_machine.set_current_flow(0)
                 # 處理緊急停止 (最高優先級)
                 if emergency_stop == 1 and last_emergency_stop != 1:
                     print("收到緊急停止指令")
@@ -1147,7 +1233,41 @@ class DobotMotionController:
     
     def execute_flow1_async(self):
         """異步執行Flow1 - 狀態機交握版本"""
-        threading.Thread(target=self._flow1_execution_thread, daemon=True).start()
+        try:
+            print("開始執行Flow1...")
+            
+            # 創建Flow1執行器
+            flow1_executor = Flow1Executor(
+                self.robot, self.gripper, self.ccd1, self.ccd3, self.state_machine
+            )
+            
+            # 執行Flow1 (包含角度校正)
+            result = flow1_executor.execute()
+            
+            if result.success:
+                print("Flow1執行成功")
+                # 注意: Flow1完成狀態由Flow1內部的 _set_flow1_completion_status() 方法設置
+                # 這裡不需要再次設置，避免重複
+                if result.angle_correction_performed:
+                    print(f"角度校正結果: {result.angle_correction_result}")
+                
+                # 設置執行完成狀態 (非Running狀態)
+                self.state_machine.set_running(False)
+                self.state_machine.set_current_flow(0)
+                
+            else:
+                print(f"Flow1執行失敗: {result.error_message}")
+                self.state_machine.set_alarm(True)
+                self.state_machine.set_running(False)
+                self.state_machine.set_current_flow(0)
+                # Flow1失敗時不設置完成狀態
+                
+        except Exception as e:
+            print(f"Flow1執行異常: {e}")
+            traceback.print_exc()
+            self.state_machine.set_alarm(True)
+            self.state_machine.set_running(False)
+            self.state_machine.set_current_flow(0)
     
     def execute_flow2_async(self):
         """異步執行Flow2 - 狀態機交握版本"""
@@ -1501,34 +1621,30 @@ def main():
         # 啟動狀態機交握
         controller.start_handshake_sync()
         
-        print("\n=== Dobot運動控制系統啟動完成 (狀態機交握版) ===")
-        print(f"基地址: {DOBOT_BASE_ADDR}")
         print("=== 狀態機交握寄存器映射 ===")
         print(f"主狀態寄存器: {DobotRegisters.STATUS_REGISTER} (bit0=Ready, bit1=Running, bit2=Alarm)")
         print(f"機械臂狀態: {DobotRegisters.ROBOT_STATE}")
         print(f"當前流程ID: {DobotRegisters.CURRENT_FLOW}")
+        print(f"Flow1完成狀態: {DobotRegisters.FLOW1_COMPLETE} (0=未完成, 1=完成且角度校正成功)")  # 新增
+        
         print("=== 控制寄存器映射 ===")
         print(f"VP視覺取料控制: {DobotRegisters.VP_CONTROL} (0=清空, 1=啟動Flow1)")
         print(f"出料控制: {DobotRegisters.UNLOAD_CONTROL} (0=清空, 1=啟動Flow2)")
-        print(f"清除警報控制: {DobotRegisters.CLEAR_ALARM} (0=無動作, 1=清除Alarm)")
-        print(f"緊急停止控制: {DobotRegisters.EMERGENCY_STOP} (0=正常, 1=緊急停止)")
-        print(f"手動指令: {DobotRegisters.MANUAL_COMMAND} (Web端使用)")
-        print("=== 速度控制寄存器映射 (新增) ===")
-        print(f"速度控制指令: {DobotRegisters.SPEED_COMMAND} (0=無動作, 1=設定速度)")
-        print(f"速度數值: {DobotRegisters.SPEED_VALUE} (1-100)")
-        print(f"速度指令ID: {DobotRegisters.SPEED_CMD_ID} (防重複執行)")
+        # ... 其餘說明保持不變 ...
         
         print("\n=== 狀態機交握流程說明 ===")
-        print("Flow1 (VP視覺取料):")
+        print("Flow1 (VP視覺取料 + 角度校正):")  # 修改
         print("  1. 檢查400寄存器Ready=1")
         print("  2. 寫入440=1觸發Flow1")
         print("  3. 系統執行: 400=10 (Running=1)")
         print("  4. 執行完成: 400=8 (Ready=0, Running=0)")
-        print("  5. PLC清零: 寫入440=0")
-        print("  6. 系統恢復: 400=9 (Ready=1)")
+        print("  5. 角度校正成功: 420=1 (Flow1完成)")  # 新增
+        print("  6. PLC清零: 寫入440=0")
+        print("  7. 系統恢復: 400=9 (Ready=1)")
         
         print("\nFlow2 (出料流程):")
         print("  前提: 400=9 且 440=0 (Flow1已完成且清零)")
+        print("  可選: 420=1 (Flow1已完成，根據業務需求)")  # 新增
         print("  1. 檢查400寄存器Ready=1, 440=0")
         print("  2. 寫入441=1觸發Flow2")
         print("  3. 系統執行: 400=10 (Running=1)")

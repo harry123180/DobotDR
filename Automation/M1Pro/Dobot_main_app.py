@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_main_app.py - Dobot主控制器Web介面 (狀態機交握版本) - 增強版
-提供Web UI來控制和監控Dobot_main.py主控制器
-完全使用狀態機交握協議進行控制
-新增功能：
-1. Angle模組整合 (基地址700)
-2. Flow執行時間統計
-3. Angle校正狀態顯示
-4. 寄存器地址顯示
+Dobot_main_app.py - Dobot主控制器Web介面 (增強版)
+增加Angle系統、CCD1系統、CCD3系統狀態監控
+增加強制Ready按鈕測試功能
 """
 
 import os
@@ -55,26 +50,30 @@ class DobotRegisters:
     SPEED_COMMAND = 445      # 速度控制指令
     SPEED_VALUE = 446        # 速度數值
     SPEED_CMD_ID = 447       # 速度指令ID
+    FORCE_READY = 448        # 強制Ready測試 (新增)
 
-# Angle模組寄存器映射 (基地址700)
-class AngleRegisters:
-    # 狀態寄存器 (700-714) - 只讀
-    STATUS_REGISTER = 700    # Angle狀態寄存器 (bit0=Ready, bit1=Running, bit2=Alarm)
-    MODBUS_CONNECTION = 701  # Modbus連接狀態
-    MOTOR_CONNECTION = 702   # 馬達連接狀態
-    ERROR_CODE = 703         # 錯誤代碼
+# 外部系統寄存器映射
+class ExternalSystemRegisters:
+    # CCD1系統 (基地址200)
+    CCD1_CONTROL = 200           # 控制指令
+    CCD1_STATUS = 201            # 狀態寄存器
+    CCD1_CIRCLE_COUNT = 240      # 檢測圓形數量 (佇列物體數量)
+    CCD1_WORLD_COORD_VALID = 256 # 世界座標有效標誌
     
-    # 檢測結果寄存器 (720-739) - 只讀
-    SUCCESS_FLAG = 720       # 成功標誌
-    ANGLE_HIGH = 721         # 原始角度高位
-    ANGLE_LOW = 722          # 原始角度低位
-    DIFF_HIGH = 723          # 角度差高位
-    DIFF_LOW = 724           # 角度差低位
-    MOTOR_POS_HIGH = 725     # 馬達位置高位
-    MOTOR_POS_LOW = 726      # 馬達位置低位
+    # Angle系統 (基地址700)
+    ANGLE_STATUS = 700           # 狀態寄存器
+    ANGLE_CONTROL = 740          # 控制指令
+    ANGLE_SUCCESS = 720          # 成功標誌
+    ANGLE_ORIGINAL_HIGH = 721    # 原始角度高位
+    ANGLE_ORIGINAL_LOW = 722     # 原始角度低位
+    ANGLE_DIFF_HIGH = 723        # 角度差高位
+    ANGLE_DIFF_LOW = 724         # 角度差低位
+    ANGLE_MOTOR_POS_HIGH = 725   # 馬達位置高位
+    ANGLE_MOTOR_POS_LOW = 726    # 馬達位置低位
     
-    # 控制指令寄存器 (740) - 讀寫
-    CONTROL_COMMAND = 740    # 控制指令
+    # CCD3系統 (基地址800)
+    CCD3_CONTROL = 800           # 控制指令
+    CCD3_STATUS = 801            # 狀態寄存器
 
 # 狀態映射
 ROBOT_STATES = {
@@ -85,20 +84,15 @@ FLOW_TYPES = {
     0: "無流程", 1: "VP視覺抓取(FIFO)", 2: "出料流程", 3: "完整加工流程"
 }
 
-# 狀態機交握指令
-HANDSHAKE_COMMANDS = {
-    "vp_pickup": 1,          # VP視覺取料
-    "unload": 2,             # 出料流程
-    "clear_alarm": 1,        # 清除警報
-    "emergency_stop": 1,     # 緊急停止
-    "manual_flow1": 1,       # 手動Flow1
-    "manual_flow2": 2,       # 手動Flow2
-    "set_speed": 1,          # 設定速度
-    "angle_correction": 1    # 角度校正
+SYSTEM_STATUS_BITS = {
+    "ready": "準備就緒",
+    "running": "執行中",
+    "alarm": "警報",
+    "initialized": "已初始化"
 }
 
 class DobotHandshakeController:
-    """Dobot狀態機交握控制器 - 增強版"""
+    """Dobot狀態機交握控制器 (增強版)"""
     
     def __init__(self, config_file: str = CONFIG_FILE):
         self.config_file = config_file
@@ -108,25 +102,6 @@ class DobotHandshakeController:
         self.monitoring = False
         self.monitor_thread = None
         self.speed_cmd_id_counter = 1
-        
-        # Flow執行時間統計
-        self.flow_timers = {
-            1: {'start_time': None, 'duration': 0.0, 'is_running': False},
-            2: {'start_time': None, 'duration': 0.0, 'is_running': False}
-        }
-        
-        # Angle模組狀態快取
-        self.angle_status = {
-            'ready': False,
-            'running': False,
-            'alarm': False,
-            'modbus_connected': False,
-            'motor_connected': False,
-            'last_angle': None,
-            'last_diff': None,
-            'last_motor_pos': None,
-            'last_success': False
-        }
         
     def _load_config(self) -> dict:
         """載入配置檔案"""
@@ -157,10 +132,10 @@ class DobotHandshakeController:
                 "max_speed": 100,
                 "default_speed": 50
             },
-            "angle_module": {
-                "base_address": 700,
-                "enabled": True,
-                "web_api_port": 5087
+            "external_systems": {
+                "monitor_ccd1": True,
+                "monitor_angle": True,
+                "monitor_ccd3": True
             }
         }
         
@@ -228,6 +203,20 @@ class DobotHandshakeController:
             print(f"讀取寄存器{address}失敗: {e}")
             return None
     
+    def read_multiple_registers(self, start_address: int, count: int) -> list:
+        """讀取多個寄存器"""
+        try:
+            if not self.is_connected:
+                return None
+                
+            result = self.modbus_client.read_holding_registers(start_address, count=count)
+            if hasattr(result, 'registers') and len(result.registers) >= count:
+                return result.registers
+            return None
+        except Exception as e:
+            print(f"讀取寄存器{start_address}(數量{count})失敗: {e}")
+            return None
+    
     def write_register(self, address: int, value: int) -> bool:
         """寫入單個寄存器"""
         try:
@@ -240,9 +229,8 @@ class DobotHandshakeController:
             print(f"寫入寄存器{address}={value}失敗: {e}")
             return False
     
-    def get_status_bits(self) -> dict:
+    def get_status_bits(self, status_register: int) -> dict:
         """解析狀態寄存器位元"""
-        status_register = self.read_register(DobotRegisters.STATUS_REGISTER)
         if status_register is None:
             return {}
         
@@ -257,92 +245,78 @@ class DobotHandshakeController:
     
     def is_ready_for_command(self) -> bool:
         """檢查系統是否準備好接受指令"""
-        status_bits = self.get_status_bits()
+        status_register = self.read_register(DobotRegisters.STATUS_REGISTER)
+        status_bits = self.get_status_bits(status_register)
         return (status_bits.get("ready", False) and 
                 not status_bits.get("running", False) and 
                 not status_bits.get("alarm", False))
     
-    def read_angle_status(self) -> dict:
-        """讀取Angle模組狀態 - 增強錯誤處理"""
+    def read_external_systems_status(self) -> dict:
+        """讀取外部系統狀態"""
+        external_status = {}
+        
         try:
-            if not self.is_connected:
-                return self._get_default_angle_status()
+            # CCD1系統狀態
+            if self.config["external_systems"]["monitor_ccd1"]:
+                ccd1_status_reg = self.read_register(ExternalSystemRegisters.CCD1_STATUS)
+                ccd1_circle_count = self.read_register(ExternalSystemRegisters.CCD1_CIRCLE_COUNT)
+                ccd1_world_valid = self.read_register(ExternalSystemRegisters.CCD1_WORLD_COORD_VALID)
                 
-            # 讀取Angle狀態寄存器 (700-703)
-            result = self.modbus_client.read_holding_registers(AngleRegisters.STATUS_REGISTER, count=4)
+                external_status["ccd1"] = {
+                    "status_bits": self.get_status_bits(ccd1_status_reg),
+                    "circle_count": ccd1_circle_count or 0,
+                    "world_coord_valid": bool(ccd1_world_valid),
+                    "connected": ccd1_status_reg is not None
+                }
             
-            if hasattr(result, 'registers') and len(result.registers) >= 4:
-                registers = result.registers
-                status_register = registers[0]
+            # Angle系統狀態
+            if self.config["external_systems"]["monitor_angle"]:
+                angle_status_reg = self.read_register(ExternalSystemRegisters.ANGLE_STATUS)
+                angle_success = self.read_register(ExternalSystemRegisters.ANGLE_SUCCESS)
                 
-                self.angle_status.update({
-                    'ready': bool(status_register & 0x01),
-                    'running': bool(status_register & 0x02),
-                    'alarm': bool(status_register & 0x04),
-                    'modbus_connected': bool(registers[1]),
-                    'motor_connected': bool(registers[2]),
-                    'error_code': registers[3],
-                    'available': True  # 標記Angle模組可用
-                })
-                
-                # 讀取檢測結果 (720-726)
-                try:
-                    result_regs = self.modbus_client.read_holding_registers(AngleRegisters.SUCCESS_FLAG, count=7)
-                    if hasattr(result_regs, 'registers') and len(result_regs.registers) >= 7:
-                        res_data = result_regs.registers
-                        self.angle_status['last_success'] = bool(res_data[0])
+                # 讀取角度檢測結果 (32位數值恢復)
+                angle_data = {}
+                if angle_success == 1:
+                    angle_regs = self.read_multiple_registers(ExternalSystemRegisters.ANGLE_ORIGINAL_HIGH, 6)
+                    if angle_regs and len(angle_regs) >= 6:
+                        # 原始角度 (32位, ×100精度)
+                        original_angle_int = (angle_regs[0] << 16) | angle_regs[1]
+                        if original_angle_int >= 2**31:
+                            original_angle_int -= 2**32
+                        angle_data["original_angle"] = original_angle_int / 100.0
                         
-                        if res_data[0]:  # 如果成功
-                            # 合併32位角度數據
-                            angle_int = (res_data[1] << 16) | res_data[2]
-                            if angle_int >= 2**31:
-                                angle_int -= 2**32
-                            self.angle_status['last_angle'] = angle_int / 100.0
-                            
-                            # 合併32位角度差數據
-                            diff_int = (res_data[3] << 16) | res_data[4]
-                            if diff_int >= 2**31:
-                                diff_int -= 2**32
-                            self.angle_status['last_diff'] = diff_int / 100.0
-                            
-                            # 合併32位馬達位置
-                            motor_pos = (res_data[5] << 16) | res_data[6]
-                            if motor_pos >= 2**31:
-                                motor_pos -= 2**32
-                            self.angle_status['last_motor_pos'] = motor_pos
-                except Exception as result_error:
-                    # 結果寄存器讀取失敗，但狀態寄存器成功
-                    print(f"讀取Angle結果寄存器失敗: {result_error}")
+                        # 角度差 (32位, ×100精度)
+                        angle_diff_int = (angle_regs[2] << 16) | angle_regs[3]
+                        if angle_diff_int >= 2**31:
+                            angle_diff_int -= 2**32
+                        angle_data["angle_diff"] = angle_diff_int / 100.0
+                        
+                        # 馬達位置 (32位)
+                        motor_pos_int = (angle_regs[4] << 16) | angle_regs[5]
+                        if motor_pos_int >= 2**31:
+                            motor_pos_int -= 2**32
+                        angle_data["motor_position"] = motor_pos_int
                 
-            else:
-                # 狀態寄存器讀取失敗，標記為不可用
-                self.angle_status.update(self._get_default_angle_status())
-                self.angle_status['available'] = False
-                
-            return self.angle_status
+                external_status["angle"] = {
+                    "status_bits": self.get_status_bits(angle_status_reg),
+                    "detection_success": bool(angle_success),
+                    "angle_data": angle_data,
+                    "connected": angle_status_reg is not None
+                }
             
+            # CCD3系統狀態
+            if self.config["external_systems"]["monitor_ccd3"]:
+                ccd3_status_reg = self.read_register(ExternalSystemRegisters.CCD3_STATUS)
+                
+                external_status["ccd3"] = {
+                    "status_bits": self.get_status_bits(ccd3_status_reg),
+                    "connected": ccd3_status_reg is not None
+                }
+                
         except Exception as e:
-            print(f"讀取Angle狀態失敗: {e}")
-            # 返回預設狀態，標記為不可用
-            default_status = self._get_default_angle_status()
-            default_status['available'] = False
-            return default_status
-    
-    def _get_default_angle_status(self) -> dict:
-        """獲取預設Angle狀態"""
-        return {
-            'ready': False,
-            'running': False,
-            'alarm': False,
-            'modbus_connected': False,
-            'motor_connected': False,
-            'error_code': 0,
-            'last_angle': None,
-            'last_diff': None,
-            'last_motor_pos': None,
-            'last_success': False,
-            'available': False
-        }
+            print(f"讀取外部系統狀態失敗: {e}")
+        
+        return external_status
     
     def read_all_status(self) -> dict:
         """讀取所有狀態寄存器"""
@@ -350,23 +324,14 @@ class DobotHandshakeController:
             if not self.is_connected:
                 return {}
                 
-            # 讀取狀態寄存器 (400-419)
+            # 讀取Dobot狀態寄存器 (400-419)
             result = self.modbus_client.read_holding_registers(DobotRegisters.STATUS_REGISTER, count=20)
             
             if not (hasattr(result, 'registers') and len(result.registers) >= 20):
                 return {}
             
             registers = result.registers
-            status_bits = self.get_status_bits()
-            
-            # 檢查Flow狀態變化並更新計時器
-            current_flow = registers[2]  # CURRENT_FLOW
-            running = status_bits.get("running", False)
-            
-            self._update_flow_timers(current_flow, running)
-            
-            # 讀取Angle模組狀態
-            angle_status = self.read_angle_status()
+            status_bits = self.get_status_bits(registers[0])
             
             # 基本狀態數據
             status_data = {
@@ -413,34 +378,13 @@ class DobotHandshakeController:
                     "run_time_minutes": registers[18]
                 },
                 
-                # Flow計時器數據
-                "flow_timers": {
-                    "flow1": {
-                        "duration": self.flow_timers[1]['duration'],
-                        "is_running": self.flow_timers[1]['is_running']
-                    },
-                    "flow2": {
-                        "duration": self.flow_timers[2]['duration'],
-                        "is_running": self.flow_timers[2]['is_running']
-                    }
-                },
-                
-                # Angle模組狀態
-                "angle_status": {
-                    "angle_ready": angle_status.get('ready', False),
-                    "angle_running": angle_status.get('running', False),
-                    "angle_alarm": angle_status.get('alarm', False),
-                    "ccd3_connected": angle_status.get('modbus_connected', False),
-                    "motor_connected": angle_status.get('motor_connected', False),
-                    "detected_angle": angle_status.get('last_angle'),
-                    "angle_diff": angle_status.get('last_diff'),
-                    "motor_position": angle_status.get('last_motor_pos'),
-                    "last_correction_success": angle_status.get('last_success', False)
-                },
-                
                 "connection_status": self.is_connected,
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
             }
+            
+            # 新增: 外部系統狀態
+            external_systems = self.read_external_systems_status()
+            status_data["external_systems"] = external_systems
             
             return status_data
             
@@ -448,50 +392,13 @@ class DobotHandshakeController:
             print(f"讀取狀態失敗: {e}")
             return {}
     
-    def _update_flow_timers(self, current_flow: int, running: bool):
-        """更新Flow計時器"""
-        try:
-            current_time = time.time()
-            
-            # 檢查Flow1狀態變化
-            if current_flow == 1 and running and not self.flow_timers[1]['is_running']:
-                # Flow1開始執行
-                self.flow_timers[1]['start_time'] = current_time
-                self.flow_timers[1]['is_running'] = True
-                print("Flow1開始執行")
-                
-            elif self.flow_timers[1]['is_running'] and (not running or current_flow != 1):
-                # Flow1執行結束
-                if self.flow_timers[1]['start_time']:
-                    self.flow_timers[1]['duration'] = current_time - self.flow_timers[1]['start_time']
-                    print(f"Flow1執行完成，耗時: {self.flow_timers[1]['duration']:.1f}秒")
-                self.flow_timers[1]['is_running'] = False
-            
-            # 檢查Flow2狀態變化
-            if current_flow == 2 and running and not self.flow_timers[2]['is_running']:
-                # Flow2開始執行
-                self.flow_timers[2]['start_time'] = current_time
-                self.flow_timers[2]['is_running'] = True
-                print("Flow2開始執行")
-                
-            elif self.flow_timers[2]['is_running'] and (not running or current_flow != 2):
-                # Flow2執行結束
-                if self.flow_timers[2]['start_time']:
-                    self.flow_timers[2]['duration'] = current_time - self.flow_timers[2]['start_time']
-                    print(f"Flow2執行完成，耗時: {self.flow_timers[2]['duration']:.1f}秒")
-                self.flow_timers[2]['is_running'] = False
-                
-        except Exception as e:
-            print(f"更新Flow計時器錯誤: {e}")
-    
     def read_control_registers(self) -> dict:
         """讀取控制寄存器狀態"""
         try:
             if not self.is_connected:
                 return {}
             
-            # 讀取Dobot控制寄存器
-            dobot_control_data = {
+            control_data = {
                 "vp_control": self.read_register(DobotRegisters.VP_CONTROL),
                 "unload_control": self.read_register(DobotRegisters.UNLOAD_CONTROL),
                 "clear_alarm": self.read_register(DobotRegisters.CLEAR_ALARM),
@@ -500,24 +407,10 @@ class DobotHandshakeController:
                 "speed_command": self.read_register(DobotRegisters.SPEED_COMMAND),
                 "speed_value": self.read_register(DobotRegisters.SPEED_VALUE),
                 "speed_cmd_id": self.read_register(DobotRegisters.SPEED_CMD_ID),
-                "status_register": self.read_register(DobotRegisters.STATUS_REGISTER),
-                "robot_state": self.read_register(DobotRegisters.ROBOT_STATE),
-                "current_flow": self.read_register(DobotRegisters.CURRENT_FLOW),
-                "global_speed": self.read_register(DobotRegisters.GLOBAL_SPEED)
+                "force_ready": self.read_register(DobotRegisters.FORCE_READY)
             }
             
-            # 讀取Angle模組寄存器
-            angle_registers = {
-                "status": self.read_register(AngleRegisters.STATUS_REGISTER),
-                "success": self.read_register(AngleRegisters.SUCCESS_FLAG),
-                "command": self.read_register(AngleRegisters.CONTROL_COMMAND),
-                "angle_high": self.read_register(AngleRegisters.ANGLE_HIGH),
-                "angle_low": self.read_register(AngleRegisters.ANGLE_LOW)
-            }
-            
-            dobot_control_data["angle_registers"] = angle_registers
-            
-            return dobot_control_data
+            return control_data
             
         except Exception as e:
             print(f"讀取控制寄存器失敗: {e}")
@@ -556,7 +449,6 @@ class DobotHandshakeController:
                     "message": "系統未Ready，無法執行出料流程"
                 }
             
-            # 檢查VP控制是否已清零
             vp_control = self.read_register(DobotRegisters.VP_CONTROL)
             if vp_control != 0:
                 return {
@@ -656,41 +548,23 @@ class DobotHandshakeController:
                 "message": f"手動執行流程{flow_id}失敗: {e}"
             }
     
-    def execute_angle_correction(self) -> dict:
-        """執行Angle模組校正"""
+    def force_ready(self) -> dict:
+        """強制設置Ready狀態 (測試用)"""
         try:
-            # 檢查Angle模組是否Ready
-            angle_status = self.read_angle_status()
-            if not angle_status.get('ready', False):
-                return {
-                    "success": False,
-                    "message": "Angle模組未Ready，無法執行校正"
-                }
-            
-            if angle_status.get('running', False):
-                return {
-                    "success": False,
-                    "message": "Angle模組執行中，無法執行新的校正"
-                }
-            
-            # 發送角度校正指令到Angle模組
-            success = self.write_register(AngleRegisters.CONTROL_COMMAND, 1)
+            success = self.write_register(DobotRegisters.FORCE_READY, 1)
             return {
                 "success": success,
-                "message": "角度校正指令已發送" if success else "角度校正指令發送失敗",
-                "description": "CCD3檢測 → 角度計算 → 馬達移動"
+                "message": "強制Ready指令已發送 (測試用)" if success else "強制Ready指令發送失敗"
             }
-            
         except Exception as e:
             return {
                 "success": False,
-                "message": f"角度校正執行失敗: {e}"
+                "message": f"強制Ready失敗: {e}"
             }
     
     def set_global_speed(self, speed: int) -> dict:
         """設定全局速度"""
         try:
-            # 檢查速度範圍
             min_speed = self.config["speed_control"]["min_speed"]
             max_speed = self.config["speed_control"]["max_speed"]
             
@@ -700,12 +574,10 @@ class DobotHandshakeController:
                     "message": f"速度值超出範圍({min_speed}-{max_speed})"
                 }
             
-            # 生成指令ID
             self.speed_cmd_id_counter += 1
             if self.speed_cmd_id_counter > 65535:
                 self.speed_cmd_id_counter = 1
             
-            # 發送速度設定指令
             success1 = self.write_register(DobotRegisters.SPEED_VALUE, speed)
             success2 = self.write_register(DobotRegisters.SPEED_CMD_ID, self.speed_cmd_id_counter)
             success3 = self.write_register(DobotRegisters.SPEED_COMMAND, 1)
@@ -749,13 +621,11 @@ class DobotHandshakeController:
     
     def start_monitoring(self):
         """啟動狀態監控"""
-        if self.monitoring:
-            return
-            
-        self.monitoring = True
-        self.monitor_thread = threading.Thread(target=self._monitor_loop, daemon=True)
-        self.monitor_thread.start()
-        print("狀態監控已啟動 (狀態機交握版)")
+        if not self.monitoring:
+            self.monitoring = True
+            self.monitor_thread = threading.Thread(target=self._monitor_loop, daemon=True)
+            self.monitor_thread.start()
+            print("狀態監控已啟動 (增強版含外部系統)")
     
     def stop_monitoring(self):
         """停止狀態監控"""
@@ -771,7 +641,6 @@ class DobotHandshakeController:
                 if self.is_connected:
                     status = self.read_all_status()
                     if status:
-                        # 通過SocketIO發送狀態更新
                         socketio.emit('status_update', status)
                         
                 time.sleep(self.config["monitoring"]["refresh_interval"])
@@ -782,7 +651,7 @@ class DobotHandshakeController:
 
 # 初始化Flask應用
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dobot_handshake_controller_secret_key'
+app.config['SECRET_KEY'] = 'dobot_handshake_controller_enhanced_secret_key'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # 初始化控制器
@@ -830,6 +699,12 @@ def get_control_registers():
     control_status = controller.read_control_registers()
     return jsonify(control_status)
 
+@app.route('/api/external_systems', methods=['GET'])
+def get_external_systems():
+    """獲取外部系統狀態"""
+    external_status = controller.read_external_systems_status()
+    return jsonify(external_status)
+
 # === 狀態機交握API路由 ===
 
 @app.route('/api/handshake/vp_pickup', methods=['POST'])
@@ -868,6 +743,12 @@ def handshake_emergency_stop():
     result = controller.emergency_stop()
     return jsonify(result)
 
+@app.route('/api/handshake/force_ready', methods=['POST'])
+def handshake_force_ready():
+    """強制Ready (測試用)"""
+    result = controller.force_ready()
+    return jsonify(result)
+
 @app.route('/api/handshake/manual_flow/<int:flow_id>', methods=['POST'])
 def handshake_manual_flow(flow_id):
     """手動執行流程"""
@@ -902,73 +783,11 @@ def handshake_get_speed():
     result = controller.get_global_speed()
     return jsonify(result)
 
-# === Angle模組API路由 (通過Modbus直接操作) ===
-
-@app.route('/api/angle/correction', methods=['POST'])
-def angle_correction():
-    """執行角度校正 - 直接操作Modbus寄存器"""
-    result = controller.execute_angle_correction()
+@app.route('/api/handshake/check_preconditions/<int:flow_id>', methods=['GET'])
+def handshake_check_preconditions(flow_id):
+    """檢查流程執行前置條件"""
+    result = controller.check_flow_preconditions(flow_id)
     return jsonify(result)
-
-@app.route('/api/angle/status', methods=['GET'])
-def angle_status():
-    """獲取Angle模組狀態 - 直接讀取Modbus寄存器"""
-    try:
-        angle_status = controller.read_angle_status()
-        
-        # 格式化返回數據以符合前端期望
-        formatted_status = {
-            'success': True,
-            'angle_ready': angle_status.get('ready', False),
-            'angle_running': angle_status.get('running', False),
-            'angle_alarm': angle_status.get('alarm', False),
-            'ccd3_connected': angle_status.get('modbus_connected', False),
-            'motor_connected': angle_status.get('motor_connected', False),
-            'detected_angle': angle_status.get('last_angle'),
-            'angle_diff': angle_status.get('last_diff'),
-            'motor_position': angle_status.get('last_motor_pos'),
-            'last_correction_success': angle_status.get('last_success', False)
-        }
-        
-        return jsonify(formatted_status)
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': f'讀取Angle狀態失敗: {e}'
-        })
-
-@app.route('/api/angle/registers', methods=['GET'])
-def angle_registers():
-    """獲取Angle模組原始寄存器數據"""
-    try:
-        if not controller.is_connected:
-            return jsonify({'success': False, 'message': 'Modbus未連接'})
-        
-        # 讀取所有Angle相關寄存器
-        registers_data = {}
-        
-        # 狀態寄存器 (700-703)
-        for addr in range(AngleRegisters.STATUS_REGISTER, AngleRegisters.STATUS_REGISTER + 4):
-            registers_data[f'reg_{addr}'] = controller.read_register(addr)
-        
-        # 結果寄存器 (720-726)
-        for addr in range(AngleRegisters.SUCCESS_FLAG, AngleRegisters.MOTOR_POS_LOW + 1):
-            registers_data[f'reg_{addr}'] = controller.read_register(addr)
-        
-        # 控制寄存器 (740)
-        registers_data[f'reg_{AngleRegisters.CONTROL_COMMAND}'] = controller.read_register(AngleRegisters.CONTROL_COMMAND)
-        
-        return jsonify({
-            'success': True,
-            'registers': registers_data
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': f'讀取Angle寄存器失敗: {e}'
-        })
 
 # === SocketIO事件處理 ===
 
@@ -976,7 +795,7 @@ def angle_registers():
 def on_connect():
     """客戶端連接"""
     print('客戶端已連接')
-    emit('connected', {'message': '已連接到Dobot狀態機交握控制器'})
+    emit('connected', {'message': '已連接到Dobot狀態機交握控制器 (增強版)'})
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -995,6 +814,12 @@ def on_request_control_status():
     control_status = controller.read_control_registers()
     emit('control_status_update', control_status)
 
+@socketio.on('request_external_systems')
+def on_request_external_systems():
+    """請求外部系統狀態"""
+    external_status = controller.read_external_systems_status()
+    emit('external_systems_update', external_status)
+
 @socketio.on('handshake_vp_pickup')
 def on_handshake_vp_pickup():
     """SocketIO VP視覺取料"""
@@ -1005,6 +830,12 @@ def on_handshake_vp_pickup():
 def on_handshake_unload_flow():
     """SocketIO 出料流程"""
     result = controller.execute_unload_flow()
+    emit('handshake_result', result)
+
+@socketio.on('handshake_force_ready')
+def on_handshake_force_ready():
+    """SocketIO 強制Ready"""
+    result = controller.force_ready()
     emit('handshake_result', result)
 
 @socketio.on('handshake_clear_alarm')
@@ -1041,53 +872,35 @@ def on_handshake_get_speed():
     result = controller.get_global_speed()
     emit('speed_status_update', result)
 
-@socketio.on('angle_correction')
-def on_angle_correction():
-    """SocketIO 角度校正"""
-    result = controller.execute_angle_correction()
-    emit('angle_result', result)
-
 def main():
     """主函數"""
     print("=== Dobot狀態機交握控制器Web應用啟動中 (增強版) ===")
     print(f"Web服務器: http://{controller.config['web_server']['host']}:{controller.config['web_server']['port']}")
     print(f"Modbus服務器: {controller.config['modbus']['server_ip']}:{controller.config['modbus']['server_port']}")
-    print("\n=== 狀態機交握寄存器映射 ===")
+    
+    print("\n=== Dobot狀態機交握寄存器映射 ===")
     print(f"主狀態寄存器: {DobotRegisters.STATUS_REGISTER} (bit0=Ready, bit1=Running, bit2=Alarm)")
-    print(f"機械臂狀態: {DobotRegisters.ROBOT_STATE}")
-    print(f"當前流程ID: {DobotRegisters.CURRENT_FLOW}")
-    print(f"全局速度: {DobotRegisters.GLOBAL_SPEED}")
-    print("\n=== Dobot控制寄存器映射 ===")
     print(f"VP視覺取料控制: {DobotRegisters.VP_CONTROL}")
     print(f"出料控制: {DobotRegisters.UNLOAD_CONTROL}")
-    print(f"清除警報控制: {DobotRegisters.CLEAR_ALARM}")
-    print(f"緊急停止控制: {DobotRegisters.EMERGENCY_STOP}")
-    print(f"手動指令: {DobotRegisters.MANUAL_COMMAND}")
-    print(f"速度控制指令: {DobotRegisters.SPEED_COMMAND}")
-    print(f"速度數值: {DobotRegisters.SPEED_VALUE}")
-    print(f"速度指令ID: {DobotRegisters.SPEED_CMD_ID}")
+    print(f"強制Ready控制: {DobotRegisters.FORCE_READY} (新增測試功能)")
     
-    print("\n=== Angle模組寄存器映射 ===")
-    print(f"Angle狀態寄存器: {AngleRegisters.STATUS_REGISTER} (bit0=Ready, bit1=Running, bit2=Alarm)")
-    print(f"校正成功標誌: {AngleRegisters.SUCCESS_FLAG}")
-    print(f"檢測角度: {AngleRegisters.ANGLE_HIGH}-{AngleRegisters.ANGLE_LOW} (32位)")
-    print(f"馬達位置: {AngleRegisters.MOTOR_POS_HIGH}-{AngleRegisters.MOTOR_POS_LOW} (32位)")
-    print(f"Angle控制指令: {AngleRegisters.CONTROL_COMMAND}")
+    print("\n=== 外部系統寄存器映射 ===")
+    print(f"CCD1狀態: {ExternalSystemRegisters.CCD1_STATUS}, 佇列數量: {ExternalSystemRegisters.CCD1_CIRCLE_COUNT}")
+    print(f"Angle狀態: {ExternalSystemRegisters.ANGLE_STATUS}, 檢測結果: {ExternalSystemRegisters.ANGLE_SUCCESS}")
+    print(f"Angle原始角度: {ExternalSystemRegisters.ANGLE_ORIGINAL_HIGH}-{ExternalSystemRegisters.ANGLE_ORIGINAL_LOW}")
+    print(f"Angle角度差: {ExternalSystemRegisters.ANGLE_DIFF_HIGH}-{ExternalSystemRegisters.ANGLE_DIFF_LOW}")
+    print(f"CCD3狀態: {ExternalSystemRegisters.CCD3_STATUS}")
     
-    print("\n=== 新增功能 ===")
-    print("1. Angle模組整合 - 一鍵角度校正")
-    print("2. Flow執行時間統計 - 自動計時")
-    print("3. 寄存器地址顯示 - 按鈕上顯示地址")
-    print("4. Angle校正狀態監控 - 即時顯示")
-    print("5. 32位角度數據處理 - 保留2位小數")
+    print("\n=== 功能特色 ===")
+    print("1. 完整的Dobot狀態機交握控制")
+    print("2. CCD1佇列物體數量監控")
+    print("3. Angle系統角度檢測結果監控")
+    print("4. CCD3系統狀態監控")
+    print("5. 強制Ready按鈕 (測試用)")
+    print("6. 實時外部系統狀態顯示")
+    print("7. 寄存器地址按鈕提示")
     
-    print("\n=== 狀態機交握流程 ===")
-    print("VP視覺取料: 檢查Ready → 寫入440=1 → 執行 → 寫入440=0 → 恢復Ready")
-    print("出料流程: 檢查Ready且440=0 → 寫入441=1 → 執行 → 寫入441=0 → 恢復Ready")
-    print("角度校正: 檢查Ready → 寫入740=1 → CCD3檢測→計算→馬達移動 → 完成")
-    print("速度設定: 寫入446=速度值 → 寫入447=指令ID → 寫入445=1 → 等待執行完成")
-    
-    print("\n請在瀏覽器中打開Web介面進行狀態機交握控制")
+    print("\n請在瀏覽器中打開Web介面進行控制")
     
     try:
         socketio.run(
@@ -1106,34 +919,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# ==================== 狀態機交握API路由總覽 (增強版) ====================
-# 
-# === Dobot流程控制 ===
-# POST /api/handshake/vp_pickup         - 執行VP視覺取料 (寫入440=1)
-# POST /api/handshake/unload_flow        - 執行出料流程 (寫入441=1)
-# POST /api/handshake/clear_vp           - 清零VP指令 (寫入440=0)
-# POST /api/handshake/clear_unload       - 清零出料指令 (寫入441=0)
-# POST /api/handshake/manual_flow/<id>   - 手動執行流程 (寫入444=id)
-# 
-# === Dobot系統控制 ===
-# POST /api/handshake/clear_alarm        - 清除警報 (寫入442=1)
-# POST /api/handshake/emergency_stop     - 緊急停止 (寫入443=1)
-# 
-# === Dobot速度控制 ===
-# POST /api/handshake/set_speed          - 設定全局速度 (寫入445=1, 446=速度, 447=ID)
-# GET  /api/handshake/get_speed          - 獲取當前全局速度 (讀取419)
-# 
-# === Angle模組控制 (新增) ===
-# POST /api/angle/correction             - 執行角度校正 (寫入740=1)
-# GET  /api/angle/status                 - 獲取Angle模組狀態 (讀取700-726)
-# 
-# === 狀態查詢 ===
-# GET  /api/status                       - 獲取完整系統狀態 (含Flow計時器和Angle狀態)
-# GET  /api/control_registers            - 獲取控制寄存器狀態 (含Angle寄存器)
-# 
-# === SocketIO事件 (新增Angle支援) ===
-# handshake_vp_pickup, handshake_unload_flow, handshake_clear_alarm
-# handshake_emergency_stop, handshake_manual_flow, handshake_set_speed
-# handshake_get_speed, request_status, request_control_status
-# angle_correction (新增) - 角度校正

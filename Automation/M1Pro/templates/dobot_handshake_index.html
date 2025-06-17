@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dobot狀態機交握控制器 - 增強版</title>
+    <title>Dobot狀態機交握控制器 (增強版)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
     <style>
         * {
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1800px;
+            max-width: 2000px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -112,7 +112,7 @@
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-            gap: 20px;
+            gap: 25px;
             margin-bottom: 30px;
         }
 
@@ -141,11 +141,11 @@
         }
 
         .angle-panel {
-            border-left: 4px solid #e67e22;
+            border-left: 4px solid #e74c3c;
         }
 
         .panel-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: #2c3e50;
             margin-bottom: 20px;
@@ -166,7 +166,7 @@
         }
 
         .angle-panel .panel-title {
-            border-bottom-color: #e67e22;
+            border-bottom-color: #e74c3c;
         }
 
         .flow-buttons {
@@ -199,7 +199,7 @@
         }
 
         .handshake-btn.vp-pickup::after {
-            content: 'FIFO';
+            content: '440=1';
             position: absolute;
             top: 5px;
             right: 8px;
@@ -215,7 +215,7 @@
         }
 
         .handshake-btn.unload-flow::after {
-            content: '出料';
+            content: '441=1';
             position: absolute;
             top: 5px;
             right: 8px;
@@ -230,9 +230,31 @@
             color: white;
         }
 
+        .handshake-btn.manual::after {
+            content: '444';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
         .handshake-btn.system {
             background: linear-gradient(135deg, #ffa726 0%, #ff7043 100%);
             color: white;
+        }
+
+        .handshake-btn.system::after {
+            content: '442=1';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
         }
 
         .handshake-btn.emergency {
@@ -240,9 +262,32 @@
             color: white;
         }
 
-        .handshake-btn.angle-btn {
-            background: linear-gradient(135deg, #fd746c 0%, #ff9068 100%);
+        .handshake-btn.emergency::after {
+            content: '443=1';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
+        .handshake-btn.force-ready {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
             color: white;
+            font-size: 1.0rem;
+        }
+
+        .handshake-btn.force-ready::after {
+            content: '448=1';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.6rem;
         }
 
         .handshake-btn:disabled {
@@ -254,17 +299,6 @@
         .handshake-btn:disabled:hover {
             transform: none;
             box-shadow: none;
-        }
-
-        .register-address {
-            font-size: 0.7rem;
-            color: #7f8c8d;
-            position: absolute;
-            top: 3px;
-            left: 8px;
-            background: rgba(255,255,255,0.8);
-            padding: 1px 4px;
-            border-radius: 3px;
         }
 
         .clear-buttons {
@@ -284,11 +318,34 @@
             transition: all 0.3s ease;
             background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
             color: white;
+            position: relative;
         }
 
         .clear-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .clear-btn:first-child::after {
+            content: '440=0';
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            background: rgba(255,255,255,0.3);
+            padding: 1px 4px;
+            border-radius: 8px;
+            font-size: 0.6rem;
+        }
+
+        .clear-btn:last-child::after {
+            content: '441=0';
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            background: rgba(255,255,255,0.3);
+            padding: 1px 4px;
+            border-radius: 8px;
+            font-size: 0.6rem;
         }
 
         .connection-buttons {
@@ -405,11 +462,23 @@
             background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
             color: white;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .speed-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3);
+        }
+
+        .speed-button::after {
+            content: '445/446/447';
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.6rem;
         }
 
         .ccd1-status-grid, .angle-status-grid {
@@ -426,11 +495,6 @@
             border-left: 4px solid #f39c12;
         }
 
-        .angle-status-item {
-            background: #ffe5dc;
-            border-left-color: #e67e22;
-        }
-
         .ccd1-status-item.ready, .angle-status-item.ready {
             background: #d4edda;
             border-left-color: #28a745;
@@ -439,6 +503,15 @@
         .ccd1-status-item.alarm, .angle-status-item.alarm {
             background: #f8d7da;
             border-left-color: #dc3545;
+        }
+
+        .angle-status-item {
+            border-left-color: #e74c3c;
+        }
+
+        .angle-status-item.ready {
+            background: #d4edda;
+            border-left-color: #28a745;
         }
 
         .queue-indicator {
@@ -457,7 +530,7 @@
             color: #f39c12;
         }
 
-        .angle-indicator {
+        .angle-result {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -468,37 +541,9 @@
         }
 
         .angle-value {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #e67e22;
-        }
-
-        .flow-timer {
-            background: #e8f5e8;
-            border-radius: 8px;
-            padding: 10px;
-            margin: 10px 0;
-            border-left: 4px solid #28a745;
-        }
-
-        .flow-timer.running {
-            background: #fff3cd;
-            border-left-color: #ffc107;
-        }
-
-        .flow-timer .timer-label {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-
-        .flow-timer .timer-value {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #28a745;
-        }
-
-        .flow-timer.running .timer-value {
-            color: #ffc107;
+            color: #e74c3c;
         }
 
         .world-coord-status {
@@ -517,6 +562,35 @@
         .world-coord-status.invalid {
             background: #f8d7da;
             color: #721c24;
+        }
+
+        .system-status-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .system-status-indicator.ready {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .system-status-indicator.running {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .system-status-indicator.alarm {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .system-status-indicator.inactive {
+            background: #f8f9fa;
+            color: #6c757d;
         }
 
         .position-display, .joints-display {
@@ -590,6 +664,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid #e0e6ed;
             border-left: 4px solid #34495e;
+            margin-bottom: 30px;
         }
 
         .register-panel .panel-title {
@@ -604,7 +679,7 @@
             border-radius: 10px;
             margin: 20px 0;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 20px;
         }
 
@@ -706,15 +781,15 @@
             .main-content {
                 grid-template-columns: 1fr 1fr 1fr;
             }
+            
+            .handshake-status-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 900px) {
             .main-content {
                 grid-template-columns: 1fr 1fr;
-            }
-            
-            .handshake-status-bar {
-                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -736,8 +811,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Dobot狀態機交握控制器 - 增強版</h1>
-            <div class="subtitle">機械臂狀態機交握系統 - 基地址400 + 速度控制 + FIFO佇列 + Angle校正整合</div>
+            <h1>Dobot狀態機交握控制器 (增強版)</h1>
+            <div class="subtitle">機械臂狀態機交握系統 - 基地址400 + 外部系統監控 + 強制Ready測試</div>
         </div>
 
         <div class="status-bar">
@@ -762,51 +837,39 @@
                 <div class="panel-title">狀態機交握控制</div>
                 
                 <div class="flow-buttons">
-                    <button class="handshake-btn vp-pickup" onclick="executeVpPickup()" id="vpPickupBtn">
-                        <span class="register-address">440</span>
+                    <button class="handshake-btn vp-pickup" onclick="executeVpPickup()" id="vpPickupBtn" title="寫入寄存器440=1，觸發VP視覺取料流程">
                         VP視覺取料 (Flow1)
                     </button>
                     
-                    <button class="handshake-btn unload-flow" onclick="executeUnloadFlow()" id="unloadFlowBtn">
-                        <span class="register-address">441</span>
+                    <button class="handshake-btn unload-flow" onclick="executeUnloadFlow()" id="unloadFlowBtn" title="寫入寄存器441=1，觸發出料流程">
                         出料流程 (Flow2)
                     </button>
                     
-                    <button class="handshake-btn manual" onclick="executeManualFlow(1)">
-                        <span class="register-address">444</span>
+                    <button class="handshake-btn manual" onclick="executeManualFlow(1)" title="寫入寄存器444=1，手動執行Flow1">
                         手動Flow1
                     </button>
                     
-                    <button class="handshake-btn manual" onclick="executeManualFlow(2)">
-                        <span class="register-address">444</span>
+                    <button class="handshake-btn manual" onclick="executeManualFlow(2)" title="寫入寄存器444=2，手動執行Flow2">
                         手動Flow2
                     </button>
                 </div>
 
-                <div class="flow-timer" id="flow1Timer" style="display: none;">
-                    <div class="timer-label">Flow1 執行時間</div>
-                    <div class="timer-value" id="flow1Time">0.0秒</div>
-                </div>
-
-                <div class="flow-timer" id="flow2Timer" style="display: none;">
-                    <div class="timer-label">Flow2 執行時間</div>
-                    <div class="timer-value" id="flow2Time">0.0秒</div>
-                </div>
-
                 <div class="clear-buttons">
-                    <button class="clear-btn" onclick="clearVpCommand()">清零VP指令</button>
-                    <button class="clear-btn" onclick="clearUnloadCommand()">清零出料指令</button>
+                    <button class="clear-btn" onclick="clearVpCommand()" title="寫入寄存器440=0，清零VP控制指令">清零VP指令</button>
+                    <button class="clear-btn" onclick="clearUnloadCommand()" title="寫入寄存器441=0，清零出料控制指令">清零出料指令</button>
                 </div>
 
                 <div class="flow-buttons">
-                    <button class="handshake-btn system" onclick="clearAlarm()">
-                        <span class="register-address">442</span>
+                    <button class="handshake-btn system" onclick="clearAlarm()" title="寫入寄存器442=1，清除系統警報">
                         清除警報
                     </button>
                     
-                    <button class="handshake-btn emergency" onclick="emergencyStop()">
-                        <span class="register-address">443</span>
+                    <button class="handshake-btn emergency" onclick="emergencyStop()" title="寫入寄存器443=1，觸發緊急停止">
                         緊急停止
+                    </button>
+                    
+                    <button class="handshake-btn force-ready" onclick="forceReady()" id="forceReadyBtn" title="寫入寄存器448=1，強制設置Ready狀態 (測試用)">
+                        強制Ready
                     </button>
                 </div>
 
@@ -925,10 +988,7 @@
                         <span>100%</span>
                         <div id="speedDisplay" class="speed-display">50%</div>
                     </div>
-                    <button id="setSpeedBtn" class="speed-button">
-                        <span class="register-address">445</span>
-                        設定全局速度
-                    </button>
+                    <button id="setSpeedBtn" class="speed-button" title="寫入寄存器445=1, 446=速度值, 447=指令ID">設定全局速度</button>
                 </div>
 
                 <div class="status-grid" style="margin-top: 20px;">
@@ -958,7 +1018,8 @@
                 <div class="ccd1-status-grid">
                     <div class="ccd1-status-item" id="ccd1StatusItem">
                         <div class="status-label">CCD1系統狀態</div>
-                        <div class="status-value" id="ccd1Status">未知</div>
+                        <div id="ccd1SystemBits"></div>
+                        <div class="status-value" id="ccd1Connection">未連接</div>
                     </div>
                 </div>
 
@@ -972,87 +1033,63 @@
                     </div>
                 </div>
 
-                <div class="status-grid">
-                    <div class="status-item">
-                        <div class="status-label">最後檢測</div>
-                        <div class="status-value" id="lastDetection">0</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-label">佇列估計</div>
-                        <div class="status-value" id="queueEstimate">0</div>
-                    </div>
-                </div>
-
                 <div style="margin-top: 15px; padding: 12px; background: #f8f9fa; border-radius: 8px; font-size: 0.9rem; color: #6c757d;">
-                    <strong>FIFO佇列說明：</strong><br>
+                    <strong>CCD1佇列說明：</strong><br>
                     • Flow1從CCD1佇列按順序取物<br>
-                    • Flow2執行完整出料循環<br>
                     • 佇列為空時自動觸發檢測<br>
-                    • 支援世界座標轉換
+                    • 支援世界座標轉換<br>
+                    • 寄存器240: 物體數量<br>
+                    • 寄存器256: 世界座標有效
                 </div>
             </div>
 
-            <!-- Angle校正面板 -->
+            <!-- Angle系統面板 -->
             <div class="angle-panel">
-                <div class="panel-title">Angle校正模組</div>
+                <div class="panel-title">Angle角度校正</div>
                 
                 <div class="angle-status-grid">
                     <div class="angle-status-item" id="angleStatusItem">
                         <div class="status-label">Angle系統狀態</div>
-                        <div class="status-value" id="angleStatus">未知</div>
+                        <div id="angleSystemBits"></div>
+                        <div class="status-value" id="angleConnection">未連接</div>
                     </div>
                 </div>
 
-                <div class="flow-buttons">
-                    <button class="handshake-btn angle-btn" onclick="executeAngleCorrection()" id="angleCorrectionBtn">
-                        <span class="register-address">740</span>
-                        一鍵角度校正
-                    </button>
-                </div>
-
-                <div class="angle-indicator">
+                <div class="angle-result">
                     <div>
-                        <div class="status-label">檢測角度</div>
-                        <div class="angle-value" id="detectedAngle">--°</div>
-                    </div>
-                    <div>
-                        <div class="status-label">角度差</div>
-                        <div class="angle-value" id="angleDiff">--°</div>
+                        <div class="status-label">檢測成功</div>
+                        <div class="status-value" id="angleSuccess">否</div>
                     </div>
                 </div>
 
                 <div class="status-grid">
                     <div class="status-item">
+                        <div class="status-label">原始角度</div>
+                        <div class="status-value" id="originalAngle">-- °</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">角度差</div>
+                        <div class="status-value" id="angleDiff">-- °</div>
+                    </div>
+                    <div class="status-item" style="grid-column: 1 / -1;">
                         <div class="status-label">馬達位置</div>
-                        <div class="status-value" id="motorPosition">0</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-label">校正狀態</div>
-                        <div class="status-value" id="correctionStatus">待機</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-label">CCD3連接</div>
-                        <div class="status-value" id="ccd3Connection">未知</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-label">馬達連接</div>
-                        <div class="status-value" id="motorConnection">未知</div>
+                        <div class="status-value" id="motorPosition">--</div>
                     </div>
                 </div>
 
                 <div style="margin-top: 15px; padding: 12px; background: #f8f9fa; border-radius: 8px; font-size: 0.9rem; color: #6c757d;">
-                    <strong>校正說明：</strong><br>
-                    • 基地址700，CCD3基地址800<br>
-                    • 公式: 馬達位置 = 9000 - (角度×10)<br>
-                    • 自動警報清除<br>
-                    • 高速小角度調整
+                    <strong>Angle系統說明：</strong><br>
+                    • CCD3檢測角度 → 計算馬達位置<br>
+                    • 公式: 9000 - 角度×100<br>
+                    • 寄存器700: 系統狀態<br>
+                    • 寄存器720-726: 檢測結果
                 </div>
             </div>
         </div>
 
         <!-- 寄存器監控面板 -->
         <div class="register-panel">
-            <div class="panel-title">寄存器監控</div>
+            <div class="panel-title">寄存器監控 (增強版)</div>
             <div class="register-display" id="registerDisplay">
                 <div class="register-section">
                     <h4>Dobot狀態寄存器 (只讀)</h4>
@@ -1089,28 +1126,44 @@
                         <span id="reg442" class="register-value">0</span>
                     </div>
                     <div class="register-row">
-                        <span class="register-address">444 (手動指令):</span>
-                        <span id="reg444" class="register-value">0</span>
+                        <span class="register-address">448 (強制Ready):</span>
+                        <span id="reg448" class="register-value">0</span>
                     </div>
                 </div>
                 
                 <div class="register-section">
-                    <h4>Angle模組寄存器 (基地址700)</h4>
+                    <h4>CCD1系統寄存器</h4>
+                    <div class="register-row">
+                        <span class="register-address">201 (CCD1狀態):</span>
+                        <span id="regCCD1Status" class="register-value">--</span>
+                    </div>
+                    <div class="register-row">
+                        <span class="register-address">240 (佇列數量):</span>
+                        <span id="regCCD1Queue" class="register-value">--</span>
+                    </div>
+                    <div class="register-row">
+                        <span class="register-address">256 (世界座標):</span>
+                        <span id="regCCD1World" class="register-value">--</span>
+                    </div>
+                </div>
+                
+                <div class="register-section">
+                    <h4>Angle系統寄存器</h4>
                     <div class="register-row">
                         <span class="register-address">700 (Angle狀態):</span>
-                        <span id="reg700" class="register-value">0</span>
+                        <span id="regAngleStatus" class="register-value">--</span>
                     </div>
                     <div class="register-row">
-                        <span class="register-address">720 (校正成功):</span>
-                        <span id="reg720" class="register-value">0</span>
+                        <span class="register-address">720 (檢測成功):</span>
+                        <span id="regAngleSuccess" class="register-value">--</span>
                     </div>
                     <div class="register-row">
-                        <span class="register-address">721-722 (檢測角度):</span>
-                        <span id="regAngle" class="register-value">0.00°</span>
+                        <span class="register-address">721-722 (原始角度):</span>
+                        <span id="regAngleOriginal" class="register-value">--</span>
                     </div>
                     <div class="register-row">
-                        <span class="register-address">740 (Angle指令):</span>
-                        <span id="reg740" class="register-value">0</span>
+                        <span class="register-address">723-724 (角度差):</span>
+                        <span id="regAngleDiff" class="register-value">--</span>
                     </div>
                 </div>
             </div>
@@ -1118,7 +1171,7 @@
 
         <!-- 操作日誌 -->
         <div class="log-container">
-            <div class="log-header">狀態機交握操作日誌</div>
+            <div class="log-header">狀態機交握操作日誌 (增強版)</div>
             <div id="logContent"></div>
             <button class="clear-log-btn" onclick="clearLog()">清除日誌</button>
         </div>
@@ -1129,12 +1182,6 @@
         const socket = io();
         let isConnected = false;
 
-        // Flow計時器
-        let flow1StartTime = null;
-        let flow2StartTime = null;
-        let flow1Interval = null;
-        let flow2Interval = null;
-
         // DOM元素
         const speedSlider = document.getElementById('speedSlider');
         const speedDisplay = document.getElementById('speedDisplay');
@@ -1144,7 +1191,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateCurrentTime();
             setInterval(updateCurrentTime, 1000);
-            addLog('狀態機交握控制器已載入', 'info');
+            addLog('Dobot狀態機交握控制器 (增強版) 已載入', 'info');
         });
 
         // 更新當前時間
@@ -1159,47 +1206,6 @@
                     minute: '2-digit',
                     second: '2-digit'
                 });
-        }
-
-        // Flow計時器功能
-        function startFlowTimer(flowId) {
-            if (flowId === 1) {
-                flow1StartTime = Date.now();
-                document.getElementById('flow1Timer').style.display = 'block';
-                document.getElementById('flow1Timer').className = 'flow-timer running';
-                
-                flow1Interval = setInterval(() => {
-                    const elapsed = (Date.now() - flow1StartTime) / 1000;
-                    document.getElementById('flow1Time').textContent = elapsed.toFixed(1) + '秒';
-                }, 100);
-            } else if (flowId === 2) {
-                flow2StartTime = Date.now();
-                document.getElementById('flow2Timer').style.display = 'block';
-                document.getElementById('flow2Timer').className = 'flow-timer running';
-                
-                flow2Interval = setInterval(() => {
-                    const elapsed = (Date.now() - flow2StartTime) / 1000;
-                    document.getElementById('flow2Time').textContent = elapsed.toFixed(1) + '秒';
-                }, 100);
-            }
-        }
-
-        function stopFlowTimer(flowId) {
-            if (flowId === 1 && flow1Interval) {
-                clearInterval(flow1Interval);
-                flow1Interval = null;
-                const elapsed = (Date.now() - flow1StartTime) / 1000;
-                document.getElementById('flow1Time').textContent = elapsed.toFixed(1) + '秒 (完成)';
-                document.getElementById('flow1Timer').className = 'flow-timer';
-                addLog(`Flow1執行完成，耗時: ${elapsed.toFixed(1)}秒`, 'success');
-            } else if (flowId === 2 && flow2Interval) {
-                clearInterval(flow2Interval);
-                flow2Interval = null;
-                const elapsed = (Date.now() - flow2StartTime) / 1000;
-                document.getElementById('flow2Time').textContent = elapsed.toFixed(1) + '秒 (完成)';
-                document.getElementById('flow2Timer').className = 'flow-timer';
-                addLog(`Flow2執行完成，耗時: ${elapsed.toFixed(1)}秒`, 'success');
-            }
         }
 
         // 日誌功能
@@ -1255,28 +1261,107 @@
             runningBit.className = 'handshake-bit ' + (handshakeStatus.running ? 'bit-active' : 'bit-inactive');
             alarmBit.className = 'handshake-bit ' + (handshakeStatus.alarm ? 'bit-active' : 'bit-inactive');
             initBit.className = 'handshake-bit ' + (handshakeStatus.initialized ? 'bit-active' : 'bit-inactive');
+        }
 
-            // 檢測Flow狀態變化
-            if (handshakeStatus.running && !runningBit.dataset.wasRunning) {
-                // 開始執行 - 根據當前流程判斷
-                const currentFlow = parseInt(document.getElementById('reg402').textContent);
-                if (currentFlow === 1) {
-                    startFlowTimer(1);
-                } else if (currentFlow === 2) {
-                    startFlowTimer(2);
-                }
-            } else if (!handshakeStatus.running && runningBit.dataset.wasRunning === 'true') {
-                // 執行結束 - 停止所有計時器
-                const currentFlow = parseInt(document.getElementById('reg402').textContent);
-                if (currentFlow === 1 || flow1Interval) {
-                    stopFlowTimer(1);
-                }
-                if (currentFlow === 2 || flow2Interval) {
-                    stopFlowTimer(2);
-                }
+        // 更新系統狀態位元顯示
+        function updateSystemStatusBits(statusBits, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container || !statusBits) return;
+
+            container.innerHTML = '';
+            
+            if (statusBits.ready) {
+                container.innerHTML += '<span class="system-status-indicator ready">Ready</span>';
+            }
+            if (statusBits.running) {
+                container.innerHTML += '<span class="system-status-indicator running">Running</span>';
+            }
+            if (statusBits.alarm) {
+                container.innerHTML += '<span class="system-status-indicator alarm">Alarm</span>';
+            }
+            if (statusBits.initialized) {
+                container.innerHTML += '<span class="system-status-indicator ready">Init</span>';
             }
             
-            runningBit.dataset.wasRunning = handshakeStatus.running;
+            if (!statusBits.ready && !statusBits.running && !statusBits.alarm && !statusBits.initialized) {
+                container.innerHTML = '<span class="system-status-indicator inactive">離線</span>';
+            }
+        }
+
+        // 更新外部系統狀態
+        function updateExternalSystemsStatus(externalSystems) {
+            if (!externalSystems) return;
+
+            // CCD1系統狀態
+            if (externalSystems.ccd1) {
+                const ccd1 = externalSystems.ccd1;
+                const ccd1Item = document.getElementById('ccd1StatusItem');
+                const ccd1Connection = document.getElementById('ccd1Connection');
+                const queueCount = document.getElementById('queueCount');
+                const worldCoordStatus = document.getElementById('worldCoordStatus');
+
+                // 更新連接狀態
+                ccd1Connection.textContent = ccd1.connected ? '已連接' : '未連接';
+                ccd1Item.className = ccd1.connected ? 'ccd1-status-item ready' : 'ccd1-status-item alarm';
+
+                // 更新狀態位元
+                updateSystemStatusBits(ccd1.status_bits, 'ccd1SystemBits');
+
+                // 更新佇列數量
+                queueCount.textContent = ccd1.circle_count || 0;
+
+                // 更新世界座標狀態
+                if (ccd1.world_coord_valid) {
+                    worldCoordStatus.textContent = '世界座標有效';
+                    worldCoordStatus.className = 'world-coord-status valid';
+                } else {
+                    worldCoordStatus.textContent = '世界座標無效';
+                    worldCoordStatus.className = 'world-coord-status invalid';
+                }
+
+                // 更新寄存器顯示
+                document.getElementById('regCCD1Status').textContent = ccd1.status_bits?.status_register_value || '--';
+                document.getElementById('regCCD1Queue').textContent = ccd1.circle_count || '--';
+                document.getElementById('regCCD1World').textContent = ccd1.world_coord_valid ? '1' : '0';
+            }
+
+            // Angle系統狀態
+            if (externalSystems.angle) {
+                const angle = externalSystems.angle;
+                const angleItem = document.getElementById('angleStatusItem');
+                const angleConnection = document.getElementById('angleConnection');
+                const angleSuccess = document.getElementById('angleSuccess');
+                const originalAngle = document.getElementById('originalAngle');
+                const angleDiff = document.getElementById('angleDiff');
+                const motorPosition = document.getElementById('motorPosition');
+
+                // 更新連接狀態
+                angleConnection.textContent = angle.connected ? '已連接' : '未連接';
+                angleItem.className = angle.connected ? 'angle-status-item ready' : 'angle-status-item alarm';
+
+                // 更新狀態位元
+                updateSystemStatusBits(angle.status_bits, 'angleSystemBits');
+
+                // 更新檢測結果
+                angleSuccess.textContent = angle.detection_success ? '是' : '否';
+
+                if (angle.angle_data && Object.keys(angle.angle_data).length > 0) {
+                    const data = angle.angle_data;
+                    originalAngle.textContent = data.original_angle ? data.original_angle.toFixed(2) + '°' : '--';
+                    angleDiff.textContent = data.angle_diff ? data.angle_diff.toFixed(2) + '°' : '--';
+                    motorPosition.textContent = data.motor_position || '--';
+                } else {
+                    originalAngle.textContent = '--';
+                    angleDiff.textContent = '--';
+                    motorPosition.textContent = '--';
+                }
+
+                // 更新寄存器顯示
+                document.getElementById('regAngleStatus').textContent = angle.status_bits?.status_register_value || '--';
+                document.getElementById('regAngleSuccess').textContent = angle.detection_success ? '1' : '0';
+                document.getElementById('regAngleOriginal').textContent = angle.angle_data?.original_angle ? angle.angle_data.original_angle.toFixed(2) : '--';
+                document.getElementById('regAngleDiff').textContent = angle.angle_data?.angle_diff ? angle.angle_data.angle_diff.toFixed(2) : '--';
+            }
         }
 
         // 更新狀態顯示
@@ -1328,76 +1413,18 @@
             const ioStatus = status.io_status || {};
             document.getElementById('ioStatus').textContent = `DI:${ioStatus.di || 0} DO:${ioStatus.do || 0}`;
 
+            // 更新外部系統狀態
+            if (status.external_systems) {
+                updateExternalSystemsStatus(status.external_systems);
+            }
+
             updateConnectionStatus(status.connection_status);
-        }
-
-        // 更新Angle模組狀態
-        function updateAngleStatus(angleData) {
-            if (!angleData) return;
-
-            // 更新Angle系統狀態
-            const angleStatusItem = document.getElementById('angleStatusItem');
-            const angleStatus = document.getElementById('angleStatus');
-            
-            if (!angleData.available) {
-                // Angle模組不可用
-                angleStatusItem.className = 'angle-status-item alarm';
-                angleStatus.textContent = '模組離線';
-                document.getElementById('correctionStatus').textContent = '模組離線';
-                document.getElementById('ccd3Connection').textContent = '未知';
-                document.getElementById('motorConnection').textContent = '未知';
-                return;
-            }
-            
-            if (angleData.angle_ready) {
-                angleStatusItem.className = 'angle-status-item ready';
-                angleStatus.textContent = 'Ready';
-            } else if (angleData.angle_alarm) {
-                angleStatusItem.className = 'angle-status-item alarm';
-                angleStatus.textContent = 'Alarm';
-            } else {
-                angleStatusItem.className = 'angle-status-item';
-                angleStatus.textContent = angleData.angle_running ? 'Running' : '待機';
-            }
-
-            // 更新角度數據
-            if (angleData.detected_angle !== null && angleData.detected_angle !== undefined) {
-                document.getElementById('detectedAngle').textContent = angleData.detected_angle.toFixed(2) + '°';
-            } else {
-                document.getElementById('detectedAngle').textContent = '--°';
-            }
-            
-            if (angleData.angle_diff !== null && angleData.angle_diff !== undefined) {
-                document.getElementById('angleDiff').textContent = angleData.angle_diff.toFixed(2) + '°';
-            } else {
-                document.getElementById('angleDiff').textContent = '--°';
-            }
-
-            if (angleData.motor_position !== null && angleData.motor_position !== undefined) {
-                document.getElementById('motorPosition').textContent = angleData.motor_position;
-            } else {
-                document.getElementById('motorPosition').textContent = '0';
-            }
-
-            // 更新連接狀態
-            document.getElementById('ccd3Connection').textContent = angleData.ccd3_connected ? '已連接' : '斷開';
-            document.getElementById('motorConnection').textContent = angleData.motor_connected ? '已連接' : '斷開';
-            
-            // 更新校正狀態
-            if (angleData.angle_running) {
-                document.getElementById('correctionStatus').textContent = '校正中';
-            } else if (angleData.last_correction_success) {
-                document.getElementById('correctionStatus').textContent = '校正成功';
-            } else {
-                document.getElementById('correctionStatus').textContent = '待機';
-            }
         }
 
         // 更新控制寄存器顯示
         function updateControlRegisters(data) {
             if (!data) return;
 
-            // Dobot寄存器
             document.getElementById('reg400').textContent = data.status_register || 0;
             document.getElementById('reg401').textContent = data.robot_state || 0;
             document.getElementById('reg402').textContent = data.current_flow || 0;
@@ -1405,21 +1432,7 @@
             document.getElementById('reg440').textContent = data.vp_control || 0;
             document.getElementById('reg441').textContent = data.unload_control || 0;
             document.getElementById('reg442').textContent = data.clear_alarm || 0;
-            document.getElementById('reg444').textContent = data.manual_command || 0;
-
-            // Angle寄存器
-            if (data.angle_registers) {
-                document.getElementById('reg700').textContent = data.angle_registers.status || 0;
-                document.getElementById('reg720').textContent = data.angle_registers.success || 0;
-                document.getElementById('reg740').textContent = data.angle_registers.command || 0;
-                
-                // 角度數據顯示
-                if (data.angle_registers.angle_high !== undefined && data.angle_registers.angle_low !== undefined) {
-                    const angleInt = (data.angle_registers.angle_high << 16) | data.angle_registers.angle_low;
-                    const angle = angleInt / 100.0;
-                    document.getElementById('regAngle').textContent = angle.toFixed(2) + '°';
-                }
-            }
+            document.getElementById('reg448').textContent = data.force_ready || 0;
         }
 
         // 速度控制
@@ -1453,34 +1466,6 @@
             }
         }
 
-        // Angle模組API請求 - 修正為通過主服務器代理
-        async function angleApiRequest(url, method = 'GET', data = null) {
-            try {
-                // 通過主服務器的Angle API代理
-                const fullUrl = `/api/angle${url}`;
-                const options = {
-                    method: method,
-                    headers: {'Content-Type': 'application/json'}
-                };
-                
-                if (data) {
-                    options.body = JSON.stringify(data);
-                }
-                
-                const response = await fetch(fullUrl, options);
-                const result = await response.json();
-                
-                if (result.message) {
-                    addLog(`Angle: ${result.message}`, result.success ? 'success' : 'error');
-                }
-                
-                return result;
-            } catch (error) {
-                addLog(`Angle API請求失敗: ${error.message}`, 'error');
-                return { success: false, message: error.message };
-            }
-        }
-
         // 狀態機交握控制函數
         async function connectModbus() {
             const result = await apiRequest('/api/connect', 'POST');
@@ -1491,7 +1476,7 @@
                     if (isConnected) {
                         socket.emit('request_status');
                         socket.emit('request_control_status');
-                        requestAngleStatus(); // 定期請求Angle狀態
+                        socket.emit('request_external_systems');
                     }
                 }, 1000);
             }
@@ -1510,7 +1495,7 @@
             
             const result = await apiRequest('/api/handshake/vp_pickup', 'POST');
             if (result.success) {
-                addLog('VP視覺取料指令已發送 - 將使用FIFO佇列模式', 'info');
+                addLog('VP視覺取料指令已發送 (寄存器440=1) - 將使用FIFO佇列模式', 'info');
             }
         }
 
@@ -1522,7 +1507,7 @@
             
             const result = await apiRequest('/api/handshake/unload_flow', 'POST');
             if (result.success) {
-                addLog('出料流程指令已發送 - standby→撈料→組裝→放下→standby', 'info');
+                addLog('出料流程指令已發送 (寄存器441=1) - standby→撈料→組裝→放下→standby', 'info');
             }
         }
 
@@ -1533,49 +1518,56 @@
             }
             
             const result = await apiRequest(`/api/handshake/manual_flow/${flowId}`, 'POST');
+            if (result.success) {
+                addLog(`手動執行Flow${flowId}指令已發送 (寄存器444=${flowId})`, 'info');
+            }
         }
 
         async function clearVpCommand() {
             const result = await apiRequest('/api/handshake/clear_vp', 'POST');
+            if (result.success) {
+                addLog('VP指令已清零 (寄存器440=0)', 'info');
+            }
         }
 
         async function clearUnloadCommand() {
             const result = await apiRequest('/api/handshake/clear_unload', 'POST');
+            if (result.success) {
+                addLog('出料指令已清零 (寄存器441=0)', 'info');
+            }
         }
 
         async function clearAlarm() {
             const result = await apiRequest('/api/handshake/clear_alarm', 'POST');
+            if (result.success) {
+                addLog('清除警報指令已發送 (寄存器442=1)', 'info');
+            }
         }
 
         async function emergencyStop() {
             const result = await apiRequest('/api/handshake/emergency_stop', 'POST');
+            if (result.success) {
+                addLog('緊急停止指令已發送 (寄存器443=1)', 'warning');
+            }
+        }
+
+        async function forceReady() {
+            if (!isConnected) {
+                addLog('請先連接Modbus服務器', 'error');
+                return;
+            }
+            
+            const result = await apiRequest('/api/handshake/force_ready', 'POST');
+            if (result.success) {
+                addLog('強制Ready指令已發送 (寄存器448=1) - 注意：僅用於測試流程', 'warning');
+            }
         }
 
         async function setGlobalSpeed() {
             const speed = parseInt(speedSlider.value);
             const result = await apiRequest('/api/handshake/set_speed', 'POST', {speed: speed});
             if (result.success) {
-                addLog(`全局速度設定為: ${speed}%`, 'success');
-            }
-        }
-
-        // Angle模組控制函數
-        async function executeAngleCorrection() {
-            const result = await angleApiRequest('/correction', 'POST');
-            if (result.success) {
-                addLog('Angle校正指令已發送 - CCD3檢測→計算→馬達移動', 'info');
-            }
-        }
-
-        async function requestAngleStatus() {
-            try {
-                const result = await angleApiRequest('/status', 'GET');
-                if (result && result.success !== false) {
-                    updateAngleStatus(result);
-                }
-            } catch (error) {
-                // 靜默處理Angle模組連接失敗，避免控制台錯誤
-                console.log('Angle模組暫時無法連接');
+                addLog(`全局速度設定為: ${speed}% (寄存器445=1, 446=${speed}, 447=ID)`, 'success');
             }
         }
 
@@ -1586,6 +1578,7 @@
             if (isConnected) {
                 socket.emit('request_status');
                 socket.emit('request_control_status');
+                socket.emit('request_external_systems');
             }
         }
 
@@ -1607,6 +1600,10 @@
             updateControlRegisters(data);
         });
 
+        socket.on('external_systems_update', (data) => {
+            updateExternalSystemsStatus(data);
+        });
+
         socket.on('handshake_result', (data) => {
             const logType = data.success ? 'success' : 'error';
             addLog(data.message, logType);
@@ -1623,6 +1620,18 @@
                 requestStatus();
             }
         }, 2000);
+
+        // 添加tooltip功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 為所有帶有title屬性的元素添加tooltip樣式
+            const elementsWithTitle = document.querySelectorAll('[title]');
+            elementsWithTitle.forEach(element => {
+                element.style.position = 'relative';
+                element.addEventListener('mouseenter', function() {
+                    element.style.cursor = 'help';
+                });
+            });
+        });
     </script>
 </body>
 </html>

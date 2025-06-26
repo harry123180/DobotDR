@@ -299,8 +299,8 @@ class DobotM1Pro:
         points_file = os.path.join(current_dir, "saved_points", "robot_points.json")
         self.points_manager = PointsManager(points_file)
         self.is_connected = False
-        self.global_speed = 50  # 預設全局速度
-        self.last_set_speed = 50  # 追蹤最後設定的速度
+        self.global_speed = 20  # 預設全局速度
+        self.last_set_speed = 20  # 追蹤最後設定的速度
         
     def initialize(self) -> bool:
         """初始化機械臂連接 - 增強版"""

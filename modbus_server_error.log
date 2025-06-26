@@ -18,3 +18,40 @@ task: <Task pending name='Task-75695254' coro=<ServerRequestHandler.handle_reque
 task: <Task pending name='Task-75695255' coro=<ServerRequestHandler.handle_request() running at C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\server\requesthandler.py:95> cb=[_chain_future.<locals>._call_set_state() at C:\Users\user\anaconda3\envs\ROBOT\Lib\asyncio\futures.py:396]>
 2025-06-17 17:25:01,316 - ERROR - default_exception_handler:1833 - Task was destroyed but it is pending!
 task: <Task pending name='Task-75695256' coro=<ServerRequestHandler.handle_request() running at C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\server\requesthandler.py:95> cb=[_chain_future.<locals>._call_set_state() at C:\Users\user\anaconda3\envs\ROBOT\Lib\asyncio\futures.py:396]>
+2025-06-24 21:20:41,615 - ERROR - handle_exception:458 - Web介面錯誤: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+Traceback (most recent call last):
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask\app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask\app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask\ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\werkzeug\routing\map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+2025-06-24 23:06:26,933 - ERROR - handle_exception:458 - Web介面錯誤: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+Traceback (most recent call last):
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask\app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask\app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask\ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\werkzeug\routing\map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+2025-06-24 23:06:51,939 - ERROR - default_exception_handler:1833 - Task was destroyed but it is pending!
+task: <Task pending name='Task-39689' coro=<ServerRequestHandler.handle_request() running at C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\server\requesthandler.py:95> cb=[_chain_future.<locals>._call_set_state() at C:\Users\user\anaconda3\envs\ROBOT\Lib\asyncio\futures.py:396]>
+2025-06-26 14:15:51,632 - ERROR - handle_request:112 - requested slave does not exist: 0

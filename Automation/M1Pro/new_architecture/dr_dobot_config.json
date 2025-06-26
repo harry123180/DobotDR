@@ -1,0 +1,27 @@
+{
+  "robot": {
+    "ip": "192.168.1.6",
+    "dashboard_port": 29999,
+    "move_port": 30003,
+    "default_speed": 40
+  },
+  "modbus": {
+    "server_ip": "127.0.0.1",
+    "server_port": 502,
+    "timeout": 3.0
+  },
+  "gripper": {
+    "type": "PGE",
+    "enabled": true
+  },
+  "vision": {
+    "ccd1_enabled": true
+  },
+  "flows": {
+    "flow1_enabled": true,
+    "flow2_enabled": true,
+    "flow3_enabled": false,
+    "flow4_enabled": true,
+    "flow5_enabled": false
+  }
+}

@@ -145,7 +145,7 @@
   },
   {
     "id": 8,
-    "name": "back_stanby_from_asm",
+    "name": "back_standby_from_asm",
     "cartesian": {
       "x": 221.67776081856596,
       "y": -293.94287634195496,

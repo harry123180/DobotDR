@@ -472,7 +472,26 @@ class RealRobotController:
         except Exception as e:
             print(f"機械臂初始化失敗: {e}")
             return False
-    
+    def set_arm_orientation(self, orientation: int) -> bool:
+        """設置機械臂座標系方向
+        
+        Args:
+            orientation: 0=左手系, 1=右手系
+            
+        Returns:
+            bool: 設置是否成功
+        """
+        try:
+            result = self.dashboard_api.SetArmOrientation(orientation)
+            success = self._parse_api_response(result)
+            if success:
+                print(f"✓ 座標系切換成功: {'左手系' if orientation == 0 else '右手系'}")
+            else:
+                print(f"座標系切換失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"座標系切換異常: {e}")
+            return False
     def set_global_speed(self, speed_percent: int) -> bool:
         """設定全局速度"""
         try:

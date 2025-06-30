@@ -28,11 +28,11 @@
     },
     "PGHL": {
       "unit_id": 5,
-      "enabled": true
+      "enabled": false
     },
     "PGE": {
       "unit_id": 4,
-      "enabled": true
+      "enabled": false
     }
   }
 }

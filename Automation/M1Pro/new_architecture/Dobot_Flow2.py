@@ -1,14 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-DR_Dobot_Flow2.py - 出料流程 (新架構版本)
-適配新架構混合交握協議，包含角度獲取和J4角度控制
-基地址1200-1249，狀態機交握，序列化執行
+Dobot_Flow2.py - Flow2 出料流程執行器
+整合AngleHighLevel角度檢測，使用外部點位檔案
+實現完整的出料作業流程，包含角度計算和J4角度控制
 """
 
 import time
-from typing import Dict, Any, Optional
+import os
+import json
+from typing import Dict, Any, Optional, Tuple, List
 from dataclasses import dataclass
+from enum import Enum
+
+
+@dataclass
+class RobotPoint:
+    """機械臂點位數據結構"""
+    name: str
+    x: float
+    y: float
+    z: float
+    r: float
+    j1: float
+    j2: float
+    j3: float
+    j4: float
 
 
 @dataclass
@@ -18,27 +35,113 @@ class FlowResult:
     error_message: str = ""
     execution_time: float = 0.0
     steps_completed: int = 0
-    total_steps: int = 15  # 新流程步驟數
-    target_angle: Optional[float] = None      # 獲取的目標角度
-    command_angle: Optional[float] = None     # 計算的指令角度
-    angle_acquisition_success: bool = False   # 角度獲取是否成功
-    extra_data: Dict[str, Any] = None         # 額外數據
+    total_steps: int = 0
+    target_angle: Optional[float] = None
+    command_angle: Optional[float] = None
+    angle_acquisition_success: bool = False
+    extra_data: Dict[str, Any] = None
 
     def __post_init__(self):
         if self.extra_data is None:
             self.extra_data = {}
 
 
+class FlowStatus(Enum):
+    """流程狀態"""
+    READY = "ready"
+    RUNNING = "running" 
+    PAUSED = "paused"
+    COMPLETED = "completed"
+    ERROR = "error"
+
+
+class PointsManager:
+    """點位管理器 - 支援cartesian和pose格式"""
+    
+    def __init__(self, points_file: str = "saved_points/robot_points.json"):
+        # 確保使用絕對路徑，相對於當前執行檔案的目錄
+        if not os.path.isabs(points_file):
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            self.points_file = os.path.join(current_dir, points_file)
+        else:
+            self.points_file = points_file
+        self.points: Dict[str, RobotPoint] = {}
+        
+    def load_points(self) -> bool:
+        """載入點位數據 - 支援cartesian和pose格式"""
+        try:
+            print(f"嘗試載入點位檔案: {self.points_file}")
+            
+            if not os.path.exists(self.points_file):
+                print(f"錯誤: 點位檔案不存在: {self.points_file}")
+                return False
+                
+            with open(self.points_file, "r", encoding="utf-8") as f:
+                points_list = json.load(f)
+            
+            self.points.clear()
+            for point_data in points_list:
+                try:
+                    # 支援兩種格式：pose 或 cartesian
+                    if "pose" in point_data:
+                        # 原始格式
+                        pose_data = point_data["pose"]
+                    elif "cartesian" in point_data:
+                        # 新格式
+                        pose_data = point_data["cartesian"]
+                    else:
+                        print(f"點位 {point_data.get('name', 'unknown')} 缺少座標數據")
+                        continue
+                    
+                    # 檢查關節數據
+                    if "joint" not in point_data:
+                        print(f"點位 {point_data.get('name', 'unknown')} 缺少關節數據")
+                        continue
+                    
+                    joint_data = point_data["joint"]
+                    
+                    point = RobotPoint(
+                        name=point_data["name"],
+                        x=float(pose_data["x"]),
+                        y=float(pose_data["y"]),
+                        z=float(pose_data["z"]),
+                        r=float(pose_data["r"]),
+                        j1=float(joint_data["j1"]),
+                        j2=float(joint_data["j2"]),
+                        j3=float(joint_data["j3"]),
+                        j4=float(joint_data["j4"])
+                    )
+                    
+                    self.points[point.name] = point
+                    
+                except Exception as e:
+                    print(f"處理點位 {point_data.get('name', 'unknown')} 時發生錯誤: {e}")
+                    continue
+                
+            print(f"載入點位數據成功，共{len(self.points)}個點位: {list(self.points.keys())}")
+            return True
+            
+        except Exception as e:
+            print(f"錯誤: 載入點位數據失敗: {e}")
+            return False
+    
+    def get_point(self, name: str) -> Optional[RobotPoint]:
+        """獲取指定點位"""
+        return self.points.get(name)
+    
+    def list_points(self) -> List[str]:
+        """列出所有點位名稱"""
+        return list(self.points.keys())
+    
+    def has_point(self, name: str) -> bool:
+        """檢查是否存在指定點位"""
+        return name in self.points
+
+
 class DrFlow2UnloadExecutor:
-    """
-    DR版本 出料流程執行器 (新架構版本)
-    - 適配新架構混合交握協議
-    - 包含AngleHighLevel角度獲取功能
-    - 支援J4角度控制的組裝動作
-    """
+    """Flow2: 出料流程執行器"""
     
     def __init__(self):
-        """初始化流程執行器 - 新架構版本"""
         # 核心組件 (通過initialize方法設置)
         self.robot = None
         self.motion_state_machine = None
@@ -46,180 +149,219 @@ class DrFlow2UnloadExecutor:
         
         # 流程配置
         self.flow_id = 2
-        self.total_steps = 15  # 新流程步驟數
+        self.flow_name = "出料流程"
+        self.status = FlowStatus.READY
         self.current_step = 0
-        self.is_running = False
+        self.start_time = 0.0
         self.last_error = ""
         
         # 角度控制參數
         self.target_angle = None      # 從AngleHighLevel獲取的角度
         self.command_angle = None     # 計算後的指令角度 (target_angle + 45)
         self.angle_acquisition_success = False
+        self.ANGLE_OFFSET = 45.0      # 角度偏移量
         
-        # 流程參數
-        self.SPEED_RATIO = 100
-        self.JOINT_TOLERANCE = 5.0  # 關節位置容差(%)
-        self.GRIP_OPEN_POSITION = 370  # 撐開位置
-        self.GRIP_CLOSE_POSITION = 0   # 關閉位置
-        self.ANGLE_OFFSET = 45.0       # 角度偏移量
+        # 初始化點位管理器
+        self.points_manager = PointsManager()
+        self.points_loaded = False
         
-        # 必要點位列表 (按新流程順序)
+        # Flow2需要的點位名稱
         self.REQUIRED_POINTS = [
-            "standby",               # 起點和終點
-            "Rotate_V2",            # 第一個旋轉點
-            "Rotate_top",           # 旋轉頂部點
-            "Rotate_down",          # 旋轉底部點(撐開料件處)
-            "put_asm_Pre",          # 組裝預備位置
-            "put_asm_top",          # 組裝頂部位置
-            "put_asm_down",         # 組裝放下位置
-            "back_standby_from_asm" # 從組裝區回程的中轉點
+            "standby",                  # 待機點
+            "Rotate_V2",               # 翻轉預備點
+            "Rotate_top",              # 翻轉頂部點
+            "Rotate_down",             # 翻轉底部點
+            "put_asm_Pre",             # 組裝預備位置
+            "put_asm_top",             # 組裝頂部位置  
+            "put_asm_down",            # 組裝放下位置
+            "back_standby_from_asm"    # 從組裝區回程的中轉點
         ]
         
-        print("✓ DrFlow2UnloadExecutor初始化完成 (新架構版本)")
-    
+        # 建構流程步驟
+        self.motion_steps = []
+        self.total_steps = 0
+        
+        # 嘗試載入點位檔案
+        self._load_and_validate_points()
+        
+        # 只有點位載入成功才建構流程步驟
+        if self.points_loaded:
+            self.build_flow_steps()
+        
+        print("✓ DrFlow2UnloadExecutor初始化完成")
+        
     def initialize(self, robot, motion_state_machine, external_modules):
-        """初始化流程執行器 - 新架構版本"""
+        """初始化Flow執行器"""
         self.robot = robot
         self.motion_state_machine = motion_state_machine
         self.external_modules = external_modules
         
-        # 快速取得外部模組引用
-        self.gripper = external_modules.get('gripper')
-        self.ccd1 = external_modules.get('ccd1')
-        self.ccd3 = external_modules.get('ccd3') 
-        self.angle = external_modules.get('angle')
+        print(f"✓ Flow2執行器初始化完成")
+        print(f"  可用模組: Gripper={self.external_modules.get('gripper') is not None}, "
+              f"Angle={self.external_modules.get('angle') is not None}")
         
-        print(f"✓ DR Flow2執行器初始化完成")
-        print(f"  可用模組: Gripper={self.gripper is not None}, CCD1={self.ccd1 is not None}, "
-              f"CCD3={self.ccd3 is not None}, Angle={self.angle is not None}")
+    def _load_and_validate_points(self):
+        """載入並驗證點位檔案"""
+        print("Flow2正在載入外部點位檔案...")
+        
+        # 載入點位檔案
+        if not self.points_manager.load_points():
+            print("錯誤: 無法載入點位檔案，Flow2無法執行")
+            self.points_loaded = False
+            return
+        
+        # 檢查所有必要點位是否存在
+        missing_points = []
+        for point_name in self.REQUIRED_POINTS:
+            if not self.points_manager.has_point(point_name):
+                missing_points.append(point_name)
+        
+        if missing_points:
+            print(f"錯誤: 缺少必要點位: {missing_points}")
+            print(f"可用點位: {self.points_manager.list_points()}")
+            self.points_loaded = False
+            return
+        
+        print("✓ 所有必要點位載入成功")
+        self.points_loaded = True
+        
+    def build_flow_steps(self):
+        """建構Flow2步驟"""
+        if not self.points_loaded:
+            print("警告: 點位未載入，無法建構流程步驟")
+            self.motion_steps = []
+            self.total_steps = 0
+            return
+            
+        # 定義流程步驟
+        self.motion_steps = [
+            # 1. 移動到待機點
+            {'type': 'move_to_point', 'params': {'point_name': 'standby', 'move_type': 'J'}},
+            
+            # 2. AngleHighLevel角度檢測
+            {'type': 'angle_detection', 'params': {}},
+            {'type': 'move_to_point', 'params': {'point_name': 'standby', 'move_type': 'J'}},
+            # 3. 翻轉站序列
+            {'type': 'move_to_point', 'params': {'point_name': 'Rotate_V2', 'move_type': 'J'}},
+            {'type': 'move_to_point', 'params': {'point_name': 'Rotate_top', 'move_type': 'J'}},
+            {'type': 'move_to_point', 'params': {'point_name': 'Rotate_down', 'move_type': 'J'}},
+            
+            # 4. 夾爪智能撐開
+            {'type': 'gripper_smart_release', 'params': {'position': 370}},
+            #
+            # 5. 移動到翻轉頂部
+            {'type': 'move_to_point', 'params': {'point_name': 'Rotate_top', 'move_type': 'J'}},
+            
+            # 6. 組裝序列 (帶J4角度控制)
+            {'type': 'move_to_point', 'params': {'point_name': 'put_asm_Pre', 'move_type': 'J'}},
+            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_top', 'move_type': 'J'}},#move_to_point_with_j4
+            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_down', 'move_type': 'J'}},#move_to_point_with_j4
+            #
+
+
+            # 7. 夾爪快速關閉
+            {'type': 'gripper_close', 'params': {}},
+            #
+            # 8. 回程序列
+            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_top', 'move_type': 'J'}},#move_to_point_with_j4
+            {'type': 'move_to_point', 'params': {'point_name': 'back_standby_from_asm', 'move_type': 'J'}},
+            {'type': 'move_to_point', 'params': {'point_name': 'standby', 'move_type': 'J'}},
+        ]
+        
+        self.total_steps = len(self.motion_steps)
+        print(f"Flow2流程步驟建構完成，共{self.total_steps}步")
     
     def execute(self) -> FlowResult:
-        """執行DR 出料流程 (新架構版本)"""
-        print("\n" + "="*60)
-        print("開始執行DR Flow2 - 出料流程 (新架構版本)")
-        print("="*60)
+        """執行Flow2主邏輯"""
+        # 檢查點位是否已載入
+        if not self.points_loaded:
+            return FlowResult(
+                success=False,
+                error_message="點位檔案載入失敗，無法執行Flow2",
+                execution_time=0.0,
+                steps_completed=0,
+                total_steps=0
+            )
         
-        start_time = time.time()
-        self.is_running = True
+        self.status = FlowStatus.RUNNING
+        self.start_time = time.time()
         self.current_step = 0
-        self.last_error = ""
         
         # 重置角度參數
         self.target_angle = None
         self.command_angle = None
         self.angle_acquisition_success = False
         
+        # 檢查初始化
+        if not self.robot or not self.robot.is_connected:
+            return FlowResult(
+                success=False,
+                error_message="機械臂未連接或未初始化",
+                execution_time=time.time() - self.start_time,
+                steps_completed=self.current_step,
+                total_steps=self.total_steps
+            )
+        
         try:
-            # 步驟1: 系統檢查和起點位置驗證
-            if not self._execute_step(1, "系統檢查和起點位置驗證", self._step_system_check_and_position):
-                return self._create_result(False, start_time)
-            
-            # 步驟2: 移動到standby
-            if not self._execute_step(2, "移動到standby", self._step_move_to_standby):
-                return self._create_result(False, start_time)
-            
-            # 步驟3: 快速關閉夾爪
-            if not self._execute_step(3, "快速關閉夾爪", self._step_quick_close_gripper):
-                return self._create_result(False, start_time)
-            
-            # 步驟4: AngleHighLevel取得角度值並計算指令角度
-            if not self._execute_step(4, "AngleHighLevel取得角度值", self._step_get_angle_from_angle_high_level):
-                return self._create_result(False, start_time)
-            
-            # ===== 連續運動段1: 移動到撐開位置 =====
-            print("  ▶ 開始連續運動段1 (步驟5-7): 移動到撐開位置...")
-            
-            # 步驟5: 移動到Rotate_V2
-            if not self._execute_step(5, "移動到Rotate_V2", 
-                                    lambda: self._step_move_to_point_no_sync("Rotate_V2")):
-                return self._create_result(False, start_time)
-            
-            # 步驟6: 移動到Rotate_top
-            if not self._execute_step(6, "移動到Rotate_top", 
-                                    lambda: self._step_move_to_point_no_sync("Rotate_top")):
-                return self._create_result(False, start_time)
-            
-            # 步驟7: 移動到Rotate_down
-            if not self._execute_step(7, "移動到Rotate_down", 
-                                    lambda: self._step_move_to_point_no_sync("Rotate_down")):
-                return self._create_result(False, start_time)
-            
-            # 步驟8: 智慧撐開夾爪370
-            if not self._execute_step(8, "智慧撐開夾爪370", self._step_smart_grip_open_sync):
-                return self._create_result(False, start_time)
-            
-            # ===== 連續運動段2: 移動到組裝位置 =====
-            print("  ▶ 開始連續運動段2 (步驟9-11): 移動到組裝位置...")
-            
-            # 步驟9: 移動到Rotate_top
-            if not self._execute_step(9, "移動到Rotate_top", 
-                                    lambda: self._step_move_to_point_no_sync("Rotate_top")):
-                return self._create_result(False, start_time)
-            
-            # 步驟10: 移動到put_asm_Pre
-            if not self._execute_step(10, "移動到put_asm_Pre", 
-                                     lambda: self._step_move_to_point_no_sync("put_asm_Pre")):
-                return self._create_result(False, start_time)
-            
-            # 步驟11: 移動到put_asm_top (帶入J4角度)
-            if not self._execute_step(11, "移動到put_asm_top (J4角度控制)", 
-                                     lambda: self._step_move_to_put_asm_top_with_angle_no_sync()):
-                return self._create_result(False, start_time)
-            
-            # 步驟12: 移動到put_asm_down (帶入J4角度)
-            if not self._execute_step(12, "移動到put_asm_down (J4角度控制)", 
-                                     lambda: self._step_move_to_put_asm_down_with_angle_no_sync()):
-                return self._create_result(False, start_time)
-            
-            # 步驟13: 夾爪快速關閉
-            if not self._execute_step(13, "夾爪快速關閉", self._step_quick_close_release_sync):
-                return self._create_result(False, start_time)
-            
-            # ===== 連續運動段3: 回到standby =====
-            print("  ▶ 開始連續運動段3 (步驟14-15): 回到standby...")
-            
-            # 步驟14: 移動到put_asm_top (帶入J4角度)
-            if not self._execute_step(14, "移動到put_asm_top (J4角度控制)", 
-                                     lambda: self._step_move_to_put_asm_top_with_angle_no_sync()):
-                return self._create_result(False, start_time)
-            
-            final_movements = [
-                (15, "移動到put_asm_Pre", "put_asm_Pre"),
-                (16, "移動到back_standby_from_asm", "back_standby_from_asm"),
-                (17, "回到standby", "standby")
-            ]
-            
-            # 注意：這裡需要調整步驟編號，因為我們總步驟是15，但實際有17個動作
-            # 我們將15步驟拆分為多個子動作
-            for i, (sub_step, step_name, point_name) in enumerate(final_movements):
-                sub_progress = 15 + (i * 0.33)  # 在步驟15內部分配進度
-                print(f"[{sub_progress:.1f}/15] {step_name}...")
+            for step in self.motion_steps:
+                if self.status == FlowStatus.PAUSED:
+                    time.sleep(0.1)
+                    continue
+                    
+                if self.status == FlowStatus.ERROR:
+                    break
                 
-                if not self._step_move_to_point_no_sync(point_name):
-                    self.last_error = f"{step_name}失敗"
-                    return self._create_result(False, start_time)
-                print(f"  ✓ {step_name}指令已發送")
+                print(f"Flow2 步驟 {self.current_step + 1}/{self.total_steps}: {step['type']}")
+                
+                # 更新進度到motion_state_machine
+                if self.motion_state_machine:
+                    progress = int((self.current_step / self.total_steps) * 100)
+                    self.motion_state_machine.set_progress(progress)
+                
+                # 執行步驟
+                success = False
+                
+                if step['type'] == 'move_to_point':
+                    success = self._execute_move_to_point(step['params'])
+                elif step['type'] == 'move_to_point_with_j4':
+                    success = self._execute_move_to_point_with_j4(step['params'])
+                elif step['type'] == 'angle_detection':
+                    success = self._execute_angle_detection()
+                elif step['type'] == 'gripper_close':
+                    success = self._execute_gripper_close()
+                elif step['type'] == 'gripper_smart_release':
+                    success = self._execute_gripper_smart_release(step['params'])
+                else:
+                    print(f"未知步驟類型: {step['type']}")
+                    success = False
+                
+                if not success:
+                    self.status = FlowStatus.ERROR
+                    return FlowResult(
+                        success=False,
+                        error_message=f"步驟 {step['type']} 執行失敗",
+                        execution_time=time.time() - self.start_time,
+                        steps_completed=self.current_step,
+                        total_steps=self.total_steps,
+                        target_angle=self.target_angle,
+                        command_angle=self.command_angle,
+                        angle_acquisition_success=self.angle_acquisition_success
+                    )
+                
+                self.current_step += 1
             
-            # 最終sync確保所有運動完成
-            if self.robot:
-                if hasattr(self.robot, 'sync'):
-                    self.robot.sync()
-                print("  ✓ 所有運動已完成，機械臂已回到standby點")
+            # 流程成功完成
+            self.status = FlowStatus.COMPLETED
+            execution_time = time.time() - self.start_time
             
-            # 流程完成
-            execution_time = time.time() - start_time
-            print(f"\n✓ DR Flow2執行完成！總耗時: {execution_time:.2f}秒")
-            
-            # 顯示角度控制資訊
+            print(f"✓ Flow2執行完成！總耗時: {execution_time:.2f}秒")
             if self.angle_acquisition_success:
                 print(f"角度控制: 目標角度={self.target_angle:.2f}°, 指令角度={self.command_angle:.2f}°")
-            else:
-                print("⚠️ 角度獲取失敗，使用預設角度控制")
             
             return FlowResult(
                 success=True,
                 execution_time=execution_time,
-                steps_completed=self.total_steps,
+                steps_completed=self.current_step,
                 total_steps=self.total_steps,
                 target_angle=self.target_angle,
                 command_angle=self.command_angle,
@@ -227,78 +369,138 @@ class DrFlow2UnloadExecutor:
             )
             
         except Exception as e:
-            self.last_error = f"DR Flow2執行異常: {str(e)}"
-            print(f"✗ {self.last_error}")
+            self.status = FlowStatus.ERROR
             return FlowResult(
                 success=False,
-                error_message=self.last_error,
-                execution_time=time.time() - start_time,
+                error_message=f"Flow2執行異常: {str(e)}",
+                execution_time=time.time() - self.start_time,
                 steps_completed=self.current_step,
                 total_steps=self.total_steps,
                 target_angle=self.target_angle,
                 command_angle=self.command_angle,
                 angle_acquisition_success=self.angle_acquisition_success
             )
-        
-        finally:
-            self.is_running = False
     
-    # =================================================================
-    # 新增步驟：AngleHighLevel角度獲取
-    # =================================================================
-    
-    def _step_get_angle_from_angle_high_level(self) -> bool:
-        """步驟4: AngleHighLevel取得角度值並計算指令角度"""
-        print("  正在從AngleHighLevel獲取角度值...")
-        
-        # 優先使用external_modules中的angle模組
-        angle_controller = self.angle
-        
-        if not angle_controller:
-            print("  ✗ 角度模組未連接，嘗試動態導入...")
-            # 動態導入AngleHighLevel
-            try:
-                from AngleHighLevel import AngleHighLevel
-                angle_controller = AngleHighLevel()
-                print("  ✓ 成功導入AngleHighLevel")
+    def _execute_move_to_point(self, params: Dict[str, Any]) -> bool:
+        """執行移動到外部點位檔案的點位"""
+        try:
+            point_name = params['point_name']
+            move_type = params['move_type']
+            
+            # 從點位管理器獲取點位
+            point = self.points_manager.get_point(point_name)
+            if not point:
+                print(f"錯誤: 點位管理器中找不到點位: {point_name}")
+                return False
+            
+            print(f"移動到點位 {point_name}")
+            print(f"  關節角度: (j1:{point.j1:.1f}, j2:{point.j2:.1f}, j3:{point.j3:.1f}, j4:{point.j4:.1f})")
+            print(f"  笛卡爾座標: ({point.x:.2f}, {point.y:.2f}, {point.z:.2f}, {point.r:.2f})")
+            
+            if move_type == 'J':
+                # 使用關節角度運動
+                return self.robot.joint_move_j(point.j1, point.j2, point.j3, point.j4)
+            elif move_type == 'L':
+                # 直線運動使用笛卡爾座標
+                return self.robot.move_l(point.x, point.y, point.z, point.r)
+            else:
+                print(f"未支援的移動類型: {move_type}")
+                return False
                 
-                # 測試連接
-                if not angle_controller.connect():
-                    print("  ✗ AngleHighLevel連接失敗，使用預設角度")
+        except Exception as e:
+            print(f"移動到點位失敗: {e}")
+            return False
+    
+    def _execute_move_to_point_with_j4(self, params: Dict[str, Any]) -> bool:
+        """執行移動到點位並使用計算的J4角度"""
+        try:
+            point_name = params['point_name']
+            move_type = params['move_type']
+            
+            # 從點位管理器獲取點位
+            point = self.points_manager.get_point(point_name)
+            if not point:
+                print(f"錯誤: 點位管理器中找不到點位: {point_name}")
+                return False
+            
+            # 使用計算的command_angle作為J4值
+            if self.command_angle is not None:
+                j4_value = self.command_angle
+                print(f"移動到點位 {point_name} (使用計算J4角度)")
+                print(f"  關節角度: (j1:{point.j1:.1f}, j2:{point.j2:.1f}, j3:{point.j3:.1f}, j4:{j4_value:.1f})")
+                print(f"  計算角度: target={self.target_angle:.1f}° + offset={self.ANGLE_OFFSET}° = command={j4_value:.1f}°")
+            else:
+                # 沒有角度數據，使用原始J4值
+                j4_value = point.j4
+                print(f"移動到點位 {point_name} (使用原始J4角度)")
+                print(f"  關節角度: (j1:{point.j1:.1f}, j2:{point.j2:.1f}, j3:{point.j3:.1f}, j4:{j4_value:.1f})")
+                print(f"  ⚠️ 未獲取角度數據，使用原始J4值")
+            
+            if move_type == 'J':
+                # 使用關節角度運動，J4使用計算角度
+                return self.robot.joint_move_j(point.j1, point.j2, point.j3, j4_value)
+            else:
+                print(f"J4角度控制僅支援關節運動(J)，當前類型: {move_type}")
+                return False
+                
+        except Exception as e:
+            print(f"移動到點位(J4角度控制)失敗: {e}")
+            return False
+    
+    def _execute_angle_detection(self) -> bool:
+        """執行AngleHighLevel角度檢測"""
+        try:
+            print("  正在從AngleHighLevel獲取角度值...")
+            
+            # 優先使用external_modules中的angle模組
+            angle_controller = self.external_modules.get('angle')
+            
+            if not angle_controller:
+                print("  ✗ 角度模組未連接，嘗試動態導入...")
+                # 動態導入AngleHighLevel
+                try:
+                    from AngleHighLevel import AngleHighLevel
+                    angle_controller = AngleHighLevel()
+                    print("  ✓ 成功導入AngleHighLevel")
+                    
+                    # 測試連接
+                    if not angle_controller.connect():
+                        print("  ✗ AngleHighLevel連接失敗，使用預設角度")
+                        self.target_angle = 0.0
+                        self.command_angle = self.target_angle + self.ANGLE_OFFSET
+                        self.angle_acquisition_success = False
+                        print(f"  使用預設: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
+                        return True
+                        
+                except ImportError as e:
+                    print(f"  ✗ 無法導入AngleHighLevel: {e}")
                     self.target_angle = 0.0
                     self.command_angle = self.target_angle + self.ANGLE_OFFSET
                     self.angle_acquisition_success = False
                     print(f"  使用預設: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
                     return True
-                    
-            except ImportError as e:
-                print(f"  ✗ 無法導入AngleHighLevel: {e}")
-                self.target_angle = 0.0
-                self.command_angle = self.target_angle + self.ANGLE_OFFSET
-                self.angle_acquisition_success = False
-                print(f"  使用預設: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
-                return True
-        else:
-            print("  ✓ 使用外部模組中的角度API")
-        
-        try:
-            # 獲取當前角度值
-            angle_result = angle_controller.get_current_angle()
+            else:
+                print("  ✓ 使用外部模組中的角度API")
             
-            if angle_result and hasattr(angle_result, 'success') and angle_result.success:
-                self.target_angle = angle_result.angle
+            # 執行角度檢測 (使用paste.txt中的detect_angle方法)
+            print("  執行CCD3角度檢測(DR模式)...")
+            detection_result = angle_controller.detect_angle(detection_mode=1)  # DR模式
+            
+            if detection_result.result.value == "SUCCESS" and detection_result.target_angle is not None:
+                self.target_angle = detection_result.target_angle
                 self.command_angle = self.target_angle + self.ANGLE_OFFSET
                 self.angle_acquisition_success = True
                 
-                print(f"  ✓ 角度獲取成功:")
+                print(f"  ✓ 角度檢測成功:")
                 print(f"    目標角度 (target_angle): {self.target_angle:.2f}°")
                 print(f"    指令角度 (command_angle): {self.command_angle:.2f}°")
                 print(f"    角度偏移: {self.ANGLE_OFFSET}°")
+                print(f"    檢測時間: {detection_result.execution_time:.2f}秒")
                 
                 return True
             else:
-                error_msg = getattr(angle_result, 'message', '未知錯誤') if angle_result else '無響應'
-                print(f"  ✗ 角度獲取失敗: {error_msg}")
+                error_msg = detection_result.message if detection_result else '未知錯誤'
+                print(f"  ✗ 角度檢測失敗: {error_msg}")
                 
                 # 使用預設角度
                 self.target_angle = 0.0
@@ -306,430 +508,95 @@ class DrFlow2UnloadExecutor:
                 self.angle_acquisition_success = False
                 
                 print(f"  使用預設角度: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
-                return True
+                return True  # 繼續執行，使用預設角度
                 
         except Exception as e:
-            print(f"  ✗ 角度獲取過程異常: {e}")
+            print(f"  ✗ 角度檢測異常: {e}")
             
-            # 使用預設角度
+            # 異常時使用預設角度
             self.target_angle = 0.0
             self.command_angle = self.target_angle + self.ANGLE_OFFSET
             self.angle_acquisition_success = False
             
             print(f"  使用預設角度: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
-            return True
-        
-        finally:
-            # 確保斷開連接 (如果是動態創建的)
-            if angle_controller and angle_controller != self.angle:
-                try:
-                    angle_controller.disconnect()
-                    print("  角度控制系統連接已斷開")
-                except:
-                    pass
+            return True  # 繼續執行，使用預設角度
     
-    # =================================================================
-    # 新增步驟：帶J4角度控制的移動
-    # =================================================================
-    
-    def _step_move_to_put_asm_top_with_angle_no_sync(self) -> bool:
-        """移動到put_asm_top但J4角度帶入command_angle (無sync版本)"""
-        if not self.robot:
-            self.last_error = "機械臂控制器不可用"
+    def _execute_gripper_close(self) -> bool:
+        """執行夾爪關閉"""
+        try:
+            gripper_api = self.external_modules.get('gripper')
+            if gripper_api:
+                return gripper_api.quick_close()
+            else:
+                print("夾爪API未初始化")
+                return False
+        except Exception as e:
+            print(f"夾爪關閉失敗: {e}")
             return False
-        
-        # 獲取put_asm_top點位
-        if hasattr(self.robot, 'points_manager'):
-            point = self.robot.points_manager.get_point("put_asm_top")
-            if not point:
-                self.last_error = "找不到put_asm_top點位"
+    
+    def _execute_gripper_smart_release(self, params: Dict[str, Any]) -> bool:
+        """執行夾爪智能撐開"""
+        try:
+            position = params.get('position', 370)
+            print(f"夾爪智能撐開到位置: {position}")
+            
+            gripper_api = self.external_modules.get('gripper')
+            if not gripper_api:
+                print("夾爪API未初始化")
                 return False
             
-            # 使用原點位的J1,J2,J3，但J4使用command_angle
-            target_j4 = self.command_angle if self.command_angle is not None else 0.0
+            # 執行智能撐開操作
+            success = gripper_api.smart_release(position)
             
-            print(f"    put_asm_top: J1={point.j1:.2f}°, J2={point.j2:.2f}°, J3={point.j3:.2f}°, J4={target_j4:.2f}° (角度控制)")
-            
-            # 使用關節運動
-            if hasattr(self.robot, 'JointMovJ'):
-                if not self.robot.JointMovJ(point.j1, point.j2, point.j3, target_j4):
-                    self.last_error = "關節運動到put_asm_top失敗"
-                    return False
-            elif hasattr(self.robot, 'joint_move_j'):
-                if not self.robot.joint_move_j(point.j1, point.j2, point.j3, target_j4):
-                    self.last_error = "關節運動到put_asm_top失敗"
-                    return False
-            else:
-                # 降級處理：使用基本MovJ
-                if not self._step_move_to_point_no_sync("put_asm_top"):
-                    return False
-                print("    ⚠️ 使用基本MovJ，未能應用J4角度控制")
-                return True
+            if success:
+                print(f"✓ 夾爪智能撐開指令發送成功")
                 
-        else:
-            # 簡化版本：使用預設座標
-            target_j4 = self.command_angle if self.command_angle is not None else 0.0
-            if hasattr(self.robot, 'joint_move_j'):
-                # 使用預設的put_asm_top關節角度
-                if not self.robot.joint_move_j(150.0, 45.0, 30.0, target_j4):
-                    self.last_error = "關節運動到put_asm_top失敗"
-                    return False
-            else:
-                return self._step_move_to_point_no_sync("put_asm_top")
-        
-        print(f"  移動到put_asm_top指令已發送 (J4={target_j4:.2f}°)")
-        return True
-    
-    def _step_move_to_put_asm_down_with_angle_no_sync(self) -> bool:
-        """移動到put_asm_down但J4角度帶入command_angle (無sync版本)"""
-        if not self.robot:
-            self.last_error = "機械臂控制器不可用"
-            return False
-        
-        # 獲取put_asm_down點位
-        if hasattr(self.robot, 'points_manager'):
-            point = self.robot.points_manager.get_point("put_asm_down")
-            if not point:
-                self.last_error = "找不到put_asm_down點位"
-                return False
-            
-            # 使用原點位的J1,J2,J3，但J4使用command_angle
-            target_j4 = self.command_angle if self.command_angle is not None else 0.0
-            
-            print(f"    put_asm_down: J1={point.j1:.2f}°, J2={point.j2:.2f}°, J3={point.j3:.2f}°, J4={target_j4:.2f}° (角度控制)")
-            
-            # 使用關節運動
-            if hasattr(self.robot, 'JointMovJ'):
-                if not self.robot.JointMovJ(point.j1, point.j2, point.j3, target_j4):
-                    self.last_error = "關節運動到put_asm_down失敗"
-                    return False
-            elif hasattr(self.robot, 'joint_move_j'):
-                if not self.robot.joint_move_j(point.j1, point.j2, point.j3, target_j4):
-                    self.last_error = "關節運動到put_asm_down失敗"
-                    return False
-            else:
-                # 降級處理：使用基本MovJ
-                if not self._step_move_to_point_no_sync("put_asm_down"):
-                    return False
-                print("    ⚠️ 使用基本MovJ，未能應用J4角度控制")
-                return True
+                # 等待夾爪撐開操作完全完成
+                print("  等待夾爪撐開動作完成...")
+                time.sleep(1.5)  # 等待1.5秒確保夾爪完全撐開
                 
-        else:
-            # 簡化版本：使用預設座標
-            target_j4 = self.command_angle if self.command_angle is not None else 0.0
-            if hasattr(self.robot, 'joint_move_j'):
-                # 使用預設的put_asm_down關節角度
-                if not self.robot.joint_move_j(150.0, 55.0, 10.0, target_j4):
-                    self.last_error = "關節運動到put_asm_down失敗"
-                    return False
-            else:
-                return self._step_move_to_point_no_sync("put_asm_down")
-        
-        print(f"  移動到put_asm_down指令已發送 (J4={target_j4:.2f}°)")
-        return True
-    
-    # =================================================================
-    # 輔助方法 (新架構版本適配)
-    # =================================================================
-    
-    def _execute_step(self, step_num: int, step_name: str, step_func) -> bool:
-        """執行單個步驟並更新進度 - 新架構版本"""
-        self.current_step = step_num
-        self._update_progress()
-        
-        print(f"[{step_num}/{self.total_steps}] {step_name}...")
-        
-        step_start = time.time()
-        success = step_func()
-        step_time = time.time() - step_start
-        
-        if success:
-            print(f"  ✓ {step_name}完成 (耗時: {step_time*1000:.1f}ms)")
-            return True
-        else:
-            print(f"  ✗ {step_name}失敗")
-            return False
-    
-    def _update_progress(self):
-        """更新進度到狀態機 - 新架構版本"""
-        if (self.motion_state_machine and 
-            hasattr(self.motion_state_machine, 'modbus_client') and 
-            self.motion_state_machine.modbus_client is not None):
-            try:
-                progress = int((self.current_step / self.total_steps) * 100)
-                # 使用新架構地址1202
-                try:
-                    from Dobot_main import MotionRegisters
-                    self.motion_state_machine.modbus_client.write_register(MotionRegisters.MOTION_PROGRESS, progress)
-                except ImportError:
-                    # 降級處理：使用固定地址
-                    self.motion_state_machine.modbus_client.write_register(1202, progress)
-            except Exception:
-                pass
-    
-    def _create_result(self, success: bool, start_time: float) -> FlowResult:
-        """創建流程結果 - 新架構版本"""
-        return FlowResult(
-            success=success,
-            error_message=self.last_error,
-            execution_time=time.time() - start_time,
-            steps_completed=self.current_step,
-            total_steps=self.total_steps,
-            target_angle=self.target_angle,
-            command_angle=self.command_angle,
-            angle_acquisition_success=self.angle_acquisition_success
-        )
-    
-    # =================================================================
-    # 流程步驟實現 (新架構版本適配)
-    # =================================================================
-    
-    def _step_system_check_and_position(self) -> bool:
-        """步驟1: 系統檢查和起點位置驗證 - 新架構版本"""
-        # 1. 系統檢查
-        if not self.robot or not hasattr(self.robot, 'is_connected'):
-            self.last_error = "機械臂控制器未初始化"
-            return False
-        
-        if not self.robot.is_connected:
-            self.last_error = "機械臂未連接"
-            return False
-        
-        # 2. 檢查必要點位 (如果points_manager可用)
-        if hasattr(self.robot, 'points_manager'):
-            for point_name in self.REQUIRED_POINTS:
-                if not self.robot.points_manager.get_point(point_name):
-                    self.last_error = f"缺少必要點位: {point_name}"
-                    return False
-        else:
-            print("  ⚠️ 無法檢查點位 (points_manager不可用)")
-        
-        # 3. 檢查夾爪狀態
-        if self.gripper:
-            status = self.gripper.get_status()
-            if not status['connected']:
-                self.last_error = "PGC夾爪未連接"
-                return False
-            print("  PGC夾爪狀態正常")
-        
-        print("  系統檢查通過")
-        return True
-    
-    def _step_move_to_standby(self) -> bool:
-        """步驟2: 移動到standby - 新架構版本"""
-        if not self.robot:
-            self.last_error = "機械臂控制器不可用"
-            return False
-        
-        self.robot.set_global_speed(self.SPEED_RATIO)
-        
-        # 新架構版本：使用座標點或簡化移動
-        if hasattr(self.robot, 'MovJ') and hasattr(self.robot, 'points_manager'):
-            if not self.robot.MovJ("standby"):
-                self.last_error = "移動到standby失敗"
-                return False
-        else:
-            # 簡化版本：移動到固定座標
-            if not self.robot.move_j(300, 0, 200, 0):
-                self.last_error = "移動到standby失敗"
-                return False
-        
-        if hasattr(self.robot, 'sync'):
-            self.robot.sync()
-        print("  移動到standby完成")
-        return True
-    
-    def _step_quick_close_gripper(self) -> bool:
-        """步驟3: 快速關閉夾爪 - 新架構版本"""
-        if not self.gripper:
-            print("  跳過夾爪關閉 (夾爪未啟用)")
-            return True
-        
-        success = self.gripper.quick_close()
-        
-        if success:
-            print("  PGC夾爪快速關閉完成")
-        else:
-            self.last_error = "PGC夾爪快速關閉失敗"
-        
-        return success
-    
-    # =================================================================
-    # 關鍵sync點 - 夾爪調用前
-    # =================================================================
-    
-    def _step_smart_grip_open_sync(self) -> bool:
-        """步驟8: 智慧撐開夾爪370 (關鍵sync點)"""
-        # 夾爪調用前先sync等待前面運動完成
-        if hasattr(self.robot, 'sync'):
-            self.robot.sync()
-        print("  到達Rotate_down點")
-        
-        if not self.gripper:
-            print("  跳過夾爪撐開 (夾爪未啟用)")
-            return True
-        
-        # 智能張開撐開料件
-        if not self.gripper.smart_grip(target_position=self.GRIP_OPEN_POSITION):
-            self.last_error = f"智能張開夾爪到{self.GRIP_OPEN_POSITION}位置失敗"
-            return False
-        
-        print(f"  智能張開夾爪到位置{self.GRIP_OPEN_POSITION}完成 (料件已撐開)")
-        return True
-    
-    def _step_quick_close_release_sync(self) -> bool:
-        """步驟13: 夾爪快速關閉 (關鍵sync點)"""
-        # 夾爪調用前先sync等待前面運動完成
-        if hasattr(self.robot, 'sync'):
-            self.robot.sync()
-        print("  到達put_asm_down點")
-        
-        if not self.gripper:
-            print("  跳過夾爪關閉 (夾爪未啟用)")
-            return True
-        
-        # 快速關閉放下料件
-        if not self.gripper.quick_close():
-            self.last_error = "快速關閉夾爪失敗"
-            return False
-        
-        print(f"  快速關閉夾爪完成 (料件已放下)")
-        return True
-    
-    # =================================================================
-    # 無sync版本 - 連續運動優化
-    # =================================================================
-    
-    def _step_move_to_point_no_sync(self, point_name: str) -> bool:
-        """通用點位移動 (無sync版本) - 新架構版本"""
-        if not self.robot:
-            self.last_error = "機械臂控制器不可用"
-            return False
-        
-        # 新架構版本：使用座標點或簡化移動
-        if hasattr(self.robot, 'MovJ') and hasattr(self.robot, 'points_manager'):
-            if not self.robot.MovJ(point_name):
-                self.last_error = f"移動到{point_name}失敗"
-                return False
-        else:
-            # 簡化版本：根據點位名稱使用預設座標
-            point_coords = {
-                "Rotate_V2": (200, 200, 180, 0),
-                "Rotate_top": (200, 200, 250, 0),
-                "Rotate_down": (200, 200, 120, 0),
-                "put_asm_Pre": (150, 250, 200, 0),
-                "put_asm_top": (150, 250, 250, 0),
-                "put_asm_down": (150, 250, 120, 0),
-                "back_standby_from_asm": (250, 150, 200, 0),
-                "standby": (300, 0, 200, 0)
-            }
-            
-            if point_name in point_coords:
-                x, y, z, r = point_coords[point_name]
-                if not self.robot.move_j(x, y, z, r):
-                    self.last_error = f"移動到{point_name}失敗"
-                    return False
-            else:
-                print(f"  ⚠️ 未知點位{point_name}，跳過")
+                print(f"✓ 夾爪智能撐開完成 - 位置{position}")
                 return True
-        
-        # 移除sync()，純指令發送
-        print(f"  移動到{point_name}指令已發送")
+            else:
+                print(f"✗ 夾爪智能撐開失敗")
+                return False
+                
+        except Exception as e:
+            print(f"夾爪智能撐開異常: {e}")
+            return False
+    
+    def pause(self) -> bool:
+        """暫停Flow"""
+        self.status = FlowStatus.PAUSED
+        print("Flow2已暫停")
         return True
-    
-    # =================================================================
-    # 狀態查詢和控制方法 - 新架構版本
-    # =================================================================
-    
+        
+    def resume(self) -> bool:
+        """恢復Flow"""
+        if self.status == FlowStatus.PAUSED:
+            self.status = FlowStatus.RUNNING
+            print("Flow2已恢復")
+            return True
+        return False
+        
+    def stop(self) -> bool:
+        """停止Flow"""
+        self.status = FlowStatus.ERROR
+        print("Flow2已停止")
+        return True
+        
     def get_progress(self) -> int:
-        """獲取當前進度百分比"""
+        """取得進度百分比"""
+        if self.total_steps == 0:
+            return 0
         return int((self.current_step / self.total_steps) * 100)
     
-    def get_status(self) -> Dict[str, Any]:
-        """獲取流程狀態 - 新架構版本"""
-        return {
-            "flow_id": self.flow_id,
-            "is_running": self.is_running,
-            "current_step": self.current_step,
-            "total_steps": self.total_steps,
-            "progress_percent": self.get_progress(),
-            "last_error": self.last_error,
-            "required_points": self.REQUIRED_POINTS,
-            "gripper_enabled": self.gripper is not None,
-            "joint_tolerance_percent": self.JOINT_TOLERANCE,
-            "grip_open_position": self.GRIP_OPEN_POSITION,
-            "grip_close_position": self.GRIP_CLOSE_POSITION,
-            "angle_offset": self.ANGLE_OFFSET,
-            "target_angle": self.target_angle,
-            "command_angle": self.command_angle,
-            "angle_acquisition_success": self.angle_acquisition_success,
-            "new_architecture_version": True,  # 標識新架構版本
-            "angle_control_enabled": True,     # 標識角度控制功能
-            "continuous_movement_segments": [
-                "步驟5-7: Rotate_V2→Rotate_top→Rotate_down", 
-                "步驟9-11: Rotate_top→put_asm_Pre→put_asm_top(J4控制)",
-                "步驟14-17: put_asm_top(J4控制)→put_asm_Pre→back_standby_from_asm→standby"
-            ]
-        }
-    
-    def stop(self) -> bool:
-        """停止流程執行 - 新架構版本"""
-        try:
-            self.is_running = False
-            
-            if self.robot:
-                self.robot.emergency_stop()
-            
-            if self.gripper:
-                self.gripper.stop()
-            
-            self.last_error = "DR Flow2流程已停止"
-            return True
-            
-        except Exception as e:
-            print(f"停止DR Flow2流程失敗: {e}")
-            return False
+    def is_ready(self) -> bool:
+        """檢查Flow2是否準備好執行"""
+        return self.points_loaded and self.total_steps > 0
 
 
 # 兼容性別名
 class Flow2Executor(DrFlow2UnloadExecutor):
     """Flow2執行器 - 兼容性包裝器"""
     pass
-
-
-# ============================= 新架構修改說明 ===============================
-# 
-# 主要修改項目：
-# 1. 類別名稱：DobotFlow2 → DrFlow2UnloadExecutor
-# 2. 初始化方式：移除多參數構造，改為initialize()方法設置
-# 3. 流程重構：按照指定順序重新設計15步驟流程
-# 4. 角度控制：新增AngleHighLevel角度獲取和J4角度控制
-# 5. 機械臂API適配：支援新架構的RealRobotController
-# 6. 進度更新：使用新架構地址1202 (MotionRegisters.MOTION_PROGRESS)
-# 7. 錯誤處理：適配新架構的錯誤管理機制
-# 8. 模組引用：通過external_modules字典獲取外部模組
-# 
-# 新增功能：
-# 1. AngleHighLevel角度獲取：步驟4獲取target_angle，計算command_angle
-# 2. J4角度控制：put_asm_top和put_asm_down使用command_angle
-# 3. 關節運動支援：優先使用JointMovJ或joint_move_j進行角度控制
-# 4. 降級處理：如果角度控制失敗，自動降級到基本MovJ
-# 5. 預設角度：如果AngleHighLevel不可用，使用預設角度0°
-# 
-# 流程改進：
-# 1. 15步驟優化流程，包含3個連續運動段
-# 2. 關鍵sync點：在夾爪操作前確保運動到位
-# 3. 角度控制精確性：J4角度使用AngleHighLevel獲取的值+45°偏移
-# 4. 完整的執行狀態記錄和錯誤處理
-# 
-# 相容性特點：
-# 1. 支援新舊機械臂API (MovJ/JointMovJ 和 move_j/joint_move_j)
-# 2. 兼容points_manager或使用預設座標
-# 3. 外部模組未連接時的跳過邏輯
-# 4. 完整的FlowResult包含角度控制資訊
-# 
-# 使用方式：
-# 1. 在新架構主程序中創建：flow2 = DrFlow2UnloadExecutor()
-# 2. 初始化：flow2.initialize(robot, motion_state_machine, external_modules)
-# 3. 執行：result = flow2.execute()
-# 4. 結果包含角度控制狀態和完整執行資訊

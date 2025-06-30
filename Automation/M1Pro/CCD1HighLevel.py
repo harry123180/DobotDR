@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-CCD1HighLevel_Enhanced.py - CCD1高層API模組 (修正版 - 自動收取寄存器數據)
+CCD1HighLevel.py - CCD1高層API模組 (最終修正版 - 基於可工作的DR邏輯)
 提供簡化的CCD1功能介面，處理複雜的ModbusTCP握手協議和FIFO佇列管理
-重點功能：
-1. 自動檢查是否需要拍照檢測 (檢查240地址是否為0)
-2. 自動執行拍照檢測流程 (200=16 → 等待201=8 → 200=0)
-3. 全域FIFO佇列管理，自動補充檢測結果
-4. 🔥 新增：自動收取現有寄存器數據到FIFO佇列
-5. 提供統一的get_next_object()方法供Flow1調用
+適用於其他模組import使用
+
+關鍵修正：
+1. 採用舊版本DR的成功邏輯
+2. 使用批量讀取方式 (_read_multiple_registers)
+3. 保持原始的32位合併邏輯
+4. 添加調試功能以便排查問題
 """
 
 import time
@@ -46,15 +47,6 @@ class CCD1StatusBits(IntEnum):
     INITIALIZED = 3
 
 
-# ==================== 檢測結果狀態枚舉 ====================
-class DetectionResult(IntEnum):
-    """檢測結果狀態"""
-    SUCCESS = 0          # 檢測成功，有物體
-    NO_OBJECTS = 1       # 檢測成功，但無物體 (需要補料)
-    DETECTION_FAILED = 2 # 檢測失敗 (系統錯誤)
-    SYSTEM_NOT_READY = 3 # 系統未準備就緒
-
-
 # ==================== 圓心座標數據結構 ====================
 @dataclass
 class CircleWorldCoord:
@@ -69,17 +61,15 @@ class CircleWorldCoord:
     r: float = 0.0            # 旋轉角度 (可由Flow1設定)
 
 
-# ==================== CCD1增強高層API類 ====================
+# ==================== CCD1高層API類 ====================
 class CCD1HighLevelAPI:
     """
-    CCD1高層API - 修正版自動收取寄存器數據
+    CCD1高層API - 最終修正版 (基於可工作的DR邏輯)
     
-    核心功能：
-    1. 自動檢測是否需要拍照 (240地址檢查)
-    2. 自動執行完整握手協議 (200=16 → 201等待8 → 200=0)
-    3. 🔥 自動收取現有寄存器數據到FIFO佇列
-    4. 全域FIFO佇列管理
-    5. 統一的get_next_object()介面
+    主要功能:
+    1. 拍照+檢測指令 (自動處理握手協議)
+    2. 獲取物件圓心世界座標 (FIFO佇列管理)
+    3. 使用成功驗證的批量讀取邏輯
     """
     
     def __init__(self, modbus_host: str = "127.0.0.1", modbus_port: int = 502):
@@ -95,30 +85,24 @@ class CCD1HighLevelAPI:
         self.modbus_client: Optional[ModbusTcpClient] = None
         self.connected = False
         
-        # CCD1寄存器映射 (基地址200)
+        # 使用簡化的寄存器映射 (與可工作版本一致)
         self.REGISTERS = {
             'CONTROL_COMMAND': 200,        # 控制指令
             'STATUS_REGISTER': 201,        # 狀態寄存器
             'CIRCLE_COUNT': 240,           # 檢測圓形數量
-            'PIXEL_COORD_START': 241,      # 像素座標起始地址 (241-255)
             'WORLD_COORD_VALID': 256,      # 世界座標有效標誌
-            'WORLD_COORD_START': 257,      # 世界座標起始地址 (257-276)
         }
         
-        # === 關鍵：全域FIFO佇列管理 ===
-        self.global_coord_queue = deque()         # 全域圓心座標佇列
-        self.queue_lock = threading.Lock()        # 佇列操作鎖
-        self.detection_in_progress = False        # 檢測進行中標誌
-        self.detection_lock = threading.Lock()    # 檢測操作鎖
+        # 圓心座標FIFO佇列
+        self.coord_queue = deque()  # 圓心座標佇列
+        self.queue_lock = threading.Lock()  # 佇列操作鎖
         
         # 狀態追蹤
         self.last_detection_count = 0
-        self.total_detections = 0
-        self.operation_timeout = 15.0              # 操作超時時間(秒)
-        self.detection_retry_count = 3             # 檢測重試次數
+        self.operation_timeout = 10.0  # 操作超時時間(秒)
         
         # 設置日誌
-        self.logger = logging.getLogger("CCD1HighLevelEnhanced")
+        self.logger = logging.getLogger("CCD1HighLevel")
         self.logger.setLevel(logging.INFO)
         
         # 自動連接
@@ -223,300 +207,6 @@ class CCD1HighLevelAPI:
             self.logger.error(f"讀取多個寄存器失敗: {e}")
             return None
     
-    def _write_multiple_registers(self, start_address: int, values: List[int]) -> bool:
-        """寫入多個寄存器"""
-        if not self.connected or not self.modbus_client:
-            return False
-        
-        try:
-            result = self.modbus_client.write_registers(start_address, values, slave=1)
-            return not result.isError()
-        except Exception as e:
-            self.logger.error(f"寫入多個寄存器失敗: {e}")
-            return False
-    
-    def check_detection_needed(self) -> bool:
-        """
-        檢查是否需要進行拍照檢測
-        
-        檢查邏輯：
-        1. 檢查240寄存器 (CIRCLE_COUNT) 是否為0
-        2. 如果為0表示無檢測結果，需要拍照檢測
-        3. 如果非0表示有檢測結果，不需要拍照
-        
-        Returns:
-            bool: True=需要拍照檢測, False=不需要拍照檢測
-        """
-        try:
-            circle_count = self._read_register('CIRCLE_COUNT')
-            
-            if circle_count is None:
-                self.logger.error("無法讀取CIRCLE_COUNT寄存器")
-                return True  # 無法讀取時，假設需要檢測
-            
-            need_detection = (circle_count == 0)
-            
-            if need_detection:
-                self.logger.info(f"檢測需求檢查: 240寄存器={circle_count}, 需要拍照檢測")
-            else:
-                self.logger.info(f"檢測需求檢查: 240寄存器={circle_count}, 無需拍照檢測")
-            
-            return need_detection
-            
-        except Exception as e:
-            self.logger.error(f"檢查檢測需求失敗: {e}")
-            return True  # 異常時假設需要檢測
-    
-    def auto_collect_existing_data(self) -> DetectionResult:
-        """
-        🔥 新增：自動收取現有寄存器數據到FIFO佇列
-        
-        當發現240寄存器有數值但FIFO佇列為空時調用
-        讀取現有的座標數據，加入FIFO佇列，然後清零寄存器
-        
-        Returns:
-            DetectionResult: 收取結果狀態
-        """
-        try:
-            self.logger.info("開始自動收取現有寄存器數據...")
-            
-            # 1. 讀取圓形數量
-            circle_count = self._read_register('CIRCLE_COUNT')
-            if circle_count is None or circle_count == 0:
-                self.logger.warning("240寄存器為0或無法讀取，無法收取數據")
-                return DetectionResult.NO_OBJECTS
-            
-            self.logger.info(f"發現現有數據: {circle_count}個圓形座標")
-            
-            # 2. 檢查世界座標有效性
-            world_coord_valid = self._read_register('WORLD_COORD_VALID')
-            if not world_coord_valid:
-                self.logger.warning("世界座標無效，無法收取數據")
-                return DetectionResult.DETECTION_FAILED
-            
-            # 3. 限制最多5個圓形
-            circle_count = min(circle_count, 5)
-            
-            # 4. 讀取像素座標數據 (241-255)
-            pixel_registers = self._read_multiple_registers(
-                self.REGISTERS['PIXEL_COORD_START'], 15
-            )
-            
-            # 5. 讀取世界座標數據 (257-276)
-            world_registers = self._read_multiple_registers(
-                self.REGISTERS['WORLD_COORD_START'], 20
-            )
-            
-            if not pixel_registers or not world_registers:
-                self.logger.error("讀取座標數據失敗")
-                return DetectionResult.DETECTION_FAILED
-            
-            # 6. 解析座標數據並加入FIFO佇列
-            new_coordinates = []
-            current_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            
-            for i in range(circle_count):
-                # 解析像素座標 (每個圓形3個寄存器: X, Y, Radius)
-                pixel_start_idx = i * 3
-                if pixel_start_idx + 2 < len(pixel_registers):
-                    pixel_x = pixel_registers[pixel_start_idx]
-                    pixel_y = pixel_registers[pixel_start_idx + 1]
-                    radius = pixel_registers[pixel_start_idx + 2]
-                else:
-                    continue
-                
-                # 解析世界座標 (每個圓形4個寄存器: X高位, X低位, Y高位, Y低位)
-                world_start_idx = i * 4
-                if world_start_idx + 3 < len(world_registers):
-                    world_x_high = world_registers[world_start_idx]
-                    world_x_low = world_registers[world_start_idx + 1]
-                    world_y_high = world_registers[world_start_idx + 2]
-                    world_y_low = world_registers[world_start_idx + 3]
-                    
-                    # 32位合併並轉換精度
-                    world_x_int = (world_x_high << 16) | world_x_low
-                    world_y_int = (world_y_high << 16) | world_y_low
-                    
-                    # 處理負數 (32位有符號整數)
-                    if world_x_int >= 2147483648:
-                        world_x_int -= 4294967296
-                    if world_y_int >= 2147483648:
-                        world_y_int -= 4294967296
-                    
-                    # 恢復精度 (÷100)
-                    world_x = world_x_int / 100.0
-                    world_y = world_y_int / 100.0
-                else:
-                    continue
-                
-                # 創建座標對象
-                coord = CircleWorldCoord(
-                    id=self.total_detections + i + 1,  # 全域唯一ID
-                    world_x=world_x,
-                    world_y=world_y,
-                    pixel_x=pixel_x,
-                    pixel_y=pixel_y,
-                    radius=radius,
-                    timestamp=current_time
-                )
-                new_coordinates.append(coord)
-                
-                self.logger.info(f"  收取圓形{i+1}: 世界座標=({world_x:.2f}, {world_y:.2f})mm, "
-                               f"像素座標=({pixel_x}, {pixel_y}), 半徑={radius}")
-            
-            # 7. 更新全域FIFO佇列
-            with self.queue_lock:
-                for coord in new_coordinates:
-                    self.global_coord_queue.append(coord)
-                
-                self.last_detection_count = len(new_coordinates)
-                self.total_detections += len(new_coordinates)
-            
-            # 8. 🔥 清零寄存器數據 (防止重複收取)
-            self._clear_detection_registers(circle_count)
-            
-            self.logger.info(f"自動收取完成: 收取 {len(new_coordinates)} 個座標，已清零寄存器")
-            return DetectionResult.SUCCESS
-            
-        except Exception as e:
-            self.logger.error(f"自動收取現有數據失敗: {e}")
-            return DetectionResult.DETECTION_FAILED
-    
-    def _clear_detection_registers(self, circle_count: int):
-        """
-        清零檢測結果寄存器 (防止重複收取)
-        
-        Args:
-            circle_count: 要清零的圓形數量
-        """
-        try:
-            self.logger.info(f"清零檢測結果寄存器 (圓形數量: {circle_count})...")
-            
-            # 1. 清零圓形數量寄存器 (240)
-            if not self._write_register('CIRCLE_COUNT', 0):
-                self.logger.warning("清零240寄存器失敗")
-            else:
-                self.logger.info("✓ 240寄存器已清零")
-            
-            # 2. 清零像素座標寄存器 (241-255)
-            pixel_clear_count = min(circle_count * 3, 15)  # 每個圓形3個寄存器，最多15個
-            if pixel_clear_count > 0:
-                pixel_clear_values = [0] * pixel_clear_count
-                if self._write_multiple_registers(self.REGISTERS['PIXEL_COORD_START'], pixel_clear_values):
-                    self.logger.info(f"✓ 像素座標寄存器已清零 (241-{240+pixel_clear_count})")
-                else:
-                    self.logger.warning("清零像素座標寄存器失敗")
-            
-            # 3. 清零世界座標寄存器 (257-276)
-            world_clear_count = min(circle_count * 4, 20)  # 每個圓形4個寄存器，最多20個
-            if world_clear_count > 0:
-                world_clear_values = [0] * world_clear_count
-                if self._write_multiple_registers(self.REGISTERS['WORLD_COORD_START'], world_clear_values):
-                    self.logger.info(f"✓ 世界座標寄存器已清零 (257-{256+world_clear_count})")
-                else:
-                    self.logger.warning("清零世界座標寄存器失敗")
-            
-            self.logger.info("寄存器清零完成，防止下次重複收取")
-            
-        except Exception as e:
-            self.logger.error(f"清零寄存器失敗: {e}")
-    
-    def execute_capture_and_detect(self) -> DetectionResult:
-        """
-        執行拍照+檢測指令 (修正版 - 清零後檢查結果)
-        
-        修正執行流程：
-        1. 檢查系統Ready狀態 (201寄存器bit0=1)
-        2. 發送拍照+檢測指令 (200寄存器=16)
-        3. 等待執行完成 (201寄存器=8, Ready=0且Running=0)
-        4. 🔥 清除控制指令 (200寄存器=0) - 此時結果才會出現
-        5. 🔥 等待結果穩定 (給CCD1模組時間寫入結果)
-        6. 讀取並處理檢測結果
-        7. 更新全域FIFO佇列
-        
-        Returns:
-            DetectionResult: 檢測結果狀態
-        """
-        if not self.connected:
-            self.logger.error("Modbus未連接")
-            return DetectionResult.SYSTEM_NOT_READY
-        
-        retry_count = 0
-        max_retries = self.detection_retry_count
-        
-        while retry_count < max_retries:
-            try:
-                retry_count += 1
-                self.logger.info(f"執行拍照+檢測 (第{retry_count}/{max_retries}次)...")
-                
-                # 1. 等待Ready狀態
-                if not self._wait_for_ready(self.operation_timeout):
-                    self.logger.error("系統未Ready，無法執行檢測")
-                    if retry_count < max_retries:
-                        time.sleep(2.0)
-                        continue
-                    return DetectionResult.SYSTEM_NOT_READY
-                
-                # 2. 發送拍照+檢測指令
-                self.logger.info("發送拍照+檢測指令 (200=16)...")
-                if not self._write_register('CONTROL_COMMAND', CCD1Command.CAPTURE_DETECT):
-                    self.logger.error("發送檢測指令失敗")
-                    if retry_count < max_retries:
-                        time.sleep(1.0)
-                        continue
-                    return DetectionResult.DETECTION_FAILED
-                
-                # 3. 等待執行完成 (狀態寄存器=8)
-                self.logger.info("等待執行完成 (201=8)...")
-                if not self._wait_for_completion(self.operation_timeout):
-                    self.logger.error("檢測指令執行失敗或超時")
-                    # 嘗試清除指令
-                    self._write_register('CONTROL_COMMAND', CCD1Command.CLEAR)
-                    if retry_count < max_retries:
-                        time.sleep(2.0)
-                        continue
-                    return DetectionResult.DETECTION_FAILED
-                
-                # 🔥 4. 清除控制指令 (200=0) - 關鍵：此時結果才會出現
-                self.logger.info("清除控制指令 (200=0) - 結果將在此時出現...")
-                if not self._write_register('CONTROL_COMMAND', CCD1Command.CLEAR):
-                    self.logger.error("清除控制指令失敗")
-                    if retry_count < max_retries:
-                        time.sleep(1.0)
-                        continue
-                    return DetectionResult.DETECTION_FAILED
-                
-                # 🔥 5. 等待結果穩定 (給CCD1模組時間寫入結果到240等寄存器)
-                self.logger.info("等待CCD1模組寫入檢測結果...")
-                time.sleep(0.5)  # 等待500ms讓結果穩定
-                
-                # 6. 讀取檢測結果並更新FIFO佇列
-                result = self._read_and_update_fifo_queue()
-                
-                if result == DetectionResult.SUCCESS:
-                    self.logger.info(f"拍照+檢測成功完成，佇列新增 {self.last_detection_count} 個物體")
-                    return DetectionResult.SUCCESS
-                elif result == DetectionResult.NO_OBJECTS:
-                    self.logger.info("拍照+檢測完成，未檢測到物體 (需要補料)")
-                    return DetectionResult.NO_OBJECTS
-                else:
-                    self.logger.error("讀取檢測結果失敗")
-                    if retry_count < max_retries:
-                        time.sleep(1.0)
-                        continue
-                    return DetectionResult.DETECTION_FAILED
-                
-            except Exception as e:
-                self.logger.error(f"執行拍照+檢測異常: {e}")
-                if retry_count < max_retries:
-                    time.sleep(2.0)
-                    continue
-                return DetectionResult.DETECTION_FAILED
-        
-        # 所有重試都失敗
-        self.logger.error("拍照+檢測所有重試都失敗")
-        return DetectionResult.DETECTION_FAILED
-    
     def _wait_for_ready(self, timeout: float = 10.0) -> bool:
         """
         等待CCD1系統Ready狀態
@@ -548,11 +238,9 @@ class CCD1HighLevelAPI:
         self.logger.error(f"等待Ready狀態超時: {timeout}秒")
         return False
     
-    def _wait_for_completion(self, timeout: float = 15.0) -> bool:
+    def _wait_for_command_complete(self, timeout: float = 10.0) -> bool:
         """
-        等待指令執行完成 (等待201寄存器=8)
-        
-        執行完成判斷：Ready=0且Running=0 (狀態寄存器=8)
+        等待指令執行完成
         
         Args:
             timeout: 超時時間(秒)
@@ -565,72 +253,65 @@ class CCD1HighLevelAPI:
         while time.time() - start_time < timeout:
             status = self._read_register('STATUS_REGISTER')
             if status is not None:
-                ready = bool(status & (1 << CCD1StatusBits.READY))
                 running = bool(status & (1 << CCD1StatusBits.RUNNING))
                 alarm = bool(status & (1 << CCD1StatusBits.ALARM))
-                
-                elapsed = time.time() - start_time
-                self.logger.debug(f"執行狀態 ({elapsed:.1f}s): 201={status}, Ready={ready}, Running={running}, Alarm={alarm}")
                 
                 if alarm:
                     self.logger.warning("CCD1系統執行中發生Alarm")
                     return False
                 
-                # 檢查是否執行完成 (Ready=0且Running=0, 狀態寄存器=8)
-                if not ready and not running:
-                    self.logger.info(f"指令執行完成 (201={status})")
+                if not running:
                     return True
             
-            time.sleep(0.2)  # 200ms檢查間隔
+            time.sleep(0.1)  # 100ms檢查間隔
         
         self.logger.error(f"等待指令完成超時: {timeout}秒")
         return False
     
-    def _read_and_update_fifo_queue(self) -> DetectionResult:
+    def _read_world_coordinates(self) -> List[CircleWorldCoord]:
         """
-        讀取檢測結果並更新全域FIFO佇列
+        🔥 最終修正：正確的32位有符號整數重建
+        
+        關鍵發現：不能先轉換16位再進行位運算，應該先進行32位合併再轉換
+        ModbusPoll顯示負數，但pymodbus讀取為無符號，需要正確處理這個差異
         
         Returns:
-            DetectionResult: 檢測結果狀態
+            List[CircleWorldCoord]: 圓心世界座標列表
         """
-        try:
-            # 檢查世界座標有效性
-            world_coord_valid = self._read_register('WORLD_COORD_VALID')
-            if not world_coord_valid:
-                self.logger.warning("世界座標無效，可能缺少標定數據")
-                return DetectionResult.DETECTION_FAILED
-            
-            # 讀取檢測到的圓形數量
-            circle_count = self._read_register('CIRCLE_COUNT')
-            if circle_count is None:
-                self.logger.error("無法讀取圓形數量")
-                return DetectionResult.DETECTION_FAILED
-            
-            self.logger.info(f"檢測結果: 圓形數量={circle_count}")
-            
-            if circle_count == 0:
-                self.last_detection_count = 0
-                self.logger.info("檢測完成，未發現物體 (需要補料)")
-                return DetectionResult.NO_OBJECTS
-            
-            # 限制最多5個圓形
-            circle_count = min(circle_count, 5)
-            
-            # 讀取像素座標結果 (241-255)
-            pixel_registers = self._read_multiple_registers(241, 15)  # 241-255
-            
-            # 讀取世界座標結果 (257-276)
-            world_registers = self._read_multiple_registers(257, 20)  # 257-276
-            
-            if not pixel_registers or not world_registers:
-                self.logger.error("讀取檢測結果失敗")
-                return DetectionResult.DETECTION_FAILED
-            
-            # 解析檢測結果並更新FIFO佇列
-            new_coordinates = []
-            current_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            
-            for i in range(circle_count):
+        # 檢查世界座標有效性
+        world_coord_valid = self._read_register('WORLD_COORD_VALID')
+        if not world_coord_valid:
+            self.logger.warning("世界座標無效，可能缺少標定數據")
+            return []
+        
+        # 讀取檢測到的圓形數量
+        circle_count = self._read_register('CIRCLE_COUNT')
+        if not circle_count or circle_count == 0:
+            self.logger.info("未檢測到圓形")
+            return []
+        
+        # 限制最多5個圓形
+        circle_count = min(circle_count, 5)
+        
+        # 讀取像素座標結果 (241-255)
+        pixel_registers = self._read_multiple_registers(241, 15)  # 241-255
+        
+        # 讀取世界座標結果 (257-276)
+        world_registers = self._read_multiple_registers(257, 20)  # 257-276
+        
+        if not pixel_registers or not world_registers:
+            self.logger.error("讀取檢測結果失敗")
+            return []
+        
+        # 📊 調試：顯示原始寄存器數據
+        self.logger.info(f"原始像素座標寄存器 (241-255): {pixel_registers}")
+        self.logger.info(f"原始世界座標寄存器 (257-276): {world_registers}")
+        
+        coordinates = []
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+        
+        for i in range(circle_count):
+            try:
                 # 像素座標 (每個圓形3個寄存器: X, Y, Radius)
                 pixel_start_idx = i * 3
                 if pixel_start_idx + 2 < len(pixel_registers):
@@ -638,35 +319,67 @@ class CCD1HighLevelAPI:
                     pixel_y = pixel_registers[pixel_start_idx + 1]
                     radius = pixel_registers[pixel_start_idx + 2]
                 else:
+                    self.logger.warning(f"圓形{i+1}像素座標索引越界")
                     continue
                 
                 # 世界座標 (每個圓形4個寄存器: X高位, X低位, Y高位, Y低位)
                 world_start_idx = i * 4
                 if world_start_idx + 3 < len(world_registers):
-                    world_x_high = world_registers[world_start_idx]
-                    world_x_low = world_registers[world_start_idx + 1]
-                    world_y_high = world_registers[world_start_idx + 2]
-                    world_y_low = world_registers[world_start_idx + 3]
+                    world_x_high_raw = world_registers[world_start_idx]
+                    world_x_low_raw = world_registers[world_start_idx + 1]
+                    world_y_high_raw = world_registers[world_start_idx + 2]
+                    world_y_low_raw = world_registers[world_start_idx + 3]
                     
-                    # 32位合併並轉換精度
-                    world_x_int = (world_x_high << 16) | world_x_low
-                    world_y_int = (world_y_high << 16) | world_y_low
+                    # 📊 調試：顯示原始數據
+                    self.logger.info(f"圓形{i+1}原始無符號16位數據:")
+                    self.logger.info(f"  X_HIGH={world_x_high_raw}, X_LOW={world_x_low_raw}")
+                    self.logger.info(f"  Y_HIGH={world_y_high_raw}, Y_LOW={world_y_low_raw}")
                     
-                    # 處理負數 (32位有符號整數)
-                    if world_x_int >= 2147483648:
-                        world_x_int -= 4294967296
-                    if world_y_int >= 2147483648:
-                        world_y_int -= 4294967296
+                    # 🔥 正確的方法：直接進行32位合併，不要先轉換16位
+                    # 將無符號16位直接合併為32位無符號整數
+                    world_x_uint32 = (world_x_high_raw << 16) | world_x_low_raw
+                    world_y_uint32 = (world_y_high_raw << 16) | world_y_low_raw
+                    
+                    # 📊 調試：顯示32位無符號合併結果
+                    self.logger.info(f"  32位無符號合併:")
+                    self.logger.info(f"    X_UINT32={world_x_uint32} (0x{world_x_uint32:08X})")
+                    self.logger.info(f"    Y_UINT32={world_y_uint32} (0x{world_y_uint32:08X})")
+                    
+                    # 🔥 然後轉換為32位有符號整數
+                    if world_x_uint32 > 2147483647:  # 大於2^31-1的轉換為負數
+                        world_x_int = world_x_uint32 - 4294967296  # 減去2^32
+                    else:
+                        world_x_int = world_x_uint32
+                    
+                    if world_y_uint32 > 2147483647:
+                        world_y_int = world_y_uint32 - 4294967296
+                    else:
+                        world_y_int = world_y_uint32
+                    
+                    # 📊 調試：顯示32位有符號轉換結果
+                    self.logger.info(f"  32位有符號轉換:")
+                    self.logger.info(f"    X_INT={world_x_int}")
+                    self.logger.info(f"    Y_INT={world_y_int}")
                     
                     # 恢復精度 (÷100)
                     world_x = world_x_int / 100.0
                     world_y = world_y_int / 100.0
+                    
+                    # 📊 調試：顯示最終結果
+                    self.logger.info(f"  最終座標: X={world_x:.2f}mm, Y={world_y:.2f}mm")
+                    
+                    # 🔍 合理性檢查
+                    if abs(world_x) > 1000 or abs(world_y) > 1000:
+                        self.logger.warning(f"  ⚠️ 座標值異常大: X={world_x:.2f}mm, Y={world_y:.2f}mm")
+                    else:
+                        self.logger.info(f"  ✅ 座標值在合理範圍內")
+                    
                 else:
+                    self.logger.warning(f"圓形{i+1}世界座標索引越界")
                     continue
                 
-                # 創建座標對象
                 coord = CircleWorldCoord(
-                    id=self.total_detections + i + 1,  # 全域唯一ID
+                    id=i + 1,
                     world_x=world_x,
                     world_y=world_y,
                     pixel_x=pixel_x,
@@ -674,196 +387,121 @@ class CCD1HighLevelAPI:
                     radius=radius,
                     timestamp=current_time
                 )
-                new_coordinates.append(coord)
-            
-            # 更新全域FIFO佇列
-            with self.queue_lock:
-                for coord in new_coordinates:
-                    self.global_coord_queue.append(coord)
+                coordinates.append(coord)
                 
-                self.last_detection_count = len(new_coordinates)
-                self.total_detections += len(new_coordinates)
+                self.logger.info(f"✅ 圓形{i+1}解析完成: 世界座標=({world_x:.2f}, {world_y:.2f})mm")
+                
+            except Exception as e:
+                self.logger.error(f"❌ 圓形{i+1}解析失敗: {e}")
+                continue
+        
+        self.logger.info(f"世界座標解析完成，共解析 {len(coordinates)} 個圓形")
+        return coordinates
+    
+    def capture_and_detect(self) -> bool:
+        """
+        執行拍照+檢測指令 (使用可工作的DR邏輯)
+        
+        本方法處理完整的握手協議，包括:
+        1. 檢查Ready狀態
+        2. 發送拍照+檢測指令 (16)
+        3. 等待執行完成
+        4. 讀取檢測結果並更新FIFO佇列
+        
+        Returns:
+            bool: 操作是否成功
+        """
+        if not self.connected:
+            self.logger.error("Modbus未連接")
+            return False
+        
+        try:
+            # 1. 等待Ready狀態
+            if not self._wait_for_ready(self.operation_timeout):
+                self.logger.error("系統未Ready，無法執行檢測")
+                return False
             
-            self.logger.info(f"FIFO佇列已更新，新增 {len(new_coordinates)} 個座標，佇列總長度: {len(self.global_coord_queue)}")
-            return DetectionResult.SUCCESS
+            # 2. 發送拍照+檢測指令
+            self.logger.info("發送拍照+檢測指令...")
+            if not self._write_register('CONTROL_COMMAND', CCD1Command.CAPTURE_DETECT):
+                self.logger.error("發送檢測指令失敗")
+                return False
+            
+            # 3. 等待執行完成
+            if not self._wait_for_command_complete(self.operation_timeout):
+                self.logger.error("檢測指令執行失敗或超時")
+                return False
+            
+            # 4. 讀取檢測結果
+            coordinates = self._read_world_coordinates()
+            
+            # 5. 更新FIFO佇列
+            with self.queue_lock:
+                for coord in coordinates:
+                    self.coord_queue.append(coord)
+                
+                self.last_detection_count = len(coordinates)
+            
+            # 6. 清空控制指令 (完成握手)
+            self._write_register('CONTROL_COMMAND', CCD1Command.CLEAR)
+            
+            self.logger.info(f"檢測完成，新增 {len(coordinates)} 個圓心座標到佇列")
+            return True
             
         except Exception as e:
-            self.logger.error(f"讀取和更新FIFO佇列失敗: {e}")
-            return DetectionResult.DETECTION_FAILED
+            self.logger.error(f"拍照檢測執行異常: {e}")
+            return False
     
-    def get_next_object(self) -> Optional[CircleWorldCoord]:
+    def get_next_circle_world_coord(self) -> Optional[CircleWorldCoord]:
         """
-        獲取下一個物件圓心世界座標 (核心API方法) - 修正版
+        獲取下一個物件圓心世界座標
         
-        自動管理邏輯:
-        1. 檢查全域FIFO佇列是否有物體
-        2. 如果有，直接返回 (FIFO)
-        3. 如果沒有，檢查是否有現有寄存器數據未收取
-        4. 🔥 如果有現有數據，自動收取到FIFO佇列
-        5. 如果仍沒有，檢查是否需要拍照檢測 (240寄存器=0)
-        6. 如果需要，自動執行拍照+檢測
-        7. 如果檢測到物體，返回第一個
-        8. 如果無物體，返回None (告知需要補料)
+        FIFO佇列管理邏輯:
+        1. 如果佇列為空，自動觸發拍照+檢測
+        2. 從佇列前端取出一個座標
+        3. 返回座標，佇列中移除該座標
         
         Returns:
             CircleWorldCoord: 圓心世界座標，如果無可用座標則返回None
-            None: 表示無物體，需要補料
         """
-        # 首先檢查FIFO佇列
         with self.queue_lock:
-            if len(self.global_coord_queue) > 0:
-                coord = self.global_coord_queue.popleft()  # FIFO: 從前端取出
-                self.logger.info(f"從FIFO佇列獲取物體: ID={coord.id}, 世界座標=({coord.world_x:.2f}, {coord.world_y:.2f})mm")
+            # 檢查佇列是否為空
+            if len(self.coord_queue) == 0:
+                self.logger.info("佇列為空，觸發新的拍照+檢測...")
+                
+                # 釋放鎖，執行檢測操作
+                with_lock_released = True
+        
+        # 在鎖外執行檢測 (避免死鎖)
+        if 'with_lock_released' in locals():
+            success = self.capture_and_detect()
+            if not success:
+                self.logger.error("自動檢測失敗")
+                return None
+        
+        # 重新獲取鎖並取出座標
+        with self.queue_lock:
+            if len(self.coord_queue) > 0:
+                coord = self.coord_queue.popleft()  # FIFO: 從前端取出
+                self.logger.info(f"返回圓心座標: ID={coord.id}, 世界座標=({coord.world_x:.2f}, {coord.world_y:.2f})mm")
                 return coord
-        
-        # 佇列為空，檢查是否有現有數據未收取
-        self.logger.info("FIFO佇列為空，檢查是否有現有寄存器數據...")
-        
-        # 防止多線程同時觸發操作
-        with self.detection_lock:
-            if self.detection_in_progress:
-                self.logger.info("檢測正在進行中，等待完成...")
-                # 等待檢測完成
-                timeout = 20.0
-                start_time = time.time()
-                while self.detection_in_progress and (time.time() - start_time) < timeout:
-                    time.sleep(0.5)
-                
-                # 檢測完成後，再次檢查佇列
-                with self.queue_lock:
-                    if len(self.global_coord_queue) > 0:
-                        coord = self.global_coord_queue.popleft()
-                        self.logger.info(f"檢測完成後獲取物體: ID={coord.id}")
-                        return coord
-                
-                self.logger.warning("檢測完成但佇列仍為空")
-                return None
-            
-            # 標記操作進行中
-            self.detection_in_progress = True
-        
-        try:
-            # 🔥 優先檢查是否有現有數據未收取
-            circle_count = self._read_register('CIRCLE_COUNT')
-            if circle_count is not None and circle_count > 0:
-                self.logger.info(f"發現現有寄存器數據: {circle_count}個圓形，自動收取...")
-                
-                # 自動收取現有數據
-                collect_result = self.auto_collect_existing_data()
-                
-                if collect_result == DetectionResult.SUCCESS:
-                    self.logger.info("自動收取現有數據成功")
-                    
-                    # 從佇列獲取第一個物體
-                    with self.queue_lock:
-                        if len(self.global_coord_queue) > 0:
-                            coord = self.global_coord_queue.popleft()
-                            self.logger.info(f"收取數據後獲取物體: ID={coord.id}, 世界座標=({coord.world_x:.2f}, {coord.world_y:.2f})mm")
-                            return coord
-                        else:
-                            self.logger.error("收取數據成功但佇列為空，這不應該發生")
-                            return None
-                else:
-                    self.logger.error(f"自動收取現有數據失敗: {collect_result}")
-                    # 繼續嘗試拍照檢測
-            
-            # 檢查是否需要拍照檢測
-            if self.check_detection_needed():
-                self.logger.info("需要拍照檢測，自動觸發...")
-                
-                # 執行拍照+檢測
-                result = self.execute_capture_and_detect()
-                
-                if result == DetectionResult.SUCCESS:
-                    self.logger.info("自動拍照檢測成功")
-                    
-                    # 從佇列獲取第一個物體
-                    with self.queue_lock:
-                        if len(self.global_coord_queue) > 0:
-                            coord = self.global_coord_queue.popleft()
-                            self.logger.info(f"自動檢測後獲取物體: ID={coord.id}, 世界座標=({coord.world_x:.2f}, {coord.world_y:.2f})mm")
-                            return coord
-                        else:
-                            self.logger.error("檢測成功但佇列為空，這不應該發生")
-                            return None
-                    
-                elif result == DetectionResult.NO_OBJECTS:
-                    self.logger.info("自動拍照檢測完成，未發現物體 (需要補料)")
-                    return None
-                
-                else:
-                    self.logger.error(f"自動拍照檢測失敗: {result}")
-                    return None
             else:
-                self.logger.info("240寄存器為0，且無現有數據可收取")
+                self.logger.warning("佇列仍為空，無可用座標")
                 return None
-        
-        finally:
-            # 清除操作進行中標誌
-            with self.detection_lock:
-                self.detection_in_progress = False
-    
-    def manual_capture_and_detect(self) -> DetectionResult:
-        """
-        手動執行拍照+檢測指令 (供外部調用)
-        
-        Returns:
-            DetectionResult: 檢測結果狀態
-        """
-        self.logger.info("手動觸發拍照+檢測...")
-        
-        with self.detection_lock:
-            if self.detection_in_progress:
-                self.logger.warning("檢測正在進行中，無法手動觸發")
-                return DetectionResult.DETECTION_FAILED
-            
-            self.detection_in_progress = True
-        
-        try:
-            result = self.execute_capture_and_detect()
-            self.logger.info(f"手動拍照+檢測完成: {result}")
-            return result
-        finally:
-            with self.detection_lock:
-                self.detection_in_progress = False
-    
-    def manual_collect_existing_data(self) -> DetectionResult:
-        """
-        🔥 新增：手動執行收取現有寄存器數據 (供外部調用)
-        
-        Returns:
-            DetectionResult: 收取結果狀態
-        """
-        self.logger.info("手動觸發收取現有數據...")
-        
-        with self.detection_lock:
-            if self.detection_in_progress:
-                self.logger.warning("檢測正在進行中，無法手動觸發")
-                return DetectionResult.DETECTION_FAILED
-            
-            self.detection_in_progress = True
-        
-        try:
-            result = self.auto_collect_existing_data()
-            self.logger.info(f"手動收取現有數據完成: {result}")
-            return result
-        finally:
-            with self.detection_lock:
-                self.detection_in_progress = False
     
     def get_queue_status(self) -> Dict[str, Any]:
         """
         獲取佇列狀態資訊
         
         Returns:
-            Dict: 包含佇列長度、檢測統計等資訊
+            Dict: 包含佇列長度、最後檢測數量等資訊
         """
         with self.queue_lock:
-            queue_length = len(self.global_coord_queue)
+            queue_length = len(self.coord_queue)
             queue_preview = []
             
             # 獲取前3個座標的預覽
-            for i, coord in enumerate(list(self.global_coord_queue)[:3]):
+            for i, coord in enumerate(list(self.coord_queue)[:3]):
                 queue_preview.append({
                     'id': coord.id,
                     'world_x': coord.world_x,
@@ -875,19 +513,15 @@ class CCD1HighLevelAPI:
             'connected': self.connected,
             'queue_length': queue_length,
             'last_detection_count': self.last_detection_count,
-            'total_detections': self.total_detections,
             'queue_preview': queue_preview,
-            'detection_in_progress': self.detection_in_progress,
-            'modbus_server': f"{self.modbus_host}:{self.modbus_port}",
-            'auto_detection_enabled': True,
-            'auto_collection_enabled': True  # 新增：標識自動收取功能已啟用
+            'modbus_server': f"{self.modbus_host}:{self.modbus_port}"
         }
     
     def clear_queue(self):
         """清空座標佇列"""
         with self.queue_lock:
-            self.global_coord_queue.clear()
-            self.logger.info("FIFO座標佇列已清空")
+            self.coord_queue.clear()
+            self.logger.info("座標佇列已清空")
     
     def is_ready(self) -> bool:
         """
@@ -926,7 +560,6 @@ class CCD1HighLevelAPI:
         
         status = self._read_register('STATUS_REGISTER')
         world_coord_valid = self._read_register('WORLD_COORD_VALID')
-        circle_count = self._read_register('CIRCLE_COUNT')
         
         if status is not None:
             return {
@@ -936,8 +569,6 @@ class CCD1HighLevelAPI:
                 'alarm': bool(status & (1 << CCD1StatusBits.ALARM)),
                 'initialized': bool(status & (1 << CCD1StatusBits.INITIALIZED)),
                 'world_coord_valid': bool(world_coord_valid) if world_coord_valid is not None else False,
-                'current_circle_count': circle_count if circle_count is not None else 0,
-                'detection_needed': (circle_count == 0) if circle_count is not None else True,
                 'status_register_value': status
             }
         
@@ -948,50 +579,326 @@ class CCD1HighLevelAPI:
             'alarm': True,
             'initialized': False,
             'world_coord_valid': False,
-            'current_circle_count': 0,
-            'detection_needed': True,
             'error': '無法讀取狀態寄存器'
+        }
+    
+    def debug_raw_registers(self) -> Dict[str, Any]:
+        """
+        🔥 新增：調試原始寄存器數據 - 用於問題排查
+        
+        Returns:
+            Dict: 原始寄存器數據
+        """
+        if not self.connected:
+            return {'error': 'Modbus未連接'}
+        
+        try:
+            debug_info = {
+                'basic_registers': {
+                    'control_command': self._read_register('CONTROL_COMMAND'),
+                    'status_register': self._read_register('STATUS_REGISTER'),
+                    'circle_count': self._read_register('CIRCLE_COUNT'),
+                    'world_coord_valid': self._read_register('WORLD_COORD_VALID'),
+                },
+                'pixel_registers_241_255': self._read_multiple_registers(241, 15),
+                'world_registers_257_276': self._read_multiple_registers(257, 20),
+            }
+            
+            # 如果有檢測結果，分析第一個圓形
+            if (debug_info['basic_registers']['circle_count'] and 
+                debug_info['basic_registers']['circle_count'] > 0):
+                
+                pixel_regs = debug_info['pixel_registers_241_255']
+                world_regs = debug_info['world_registers_257_276']
+                
+                if pixel_regs and world_regs:
+                    debug_info['circle_1_analysis'] = {
+                        'pixel_x': pixel_regs[0],
+                        'pixel_y': pixel_regs[1],
+                        'radius': pixel_regs[2],
+                        'world_x_high': world_regs[0],
+                        'world_x_low': world_regs[1],
+                        'world_y_high': world_regs[2],
+                        'world_y_low': world_regs[3],
+                    }
+                    
+                    # 使用可工作DR的計算邏輯
+                    world_x_int = (world_regs[0] << 16) | world_regs[1]
+                    world_y_int = (world_regs[2] << 16) | world_regs[3]
+                    
+                    if world_x_int >= 2147483648:
+                        world_x_int -= 4294967296
+                    if world_y_int >= 2147483648:
+                        world_y_int -= 4294967296
+                    
+                    world_x_mm = world_x_int / 100.0
+                    world_y_mm = world_y_int / 100.0
+                    
+                    debug_info['circle_1_calculation'] = {
+                        'world_x_int': world_x_int,
+                        'world_y_int': world_y_int,
+                        'world_x_mm': world_x_mm,
+                        'world_y_mm': world_y_mm,
+                        'reasonable_range': (-1000 <= world_x_mm <= 1000) and (-1000 <= world_y_mm <= 1000)
+                    }
+            
+            return debug_info
+            
+        except Exception as e:
+            return {'error': f'調試讀取失敗: {str(e)}'}
+    
+    def test_modbus_poll_data(self) -> Dict[str, Any]:
+        """
+        🔥 測試：使用ModbusPoll實測數據進行驗證 (修正版)
+        
+        Returns:
+            Dict: 測試結果
+        """
+        # ModbusPoll實測數據 (你提供的截圖數據)
+        test_data = {
+            'world_x_high': -9242,
+            'world_x_low': -26375,
+            'world_y_high': 29945,
+            'world_y_low': 0
+        }
+        
+        # 但實際讀取的數據 (從你的調試輸出)
+        actual_data = {
+            'world_x_high': 65535,  # 這是 -1 的無符號16位表示
+            'world_x_low': 56294,   # 這是 -9242 的無符號16位表示  
+            'world_y_high': 370,
+            'world_y_low': 32896
+        }
+        
+        # 16位無符號到有符號轉換函數
+        def uint16_to_int16(value):
+            if value > 32767:
+                return value - 65536
+            return value
+        
+        try:
+            # 🔥 修正版計算：先轉換為有符號16位
+            # 使用實際讀取的數據
+            x_high_signed = uint16_to_int16(actual_data['world_x_high'])  # 65535 -> -1
+            x_low_signed = uint16_to_int16(actual_data['world_x_low'])    # 56294 -> -9242
+            y_high_signed = uint16_to_int16(actual_data['world_y_high'])  # 370 -> 370
+            y_low_signed = uint16_to_int16(actual_data['world_y_low'])    # 32896 -> 32896
+            
+            # 32位合併
+            world_x_int = (x_high_signed << 16) | (x_low_signed & 0xFFFF)
+            world_y_int = (y_high_signed << 16) | (y_low_signed & 0xFFFF)
+            
+            # 處理32位有符號範圍
+            if world_x_int > 2147483647:
+                world_x_int -= 4294967296
+            if world_y_int > 2147483647:
+                world_y_int -= 4294967296
+            
+            # 恢復精度
+            world_x_mm = world_x_int / 100.0
+            world_y_mm = world_y_int / 100.0
+            
+            return {
+                'modbus_poll_data': test_data,
+                'actual_read_data': actual_data,
+                'conversion_process': {
+                    'x_high_signed': x_high_signed,
+                    'x_low_signed': x_low_signed,
+                    'y_high_signed': y_high_signed,
+                    'y_low_signed': y_low_signed
+                },
+                'calculation_steps': {
+                    'world_x_int': world_x_int,
+                    'world_y_int': world_y_int,
+                    'world_x_mm': world_x_mm,
+                    'world_y_mm': world_y_mm
+                },
+                'analysis': {
+                    'x_reasonable': -1000 <= world_x_mm <= 1000,
+                    'y_reasonable': -1000 <= world_y_mm <= 1000,
+                    'overall_reasonable': (-1000 <= world_x_mm <= 1000) and (-1000 <= world_y_mm <= 1000),
+                    'expected_improvement': '修正後Y座標應該變為合理數值'
+                }
+            }
+            
+        except Exception as e:
+            return {'error': f'測試計算失敗: {str(e)}'}
+    
+    def test_correct_calculation(self) -> Dict[str, Any]:
+        """
+        🔥 新增：測試正確的計算方法
+        
+        使用實際讀取的數據測試新的計算邏輯
+        """
+        # 實際讀取的數據 (第一個圓形)
+        actual_data = {
+            'world_x_high': 65535,  # 應該對應 -1
+            'world_x_low': 56294,   # 應該對應 -9242
+            'world_y_high': 370,    # 應該對應 370
+            'world_y_low': 32896    # 應該對應 -32640，但這裡有問題
+        }
+        
+        try:
+            # 🔥 新的正確方法：直接32位合併，不先轉換16位
+            world_x_uint32 = (actual_data['world_x_high'] << 16) | actual_data['world_x_low']
+            world_y_uint32 = (actual_data['world_y_high'] << 16) | actual_data['world_y_low']
+            
+            # 轉換為32位有符號
+            if world_x_uint32 > 2147483647:
+                world_x_int = world_x_uint32 - 4294967296
+            else:
+                world_x_int = world_x_uint32
+            
+            if world_y_uint32 > 2147483647:
+                world_y_int = world_y_uint32 - 4294967296
+            else:
+                world_y_int = world_y_uint32
+            
+            # 恢復精度
+            world_x_mm = world_x_int / 100.0
+            world_y_mm = world_y_int / 100.0
+            
+            return {
+                'method': '直接32位合併法',
+                'input_data': actual_data,
+                'calculation_steps': {
+                    'x_uint32': world_x_uint32,
+                    'y_uint32': world_y_uint32,
+                    'x_uint32_hex': f'0x{world_x_uint32:08X}',
+                    'y_uint32_hex': f'0x{world_y_uint32:08X}',
+                    'x_int32': world_x_int,
+                    'y_int32': world_y_int,
+                    'x_mm': world_x_mm,
+                    'y_mm': world_y_mm
+                },
+                'analysis': {
+                    'x_reasonable': -1000 <= world_x_mm <= 1000,
+                    'y_reasonable': -1000 <= world_y_mm <= 1000,
+                    'overall_reasonable': (-1000 <= world_x_mm <= 1000) and (-1000 <= world_y_mm <= 1000),
+                    'x_matches_expected': abs(world_x_mm - (-92.42)) < 0.1,
+                    'improvement': f'Y座標從242812.16變為{world_y_mm:.2f}'
+                }
+            }
+            
+        except Exception as e:
+            return {'error': f'測試計算失敗: {str(e)}'}
+    
+    def debug_y_coordinate_problem(self) -> Dict[str, Any]:
+        """
+        🔥 專門調試Y座標問題
+        
+        分析為什麼Y座標會是242812.16
+        """
+        # Y座標的實際數據
+        y_high = 370
+        y_low = 32896
+        
+        steps = []
+        
+        # 方法1：錯誤的方法 (先轉換16位)
+        def uint16_to_int16(value):
+            if value > 32767:
+                return value - 65536
+            return value
+        
+        y_high_signed = uint16_to_int16(y_high)
+        y_low_signed = uint16_to_int16(y_low)
+        y_int_wrong = (y_high_signed << 16) | (y_low_signed & 0xFFFF)
+        y_mm_wrong = y_int_wrong / 100.0
+        
+        steps.append({
+            'method': '錯誤方法 (先轉換16位)',
+            'y_high_signed': y_high_signed,
+            'y_low_signed': y_low_signed,
+            'y_low_masked': y_low_signed & 0xFFFF,
+            'calculation': f'({y_high_signed} << 16) | {y_low_signed & 0xFFFF}',
+            'y_int': y_int_wrong,
+            'y_mm': y_mm_wrong,
+            'problem': f'{y_low_signed} & 0xFFFF = {y_low_signed & 0xFFFF}，負數被掩碼後又變回正數'
+        })
+        
+        # 方法2：正確的方法 (直接32位合併)
+        y_uint32 = (y_high << 16) | y_low
+        if y_uint32 > 2147483647:
+            y_int_correct = y_uint32 - 4294967296
+        else:
+            y_int_correct = y_uint32
+        y_mm_correct = y_int_correct / 100.0
+        
+        steps.append({
+            'method': '正確方法 (直接32位合併)',
+            'y_uint32': y_uint32,
+            'y_uint32_hex': f'0x{y_uint32:08X}',
+            'calculation': f'({y_high} << 16) | {y_low}',
+            'y_int': y_int_correct,
+            'y_mm': y_mm_correct,
+            'explanation': '直接合併無符號16位，然後轉換32位有符號'
+        })
+        
+        return {
+            'input': {'y_high': y_high, 'y_low': y_low},
+            'steps': steps,
+            'conclusion': f'錯誤方法得到{y_mm_wrong}mm，正確方法得到{y_mm_correct}mm'
         }
 
 
 # ==================== 使用範例 ====================
 def example_usage():
-    """使用範例"""
+    """使用範例 (基於可工作的DR邏輯)"""
     # 創建CCD1高層API實例
     ccd1 = CCD1HighLevelAPI()
     
     try:
-        print("=== CCD1修正版高層API使用範例 ===")
+        print("=== CCD1高層API使用範例 (基於可工作的DR邏輯) ===")
+        
+        # 🔥 專門調試Y座標問題
+        print("\n=== 調試Y座標問題 ===")
+        y_debug = ccd1.debug_y_coordinate_problem()
+        print(f"Y座標問題分析: {y_debug}")
+        
+        # 🔥 測試正確的計算方法
+        print("\n=== 測試正確的計算方法 ===")
+        correct_test = ccd1.test_correct_calculation()
+        print(f"正確計算測試: {correct_test}")
+        
+        # 🔥 調試原始寄存器數據
+        print("\n=== 調試原始寄存器數據 ===")
+        debug_info = ccd1.debug_raw_registers()
+        print(f"原始寄存器數據: {debug_info}")
         
         # 檢查系統狀態
         status = ccd1.get_system_status()
-        print(f"系統狀態: {status}")
+        print(f"\n系統狀態: {status}")
         
         # 檢查佇列狀態
         queue_status = ccd1.get_queue_status()
         print(f"佇列狀態: {queue_status}")
         
-        # 模擬Flow1的使用方式
-        print("\n模擬Flow1連續獲取物體:")
-        for i in range(5):  # 嘗試獲取5個物體
-            print(f"\n--- Flow1第{i+1}次調用 ---")
-            
-            coord = ccd1.get_next_object()
-            
+        # 手動執行檢測 (可選)
+        print("\n手動執行拍照+檢測...")
+        success = ccd1.capture_and_detect()
+        print(f"檢測結果: {'成功' if success else '失敗'}")
+        
+        # 檢測後再次調試寄存器
+        if success:
+            print("\n=== 檢測後調試寄存器數據 ===")
+            debug_info_after = ccd1.debug_raw_registers()
+            print(f"檢測後寄存器數據: {debug_info_after}")
+        
+        # 逐一獲取圓心座標
+        print("\n逐一獲取圓心座標:")
+        for i in range(3):  # 嘗試獲取3個座標
+            coord = ccd1.get_next_circle_world_coord()
             if coord:
-                print(f"✓ 獲取物體成功:")
-                print(f"  ID: {coord.id}")
-                print(f"  世界座標: ({coord.world_x:.2f}, {coord.world_y:.2f})mm")
-                print(f"  像素座標: ({coord.pixel_x}, {coord.pixel_y})")
-                print(f"  半徑: {coord.radius}")
-                print(f"  時間戳: {coord.timestamp}")
-                
-                # Flow1可以設定R值
-                coord.r = 45.0  # 例如從VP_TOPSIDE繼承R值
-                print(f"  R值 (Flow1設定): {coord.r}°")
+                print(f"圓心{coord.id}: 世界座標=({coord.world_x:.2f}, {coord.world_y:.2f})mm, "
+                      f"像素座標=({coord.pixel_x}, {coord.pixel_y}), 半徑={coord.radius}")
+                # 檢查合理性
+                if abs(coord.world_x) > 1000 or abs(coord.world_y) > 1000:
+                    print(f"  ⚠️ 警告：座標值異常大，可能存在問題")
+                else:
+                    print(f"  ✅ 座標值在合理範圍內")
             else:
-                print("✗ 無可用物體，需要補料")
-                print("  Flow1應該執行補料流程")
+                print(f"第{i+1}次獲取座標失敗")
                 break
         
         # 檢查最終佇列狀態

@@ -167,7 +167,7 @@ class AngleDetector:
             print(f"參數已更新：面積比={self.min_area_rate:.3f}, 高斯核={self.gaussian_kernel}, 閾值模式={self.threshold_mode}")
     
     def get_pre_treatment_image_optimized(self, image):
-        """優化版影像前處理 - 修正為使用固定閾值210 (參考paste.txt)"""
+        """優化版影像前處理 - 修正為使用固定閾值210"""
         # 優化1：跳過不必要的顏色空間轉換
         if len(image.shape) == 3:
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -183,14 +183,14 @@ class AngleDetector:
         
         blur = cv2.GaussianBlur(gray, self._kernel_cache[kernel_size], 0)
         
-        # 修正關鍵：強制使用固定閾值210，不使用OTSU (參考paste.txt)
-        _, thresh = cv2.threshold(blur, 210, 255, cv2.THRESH_BINARY)
+        # 修正關鍵：強制使用固定閾值210，不使用OTSU
+        _, thresh = cv2.threshold(blur, 210, 255, cv2.THRESH_BINARY_INV)
         print(f"使用固定閾值210進行二值化 (working版本邏輯)")
         
         return thresh
     
     def get_main_contour_optimized(self, image, sequence=False):
-        """優化版輪廓檢測 - 修正面積計算邏輯 (參考paste.txt)"""
+        """優化版輪廓檢測 - 修正面積計算邏輯"""
         # 修正關鍵：直接使用0.05，不從快取讀取以避免參數錯誤
         min_area = image.shape[0] * image.shape[1] * 0.05  # 直接使用paste.txt的邏輯
         print(f"輪廓檢測參數: 圖像尺寸={image.shape}, 最小面積比率=0.05, 最小面積={min_area:.0f}")
@@ -245,7 +245,7 @@ class AngleDetector:
         return center_int, corrected_angle, extra_data
     
     def _detect_angle_case_mode(self, contour, original_image):
-        """CASE模式角度檢測 - 使用橢圓擬合複雜邏輯 (參考paste.txt mode=0)"""
+        """CASE模式角度檢測 - 使用橢圓擬合複雜邏輯"""
         if len(contour) < 5:
             return None
         
@@ -332,10 +332,10 @@ class AngleDetector:
             
             # 根據模式選擇不同的輪廓檢測策略
             if mode == 0:
-                # CASE模式：使用sequence=True (參考paste.txt)
+                # CASE模式：使用sequence=True
                 rst_contour = self.get_main_contour_optimized(pt_img, sequence=True)
             else:
-                # DR模式：使用sequence=False (參考paste.txt)
+                # DR模式：使用sequence=False
                 rst_contour = self.get_main_contour_optimized(pt_img, sequence=False)
             
             # 準備結果圖像
@@ -630,7 +630,7 @@ class CCD3AngleDetectionService:
                 gain=200.0,
                 frame_rate=30.0,
                 width=2592,
-                height=1944
+                height=1600
             )
             
             print(f"相機配置: 曝光時間={config.exposure_time}, 增益={config.gain}, 分辨率={config.width}x{config.height}")
@@ -679,6 +679,23 @@ class CCD3AngleDetectionService:
             self.state_machine.set_alarm(True)
             self.state_machine.set_initialized(False)
             return False
+    
+    def _immediate_status_update(self):
+        """立即更新狀態寄存器到Modbus服務器"""
+        try:
+            if self.modbus_client and self.modbus_client.connected:
+                result = self.modbus_client.write_register(
+                    address=self.base_address + 1,
+                    value=self.state_machine.status_register,
+                    slave=1
+                )
+                if not result.isError():
+                    print(f"🔄 立即更新狀態寄存器801: 0x{self.state_machine.status_register:04X}")
+                    print(f"   Ready={self.state_machine.is_ready()}, Running={self.state_machine.is_running()}, Alarm={self.state_machine.is_alarm()}, Initialized={self.state_machine.is_initialized()}")
+                else:
+                    print(f"❌ 狀態寄存器更新失敗: {result}")
+        except Exception as e:
+            print(f"❌ 立即狀態更新異常: {e}")
     
     def write_default_detection_params(self) -> bool:
         """寫入預設檢測參數到ModbusTCP Server"""
@@ -1139,6 +1156,8 @@ class CCD3AngleDetectionService:
                 print(f"   指令值變化: {self.last_control_command} → 0")
                 self.state_machine.set_ready(True)
                 self.last_control_command = 0
+                # 立即更新狀態寄存器
+                self._immediate_status_update()
                 
         except Exception as e:
             print(f"❌ 控制指令處理異常: {e}")
@@ -1146,7 +1165,7 @@ class CCD3AngleDetectionService:
             traceback.print_exc()
     
     def _handle_control_command(self, command: int):
-        """處理控制指令 - 修正 f-string 格式錯誤"""
+        """處理控制指令 - 修正狀態同步問題"""
         if not self.state_machine.is_ready():
             print(f"⚠️ 系統未Ready，無法執行指令 {command}")
             print(f"   當前狀態: Ready={self.state_machine.is_ready()}, Running={self.state_machine.is_running()}, Alarm={self.state_machine.is_alarm()}")
@@ -1160,17 +1179,24 @@ class CCD3AngleDetectionService:
         print(f"   指令對應: {command_desc}")
         
         self.command_processing = True
+        
+        # 關鍵修正：立即設置狀態並更新到Modbus寄存器
+        print(f"🔄 立即設置Running狀態並更新寄存器801...")
         self.state_machine.set_ready(False)
         self.state_machine.set_running(True)
         
-        print(f"   狀態變更: Ready=False, Running=True")
+        # 立即寫入狀態寄存器，確保外部系統能夠看到Running狀態
+        self._immediate_status_update()
+        
+        print(f"   狀態變更完成: Ready=False, Running=True")
+        print(f"   寄存器801已立即更新")
         
         # 異步執行指令
         threading.Thread(target=self._execute_command_async, args=(command,), daemon=True).start()
         print(f"   已啟動異步執行線程")
     
     def _execute_command_async(self, command: int):
-        """異步執行指令 - 修改版：默認使用DR模式1"""
+        """異步執行指令 - 修正版：確保狀態同步"""
         try:
             print(f"\n🔧 開始異步執行指令: {command}")
             
@@ -1240,10 +1266,21 @@ class CCD3AngleDetectionService:
         
         finally:
             print(f"🏁 控制指令 {command} 執行完成")
+            
+            # 關鍵修正：完成後立即設置狀態並更新寄存器
+            print(f"🔄 設置執行完成狀態並更新寄存器801...")
             self.command_processing = False
             self.state_machine.set_running(False)
+            
             if not self.state_machine.is_alarm():
-                self.state_machine.set_ready(True)
+                # 注意：這裡不立即設置Ready=True，等待PLC清零指令後再設置
+                print(f"   狀態設置: Running=False, 等待PLC清零指令後設置Ready=True")
+            else:
+                print(f"   狀態設置: Running=False, Alarm=True")
+            
+            # 立即更新狀態寄存器，確保外部系統能夠看到Running=False
+            self._immediate_status_update()
+            print(f"   寄存器801已立即更新，外部系統可檢測到Running=False")
     
     def start_handshake_service(self):
         """啟動握手服務 - 修改版：自動寫入預設參數"""
@@ -1463,7 +1500,7 @@ def get_registers():
 
 @socketio.on('connect')
 def handle_connect():
-    emit('status_update', {'message': 'CCD3角度檢測系統已連接 (調試版)'})
+    emit('status_update', {'message': 'CCD3角度檢測系統已連接 (狀態同步修正版)'})
 
 @socketio.on('get_status')
 def handle_get_status():
@@ -1471,7 +1508,7 @@ def handle_get_status():
     emit('status_update', status)
 
 def auto_initialize_system():
-    print("=== CCD3角度檢測系統自動初始化開始 (DR模式默認版) ===")
+    print("=== CCD3角度檢測系統自動初始化開始 (狀態同步修正版) ===")
     
     # 1. 自動連接Modbus服務器
     print("步驟1: 自動連接Modbus服務器...")
@@ -1515,31 +1552,37 @@ def auto_initialize_system():
     print(f"狀態: Alarm={ccd3_service.state_machine.is_alarm()}")
     print(f"預設參數: 已寫入={ccd3_service.default_params_written}")
     print("默認模式: DR模式1 (最小外接矩形角度檢測)")
-    print("調試功能: 已啟用詳細的寫入訊息打印")
+    print("🔧 狀態同步修正: 收到指令後立即更新Running狀態到寄存器801")
+    print("🔧 狀態同步修正: 指令執行完成後立即更新Running=False到寄存器801")
+    print("🔧 狀態同步修正: 等待PLC清零指令後才設置Ready=True")
     
     # 強制設置Ready狀態以確保系統可以接收指令
     print("強制設置系統為Ready狀態...")
     ccd3_service.state_machine.set_ready(True)
     ccd3_service.state_machine.set_alarm(False)
+    # 立即更新到寄存器
+    ccd3_service._immediate_status_update()
     print(f"最終狀態: Ready={ccd3_service.state_machine.is_ready()}")
     return True
 
 if __name__ == '__main__':
-    print("CCD3角度辨識系統啟動中 (DR模式默認版)...")
+    print("CCD3角度辨識系統啟動中 (狀態同步修正版)...")
     print(f"系統架構: Modbus TCP Client - 運動控制握手模式")
     print(f"基地址: {ccd3_service.base_address}")
     print(f"Modbus服務器: {ccd3_service.server_ip}:{ccd3_service.server_port}")
     print(f"相機IP: 192.168.1.10")
     print(f"檢測模式: 默認DR模式1 (最小外接矩形)，支援CASE模式(0)切換")
     print(f"預設參數: 將自動寫入到寄存器810-815")
-    print(f"調試功能: 詳細的寄存器寫入訊息打印")
+    print(f"🔧 關鍵修正: 狀態同步問題已修正，Running狀態會立即更新到寄存器801")
+    print(f"🔧 完整交握: 支援AngleHighLevel.py的完整狀態機交握邏輯")
     
     # 執行自動初始化
     auto_success = auto_initialize_system()
     if auto_success:
         print("系統已就緒，等待PLC指令...")
         print("預設使用DR模式1進行角度檢測")
-        print("當收到指令16時，將顯示詳細的檢測和寫入過程")
+        print("當收到指令16時，將立即設置Running=True並顯示詳細的檢測過程")
+        print("檢測完成後，將立即設置Running=False，等待PLC清零指令")
     else:
         print("系統初始化失敗，但Web介面仍可使用")
     

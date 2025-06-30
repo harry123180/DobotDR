@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-CCD1VisionCode_Enhanced.py - CCD視覺控制系統 (運動控制握手版本 + 世界座標轉換)
+CCD1VisionCode_Enhanced.py v4.0 - CCD視覺控制系統 (運動控制握手版本 + 世界座標轉換)
 實現運動控制握手、輪詢式狀態監控、狀態機通信、指令/狀態模式
-新增：內外參管理、像素座標到世界座標轉換功能
+新增NPY格式相機內外參載入功能、像素座標到世界座標轉換
 適用於自動化設備對接流程
 """
 
@@ -64,282 +64,274 @@ class StatusBits(IntEnum):
     INITIALIZED = 3 # bit3: 初始化狀態
 
 
-# ==================== 相機內外參管理 ====================
-@dataclass
-class CameraCalibrationData:
-    """相機標定數據結構"""
-    camera_matrix: Optional[np.ndarray] = None
-    dist_coeffs: Optional[np.ndarray] = None
-    rvec: Optional[np.ndarray] = None
-    tvec: Optional[np.ndarray] = None
-    is_valid: bool = False
-    intrinsic_file: Optional[str] = None
-    extrinsic_file: Optional[str] = None
-    load_time: Optional[str] = None
-
-
-class CameraCoordinateTransformer:
-    """相機座標轉換器"""
-    
-    def __init__(self, camera_matrix=None, dist_coeffs=None, rvec=None, tvec=None):
-        self.K = camera_matrix
-        self.D = dist_coeffs
-        self.rvec = rvec.reshape(3, 1) if rvec is not None and rvec.shape != (3, 1) else rvec
-        self.tvec = tvec.reshape(3, 1) if tvec is not None and tvec.shape != (3, 1) else tvec
-        self.R = None
-        
-        if self.rvec is not None:
-            self.R, _ = cv2.Rodrigues(self.rvec)
-    
-    def is_valid(self) -> bool:
-        """檢查轉換器是否有效"""
-        return all([
-            self.K is not None,
-            self.D is not None,
-            self.rvec is not None,
-            self.tvec is not None,
-            self.R is not None
-        ])
-    
-    def pixel_to_world(self, pixel_coords) -> Optional[np.ndarray]:
-        """像素座標轉世界座標（假設Z=0平面）"""
-        if not self.is_valid():
-            return None
-            
-        try:
-            pixel_coords = np.array(pixel_coords)
-            if pixel_coords.ndim == 1:
-                pixel_coords = pixel_coords.reshape(1, -1)
-                
-            world_points = []
-            
-            for uv in pixel_coords:
-                # 步驟1：去畸變
-                undistorted_uv = cv2.undistortPoints(
-                    uv.reshape(1, 1, 2), self.K, self.D, P=self.K
-                ).reshape(-1)
-                
-                # 步驟2：歸一化座標
-                uv_homogeneous = np.array([undistorted_uv[0], undistorted_uv[1], 1.0])
-                normalized_coords = np.linalg.inv(self.K) @ uv_homogeneous
-                
-                # 步驟3：計算深度係數（Z=0平面）
-                denominator = self.R[2] @ normalized_coords
-                if abs(denominator) < 1e-8:
-                    raise ValueError("相機平行於Z=0平面，無法計算交點")
-                    
-                s = (0 - self.tvec[2, 0]) / denominator
-                
-                # 步驟4：計算世界座標
-                camera_point = s * normalized_coords
-                world_point = np.linalg.inv(self.R) @ (camera_point - self.tvec.ravel())
-                
-                world_points.append(world_point[:2])  # 只返回X,Y座標
-                
-            return np.array(world_points).squeeze()
-            
-        except Exception as e:
-            print(f"❌ 座標轉換失敗: {e}")
-            return None
-
-
+# ==================== 標定管理器 ====================
 class CalibrationManager:
-    """相機標定檔案管理器"""
+    """相機標定數據管理器"""
     
-    def __init__(self, working_dir=None):
-        self.working_dir = working_dir or os.path.dirname(os.path.abspath(__file__))
-        self.calibration_data = CameraCalibrationData()
+    def __init__(self, working_dir: str):
+        self.working_dir = working_dir
+        self.camera_matrix = None
+        self.dist_coeffs = None
+        self.rvec = None
+        self.tvec = None
         self.transformer = None
+        self.intrinsic_file = None
+        self.dist_coeffs_file = None
+        self.extrinsic_file = None
+        self.loaded_time = None
         
     def scan_calibration_files(self) -> Dict[str, Any]:
         """掃描標定檔案"""
-        result = {
-            'intrinsic_files': [],
-            'extrinsic_files': [],
-            'found_intrinsic': False,
-            'found_extrinsic': False,
-            'working_dir': self.working_dir
-        }
-        
         try:
-            # 掃描內參檔案 (規範命名)
-            camera_matrix_files = glob.glob(os.path.join(self.working_dir, "camera_matrix_*.npy"))
-            dist_coeffs_files = glob.glob(os.path.join(self.working_dir, "dist_coeffs_*.npy"))
+            # 掃描內參檔案 (嚴格命名)
+            intrinsic_files = glob.glob(os.path.join(self.working_dir, "camera_matrix_*.npy"))
+            dist_files = glob.glob(os.path.join(self.working_dir, "dist_coeffs_*.npy"))
             
-            for matrix_file in camera_matrix_files:
-                timestamp = matrix_file.split("camera_matrix_")[1].replace(".npy", "")
-                dist_file = os.path.join(self.working_dir, f"dist_coeffs_{timestamp}.npy")
-                
-                if os.path.exists(dist_file):
-                    result['intrinsic_files'].append({
-                        'matrix_file': matrix_file,
-                        'dist_file': dist_file,
-                        'timestamp': timestamp
-                    })
-                    result['found_intrinsic'] = True
+            # 掃描外參檔案 (寬鬆命名)
+            extrinsic_files = glob.glob(os.path.join(self.working_dir, "*extrinsic*.npy"))
             
-            # 掃描外參檔案 (較寬鬆的命名規則)
-            extrinsic_patterns = [
-                "extrinsic_*.npy",
-                "*extrinsic*.npy", 
-                "*外參*.npy",
-                "*rvec*.npy"
-            ]
-            
-            for pattern in extrinsic_patterns:
-                files = glob.glob(os.path.join(self.working_dir, pattern))
-                for file in files:
-                    if file not in [item['file'] for item in result['extrinsic_files']]:
-                        result['extrinsic_files'].append({
-                            'file': file,
-                            'name': os.path.basename(file)
+            # 配對內參檔案
+            intrinsic_pairs = []
+            for matrix_file in intrinsic_files:
+                basename = os.path.basename(matrix_file)
+                if basename.startswith("camera_matrix_"):
+                    timestamp = basename.replace("camera_matrix_", "").replace(".npy", "")
+                    corresponding_dist = os.path.join(self.working_dir, f"dist_coeffs_{timestamp}.npy")
+                    if corresponding_dist in dist_files:
+                        intrinsic_pairs.append({
+                            'camera_matrix': matrix_file,
+                            'dist_coeffs': corresponding_dist,
+                            'timestamp': timestamp
                         })
-                        result['found_extrinsic'] = True
-            
-            return result
-            
-        except Exception as e:
-            print(f"❌ 掃描標定檔案失敗: {e}")
-            return result
-    
-    def load_calibration_data(self, intrinsic_file=None, extrinsic_file=None) -> Dict[str, Any]:
-        """載入標定數據"""
-        try:
-            # 如果未指定，自動選擇最新的檔案
-            if intrinsic_file is None or extrinsic_file is None:
-                scan_result = self.scan_calibration_files()
-                
-                if not scan_result['found_intrinsic']:
-                    return {
-                        'success': False,
-                        'message': '未找到內參檔案（camera_matrix_*.npy, dist_coeffs_*.npy）',
-                        'details': f'檢查目錄: {self.working_dir}'
-                    }
-                
-                if not scan_result['found_extrinsic']:
-                    return {
-                        'success': False,
-                        'message': '未找到外參檔案（extrinsic_*.npy 或類似命名）',
-                        'details': f'檢查目錄: {self.working_dir}'
-                    }
-                
-                # 選擇最新的內參檔案
-                latest_intrinsic = max(scan_result['intrinsic_files'], 
-                                     key=lambda x: x['timestamp'])
-                intrinsic_file = latest_intrinsic['matrix_file']
-                dist_file = latest_intrinsic['dist_file']
-                
-                # 選擇第一個外參檔案（可以後續擴展為選擇最新的）
-                extrinsic_file = scan_result['extrinsic_files'][0]['file']
-            else:
-                # 根據內參檔案找對應的畸變檔案
-                if "camera_matrix_" in intrinsic_file:
-                    timestamp = intrinsic_file.split("camera_matrix_")[1].replace(".npy", "")
-                    dist_file = os.path.join(self.working_dir, f"dist_coeffs_{timestamp}.npy")
-                    if not os.path.exists(dist_file):
-                        return {
-                            'success': False,
-                            'message': f'找不到對應的畸變係數檔案: dist_coeffs_{timestamp}.npy'
-                        }
-                else:
-                    return {
-                        'success': False,
-                        'message': '內參檔案命名不符合規範（camera_matrix_YYYYMMDD_HHMMSS.npy）'
-                    }
-            
-            # 載入內參
-            camera_matrix = np.load(intrinsic_file)
-            dist_coeffs = np.load(dist_file)
-            
-            # 驗證內參格式
-            if camera_matrix.shape != (3, 3):
-                return {
-                    'success': False,
-                    'message': f'內參矩陣格式錯誤: 期望(3,3), 實際{camera_matrix.shape}'
-                }
-            
-            if dist_coeffs.shape[0] < 4:
-                return {
-                    'success': False,
-                    'message': f'畸變係數格式錯誤: 期望至少4個參數, 實際{dist_coeffs.shape[0]}個'
-                }
-            
-            # 載入外參
-            extrinsic_data = np.load(extrinsic_file, allow_pickle=True)
-            
-            if isinstance(extrinsic_data, dict):
-                # 字典格式
-                rvec = np.array(extrinsic_data.get('rvec', extrinsic_data.get('rotation_vector')))
-                tvec = np.array(extrinsic_data.get('tvec', extrinsic_data.get('translation_vector')))
-            else:
-                return {
-                    'success': False,
-                    'message': '外參檔案格式錯誤: 期望字典格式包含rvec和tvec'
-                }
-            
-            # 驗證外參格式
-            if rvec is None or tvec is None:
-                return {
-                    'success': False,
-                    'message': '外參檔案缺少rvec或tvec數據'
-                }
-            
-            if rvec.shape != (3, 1) and rvec.shape != (3,):
-                return {
-                    'success': False,
-                    'message': f'旋轉向量格式錯誤: 期望(3,1)或(3,), 實際{rvec.shape}'
-                }
-            
-            if tvec.shape != (3, 1) and tvec.shape != (3,):
-                return {
-                    'success': False,
-                    'message': f'平移向量格式錯誤: 期望(3,1)或(3,), 實際{tvec.shape}'
-                }
-            
-            # 更新標定數據
-            self.calibration_data.camera_matrix = camera_matrix
-            self.calibration_data.dist_coeffs = dist_coeffs.flatten()  # 確保為1D
-            self.calibration_data.rvec = rvec
-            self.calibration_data.tvec = tvec
-            self.calibration_data.is_valid = True
-            self.calibration_data.intrinsic_file = intrinsic_file
-            self.calibration_data.extrinsic_file = extrinsic_file
-            self.calibration_data.load_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            
-            # 創建座標轉換器
-            self.transformer = CameraCoordinateTransformer(
-                camera_matrix, dist_coeffs.flatten(), rvec, tvec
-            )
             
             return {
                 'success': True,
-                'message': '內外參載入成功',
-                'details': {
-                    'intrinsic_file': os.path.basename(intrinsic_file),
-                    'extrinsic_file': os.path.basename(extrinsic_file),
-                    'camera_matrix_shape': camera_matrix.shape,
-                    'dist_coeffs_count': len(dist_coeffs),
-                    'load_time': self.calibration_data.load_time
-                }
+                'working_dir': self.working_dir,
+                'intrinsic_pairs': intrinsic_pairs,
+                'extrinsic_files': extrinsic_files,
+                'total_intrinsic_pairs': len(intrinsic_pairs),
+                'total_extrinsic_files': len(extrinsic_files),
+                'scan_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
             
         except Exception as e:
             return {
                 'success': False,
-                'message': f'載入標定數據失敗: {str(e)}',
-                'error_type': type(e).__name__
+                'error': str(e),
+                'working_dir': self.working_dir,
+                'intrinsic_pairs': [],
+                'extrinsic_files': [],
+                'total_intrinsic_pairs': 0,
+                'total_extrinsic_files': 0
+            }
+    
+    def load_calibration_data(self, intrinsic_file: str = None, extrinsic_file: str = None) -> Dict[str, Any]:
+        """載入標定數據"""
+        try:
+            scan_result = self.scan_calibration_files()
+            if not scan_result['success']:
+                return {
+                    'success': False,
+                    'error': '掃描檔案失敗',
+                    'loaded': False
+                }
+            
+            # 自動選擇最新的內參檔案
+            if intrinsic_file is None and scan_result['intrinsic_pairs']:
+                latest_pair = max(scan_result['intrinsic_pairs'], key=lambda x: x['timestamp'])
+                intrinsic_file = latest_pair['camera_matrix']
+                dist_file = latest_pair['dist_coeffs']
+            else:
+                # 找到對應的畸變係數檔案
+                if intrinsic_file:
+                    basename = os.path.basename(intrinsic_file)
+                    if basename.startswith("camera_matrix_"):
+                        timestamp = basename.replace("camera_matrix_", "").replace(".npy", "")
+                        dist_file = os.path.join(self.working_dir, f"dist_coeffs_{timestamp}.npy")
+                    else:
+                        return {
+                            'success': False,
+                            'error': '內參檔案命名格式不正確',
+                            'loaded': False
+                        }
+            
+            # 自動選擇第一個外參檔案
+            if extrinsic_file is None and scan_result['extrinsic_files']:
+                extrinsic_file = scan_result['extrinsic_files'][0]
+            
+            if not intrinsic_file or not dist_file or not extrinsic_file:
+                return {
+                    'success': False,
+                    'error': '缺少必要的標定檔案',
+                    'loaded': False,
+                    'missing': {
+                        'intrinsic': not intrinsic_file,
+                        'dist_coeffs': not dist_file,
+                        'extrinsic': not extrinsic_file
+                    }
+                }
+            
+            # 載入內參數據
+            self.camera_matrix = np.load(intrinsic_file)
+            self.dist_coeffs = np.load(dist_file)
+            
+            # 載入外參數據
+            extrinsic_data = np.load(extrinsic_file, allow_pickle=True)
+            if isinstance(extrinsic_data, np.ndarray) and extrinsic_data.shape == ():
+                extrinsic_data = extrinsic_data.item()
+            
+            self.rvec = extrinsic_data['rvec']
+            self.tvec = extrinsic_data['tvec']
+            
+            # 驗證數據格式
+            if self.camera_matrix.shape != (3, 3):
+                raise ValueError(f"內參矩陣格式錯誤: {self.camera_matrix.shape}, 應為 (3,3)")
+            
+            if len(self.dist_coeffs.shape) == 2:
+                self.dist_coeffs = self.dist_coeffs.flatten()
+            
+            if len(self.dist_coeffs) < 4:
+                raise ValueError(f"畸變係數不足: {len(self.dist_coeffs)}, 至少需要4個")
+            
+            # 確保旋轉向量和平移向量格式正確
+            self.rvec = np.array(self.rvec).reshape(3, 1)
+            self.tvec = np.array(self.tvec).reshape(3, 1)
+            
+            # 創建座標轉換器
+            self.transformer = CameraCoordinateTransformer(
+                self.camera_matrix, self.dist_coeffs, self.rvec, self.tvec
+            )
+            
+            # 記錄載入信息
+            self.intrinsic_file = intrinsic_file
+            self.dist_coeffs_file = dist_file
+            self.extrinsic_file = extrinsic_file
+            self.loaded_time = datetime.now()
+            
+            return {
+                'success': True,
+                'loaded': True,
+                'files': {
+                    'camera_matrix': os.path.basename(intrinsic_file),
+                    'dist_coeffs': os.path.basename(dist_file),
+                    'extrinsic': os.path.basename(extrinsic_file)
+                },
+                'camera_matrix_shape': self.camera_matrix.shape,
+                'dist_coeffs_count': len(self.dist_coeffs),
+                'transformer_ready': self.transformer.is_valid(),
+                'loaded_time': self.loaded_time.strftime("%Y-%m-%d %H:%M:%S")
+            }
+            
+        except Exception as e:
+            # 清空已載入的數據
+            self.camera_matrix = None
+            self.dist_coeffs = None
+            self.rvec = None
+            self.tvec = None
+            self.transformer = None
+            
+            return {
+                'success': False,
+                'error': str(e),
+                'loaded': False
             }
     
     def get_status(self) -> Dict[str, Any]:
         """獲取標定狀態"""
         return {
-            'is_valid': self.calibration_data.is_valid,
-            'has_transformer': self.transformer is not None and self.transformer.is_valid(),
-            'intrinsic_file': os.path.basename(self.calibration_data.intrinsic_file) if self.calibration_data.intrinsic_file else None,
-            'extrinsic_file': os.path.basename(self.calibration_data.extrinsic_file) if self.calibration_data.extrinsic_file else None,
-            'load_time': self.calibration_data.load_time,
-            'working_dir': self.working_dir
+            'calibration_loaded': self.is_calibration_loaded(),
+            'transformer_ready': self.transformer.is_valid() if self.transformer else False,
+            'working_dir': self.working_dir,
+            'files': {
+                'camera_matrix': os.path.basename(self.intrinsic_file) if self.intrinsic_file else None,
+                'dist_coeffs': os.path.basename(self.dist_coeffs_file) if self.dist_coeffs_file else None,
+                'extrinsic': os.path.basename(self.extrinsic_file) if self.extrinsic_file else None
+            },
+            'loaded_time': self.loaded_time.strftime("%Y-%m-%d %H:%M:%S") if self.loaded_time else None,
+            'camera_matrix_shape': self.camera_matrix.shape if self.camera_matrix is not None else None,
+            'dist_coeffs_count': len(self.dist_coeffs) if self.dist_coeffs is not None else None
         }
+    
+    def is_calibration_loaded(self) -> bool:
+        """檢查標定數據是否已載入"""
+        return (self.camera_matrix is not None and 
+                self.dist_coeffs is not None and 
+                self.rvec is not None and 
+                self.tvec is not None)
+
+
+# ==================== 座標轉換器 ====================
+class CameraCoordinateTransformer:
+    """相機座標轉換器"""
+    
+    def __init__(self, camera_matrix, dist_coeffs, rvec, tvec):
+        self.K = camera_matrix
+        self.D = dist_coeffs
+        self.rvec = rvec.reshape(3, 1)
+        self.tvec = tvec.reshape(3, 1)
+        
+        # 計算旋轉矩陣
+        self.R, _ = cv2.Rodrigues(self.rvec)
+        self.R_inv = np.linalg.inv(self.R)
+        self.K_inv = np.linalg.inv(self.K)
+        
+    def pixel_to_world(self, pixel_coords_list) -> Optional[List[Tuple[float, float]]]:
+        """將像素座標轉換為世界座標 (Z=0平面投影)"""
+        try:
+            if not self.is_valid():
+                return None
+            
+            world_coords_list = []
+            
+            for pixel_coords in pixel_coords_list:
+                # 確保輸入格式正確
+                if len(pixel_coords) != 2:
+                    world_coords_list.append((0.0, 0.0))
+                    continue
+                
+                # 轉換為numpy陣列格式，適配cv2.undistortPoints
+                pixel_point = np.array([[pixel_coords]], dtype=np.float32)
+                
+                # 去畸變處理
+                undistorted_point = cv2.undistortPoints(pixel_point, self.K, self.D, P=self.K)
+                u, v = undistorted_point[0, 0]
+                
+                # 歸一化座標
+                normalized_coords = self.K_inv @ np.array([u, v, 1.0])
+                
+                # 計算深度係數 s (Z=0平面投影)
+                denominator = self.R[2] @ normalized_coords
+                if abs(denominator) < 1e-6:
+                    # 避免除以零
+                    world_coords_list.append((0.0, 0.0))
+                    continue
+                
+                s = (0 - self.tvec[2, 0]) / denominator
+                
+                # 計算相機座標系中的3D點
+                camera_point = s * normalized_coords
+                
+                # 轉換到世界座標系
+                world_point = self.R_inv @ (camera_point - self.tvec.ravel())
+                
+                # 返回X, Y座標 (保留2位小數)
+                world_x = round(world_point[0], 2)
+                world_y = round(world_point[1], 2)
+                
+                world_coords_list.append((world_x, world_y))
+            
+            return world_coords_list
+            
+        except Exception as e:
+            print(f"❌ 座標轉換失敗: {e}")
+            return None
+    
+    def is_valid(self) -> bool:
+        """檢查轉換器是否有效"""
+        return (self.K is not None and 
+                self.D is not None and 
+                self.rvec is not None and 
+                self.tvec is not None)
 
 
 # ==================== 系統狀態管理 ====================
@@ -433,7 +425,7 @@ class DetectionParams:
 
 @dataclass
 class VisionResult:
-    """視覺辨識結果（擴展世界座標）"""
+    """視覺辨識結果 (v4.0擴展)"""
     circle_count: int
     circles: List[Dict[str, Any]]
     processing_time: float
@@ -441,12 +433,12 @@ class VisionResult:
     total_time: float
     timestamp: str
     success: bool
-    has_world_coords: bool = False  # 新增：是否包含世界座標
+    has_world_coords: bool = False  # 新增: 世界座標有效性
     error_message: Optional[str] = None
 
 
 class EnhancedModbusTcpClientService:
-    """增強型Modbus TCP Client服務 - 運動控制握手版本（擴展世界座標寄存器）"""
+    """增強型Modbus TCP Client服務 - 運動控制握手版本 (v4.0)"""
     
     def __init__(self, server_ip="192.168.1.100", server_port=502):
         self.server_ip = server_ip
@@ -473,7 +465,7 @@ class EnhancedModbusTcpClientService:
         self.last_control_command = 0
         self.command_processing = False
         
-        # 擴展的寄存器映射 (運動控制握手模式 + 世界座標)
+        # 新的寄存器映射 (運動控制握手模式 v4.0)
         self.REGISTERS = {
             # ===== 核心控制握手寄存器 =====
             'CONTROL_COMMAND': 200,        # 控制指令寄存器 (0=清空, 8=拍照, 16=拍照+檢測, 32=重新初始化)
@@ -505,28 +497,28 @@ class EnhancedModbusTcpClientService:
             'CIRCLE_5_Y': 254,             # 圓形5 Y座標
             'CIRCLE_5_RADIUS': 255,        # 圓形5 半徑
             
-            # ===== 世界座標結果寄存器 (256-275) - 新增 =====
-            'WORLD_COORD_VALID': 256,      # 世界座標有效性標誌 (0=無效, 1=有效)
-            'CIRCLE_1_WORLD_X_HIGH': 257,  # 圓形1 世界X座標高位 (乘以100)
-            'CIRCLE_1_WORLD_X_LOW': 258,   # 圓形1 世界X座標低位
-            'CIRCLE_1_WORLD_Y_HIGH': 259,  # 圓形1 世界Y座標高位 (乘以100)
-            'CIRCLE_1_WORLD_Y_LOW': 260,   # 圓形1 世界Y座標低位
-            'CIRCLE_2_WORLD_X_HIGH': 261,  # 圓形2 世界X座標高位
-            'CIRCLE_2_WORLD_X_LOW': 262,   # 圓形2 世界X座標低位
-            'CIRCLE_2_WORLD_Y_HIGH': 263,  # 圓形2 世界Y座標高位
-            'CIRCLE_2_WORLD_Y_LOW': 264,   # 圓形2 世界Y座標低位
-            'CIRCLE_3_WORLD_X_HIGH': 265,  # 圓形3 世界X座標高位
-            'CIRCLE_3_WORLD_X_LOW': 266,   # 圓形3 世界X座標低位
-            'CIRCLE_3_WORLD_Y_HIGH': 267,  # 圓形3 世界Y座標高位
-            'CIRCLE_3_WORLD_Y_LOW': 268,   # 圓形3 世界Y座標低位
-            'CIRCLE_4_WORLD_X_HIGH': 269,  # 圓形4 世界X座標高位
-            'CIRCLE_4_WORLD_X_LOW': 270,   # 圓形4 世界X座標低位
-            'CIRCLE_4_WORLD_Y_HIGH': 271,  # 圓形4 世界Y座標高位
-            'CIRCLE_4_WORLD_Y_LOW': 272,   # 圓形4 世界Y座標低位
-            'CIRCLE_5_WORLD_X_HIGH': 273,  # 圓形5 世界X座標高位
-            'CIRCLE_5_WORLD_X_LOW': 274,   # 圓形5 世界X座標低位
-            'CIRCLE_5_WORLD_Y_HIGH': 275,  # 圓形5 世界Y座標高位
-            'CIRCLE_5_WORLD_Y_LOW': 276,   # 圓形5 世界Y座標低位
+            # ===== 世界座標檢測結果寄存器 (256-275) v4.0新增 =====
+            'WORLD_COORD_VALID': 256,      # 世界座標有效標誌 (0=無效, 1=有效)
+            'CIRCLE_1_WORLD_X_HIGH': 257,  # 圓形1世界X座標高位
+            'CIRCLE_1_WORLD_X_LOW': 258,   # 圓形1世界X座標低位
+            'CIRCLE_1_WORLD_Y_HIGH': 259,  # 圓形1世界Y座標高位
+            'CIRCLE_1_WORLD_Y_LOW': 260,   # 圓形1世界Y座標低位
+            'CIRCLE_2_WORLD_X_HIGH': 261,  # 圓形2世界X座標高位
+            'CIRCLE_2_WORLD_X_LOW': 262,   # 圓形2世界X座標低位
+            'CIRCLE_2_WORLD_Y_HIGH': 263,  # 圓形2世界Y座標高位
+            'CIRCLE_2_WORLD_Y_LOW': 264,   # 圓形2世界Y座標低位
+            'CIRCLE_3_WORLD_X_HIGH': 265,  # 圓形3世界X座標高位
+            'CIRCLE_3_WORLD_X_LOW': 266,   # 圓形3世界X座標低位
+            'CIRCLE_3_WORLD_Y_HIGH': 267,  # 圓形3世界Y座標高位
+            'CIRCLE_3_WORLD_Y_LOW': 268,   # 圓形3世界Y座標低位
+            'CIRCLE_4_WORLD_X_HIGH': 269,  # 圓形4世界X座標高位
+            'CIRCLE_4_WORLD_X_LOW': 270,   # 圓形4世界X座標低位
+            'CIRCLE_4_WORLD_Y_HIGH': 271,  # 圓形4世界Y座標高位
+            'CIRCLE_4_WORLD_Y_LOW': 272,   # 圓形4世界Y座標低位
+            'CIRCLE_5_WORLD_X_HIGH': 273,  # 圓形5世界X座標高位
+            'CIRCLE_5_WORLD_X_LOW': 274,   # 圓形5世界X座標低位
+            'CIRCLE_5_WORLD_Y_HIGH': 275,  # 圓形5世界Y座標高位
+            'CIRCLE_5_WORLD_Y_LOW': 276,   # 圓形5世界Y座標低位
             
             # ===== 統計資訊寄存器 (280-299) =====
             'LAST_CAPTURE_TIME': 280,      # 最後拍照耗時 (ms)
@@ -535,7 +527,7 @@ class EnhancedModbusTcpClientService:
             'OPERATION_COUNT': 283,        # 操作計數器
             'ERROR_COUNT': 284,            # 錯誤計數器
             'CONNECTION_COUNT': 285,       # 連接計數器
-            'VERSION_MAJOR': 290,          # 軟體版本主版號
+            'VERSION_MAJOR': 290,          # 軟體版本主版號 (v4.0)
             'VERSION_MINOR': 291,          # 軟體版本次版號
             'UPTIME_HOURS': 292,           # 系統運行時間 (小時)
             'UPTIME_MINUTES': 293,         # 系統運行時間 (分鐘)
@@ -650,6 +642,9 @@ class EnhancedModbusTcpClientService:
                 
                 # 3. 定期更新統計資訊和系統狀態
                 self._update_system_statistics()
+                
+                # 4. 更新世界座標有效性標誌 (v4.0新增)
+                self._update_world_coord_status()
                 
                 # 短暫休眠 (50ms輪詢間隔)
                 time.sleep(self.sync_interval)
@@ -772,16 +767,17 @@ class EnhancedModbusTcpClientService:
             raise Exception("拍照失敗")
     
     def _execute_detect(self):
-        """執行拍照+檢測指令"""
+        """執行拍照+檢測指令 (含世界座標轉換)"""
         if not self.vision_controller:
             raise Exception("視覺控制器未設置")
         
-        print("🔍 執行拍照+檢測指令")
+        print("🔍 執行拍照+檢測指令 (含世界座標轉換)")
         result = self.vision_controller.capture_and_detect()
         
         if result.success:
             self.update_detection_results(result)
-            print(f"✅ 檢測成功，找到 {result.circle_count} 個圓形")
+            coord_info = "含世界座標" if result.has_world_coords else "僅像素座標"
+            print(f"✅ 檢測成功，找到 {result.circle_count} 個圓形 ({coord_info})")
         else:
             raise Exception(f"檢測失敗: {result.error_message}")
     
@@ -806,8 +802,8 @@ class EnhancedModbusTcpClientService:
     def _initialize_status_registers(self):
         """初始化狀態寄存器"""
         try:
-            # 寫入版本資訊
-            self.write_register('VERSION_MAJOR', 4)  # 版本升級到4.0（新增世界座標功能）
+            # 寫入版本資訊 (v4.0)
+            self.write_register('VERSION_MAJOR', 4)  # 版本升級到4.0
             self.write_register('VERSION_MINOR', 0)
             
             # 強制重置狀態機到初始狀態
@@ -821,13 +817,13 @@ class EnhancedModbusTcpClientService:
             self.write_register('STATUS_REGISTER', initial_status)
             self.write_register('CONTROL_COMMAND', 0)  # 清空控制指令
             
-            # 初始化世界座標有效性標誌
-            self.write_register('WORLD_COORD_VALID', 0)  # 預設為無效
-            
             # 初始化計數器
             self.write_register('OPERATION_COUNT', self.operation_count)
             self.write_register('ERROR_COUNT', self.error_count)
             self.write_register('CONNECTION_COUNT', self.connection_count)
+            
+            # 初始化世界座標相關寄存器 (v4.0新增)
+            self.write_register('WORLD_COORD_VALID', 0)  # 初始為無效
             
             print(f"📊 狀態寄存器初始化完成，固定初始值: {initial_status} (Ready=1)")
             
@@ -845,13 +841,6 @@ class EnhancedModbusTcpClientService:
             self.write_register('OPERATION_COUNT', self.operation_count)
             self.write_register('ERROR_COUNT', self.error_count)
             
-            # 更新世界座標有效性
-            if self.vision_controller:
-                calib_valid = (self.vision_controller.calibration_manager.calibration_data.is_valid and
-                             self.vision_controller.calibration_manager.transformer and
-                             self.vision_controller.calibration_manager.transformer.is_valid())
-                self.write_register('WORLD_COORD_VALID', 1 if calib_valid else 0)
-            
         except Exception as e:
             print(f"❌ 更新狀態到PLC失敗: {e}")
     
@@ -868,6 +857,20 @@ class EnhancedModbusTcpClientService:
             
         except Exception as e:
             pass  # 統計更新失敗不影響主流程
+    
+    def _update_world_coord_status(self):
+        """更新世界座標有效性標誌 (v4.0新增)"""
+        try:
+            if (self.vision_controller and 
+                self.vision_controller.calibration_manager and
+                self.vision_controller.calibration_manager.is_calibration_loaded() and
+                self.vision_controller.calibration_manager.transformer and
+                self.vision_controller.calibration_manager.transformer.is_valid()):
+                self.write_register('WORLD_COORD_VALID', 1)
+            else:
+                self.write_register('WORLD_COORD_VALID', 0)
+        except:
+            pass  # 狀態更新失敗不影響主流程
     
     def _update_initialization_status(self):
         """更新初始化狀態"""
@@ -925,62 +928,74 @@ class EnhancedModbusTcpClientService:
         except Exception as e:
             return False
     
+    def _world_coord_to_registers(self, world_x: float, world_y: float) -> Tuple[int, int, int, int]:
+        """將世界座標轉換為寄存器值 (保留2位小數精度)"""
+        try:
+            # 座標×100轉換為32位有符號整數
+            world_x_int = int(world_x * 100)
+            world_y_int = int(world_y * 100)
+            
+            # 限制範圍: ±21474.83mm
+            max_value = 2147483
+            min_value = -2147483
+            
+            world_x_int = max(min_value, min(max_value, world_x_int))
+            world_y_int = max(min_value, min(max_value, world_y_int))
+            
+            # 拆分為高位和低位
+            world_x_high = (world_x_int >> 16) & 0xFFFF
+            world_x_low = world_x_int & 0xFFFF
+            world_y_high = (world_y_int >> 16) & 0xFFFF
+            world_y_low = world_y_int & 0xFFFF
+            
+            return world_x_high, world_x_low, world_y_high, world_y_low
+            
+        except Exception as e:
+            print(f"❌ 世界座標轉換失敗: {e}")
+            return 0, 0, 0, 0
+    
     def update_detection_results(self, result: VisionResult):
-        """更新檢測結果到PLC（包含世界座標）"""
+        """更新檢測結果到PLC (v4.0擴展)"""
         try:
             # 寫入圓形數量
             self.write_register('CIRCLE_COUNT', result.circle_count)
             
-            # 寫入像素座標和半徑 (最多5個)
+            # 寫入像素座標檢測結果和世界座標檢測結果 (最多5個)
             for i in range(5):
                 if i < len(result.circles):
                     circle = result.circles[i]
+                    
+                    # 像素座標 (原有功能)
                     self.write_register(f'CIRCLE_{i+1}_X', int(circle['center'][0]))
                     self.write_register(f'CIRCLE_{i+1}_Y', int(circle['center'][1]))
                     self.write_register(f'CIRCLE_{i+1}_RADIUS', int(circle['radius']))
-                else:
-                    # 清空未使用的寄存器
-                    self.write_register(f'CIRCLE_{i+1}_X', 0)
-                    self.write_register(f'CIRCLE_{i+1}_Y', 0)
-                    self.write_register(f'CIRCLE_{i+1}_RADIUS', 0)
-            
-            # 寫入世界座標（如果有效）
-            world_coord_valid = result.has_world_coords
-            self.write_register('WORLD_COORD_VALID', 1 if world_coord_valid else 0)
-            
-            if world_coord_valid:
-                for i in range(5):
-                    if i < len(result.circles) and 'world_coords' in result.circles[i]:
-                        world_x, world_y = result.circles[i]['world_coords']
+                    
+                    # 世界座標 (v4.0新增)
+                    if result.has_world_coords and 'world_coords' in circle:
+                        world_x, world_y = circle['world_coords']
+                        world_x_high, world_x_low, world_y_high, world_y_low = self._world_coord_to_registers(world_x, world_y)
                         
-                        # 轉換為整數（乘以100保留2位小數精度）
-                        world_x_int = int(world_x * 100)
-                        world_y_int = int(world_y * 100)
-                        
-                        # 分解為32位高低位
-                        world_x_high = (world_x_int >> 16) & 0xFFFF
-                        world_x_low = world_x_int & 0xFFFF
-                        world_y_high = (world_y_int >> 16) & 0xFFFF
-                        world_y_low = world_y_int & 0xFFFF
-                        
-                        # 寫入世界座標寄存器
                         self.write_register(f'CIRCLE_{i+1}_WORLD_X_HIGH', world_x_high)
                         self.write_register(f'CIRCLE_{i+1}_WORLD_X_LOW', world_x_low)
                         self.write_register(f'CIRCLE_{i+1}_WORLD_Y_HIGH', world_y_high)
                         self.write_register(f'CIRCLE_{i+1}_WORLD_Y_LOW', world_y_low)
                     else:
-                        # 清空未使用的世界座標寄存器
+                        # 清空世界座標寄存器
                         self.write_register(f'CIRCLE_{i+1}_WORLD_X_HIGH', 0)
                         self.write_register(f'CIRCLE_{i+1}_WORLD_X_LOW', 0)
                         self.write_register(f'CIRCLE_{i+1}_WORLD_Y_HIGH', 0)
                         self.write_register(f'CIRCLE_{i+1}_WORLD_Y_LOW', 0)
-            else:
-                # 清空所有世界座標寄存器
-                for i in range(1, 6):
-                    self.write_register(f'CIRCLE_{i}_WORLD_X_HIGH', 0)
-                    self.write_register(f'CIRCLE_{i}_WORLD_X_LOW', 0)
-                    self.write_register(f'CIRCLE_{i}_WORLD_Y_HIGH', 0)
-                    self.write_register(f'CIRCLE_{i}_WORLD_Y_LOW', 0)
+                else:
+                    # 清空未使用的寄存器 (像素座標)
+                    self.write_register(f'CIRCLE_{i+1}_X', 0)
+                    self.write_register(f'CIRCLE_{i+1}_Y', 0)
+                    self.write_register(f'CIRCLE_{i+1}_RADIUS', 0)
+                    
+                    # 清空未使用的寄存器 (世界座標)
+                    self.write_register(f'CIRCLE_{i+1}_WORLD_X_HIGH', 0)
+                    self.write_register(f'CIRCLE_{i+1}_WORLD_X_LOW', 0)
+                    self.write_register(f'CIRCLE_{i+1}_WORLD_Y_HIGH', 0)
+                    self.write_register(f'CIRCLE_{i+1}_WORLD_Y_LOW', 0)
             
             # 寫入時間統計
             self.write_register('LAST_CAPTURE_TIME', int(result.capture_time * 1000))
@@ -1004,7 +1019,8 @@ class EnhancedModbusTcpClientService:
             'last_control_command': self.last_control_command,
             'command_processing': self.command_processing,
             'handshake_mode': True,
-            'world_coord_supported': True
+            'version': '4.0',  # v4.0版本標識
+            'world_coord_support': True  # 世界座標轉換支援
         }
     
     def get_debug_info(self) -> Dict[str, Any]:
@@ -1021,13 +1037,15 @@ class EnhancedModbusTcpClientService:
             'state_machine': self.state_machine.get_status_description(),
             'handshake_mode': True,
             'sync_interval_ms': self.sync_interval * 1000,
-            'world_coord_supported': True
+            'version': '4.0',
+            'world_coord_support': True,
+            'register_count': len(self.REGISTERS)
         }
 
 
 # ==================== 模擬版本 (當pymodbus不可用時) ====================
 class MockEnhancedModbusTcpClientService(EnhancedModbusTcpClientService):
-    """模擬增強型Modbus TCP Client服務（支援世界座標）"""
+    """模擬增強型Modbus TCP Client服務 (v4.0)"""
     
     def __init__(self, server_ip="192.168.1.100", server_port=502):
         # 調用父類初始化，但跳過Modbus相關部分
@@ -1054,7 +1072,7 @@ class MockEnhancedModbusTcpClientService(EnhancedModbusTcpClientService):
         self.last_control_command = 0
         self.command_processing = False
         
-        # 初始化擴展寄存器映射（包含世界座標）
+        # 初始化寄存器映射 (v4.0擴展)
         self.REGISTERS = {
             'CONTROL_COMMAND': 200,
             'STATUS_REGISTER': 201,
@@ -1080,7 +1098,7 @@ class MockEnhancedModbusTcpClientService(EnhancedModbusTcpClientService):
             'CIRCLE_5_X': 253,
             'CIRCLE_5_Y': 254,
             'CIRCLE_5_RADIUS': 255,
-            # 世界座標寄存器
+            # 世界座標寄存器 (v4.0新增)
             'WORLD_COORD_VALID': 256,
             'CIRCLE_1_WORLD_X_HIGH': 257,
             'CIRCLE_1_WORLD_X_LOW': 258,
@@ -1102,7 +1120,7 @@ class MockEnhancedModbusTcpClientService(EnhancedModbusTcpClientService):
             'CIRCLE_5_WORLD_X_LOW': 274,
             'CIRCLE_5_WORLD_Y_HIGH': 275,
             'CIRCLE_5_WORLD_Y_LOW': 276,
-            # 統計寄存器
+            # 統計資訊
             'LAST_CAPTURE_TIME': 280,
             'LAST_PROCESS_TIME': 281,
             'LAST_TOTAL_TIME': 282,
@@ -1280,9 +1298,8 @@ class CircleDetector:
             return [], image
 
 
-# ==================== CCD1視覺控制器 (新增世界座標功能) ====================
 class CCD1VisionController:
-    """CCD1 視覺控制器 (適配增強型Modbus服務 + 世界座標轉換)"""
+    """CCD1 視覺控制器 (v4.0世界座標轉換版本)"""
     
     def __init__(self):
         self.camera_manager: Optional[OptimizedCameraManager] = None
@@ -1295,8 +1312,9 @@ class CCD1VisionController:
         self.last_result: Optional[VisionResult] = None
         self.lock = threading.Lock()
         
-        # 新增：相機標定管理器
-        self.calibration_manager = CalibrationManager()
+        # v4.0新增: 標定管理器
+        working_dir = os.path.dirname(os.path.abspath(__file__))
+        self.calibration_manager = CalibrationManager(working_dir)
         
         # 設置日誌
         self.logger = logging.getLogger("CCD1Vision")
@@ -1305,7 +1323,7 @@ class CCD1VisionController:
         # 選擇合適的Modbus Client服務
         if MODBUS_AVAILABLE:
             self.modbus_client = EnhancedModbusTcpClientService()
-            print("✅ 使用增強型Modbus TCP Client服務 (運動控制握手模式 + 世界座標)")
+            print("✅ 使用增強型Modbus TCP Client服務 (運動控制握手模式 v4.0)")
         else:
             self.modbus_client = MockEnhancedModbusTcpClientService()
             print("⚠️ 使用模擬增強型Modbus TCP Client服務 (功能受限)")
@@ -1362,7 +1380,7 @@ class CCD1VisionController:
                     'message': f'Modbus TCP連接成功，運動控制握手模式已啟動: {self.modbus_client.server_ip}:{self.modbus_client.server_port}',
                     'connection_status': self.modbus_client.get_connection_status(),
                     'handshake_mode': True,
-                    'world_coord_supported': True
+                    'version': '4.0'
                 }
             else:
                 return {
@@ -1391,18 +1409,6 @@ class CCD1VisionController:
                 'success': False,
                 'message': f'斷開Modbus連接失敗: {str(e)}'
             }
-    
-    def scan_calibration_files(self) -> Dict[str, Any]:
-        """掃描內外參檔案"""
-        return self.calibration_manager.scan_calibration_files()
-    
-    def load_calibration_data(self, intrinsic_file=None, extrinsic_file=None) -> Dict[str, Any]:
-        """載入內外參數據"""
-        return self.calibration_manager.load_calibration_data(intrinsic_file, extrinsic_file)
-    
-    def get_calibration_status(self) -> Dict[str, Any]:
-        """獲取標定狀態"""
-        return self.calibration_manager.get_status()
     
     def initialize_camera(self, ip_address: str = None) -> Dict[str, Any]:
         """初始化相機連接"""
@@ -1497,7 +1503,7 @@ class CCD1VisionController:
             return None, 0.0
     
     def capture_and_detect(self) -> VisionResult:
-        """拍照並進行圓形檢測（包含世界座標轉換）"""
+        """拍照並進行圓形檢測 (v4.0含世界座標轉換)"""
         total_start = time.time()
         
         try:
@@ -1519,31 +1525,31 @@ class CCD1VisionController:
                 process_start = time.time()
                 circles, annotated_image = self.detector.detect_circles(image)
                 
-                # 檢查是否可以進行世界座標轉換
-                can_transform = (self.calibration_manager.calibration_data.is_valid and
-                               self.calibration_manager.transformer and
-                               self.calibration_manager.transformer.is_valid())
-                
-                # 如果可以轉換，計算世界座標
-                if can_transform and circles:
+                # v4.0新增: 世界座標轉換
+                has_world_coords = False
+                if (self.calibration_manager.is_calibration_loaded() and 
+                    self.calibration_manager.transformer and 
+                    self.calibration_manager.transformer.is_valid() and 
+                    len(circles) > 0):
+                    
                     try:
-                        for circle in circles:
-                            pixel_coords = [circle['center']]
-                            world_coords = self.calibration_manager.transformer.pixel_to_world(pixel_coords)
+                        # 提取像素座標
+                        pixel_coords_list = [circle['center'] for circle in circles]
+                        
+                        # 轉換為世界座標
+                        world_coords_list = self.calibration_manager.transformer.pixel_to_world(pixel_coords_list)
+                        
+                        if world_coords_list:
+                            # 將世界座標加入結果
+                            for i, (circle, world_coords) in enumerate(zip(circles, world_coords_list)):
+                                circle['world_coords'] = world_coords
                             
-                            if world_coords is not None and len(world_coords) > 0:
-                                circle['world_coords'] = (float(world_coords[0]), float(world_coords[1]))
-                            else:
-                                circle['world_coords'] = None
-                                can_transform = False  # 轉換失敗
-                                break
+                            has_world_coords = True
+                            print(f"🌍 世界座標轉換成功，{len(circles)}個圓形")
+                        else:
+                            print("⚠️ 世界座標轉換失敗")
                     except Exception as e:
-                        print(f"⚠️ 世界座標轉換失敗: {e}")
-                        can_transform = False
-                        # 移除已設置的world_coords
-                        for circle in circles:
-                            if 'world_coords' in circle:
-                                del circle['world_coords']
+                        print(f"❌ 世界座標轉換異常: {e}")
                 
                 processing_time = time.time() - process_start
                 total_time = time.time() - total_start
@@ -1558,7 +1564,7 @@ class CCD1VisionController:
                     total_time=total_time,
                     timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     success=True,
-                    has_world_coords=can_transform
+                    has_world_coords=has_world_coords
                 )
             
             self.last_result = result
@@ -1610,6 +1616,19 @@ class CCD1VisionController:
         
         self.logger.info(f"檢測參數已更新: 面積>={self.detection_params.min_area}, 圓度>={self.detection_params.min_roundness}")
     
+    # v4.0新增: 標定相關方法
+    def scan_calibration_files(self) -> Dict[str, Any]:
+        """掃描標定檔案"""
+        return self.calibration_manager.scan_calibration_files()
+    
+    def load_calibration_data(self, intrinsic_file: str = None, extrinsic_file: str = None) -> Dict[str, Any]:
+        """載入標定數據"""
+        return self.calibration_manager.load_calibration_data(intrinsic_file, extrinsic_file)
+    
+    def get_calibration_status(self) -> Dict[str, Any]:
+        """獲取標定狀態"""
+        return self.calibration_manager.get_status()
+    
     def get_image_base64(self) -> Optional[str]:
         """獲取當前圖像的base64編碼"""
         if self.last_image is None:
@@ -1634,7 +1653,7 @@ class CCD1VisionController:
             return None
     
     def get_status(self) -> Dict[str, Any]:
-        """獲取系統狀態（包含標定狀態）"""
+        """獲取系統狀態 (v4.0擴展)"""
         status = {
             'connected': self.is_connected,
             'camera_name': self.camera_name,
@@ -1645,8 +1664,10 @@ class CCD1VisionController:
             'modbus_enabled': MODBUS_AVAILABLE,
             'modbus_connection': self.modbus_client.get_connection_status(),
             'handshake_mode': True,
-            'world_coord_supported': True,
-            'calibration_status': self.calibration_manager.get_status()
+            'version': '4.0',
+            # v4.0新增: 標定狀態
+            'calibration_status': self.get_calibration_status(),
+            'world_coord_support': True
         }
         
         if self.camera_manager and self.is_connected:
@@ -1708,7 +1729,6 @@ def get_status():
     return jsonify(vision_controller.get_status())
 
 
-# ===== Modbus相關API =====
 @app.route('/api/modbus/set_server', methods=['POST'])
 def set_modbus_server():
     """設置Modbus服務器地址"""
@@ -1761,18 +1781,19 @@ def get_modbus_status():
         status_info = {
             'control_command': control_command,
             'status_register': status_register,
-            'world_coord_valid': world_coord_valid,
+            'world_coord_valid': world_coord_valid,  # v4.0新增
             'state_machine': modbus_client.state_machine.get_status_description(),
             'last_control_command': modbus_client.last_control_command,
             'command_processing': modbus_client.command_processing,
             'sync_running': modbus_client.sync_running,
             'operation_count': modbus_client.operation_count,
-            'error_count': modbus_client.error_count
+            'error_count': modbus_client.error_count,
+            'version': '4.0'
         }
         
         return jsonify({
             'success': True,
-            'message': '成功獲取Modbus狀態',
+            'message': '成功獲取Modbus狀態 (v4.0世界座標版本)',
             'status': status_info,
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
@@ -1787,7 +1808,7 @@ def get_modbus_status():
 
 @app.route('/api/modbus/registers', methods=['GET'])
 def get_modbus_registers():
-    """獲取所有Modbus寄存器的即時數值（包含世界座標）"""
+    """獲取所有Modbus寄存器的即時數值 (v4.0含世界座標)"""
     modbus_client = vision_controller.modbus_client
     
     if not modbus_client.connected:
@@ -1815,7 +1836,7 @@ def get_modbus_registers():
             '201_初始化狀態_bit3': (status_value >> 3) & 1,
         }
         
-        # 檢測結果寄存器（像素座標）
+        # 像素座標檢測結果寄存器
         result_registers = {
             '240_檢測圓形數量': modbus_client.read_register('CIRCLE_COUNT'),
         }
@@ -1825,11 +1846,11 @@ def get_modbus_registers():
             x_val = modbus_client.read_register(f'CIRCLE_{i}_X')
             y_val = modbus_client.read_register(f'CIRCLE_{i}_Y')
             r_val = modbus_client.read_register(f'CIRCLE_{i}_RADIUS')
-            result_registers[f'{240+i*3-2}_圓形{i}_X像素'] = x_val
-            result_registers[f'{240+i*3-1}_圓形{i}_Y像素'] = y_val
+            result_registers[f'{240+i*3-2}_圓形{i}_像素X座標'] = x_val
+            result_registers[f'{240+i*3-1}_圓形{i}_像素Y座標'] = y_val
             result_registers[f'{240+i*3}_圓形{i}_半徑'] = r_val
         
-        # 世界座標寄存器
+        # v4.0新增: 世界座標檢測結果寄存器 (256-276)
         world_coord_registers = {
             '256_世界座標有效標誌': modbus_client.read_register('WORLD_COORD_VALID'),
         }
@@ -1841,25 +1862,30 @@ def get_modbus_registers():
             y_high = modbus_client.read_register(f'CIRCLE_{i}_WORLD_Y_HIGH')
             y_low = modbus_client.read_register(f'CIRCLE_{i}_WORLD_Y_LOW')
             
-            # 計算實際世界座標值（從32位整數恢復到浮點數）
+            # 計算實際世界座標值 (恢復精度)
             if x_high is not None and x_low is not None:
-                x_world_int = (x_high << 16) | x_low
-                x_world = x_world_int / 100.0  # 恢復小數點
+                world_x_int = (x_high << 16) | x_low
+                if world_x_int >= 2147483648:  # 處理負數
+                    world_x_int -= 4294967296
+                world_x_mm = world_x_int / 100.0
             else:
-                x_world = 0.0
-                
-            if y_high is not None and y_low is not None:
-                y_world_int = (y_high << 16) | y_low
-                y_world = y_world_int / 100.0  # 恢復小數點
-            else:
-                y_world = 0.0
+                world_x_mm = 0.0
             
-            world_coord_registers[f'{257+i*4-4}_圓形{i}_世界X_高位'] = x_high
-            world_coord_registers[f'{257+i*4-3}_圓形{i}_世界X_低位'] = x_low
-            world_coord_registers[f'{257+i*4-2}_圓形{i}_世界Y_高位'] = y_high
-            world_coord_registers[f'{257+i*4-1}_圓形{i}_世界Y_低位'] = y_low
-            world_coord_registers[f'圓形{i}_世界座標_X'] = f"{x_world:.2f}mm"
-            world_coord_registers[f'圓形{i}_世界座標_Y'] = f"{y_world:.2f}mm"
+            if y_high is not None and y_low is not None:
+                world_y_int = (y_high << 16) | y_low
+                if world_y_int >= 2147483648:  # 處理負數
+                    world_y_int -= 4294967296
+                world_y_mm = world_y_int / 100.0
+            else:
+                world_y_mm = 0.0
+            
+            base_addr = 257 + (i-1) * 4
+            world_coord_registers[f'{base_addr}_圓形{i}_世界X高位'] = x_high
+            world_coord_registers[f'{base_addr+1}_圓形{i}_世界X低位'] = x_low
+            world_coord_registers[f'{base_addr+2}_圓形{i}_世界Y高位'] = y_high
+            world_coord_registers[f'{base_addr+3}_圓形{i}_世界Y低位'] = y_low
+            world_coord_registers[f'圓形{i}_世界X座標_計算值_mm'] = world_x_mm
+            world_coord_registers[f'圓形{i}_世界Y座標_計算值_mm'] = world_y_mm
         
         # 統計資訊寄存器
         stats_registers = {
@@ -1884,14 +1910,15 @@ def get_modbus_registers():
         
         return jsonify({
             'success': True,
-            'message': 'Modbus寄存器讀取成功 (運動控制握手模式 + 世界座標)',
+            'message': 'Modbus寄存器讀取成功 (v4.0世界座標版本)',
             'registers': registers,
             'handshake_mode': True,
-            'world_coord_mode': True,
+            'world_coord_support': True,
             'state_machine': modbus_client.state_machine.get_status_description(),
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             'total_registers': len(registers),
-            'server_info': f"{modbus_client.server_ip}:{modbus_client.server_port}"
+            'server_info': f"{modbus_client.server_ip}:{modbus_client.server_port}",
+            'version': '4.0'
         })
         
     except Exception as e:
@@ -1900,6 +1927,115 @@ def get_modbus_registers():
             'message': f'讀取寄存器失敗: {str(e)}',
             'registers': {},
             'error': str(e)
+        })
+
+
+# v4.0新增: 標定相關API
+@app.route('/api/calibration/scan', methods=['GET'])
+def scan_calibration_files():
+    """掃描標定檔案"""
+    result = vision_controller.scan_calibration_files()
+    return jsonify(result)
+
+
+@app.route('/api/calibration/load', methods=['POST'])
+def load_calibration_data():
+    """載入標定數據"""
+    data = request.get_json()
+    intrinsic_file = data.get('intrinsic_file') if data else None
+    extrinsic_file = data.get('extrinsic_file') if data else None
+    
+    result = vision_controller.load_calibration_data(intrinsic_file, extrinsic_file)
+    socketio.emit('status_update', vision_controller.get_status())
+    
+    return jsonify(result)
+
+
+@app.route('/api/calibration/status', methods=['GET'])
+def get_calibration_status():
+    """獲取標定狀態"""
+    result = vision_controller.get_calibration_status()
+    return jsonify(result)
+
+
+@app.route('/api/modbus/test', methods=['GET'])
+def test_modbus():
+    """測試Modbus Client連接狀態 (v4.0)"""
+    if not MODBUS_AVAILABLE:
+        return jsonify({
+            'success': False,
+            'message': 'Modbus Client模組不可用',
+            'available': False,
+            'connected': False,
+            'pymodbus_version': PYMODBUS_VERSION,
+            'install_command': 'pip install pymodbus>=3.0.0'
+        })
+    
+    modbus_client = vision_controller.modbus_client
+    
+    if not modbus_client.connected:
+        return jsonify({
+            'success': False,
+            'message': f'未連接到Modbus服務器: {modbus_client.server_ip}:{modbus_client.server_port}',
+            'available': True,
+            'connected': False,
+            'pymodbus_version': PYMODBUS_VERSION,
+            'suggestion': '請先連接到Modbus TCP服務器'
+        })
+    
+    try:
+        # 檢查pymodbus版本
+        import pymodbus
+        actual_version = pymodbus.__version__
+        
+        # 測試讀寫操作 (使用新的握手寄存器)
+        test_success = False
+        error_message = ""
+        
+        # 測試寫入版本號
+        write_success = modbus_client.write_register('VERSION_MAJOR', 99)
+        if write_success:
+            # 測試讀取
+            read_value = modbus_client.read_register('VERSION_MAJOR')
+            if read_value == 99:
+                test_success = True
+                # 恢復正確值
+                modbus_client.write_register('VERSION_MAJOR', 4)  # v4.0
+            else:
+                error_message = f"讀取值不匹配: 期望99, 實際{read_value}"
+        else:
+            error_message = "寫入操作失敗"
+        
+        # 獲取握手狀態
+        connection_status = modbus_client.get_connection_status()
+        
+        return jsonify({
+            'success': test_success,
+            'message': f'✅ 運動控制握手模式正常 (v4.0, pymodbus {actual_version})' if test_success else f'❌ Modbus測試失敗: {error_message}',
+            'available': True,
+            'connected': True,
+            'pymodbus_version': actual_version,
+            'expected_version': PYMODBUS_VERSION,
+            'write_success': write_success,
+            'test_passed': test_success,
+            'error_message': error_message,
+            'connection_status': connection_status,
+            'register_count': len(modbus_client.REGISTERS),
+            'handshake_mode': True,
+            'world_coord_support': True,
+            'version': '4.0',
+            'state_machine': modbus_client.state_machine.get_status_description()
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Modbus測試異常: {str(e)}',
+            'available': True,
+            'connected': modbus_client.connected,
+            'pymodbus_version': PYMODBUS_VERSION,
+            'error': str(e),
+            'error_type': type(e).__name__
         })
 
 
@@ -1933,7 +2069,7 @@ def manual_command():
             command_names = {
                 0: "清空控制",
                 8: "拍照", 
-                16: "拍照+檢測",
+                16: "拍照+檢測 (含世界座標)",
                 32: "重新初始化"
             }
             
@@ -1942,7 +2078,8 @@ def manual_command():
                 'message': f'手動控制指令已發送: {command} ({command_names.get(command, "未知")})',
                 'command': command,
                 'command_name': command_names.get(command, "未知"),
-                'state_machine': modbus_client.state_machine.get_status_description()
+                'state_machine': modbus_client.state_machine.get_status_description(),
+                'version': '4.0'
             })
         else:
             return jsonify({
@@ -1957,34 +2094,51 @@ def manual_command():
         })
 
 
-# ===== 標定相關API =====
-@app.route('/api/calibration/scan', methods=['GET'])
-def scan_calibration_files():
-    """掃描標定檔案"""
-    result = vision_controller.scan_calibration_files()
-    return jsonify(result)
-
-
-@app.route('/api/calibration/load', methods=['POST'])
-def load_calibration():
-    """載入標定數據"""
-    data = request.get_json() or {}
-    intrinsic_file = data.get('intrinsic_file')
-    extrinsic_file = data.get('extrinsic_file')
+@app.route('/api/modbus/debug', methods=['GET'])
+def get_modbus_debug():
+    """獲取Modbus調試信息 (v4.0)"""
+    modbus_client = vision_controller.modbus_client
     
-    result = vision_controller.load_calibration_data(intrinsic_file, extrinsic_file)
-    socketio.emit('status_update', vision_controller.get_status())
+    if not modbus_client:
+        return jsonify({
+            'success': False,
+            'message': 'Modbus Client不存在'
+        })
     
-    return jsonify(result)
+    try:
+        debug_info = modbus_client.get_debug_info()
+        
+        # 額外檢查當前寄存器狀態
+        if modbus_client.connected:
+            current_registers = {
+                'CONTROL_COMMAND': modbus_client.read_register('CONTROL_COMMAND'),
+                'STATUS_REGISTER': modbus_client.read_register('STATUS_REGISTER'),
+                'CIRCLE_COUNT': modbus_client.read_register('CIRCLE_COUNT'),
+                'WORLD_COORD_VALID': modbus_client.read_register('WORLD_COORD_VALID'),  # v4.0新增
+                'OPERATION_COUNT': modbus_client.read_register('OPERATION_COUNT'),
+                'ERROR_COUNT': modbus_client.read_register('ERROR_COUNT'),
+                'VERSION_MAJOR': modbus_client.read_register('VERSION_MAJOR'),
+                'VERSION_MINOR': modbus_client.read_register('VERSION_MINOR')
+            }
+            debug_info['current_registers'] = current_registers
+        
+        return jsonify({
+            'success': True,
+            'debug_info': debug_info,
+            'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'mode': '運動控制握手模式 v4.0 (世界座標轉換)',
+            'version': '4.0',
+            'world_coord_support': True
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'獲取調試信息失敗: {str(e)}',
+            'error': str(e)
+        })
 
 
-@app.route('/api/calibration/status', methods=['GET'])
-def get_calibration_status():
-    """獲取標定狀態"""
-    return jsonify(vision_controller.get_calibration_status())
-
-
-# ===== 其他現有API =====
 @app.route('/api/initialize', methods=['POST'])
 def initialize_camera():
     """初始化相機"""
@@ -2051,7 +2205,7 @@ def capture_image():
 
 @app.route('/api/capture_and_detect', methods=['POST'])
 def capture_and_detect():
-    """拍照並檢測（包含世界座標）"""
+    """拍照並檢測 (v4.0含世界座標)"""
     result = vision_controller.capture_and_detect()
     
     response = {
@@ -2062,9 +2216,10 @@ def capture_and_detect():
         'processing_time_ms': round(result.processing_time * 1000, 2),
         'total_time_ms': round(result.total_time * 1000, 2),
         'timestamp': result.timestamp,
-        'has_world_coords': result.has_world_coords,
         'image': vision_controller.get_image_base64() if result.success else None,
-        'error_message': result.error_message
+        'error_message': result.error_message,
+        'has_world_coords': result.has_world_coords,  # v4.0新增
+        'version': '4.0'
     }
     
     socketio.emit('detection_result', response)
@@ -2080,7 +2235,97 @@ def disconnect():
     return jsonify({'success': True, 'message': '所有連接已斷開'})
 
 
-# ===== Socket.IO 事件處理 =====
+@app.route('/api/modbus/info', methods=['GET'])
+def get_modbus_info():
+    """獲取Modbus Client資訊 (v4.0)"""
+    try:
+        import pymodbus
+        current_version = pymodbus.__version__
+        version_info = f"當前版本: {current_version}"
+    except:
+        current_version = "未安裝"
+        version_info = "pymodbus未安裝"
+    
+    return jsonify({
+        'pymodbus_available': MODBUS_AVAILABLE,
+        'current_version': current_version,
+        'target_version': PYMODBUS_VERSION,
+        'version_info': version_info,
+        'client_mode': True,
+        'server_mode': False,
+        'handshake_mode': True,
+        'world_coord_support': True,  # v4.0新增
+        'system_version': '4.0',
+        'install_commands': [
+            'pip install pymodbus>=3.0.0',
+            'pip install "pymodbus[serial]>=3.0.0"'
+        ],
+        'verify_command': 'python -c "import pymodbus; print(f\'pymodbus {pymodbus.__version__}\')"',
+        'architecture': 'Modbus TCP Client - 運動控制握手模式 v4.0 (世界座標轉換)',
+        'register_mapping': {
+            '控制指令 (200)': '0=清空, 8=拍照, 16=拍照+檢測, 32=重新初始化',
+            '狀態寄存器 (201)': 'bit0=Ready, bit1=Running, bit2=Alarm, bit3=Initialized',
+            '檢測參數 (210-219)': '檢測參數設定',
+            '像素座標結果 (240-255)': '圓形檢測結果和像素座標',
+            '世界座標結果 (256-276)': 'v4.0新增: 圓形世界座標轉換結果',
+            '統計資訊 (280-299)': '時間統計和系統計數器'
+        },
+        'control_commands': {
+            '0': '清空控制',
+            '8': '拍照',
+            '16': '拍照+檢測 (含世界座標轉換)', 
+            '32': '重新初始化'
+        },
+        'status_bits': {
+            'bit0': 'Ready狀態 - 系統準備接受新指令',
+            'bit1': 'Running狀態 - 系統正在執行操作',
+            'bit2': 'Alarm狀態 - 系統異常或錯誤',
+            'bit3': 'Initialized狀態 - 系統已完全初始化'
+        },
+        'world_coord_features': {
+            'coordinate_system': 'Z=0平面投影',
+            'precision': '2位小數 (×100存儲)',
+            'range': '±21474.83mm',
+            'storage_format': '32位有符號整數，拆分為高位低位',
+            'file_support': 'NPY格式內外參檔案',
+            'calibration_files': {
+                'intrinsic': 'camera_matrix_YYYYMMDD_HHMMSS.npy, dist_coeffs_YYYYMMDD_HHMMSS.npy',
+                'extrinsic': '*extrinsic*.npy (包含rvec和tvec)'
+            }
+        },
+        'handshake_logic': [
+            '1. 只有Ready=1時才接受控制指令',
+            '2. 收到指令後Ready→0, Running→1',
+            '3. 執行完成後Running→0',
+            '4. 控制指令清零且Running=0時Ready→1',
+            '5. 異常時設置Alarm=1, Initialized→0',
+            '6. v4.0: 自動檢測標定數據有效性'
+        ],
+        'features': [
+            '運動控制握手協議',
+            '50ms高頻輪詢',
+            '狀態機管理',
+            '指令/狀態模式',
+            '自動異常檢測',
+            '完整握手邏輯',
+            'v4.0: NPY內外參管理',
+            'v4.0: 像素座標到世界座標轉換',
+            'v4.0: 向下兼容無標定模式'
+        ],
+        'restart_required': True,
+        'compatibility': {
+            'python_min': '3.7',
+            'recommended_python': '3.8+',
+            'opencv_required': True,
+            'numpy_required': True,
+            'async_support': True,
+            'sync_support': True,
+            'automation_ready': True
+        }
+    })
+
+
+# ==================== Socket.IO 事件處理 ====================
 @socketio.on('connect')
 def handle_connect():
     """客戶端連接"""
@@ -2096,25 +2341,25 @@ def handle_disconnect():
 # ==================== 主函數 ====================
 def main():
     """主函數"""
-    print("🚀 CCD1 視覺控制系統啟動中 (運動控制握手版本 + 世界座標轉換)...")
+    print("🚀 CCD1 視覺控制系統啟動中 (運動控制握手版本 v4.0 + 世界座標轉換)...")
     
     if not CAMERA_MANAGER_AVAILABLE:
         print("❌ 相機管理器不可用，請檢查SDK導入")
         return
     
     try:
-        print("🔧 系統架構: Modbus TCP Client - 運動控制握手模式 + 世界座標轉換")
+        print("🔧 系統架構: Modbus TCP Client - 運動控制握手模式 v4.0")
         print("📡 連接模式: 主動連接外部PLC/HMI設備")
         print("🤝 握手協議: 指令/狀態模式，50ms高頻輪詢")
-        print("🌍 新功能: 內外參管理 + 像素座標到世界座標轉換")
+        print("🌍 新功能: NPY內外參管理 + 像素座標到世界座標轉換")
         
         if MODBUS_AVAILABLE:
             print(f"✅ Modbus TCP Client模組可用 (pymodbus {PYMODBUS_VERSION})")
-            print("📊 CCD1 運動控制握手寄存器映射 (擴展版本):")
+            print("📊 CCD1 運動控制握手寄存器映射 v4.0:")
             print("   ┌─ 控制指令寄存器 (200)")
             print("   │  • 0: 清空控制")
             print("   │  • 8: 拍照")
-            print("   │  • 16: 拍照+檢測")
+            print("   │  • 16: 拍照+檢測 (含世界座標)")
             print("   │  • 32: 重新初始化")
             print("   ├─ 狀態寄存器 (201) - 固定初始值")
             print("   │  • bit0: Ready狀態")
@@ -2125,21 +2370,23 @@ def main():
             print("   │  • 完全初始化後: 9 (Ready=1, Initialized=1)")
             print("   ├─ 檢測參數 (210-219)")
             print("   │  • 面積、圓度、圖像處理參數")
-            print("   ├─ 像素座標檢測結果 (240-255)")
+            print("   ├─ 像素座標結果 (240-255)")
             print("   │  • 圓形數量、像素座標、半徑")
-            print("   ├─ 世界座標檢測結果 (256-276) - 新增")
-            print("   │  • 世界座標有效標誌 (256)")
-            print("   │  • 5個圓形世界座標 (X,Y各32位)")
-            print("   │  • 座標精度: 乘以100保留2位小數")
+            print("   ├─ 世界座標結果 (256-276) ⭐v4.0新增⭐")
+            print("   │  • 256: 世界座標有效標誌")
+            print("   │  • 257-276: 圓形世界座標 (X高位/低位, Y高位/低位)")
+            print("   │  • 精度: ×100存儲，保留2位小數")
+            print("   │  • 範圍: ±21474.83mm")
             print("   └─ 統計資訊 (280-299)")
             print("      • 時間統計、計數器、版本信息")
             print("")
-            print("🌍 世界座標轉換功能:")
-            print("   1. 自動掃描內外參檔案（camera_matrix_*.npy, dist_coeffs_*.npy, extrinsic_*.npy）")
-            print("   2. 支援NPY格式檔案導入與驗證")
-            print("   3. 像素座標到世界座標轉換（Z=0平面）")
-            print("   4. 世界座標寄存器映射（32位精度）")
-            print("   5. UI顯示世界座標（保留2位小數）")
+            print("🌍 世界座標轉換功能 v4.0:")
+            print("   • 內參檔案: camera_matrix_YYYYMMDD_HHMMSS.npy")
+            print("   • 畸變係數: dist_coeffs_YYYYMMDD_HHMMSS.npy") 
+            print("   • 外參檔案: *extrinsic*.npy (包含rvec/tvec)")
+            print("   • 投影平面: Z=0平面")
+            print("   • 自動掃描: 程式同層目錄")
+            print("   • 向下兼容: 無標定時僅提供像素座標")
             print("")
             print("🤝 握手邏輯:")
             print("   1. 系統初始化完成 → Ready=1")
@@ -2148,6 +2395,7 @@ def main():
             print("   4. 執行完成 → Running=0")
             print("   5. PLC清零指令 → Ready=1 (準備下次)")
             print("   6. 異常發生 → Alarm=1, Initialized=0")
+            print("   7. v4.0: 自動更新世界座標有效性標誌")
         else:
             print("⚠️ Modbus Client功能不可用 (使用模擬模式)")
         
@@ -2155,24 +2403,25 @@ def main():
         print("📱 訪問地址: http://localhost:5051")
         print("🎯 系統功能:")
         print("   • 相機連接管理")
-        print("   • 內外參檔案管理")
         print("   • 參數調整介面")
         print("   • 圓形檢測與標註")
-        print("   • 世界座標轉換")
         print("   • 運動控制握手協議")
         print("   • 即時狀態監控")
         print("   • 狀態機管理")
+        print("   • ⭐ v4.0: 標定檔案管理")
+        print("   • ⭐ v4.0: 世界座標轉換")
+        print("   • ⭐ v4.0: 雙座標系結果顯示")
         print("🔗 使用說明:")
-        print("   1. 設置Modbus服務器IP地址")
-        print("   2. 連接到外部PLC/HMI設備")
-        print("   3. 初始化相機連接")
-        print("   4. 將內外參NPY檔案放入同層目錄")
-        print("   5. 點擊「確認導入」載入標定數據")
+        print("   1. 準備內外參NPY檔案 (放入程式同層目錄)")
+        print("   2. 設置Modbus服務器IP地址")
+        print("   3. 連接到外部PLC/HMI設備")
+        print("   4. 初始化相機連接")
+        print("   5. 掃描並載入標定檔案 (可選)")
         print("   6. 系統自動進入握手模式")
         print("   7. PLC通過控制指令操作系統")
         print("   8. 監控狀態寄存器確認執行狀態")
-        print("   9. 檢測結果包含像素座標和世界座標")
-        print("=" * 80)
+        print("   9. 讀取像素座標+世界座標檢測結果")
+        print("=" * 60)
         
         socketio.run(app, host='0.0.0.0', port=5051, debug=False)
         

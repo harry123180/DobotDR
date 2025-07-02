@@ -195,8 +195,9 @@ class DrFlow1VisionPickExecutor:
         self.external_modules = external_modules
         
         print(f"✓ Flow1執行器初始化完成")
-        print(f"  可用模組: Gripper={self.external_modules.get('gripper') is not None}, "
-              f"CCD1={self.external_modules.get('ccd1') is not None}")
+        print(f"  可用模組: Gripper={self.external_modules.get('gripper') is not None}")
+        print(f"  CCD1檢測模式: 直接寄存器讀取 (基地址257-260)")
+        # 移除了對CCD1高層API的依賴檢查
         
     def _load_and_validate_points(self):
         """載入並驗證點位檔案"""
@@ -449,54 +450,6 @@ class DrFlow1VisionPickExecutor:
         except Exception as e:
             print(f"夾爪智能撐開異常: {e}")
             return False
-    
-    def _execute_ccd1_smart_detection(self) -> Optional[Dict[str, float]]:
-        """執行CCD1智能檢測 - 僅使用檢測XY座標，R角度繼承VP_TOPSIDE"""
-        try:
-            ccd1_api = self.external_modules.get('ccd1')
-            if not ccd1_api:
-                print("CCD1 API未初始化")
-                return None
-            
-            print("  使用CCD1智能檢測API...")
-            
-            # 檢查CCD1系統狀態
-            system_status = ccd1_api.get_system_status()
-            if not system_status['connected']:
-                print("  ⚠️ CCD1系統未連接")
-                return None
-            
-            print(f"  CCD1系統狀態: Ready={system_status.get('ready', False)}")
-            
-            # 使用get_next_circle_world_coord API
-            # 自動處理：檢查FIFO佇列 → 如果空則自動拍照檢測 → 返回結果或None
-            coord = ccd1_api.get_next_circle_world_coord()
-            
-            if coord:
-                # 獲取VP_TOPSIDE點位的Z高度和R值
-                vp_topside_point = self.points_manager.get_point('VP_TOPSIDE')
-                if not vp_topside_point:
-                    print("錯誤: 無法獲取VP_TOPSIDE點位")
-                    return None
-                
-                detected_pos = {
-                    'x': coord.world_x,           # 使用CCD1檢測的X座標
-                    'y': coord.world_y,           # 使用CCD1檢測的Y座標
-                    'z': vp_topside_point.z,      # 使用VP_TOPSIDE的Z高度
-                    'r': vp_topside_point.r       # 繼承VP_TOPSIDE的R角度
-                }
-                print(f"CCD1檢測成功:")
-                print(f"  檢測XY座標: ({detected_pos['x']:.2f}, {detected_pos['y']:.2f})")
-                print(f"  繼承VP_TOPSIDE - Z:{detected_pos['z']:.2f}, R:{detected_pos['r']:.2f}")
-                return detected_pos
-            else:
-                print("CCD1未檢測到有效物件")
-                return None
-                
-        except Exception as e:
-            print(f"CCD1檢測異常: {e}")
-            return None
-    
     def _execute_move_to_detected_high(self, detected_position: Optional[Dict[str, float]]) -> bool:
         """移動到檢測位置(與VP_TOPSIDE同高) - 僅同步XY，R繼承VP_TOPSIDE"""
         try:
@@ -542,6 +495,95 @@ class DrFlow1VisionPickExecutor:
         except Exception as e:
             print(f"移動到檢測位置失敗: {e}")
             return False
+    def _execute_ccd1_smart_detection(self) -> Optional[Dict[str, float]]:
+        """執行CCD1智能檢測 - 直接讀取寄存器世界座標"""
+        try:
+            # 導入pymodbus進行直接寄存器讀取
+            from pymodbus.client import ModbusTcpClient
+            
+            print("  使用CCD1寄存器直接讀取...")
+            
+            # 連接到Modbus服務器
+            modbus_client = ModbusTcpClient(
+                host="127.0.0.1",  # 根據你的Modbus服務器配置調整
+                port=502,
+                timeout=3.0
+            )
+            
+            if not modbus_client.connect():
+                print("  ⚠️ 無法連接到Modbus服務器")
+                return None
+            
+            try:
+                # 讀取圓形1的世界座標寄存器 (257-260)
+                # 257: 世界X座標高位, 258: 世界X座標低位
+                # 259: 世界Y座標高位, 260: 世界Y座標低位
+                result = modbus_client.read_holding_registers(
+                    address=257,    # 起始地址257
+                    count=4,        # 讀取4個寄存器 (257-260)
+                    slave=1
+                )
+                
+                if hasattr(result, 'isError') and result.isError():
+                    print(f"  ✗ 讀取CCD1世界座標寄存器失敗: {result}")
+                    return None
+                
+                if not hasattr(result, 'registers') or len(result.registers) < 4:
+                    print("  ✗ 讀取的寄存器數據不足")
+                    return None
+                
+                # 解析32位世界座標 (×100精度)
+                x_high, x_low, y_high, y_low = result.registers
+                
+                # 合併高低位並轉換為有符號32位整數
+                world_x_int = ((x_high << 16) | x_low)
+                world_y_int = ((y_high << 16) | y_low)
+                
+                # 處理有符號數 (如果最高位為1，則為負數)
+                if world_x_int & 0x80000000:
+                    world_x_int = world_x_int - 0x100000000
+                if world_y_int & 0x80000000:
+                    world_y_int = world_y_int - 0x100000000
+                
+                # 轉換為實際座標 (÷100恢復小數)
+                world_x = world_x_int / 100.0
+                world_y = world_y_int / 100.0
+                
+                # 檢查座標是否有效 (不為0)
+                if world_x == 0.0 and world_y == 0.0:
+                    print("  ⚠️ CCD1世界座標為零，可能無有效檢測結果")
+                    return None
+                
+                # 獲取VP_TOPSIDE點位的Z高度和R值
+                vp_topside_point = self.points_manager.get_point('VP_TOPSIDE')
+                if not vp_topside_point:
+                    print("錯誤: 無法獲取VP_TOPSIDE點位")
+                    return None
+                
+                detected_pos = {
+                    'x': world_x,                 # 使用CCD1檢測的X座標
+                    'y': world_y,                 # 使用CCD1檢測的Y座標
+                    'z': vp_topside_point.z,      # 使用VP_TOPSIDE的Z高度
+                    'r': vp_topside_point.r       # 繼承VP_TOPSIDE的R角度
+                }
+                
+                print(f"CCD1寄存器讀取成功:")
+                print(f"  寄存器值: X_high={x_high}, X_low={x_low}, Y_high={y_high}, Y_low={y_low}")
+                print(f"  世界座標: ({detected_pos['x']:.2f}, {detected_pos['y']:.2f})mm")
+                print(f"  繼承VP_TOPSIDE - Z:{detected_pos['z']:.2f}, R:{detected_pos['r']:.2f}")
+                
+                return detected_pos
+                
+            finally:
+                # 確保關閉Modbus連接
+                modbus_client.close()
+                
+        except ImportError:
+            print("  ✗ 無法導入pymodbus，請確認pymodbus已安裝")
+            return None
+        except Exception as e:
+            print(f"CCD1寄存器讀取異常: {e}")
+            return None
     
     def _execute_move_to_detected_low(self, detected_position: Optional[Dict[str, float]]) -> bool:
         """移動到檢測位置(夾取高度) - 僅同步XY，R繼承VP_TOPSIDE"""

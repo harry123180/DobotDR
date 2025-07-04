@@ -647,7 +647,7 @@ class CCD3AngleDetectionService:
                     
                     print("測試相機圖像捕獲能力...")
                     try:
-                        test_image = self.camera.capture_frame()
+                        test_image = self.camera.capture_latest_frame(timeout=3000)
                         if test_image is not None:
                             print(f"相機測試成功，可以捕獲圖像，測試圖像尺寸: {test_image.data.shape}")
                             self.state_machine.set_initialized(True)
@@ -785,7 +785,7 @@ class CCD3AngleDetectionService:
         
         try:
             # 優化13：移除不必要的日誌輸出，只保留關鍵訊息
-            frame_data = self.camera.capture_frame()
+            frame_data = self.camera.capture_latest_frame(timeout=3000)
             
             if frame_data is None:
                 raise Exception("圖像捕獲失敗")
@@ -1204,7 +1204,7 @@ class CCD3AngleDetectionService:
                 # 單純拍照
                 print("📸 執行拍照指令...")
                 if self.camera and getattr(self.camera, 'is_streaming', False):
-                    frame_data = self.camera.capture_frame()
+                    frame_data = self.camera.capture_latest_frame(timeout=3000)
                     if frame_data is not None:
                         print(f"✅ 拍照完成，圖像尺寸: {frame_data.data.shape}")
                     else:

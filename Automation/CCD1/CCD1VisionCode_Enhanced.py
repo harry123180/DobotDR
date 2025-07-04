@@ -1545,10 +1545,11 @@ class CCD1VisionController:
             if not stream_result.get(self.camera_name, False):
                 raise Exception("開始串流失敗")
             
-            # 設置增益為200
-            camera = self.camera_manager.cameras[self.camera_name]
-            camera.camera.MV_CC_SetFloatValue("Gain", 200.0)
-            
+             # 設置增益為200 - 新版API適配
+            if self.camera_name in self.camera_manager.cameras:
+                camera = self.camera_manager.cameras[self.camera_name]
+                camera.camera.MV_CC_SetFloatValue("Gain", 200.0)
+                
             self.is_connected = True
             self.logger.info(f"相機 {self.camera_name} 初始化成功")
             
@@ -1587,7 +1588,7 @@ class CCD1VisionController:
         capture_start = time.time()
         
         try:
-            frame_data = self.camera_manager.get_image_data(self.camera_name, timeout=3000)
+            frame_data = self.camera_manager.capture_new_frame(self.camera_name, timeout=3000)
             
             if frame_data is None:
                 return None, 0.0

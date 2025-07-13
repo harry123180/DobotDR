@@ -55,3 +55,8 @@ werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on 
 2025-06-24 23:06:51,939 - ERROR - default_exception_handler:1833 - Task was destroyed but it is pending!
 task: <Task pending name='Task-39689' coro=<ServerRequestHandler.handle_request() running at C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\server\requesthandler.py:95> cb=[_chain_future.<locals>._call_set_state() at C:\Users\user\anaconda3\envs\ROBOT\Lib\asyncio\futures.py:396]>
 2025-06-26 14:15:51,632 - ERROR - handle_request:112 - requested slave does not exist: 0
+2025-07-09 12:54:36,223 - ERROR - send:384 - Cancel send, because not connected!
+2025-07-09 13:14:41,909 - ERROR - send:384 - Cancel send, because not connected!
+2025-07-09 13:36:20,364 - ERROR - send:384 - Cancel send, because not connected!
+2025-07-09 13:36:20,376 - ERROR - default_exception_handler:1833 - Task was destroyed but it is pending!
+task: <Task pending name='Task-380959' coro=<ServerRequestHandler.handle_request() running at C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\server\requesthandler.py:95> cb=[_chain_future.<locals>._call_set_state() at C:\Users\user\anaconda3\envs\ROBOT\Lib\asyncio\futures.py:396]>

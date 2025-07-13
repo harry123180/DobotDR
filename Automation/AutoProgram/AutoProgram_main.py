@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AutoProgram_main.py - DR專案版本
+AutoProgram_main.py - DR專案版本 (修正版)
 VP入料+機械臂協調控制系統 (DR_F/STACK二分類)
-雙執行緒架構：AutoFeeding執行緒 + RobotJob執行緒
-基地址：1300-1349
+修正問題：
+1. 強化Flow1暫停機制
+2. 優化直振供應反應速度
+3. 增加無料保護機制
 """
 
 import time
@@ -34,6 +36,7 @@ class SystemStatus(Enum):
     FLOW1_EXECUTING = 3
     FLOW2_EXECUTING = 4
     ERROR = 5
+    NO_MATERIAL_PROTECTION = 6
 
 
 @dataclass
@@ -60,9 +63,9 @@ class ProtectionZone:
         """判斷點是否在保護區域四邊形內"""
         points = [
             (-112, 243),   # x1, y1
-            (-112, 341.21),   # x2, y2
+            (-112, 339.21),   # x2, y2
             (-4, 243),  # x3, y3
-            (-4, 341)  # x4, y4
+            (-4, 339)  # x4, y4
         ]
         
         # 找中心點，並以中心為基準對四點極角排序
@@ -92,7 +95,7 @@ class ProtectionZone:
 
 
 class AutoFeedingThread:
-    """自動入料執行緒 - DR專案版本"""
+    """自動入料執行緒 - DR專案版本 (修正版)"""
     
     def __init__(self, modbus_client: ModbusTcpClient, config: Dict):
         self.modbus_client = modbus_client
@@ -116,26 +119,41 @@ class AutoFeedingThread:
         self.feeding_ready = False
         self.feeding_ready_callback = None
         
-        # 暫停標誌 (用於Flow1執行時暫停)
-        self.pause_for_robot = False
+        # 修正1: 強化暫停機制
+        self.force_pause = False  # 強制暫停標誌
+        self.pause_lock = threading.Lock()  # 暫停鎖
+        
+        # 修正2: 無料保護機制
+        self.consecutive_no_material_count = 0  # 連續無料次數
+        self.flow4_consecutive_trigger_count = 0  # Flow4連續觸發次數
+        self.last_detection_time = time.time()  # 最後檢測時間
+        
+        # 修正3: 簡化直振判斷邏輯
+        self.material_shortage_threshold = 3  # 料件不足閾值 (從4降為3)
+        self.no_material_protection_threshold = 5  # 無料保護閾值
         
     def set_feeding_ready_callback(self, callback):
         """設置入料完成回調函數"""
         self.feeding_ready_callback = callback
     
     def pause_for_robot_operation(self):
-        """為機械臂作業暫停入料檢測"""
-        print("[AutoFeeding] 為機械臂作業暫停入料檢測")
-        self.pause_for_robot = True
-        self.feeding_ready = False
+        """修正1: 強化暫停機制 - 為機械臂作業暫停入料檢測"""
+        with self.pause_lock:
+            print("[AutoFeeding] 強制暫停入料檢測 (機械臂作業中)")
+            self.force_pause = True
+            self.feeding_ready = False
     
     def resume_after_robot_operation(self):
-        """機械臂作業完成後恢復入料檢測"""
-        print("[AutoFeeding] 機械臂作業完成，恢復入料檢測")
-        self.pause_for_robot = False
-        self.feeding_ready = False
+        """修正1: 強化暫停機制 - 機械臂作業完成後恢復入料檢測"""
+        with self.pause_lock:
+            print("[AutoFeeding] 恢復入料檢測 (機械臂作業完成)")
+            self.force_pause = False
+            self.feeding_ready = False
     
-    
+    def is_paused(self) -> bool:
+        """檢查是否處於暫停狀態"""
+        with self.pause_lock:
+            return self.force_pause
     
     def read_register(self, address: int) -> Optional[int]:
         """讀取單個寄存器"""
@@ -184,6 +202,10 @@ class AutoFeedingThread:
     
     def check_modules_status(self) -> bool:
         """檢查VP、CCD1模組狀態"""
+        if self.is_paused():
+            print("[AutoFeeding] 檢測到暫停狀態，跳過模組檢查")
+            return False
+        
         print("[AutoFeeding] 檢查模組狀態...")
         
         # 檢查CCD1狀態
@@ -263,6 +285,11 @@ class AutoFeedingThread:
         start_time = time.time()
         
         while (time.time() - start_time) < timeout:
+            # 修正1: 檢查暫停狀態
+            if self.is_paused():
+                print("[AutoFeeding] 檢測到暫停狀態，中斷CCD1檢測")
+                return result
+            
             capture_complete = self.read_register(203)  # CAPTURE_COMPLETE
             detect_complete = self.read_register(204)   # DETECT_COMPLETE  
             operation_success = self.read_register(205) # OPERATION_SUCCESS
@@ -361,48 +388,93 @@ class AutoFeedingThread:
         return success
     
     def trigger_vp_vibration_and_redetect(self) -> Optional[Tuple[float, float]]:
-        """觸發VP震動並重新檢測DR_F"""
-        # VP指令參數
+        """觸發VP震動並重新檢測DR_F - 修改為向右+擴散交互使用"""
+        # VP指令參數 - 向右和擴散使用相同參數
         command_code = 5  # execute_action
-        action_code = self.config['vp_params']['spread_action_code']  # spread=11
-        strength = self.config['vp_params']['spread_strength']        # 50
-        frequency = self.config['vp_params']['spread_frequency']      # 43
-        duration = self.config['vp_params']['spread_duration']        # 0.5秒
+        strength = self.config['vp_params']['spread_strength']      # 50
+        frequency = self.config['vp_params']['spread_frequency']    # 43
+        duration = self.config['vp_params']['spread_duration']      # 0.4秒
         
-        # 啟動VP震動
+        # 第一步：向右震動
+        print("[AutoFeeding] 第一步：執行向右震動")
+        right_action_code = 4  # right動作碼
+        
+        # 啟動向右震動
         success = True
         success &= self.write_register(320, command_code)
-        success &= self.write_register(321, action_code)
+        success &= self.write_register(321, right_action_code)
         success &= self.write_register(322, strength)
         success &= self.write_register(323, frequency)
         success &= self.write_register(324, int(time.time()) % 65535)  # command_id
         
         if not success:
+            print("[AutoFeeding] ✗ 向右震動指令發送失敗")
             return None
         
-        # 等待震動
+        # 等待向右震動
         time.sleep(duration)
         
         # 停止震動
         if not self.stop_vp_vibration():
+            print("[AutoFeeding] ✗ 停止向右震動失敗")
             return None
         
         # 等待穩定
         time.sleep(0.3)
         
-        # 重新檢測
+        # 重新檢測是否有DR_F在保護區
+        detection_result = self.trigger_ccd1_detection()
+        
+        if detection_result.operation_success:
+            target_coords = self.find_dr_f_in_protection_zone(detection_result)
+            if target_coords:
+                self.dr_f_found_count += 1
+                print(f"[AutoFeeding] ✓ 向右震動後找到DR_F: {target_coords}")
+                return target_coords
+        
+        # 第二步：擴散震動
+        print("[AutoFeeding] 第二步：執行擴散震動")
+        spread_action_code = 11  # spread動作碼
+        
+        # 啟動擴散震動
+        success = True
+        success &= self.write_register(320, command_code)
+        success &= self.write_register(321, spread_action_code)
+        success &= self.write_register(322, strength)
+        success &= self.write_register(323, frequency)
+        success &= self.write_register(324, int(time.time()) % 65535)  # command_id
+        
+        if not success:
+            print("[AutoFeeding] ✗ 擴散震動指令發送失敗")
+            return None
+        
+        # 等待擴散震動
+        time.sleep(duration)
+        
+        # 停止震動
+        if not self.stop_vp_vibration():
+            print("[AutoFeeding] ✗ 停止擴散震動失敗")
+            return None
+        
+        # 等待穩定
+        time.sleep(0.3)
+        
+        # 最終檢測
         detection_result = self.trigger_ccd1_detection()
         
         if not detection_result.operation_success:
+            print("[AutoFeeding] ✗ 擴散震動後檢測失敗")
             return None
         
         target_coords = self.find_dr_f_in_protection_zone(detection_result)
         
         if target_coords:
             self.dr_f_found_count += 1
+            print(f"[AutoFeeding] ✓ 擴散震動後找到DR_F: {target_coords}")
             return target_coords
-        
-        return None
+        else:
+            print("[AutoFeeding] 向右+擴散震動後仍未找到保護區域內的DR_F")
+            return None
     
     def trigger_flow4_feeding(self) -> bool:
         """觸發Flow4送料"""
@@ -414,11 +486,33 @@ class AutoFeedingThread:
         if not self.write_register(448, 0):
             return False
         
+        self.flow4_consecutive_trigger_count += 1  # 記錄連續觸發次數
+        print(f"[AutoFeeding] Flow4送料觸發 (連續第{self.flow4_consecutive_trigger_count}次)")
+        
         return True
     
+    def check_no_material_protection(self) -> bool:
+        """修正3: 檢查無料保護機制"""
+        # 如果Flow4連續觸發超過閾值，啟動保護機制
+        if self.flow4_consecutive_trigger_count >= self.no_material_protection_threshold:
+            print(f"[AutoFeeding] ⚠️ 無料保護觸發: Flow4連續觸發{self.flow4_consecutive_trigger_count}次")
+            return True
+        
+        # 如果連續無料檢測超過閾值
+        if self.consecutive_no_material_count >= self.no_material_protection_threshold:
+            print(f"[AutoFeeding] ⚠️ 無料保護觸發: 連續無料檢測{self.consecutive_no_material_count}次")
+            return True
+        
+        return False
+    
     def auto_feeding_cycle(self) -> bool:
-        """執行一次自動入料週期 - DR專案版本"""
+        """執行一次自動入料週期 - DR專案版本 (修正版)"""
         try:
+            # 修正1: 檢查強制暫停狀態
+            if self.is_paused():
+                print("[AutoFeeding] 檢測到暫停狀態，跳過此週期")
+                return False
+            
             self.cycle_count += 1
             print(f"\n[AutoFeeding] === 週期 {self.cycle_count} 開始 ===")
             
@@ -427,12 +521,22 @@ class AutoFeedingThread:
                 print(f"[AutoFeeding] 週期 {self.cycle_count} 跳過: 模組狀態檢查失敗")
                 return False
             
+            # 修正3: 檢查無料保護
+            if self.check_no_material_protection():
+                print(f"[AutoFeeding] 週期 {self.cycle_count} 中止: 無料保護觸發")
+                return False
+            
             # 觸發CCD1檢測
             detection_result = self.trigger_ccd1_detection()
             
             if not detection_result.operation_success:
                 print(f"[AutoFeeding] 週期 {self.cycle_count} 跳過: CCD1檢測失敗")
+                self.consecutive_no_material_count += 1
                 return False
+            
+            # 重置連續無料計數器 (有成功檢測)
+            self.consecutive_no_material_count = 0
+            self.last_detection_time = time.time()
             
             # 尋找保護區域內的DR_F
             target_coords = self.find_dr_f_in_protection_zone(detection_result)
@@ -440,6 +544,7 @@ class AutoFeedingThread:
             if target_coords:
                 # 找到保護區域內的DR_F
                 self.dr_f_found_count += 1
+                self.flow4_consecutive_trigger_count = 0  # 重置Flow4連續觸發計數
                 if self.update_first_dr_f_coordinates(target_coords):
                     print(f"[AutoFeeding] ✓ 找到DR_F在保護區域: {target_coords}")
                     self.feeding_ready = True
@@ -450,18 +555,20 @@ class AutoFeedingThread:
                     print("[AutoFeeding] ✗ DR_F座標更新失敗")
             else:
                 # 沒有DR_F在保護區域內
-                if detection_result.total_detections < 4:
+                # 修正2: 簡化直振判斷邏輯 (閾值從4降為3)
+                if detection_result.total_detections < self.material_shortage_threshold:
                     # 料件不足，觸發Flow4送料
                     if self.trigger_flow4_feeding():
                         self.flow4_trigger_count += 1
                         print(f"[AutoFeeding] 料件不足，觸發Flow4送料 (總檢測={detection_result.total_detections})")
                 
-                elif detection_result.total_detections >= 4:
+                elif detection_result.total_detections >= self.material_shortage_threshold:
                     # 料件充足但沒有DR_F在保護區，震動散開並重新檢測
                     print(f"[AutoFeeding] 料件充足但無DR_F在保護區 (總檢測={detection_result.total_detections})")
                     target_coords_after_vp = self.trigger_vp_vibration_and_redetect()
                     if target_coords_after_vp:
                         # 震動後找到DR_F，更新座標
+                        self.flow4_consecutive_trigger_count = 0  # 重置Flow4連續觸發計數
                         if self.update_first_dr_f_coordinates(target_coords_after_vp):
                             print(f"[AutoFeeding] ✓ 震動後找到DR_F: {target_coords_after_vp}")
                             self.feeding_ready = True
@@ -482,6 +589,7 @@ class AutoFeedingThread:
             
         except Exception as e:
             print(f"[AutoFeeding] 週期 {self.cycle_count} 異常: {e}")
+            self.consecutive_no_material_count += 1
             return False
     
     def start(self):
@@ -496,7 +604,12 @@ class AutoFeedingThread:
         self.flow4_trigger_count = 0
         self.vp_vibration_count = 0
         self.feeding_ready = False
-        self.pause_for_robot = False
+        
+        # 修正: 重置保護機制狀態
+        self.force_pause = False
+        self.consecutive_no_material_count = 0
+        self.flow4_consecutive_trigger_count = 0
+        self.last_detection_time = time.time()
         
         self.thread = threading.Thread(target=self._auto_feeding_loop, daemon=True)
         self.thread.start()
@@ -528,11 +641,17 @@ class AutoFeedingThread:
         
         while self.running:
             try:
-                # 檢查是否需要暫停
-                if self.pause_for_robot:
+                # 修正1: 強化暫停檢查
+                if self.is_paused():
                     print("[AutoFeeding] 已暫停，等待機械臂作業完成...")
                     time.sleep(0.5)
                     continue
+                
+                # 修正3: 檢查無料保護
+                if self.check_no_material_protection():
+                    print("[AutoFeeding] 無料保護觸發，停止AutoFeeding")
+                    self.running = False
+                    break
                 
                 # 只有在feeding_ready=False時才執行檢測
                 if not self.feeding_ready:
@@ -546,7 +665,7 @@ class AutoFeedingThread:
 
 
 class RobotJobThread:
-    """機械臂作業執行緒 - DR專案版本 (Flow1+Flow2)"""
+    """機械臂作業執行緒 - DR專案版本 (Flow1+Flow2) (修正版)"""
     
     def __init__(self, modbus_client: ModbusTcpClient, config: Dict):
         self.modbus_client = modbus_client
@@ -570,6 +689,9 @@ class RobotJobThread:
         # 統計資訊
         self.flow1_trigger_count = 0
         self.flow2_complete_count = 0
+        
+        # 修正1: Flow1執行狀態追蹤
+        self.flow1_executing = False
         
     def read_register(self, address: int) -> Optional[int]:
         """讀取單個寄存器"""
@@ -597,9 +719,10 @@ class RobotJobThread:
         if not self.prepare_done:
             print("[RobotJob] prepare_done=False，觸發Flow1去VP拿料")
             
-            # 使用暫停標誌而不是停止執行緒
+            # 修正1: 設置Flow1執行狀態並強制暫停AutoFeeding
+            self.flow1_executing = True
             if hasattr(self, 'auto_feeding_ref') and self.auto_feeding_ref:
-                print("[RobotJob] 暫停AutoFeeding檢測避免干擾Flow1")
+                print("[RobotJob] 強制暫停AutoFeeding檢測避免干擾Flow1")
                 self.auto_feeding_ref.pause_for_robot_operation()
             
             if self.write_register(self.FLOW1_CONTROL, 1):
@@ -610,21 +733,52 @@ class RobotJobThread:
         else:
             # prepare_done=True，表示機台已準備好，等待出料指令
             print(f"[RobotJob] prepare_done=True，機台已準備好接受出料指令")
-    
+    def clear_flow1_control_with_verify(self) -> bool:
+        """清除Flow1控制狀態並驗證 - 增強版，確保真正清零"""
+        max_attempts = 5  # 最多嘗試5次
+        attempt = 0
+        
+        while attempt < max_attempts:
+            attempt += 1
+            
+            # 嘗試寫入0
+            write_success = self.write_register(1240, 0)  # FLOW1_CONTROL
+            
+            if not write_success:
+                print(f"[AutoFeeding] ✗ Flow1控制清零寫入失敗 (嘗試{attempt}/{max_attempts})")
+                time.sleep(0.2)
+                continue
+            
+            # 等待寫入穩定
+            time.sleep(0.1)
+            
+            # 讀取驗證
+            current_value = self.read_register(1240)
+            
+            if current_value == 0:
+                print(f"[AutoFeeding] ✓ Flow1控制清零成功 (嘗試{attempt}/{max_attempts})")
+                return True
+            else:
+                print(f"[AutoFeeding] ✗ Flow1控制清零驗證失敗: 期望0，實際{current_value} (嘗試{attempt}/{max_attempts})")
+                time.sleep(0.2)
+        
+        print(f"[AutoFeeding] ✗ Flow1控制清零最終失敗 (嘗試{max_attempts}次)")
+        return False
     def robot_job_cycle(self):
-        """機械臂作業週期 - DR專案版本"""
+        """機械臂作業週期 - DR專案版本 (修正版)"""
         try:
             # 檢查機械臂是否Ready (1200=9)
             robot_status = self.read_register(self.MOTION_STATUS)  # 運動狀態寄存器
             robot_ready = (robot_status == 9) if robot_status is not None else False
             
-            # 檢查Flow1完成狀態 (但不清空，供其他模組使用)
+            # 修正1: 檢查Flow1完成狀態
             flow1_status = self.read_register(self.FLOW1_COMPLETE)
-            if flow1_status == 1:
+            if flow1_status == 1 and self.flow1_executing:
                 print("[RobotJob] 檢測到Flow1完成")
                 
                 # Flow1完成，設置prepare_done=True
                 self.prepare_done = True
+                self.flow1_executing = False
                 
                 # 恢復AutoFeeding檢測
                 if hasattr(self, 'auto_feeding_ref') and self.auto_feeding_ref:
@@ -632,9 +786,19 @@ class RobotJobThread:
                     self.auto_feeding_ref.resume_after_robot_operation()
                 
                 # 只清空Flow1控制狀態，保持Flow1完成狀態供其他模組使用
-                self.write_register(self.FLOW1_CONTROL, 0)
+                
+                for i in range(5):
+                    self.write_register(self.FLOW1_CONTROL, 0)
+                    current_value = self.read_register(self.FLOW1_CONTROL)
+                    if current_value == 0:
+                        break
+                    if i == 4:
+                        print("[RobotJob] ✗ Flow1控制清零失敗")
+                clear_success = self.clear_flow1_control_with_verify()
+                if not clear_success:
+                    print("[AutoFeeding] ✗ Flow1控制清零失敗，終止清空流程")
                 print("[RobotJob] Flow1控制狀態已清零，prepare_done=True，等待其他模組執行Flow2")
-            
+                    
             # 檢查Flow2完成狀態 (DR專案使用Flow2出料，取代CASE專案的Flow5)
             flow2_status = self.read_register(self.FLOW2_COMPLETE)
             if flow2_status == 1:
@@ -649,14 +813,17 @@ class RobotJobThread:
                     print("[RobotJob] Flow2完成，重置AutoFeeding狀態開始新週期")
                     # 重置所有狀態
                     self.auto_feeding_ref.feeding_ready = False
-                    self.auto_feeding_ref.pause_for_robot = False
+                    self.auto_feeding_ref.force_pause = False
+                    # 重置無料保護狀態
+                    self.auto_feeding_ref.flow4_consecutive_trigger_count = 0
+                    self.auto_feeding_ref.consecutive_no_material_count = 0
                 
                 # 清除Flow2完成狀態
                 self.write_register(self.FLOW2_COMPLETE, 0)
                 print("[RobotJob] Flow2完成狀態已清零，prepare_done=False，系統準備新週期")
             
             # 核心邏輯：當prepare_done=False且機械臂Ready時，執行AutoFeeding+Flow1
-            if not self.prepare_done and robot_ready:
+            if not self.prepare_done and robot_ready and not self.flow1_executing:
                 print(f"[RobotJob] 系統條件滿足：prepare_done=False, 機械臂Ready={robot_ready}")
                 print("[RobotJob] 開始AutoFeeding+Flow1週期")
                 
@@ -666,7 +833,7 @@ class RobotJobThread:
                         print("[RobotJob] 啟動AutoFeeding執行緒")
                         self.auto_feeding_ref.start()
                     
-                    if self.auto_feeding_ref.pause_for_robot:
+                    if self.auto_feeding_ref.is_paused():
                         print("[RobotJob] 恢復AutoFeeding檢測")
                         self.auto_feeding_ref.resume_after_robot_operation()
         
@@ -683,6 +850,7 @@ class RobotJobThread:
         self.prepare_done = False
         self.flow1_trigger_count = 0
         self.flow2_complete_count = 0
+        self.flow1_executing = False
         
         # 初始化Flow1完成狀態為0
         self.write_register(self.FLOW1_COMPLETE, 0)
@@ -714,7 +882,7 @@ class RobotJobThread:
 
 
 class AutoProgramRobotJobController:
-    """VP入料+機械臂協調控制系統 - DR專案版本"""
+    """VP入料+機械臂協調控制系統 - DR專案版本 (修正版)"""
     
     def __init__(self, modbus_host: str = "127.0.0.1", modbus_port: int = 502):
         self.modbus_host = modbus_host
@@ -746,35 +914,45 @@ class AutoProgramRobotJobController:
         self.control_monitor_thread = None
         self.control_monitor_running = False
         
-        print("VP入料+機械臂協調控制系統初始化完成 (DR專案版本)")
+        # 修正3: 無料保護監控
+        self.no_material_protection_active = False
+        
+        print("VP入料+機械臂協調控制系統初始化完成 (DR專案修正版)")
         print(f"Modbus服務器: {modbus_host}:{modbus_port}")
         print(f"系統基地址: {self.base_address}")
         print(f"流程控制地址: {self.AUTO_PROGRAM_CONTROL}")
         print("檢測類型: DR_F/STACK二分類")
         print("流程配置: Flow1(VP抓取) + Flow2(出料)")
         print("流程控制: 寫入1350=1啟動, 寫入1350=0停止")
+        print("修正功能: 強化暫停機制、優化反應速度、無料保護")
+    
     def load_config(self) -> Dict[str, Any]:
-        """載入配置檔案 - DR專案版本"""
+        """載入配置檔案 - DR專案版本 (修正版)"""
         default_config = {
             "auto_program": {
-                "cycle_interval": 2.0,
-                "ccd1_timeout": 10.0,
-                "vp_vibration_duration": 0.5,
-                "vp_stop_delay": 0.2,
-                "flow4_pulse_duration": 0.1,
+                "cycle_interval": 1.5,  # 修正2: 縮短週期間隔提升反應速度
+                "ccd1_timeout": 8.0,    # 縮短CCD1超時時間
+                "vp_vibration_duration": 0.4,  # 縮短震動時間
+                "vp_stop_delay": 0.15,  # 縮短停止延遲
+                "flow4_pulse_duration": 0.08,  # 縮短脈衝時間
                 "max_dr_f_check": 5  # DR專案最多檢查5個DR_F
             },
             "vp_params": {
                 "spread_action_code": 11,
                 "spread_strength": 50,
                 "spread_frequency": 43,
-                "spread_duration": 0.5,
+                "spread_duration": 0.4,  # 修正2: 縮短震動持續時間
                 "stop_command_code": 3
             },
             "timing": {
-                "command_delay": 0.1,
-                "status_check_interval": 0.1,
-                "register_clear_delay": 0.05
+                "command_delay": 0.08,  # 縮短指令延遲
+                "status_check_interval": 0.08,  # 縮短狀態檢查間隔
+                "register_clear_delay": 0.03  # 縮短寄存器清空延遲
+            },
+            "protection": {  # 修正3: 新增保護參數
+                "material_shortage_threshold": 10,  # 料件不足閾值
+                "no_material_protection_threshold": 5,  # 無料保護閾值
+                "flow4_max_consecutive_triggers": 5  # Flow4最大連續觸發次數
             },
             "modbus_mapping": {
                 "base_address": 1300,
@@ -802,6 +980,7 @@ class AutoProgramRobotJobController:
             print(f"配置檔案處理失敗: {e}")
             
         return default_config
+    
     def read_register(self, address: int) -> Optional[int]:
         """讀取單個寄存器"""
         try:
@@ -839,7 +1018,7 @@ class AutoProgramRobotJobController:
                 self.control_monitor_thread.join(timeout=1.0)
     
     def _control_monitor_loop(self):
-        """控制監控主循環"""
+        """控制監控主循環 (修正版)"""
         while self.control_monitor_running and self.connected:
             try:
                 # 讀取AutoProgram控制地址
@@ -862,6 +1041,18 @@ class AutoProgramRobotJobController:
                         
                         self.last_auto_program_control = current_control
                 
+                # 修正3: 檢查無料保護狀態
+                if (self.auto_program_enabled and 
+                    self.auto_feeding_thread and 
+                    self.auto_feeding_thread.running and
+                    self.auto_feeding_thread.check_no_material_protection()):
+                    
+                    print("[ControlMonitor] 檢測到無料保護觸發，自動停止流程")
+                    self.no_material_protection_active = True
+                    self._stop_auto_program_flow()
+                    # 自動寫入0到控制地址
+                    self.write_register(self.AUTO_PROGRAM_CONTROL, 0)
+                
                 # 100ms檢查間隔
                 time.sleep(0.1)
                 
@@ -870,13 +1061,16 @@ class AutoProgramRobotJobController:
                 time.sleep(1.0)
     
     def _start_auto_program_flow(self):
-        """啟動AutoProgram流程"""
+        """啟動AutoProgram流程 (修正版)"""
         try:
             if self.auto_program_enabled:
                 print("[ControlMonitor] AutoProgram流程已在運行中")
                 return
             
             print("[ControlMonitor] 啟動AutoProgram流程...")
+            
+            # 重置無料保護狀態
+            self.no_material_protection_active = False
             
             # 建立AutoFeeding執行緒
             if not self.auto_feeding_thread:
@@ -909,7 +1103,7 @@ class AutoProgramRobotJobController:
             print(f"[ControlMonitor] 啟動AutoProgram流程失敗: {e}")
     
     def _stop_auto_program_flow(self):
-        """停止AutoProgram流程"""
+        """停止AutoProgram流程 (修正版)"""
         try:
             if not self.auto_program_enabled:
                 print("[ControlMonitor] AutoProgram流程未在運行")
@@ -928,60 +1122,15 @@ class AutoProgramRobotJobController:
             
             # 更新狀態
             self.auto_program_enabled = False
-            self.system_status = SystemStatus.STOPPED
+            if self.no_material_protection_active:
+                self.system_status = SystemStatus.NO_MATERIAL_PROTECTION
+            else:
+                self.system_status = SystemStatus.STOPPED
             
             print("[ControlMonitor] ✓ AutoProgram流程已停止")
             
         except Exception as e:
             print(f"[ControlMonitor] 停止AutoProgram流程失敗: {e}")
-        """載入配置檔案 - DR專案版本"""
-        default_config = {
-            "auto_program": {
-                "cycle_interval": 2.0,
-                "ccd1_timeout": 10.0,
-                "vp_vibration_duration": 0.5,
-                "vp_stop_delay": 0.2,
-                "flow4_pulse_duration": 0.1,
-                "max_dr_f_check": 5  # DR專案最多檢查5個DR_F
-            },
-            "vp_params": {
-                "spread_action_code": 11,
-                "spread_strength": 50,
-                "spread_frequency": 43,
-                "spread_duration": 0.5,
-                "stop_command_code": 3
-            },
-            "timing": {
-                "command_delay": 0.1,
-                "status_check_interval": 0.1,
-                "register_clear_delay": 0.05
-            },
-            "modbus_mapping": {
-                "base_address": 1300,
-                "auto_program_control": 1350,  # AutoProgram流程控制地址
-                "motion_status": 1200,
-                "flow1_control": 1240,
-                "flow2_control": 1241,
-                "flow1_complete": 1204,
-                "flow2_complete": 1205
-            }
-        }
-        
-        try:
-            config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dr_autoprogram_config.json')
-            if os.path.exists(config_path):
-                with open(config_path, 'r', encoding='utf-8') as f:
-                    loaded_config = json.load(f)
-                    default_config.update(loaded_config)
-                print(f"已載入DR專案配置檔案: {config_path}")
-            else:
-                with open(config_path, 'w', encoding='utf-8') as f:
-                    json.dump(default_config, f, indent=2, ensure_ascii=False)
-                print(f"已創建DR專案預設配置檔案: {config_path}")
-        except Exception as e:
-            print(f"配置檔案處理失敗: {e}")
-            
-        return default_config
     
     def connect(self) -> bool:
         """連接Modbus服務器"""
@@ -1011,7 +1160,7 @@ class AutoProgramRobotJobController:
             return False
     
     def init_system_registers(self):
-        """初始化系統寄存器"""
+        """初始化系統寄存器 (修正版)"""
         try:
             # 1300: 系統狀態
             # 1301: AutoFeeding執行緒狀態 
@@ -1023,19 +1172,21 @@ class AutoProgramRobotJobController:
             # 1307: VP震動次數
             # 1308: Flow1觸發次數
             # 1309: Flow2完成次數 (DR專案)
+            # 1310: 無料保護狀態 (新增)
             # 1350: AutoProgram流程控制 (0=停止, 1=啟動)
             
             self.modbus_client.write_register(1300, SystemStatus.STOPPED.value, slave=1)
             self.modbus_client.write_register(1301, 0, slave=1)  # AutoFeeding停止
             self.modbus_client.write_register(1302, 0, slave=1)  # RobotJob停止
             self.modbus_client.write_register(1303, 0, slave=1)  # 無錯誤
+            self.modbus_client.write_register(1310, 0, slave=1)  # 無料保護未啟動
             self.modbus_client.write_register(1350, 0, slave=1)  # AutoProgram流程停止
-            print("DR專案系統寄存器初始化完成 (包含AutoProgram流程控制)")
+            print("DR專案系統寄存器初始化完成 (包含無料保護狀態)")
         except Exception as e:
             print(f"系統寄存器初始化失敗: {e}")
     
     def update_system_registers(self):
-        """更新系統寄存器"""
+        """更新系統寄存器 (修正版)"""
         try:
             if not self.connected:
                 return
@@ -1046,6 +1197,10 @@ class AutoProgramRobotJobController:
             # 更新AutoProgram流程控制狀態
             current_auto_program_state = 1 if self.auto_program_enabled else 0
             self.modbus_client.write_register(1350, current_auto_program_state, slave=1)
+            
+            # 更新無料保護狀態
+            protection_state = 1 if self.no_material_protection_active else 0
+            self.modbus_client.write_register(1310, protection_state, slave=1)
             
             # 更新執行緒狀態
             auto_feeding_running = 1 if (self.auto_feeding_thread and self.auto_feeding_thread.running) else 0
@@ -1060,6 +1215,10 @@ class AutoProgramRobotJobController:
                 self.modbus_client.write_register(1305, self.auto_feeding_thread.dr_f_found_count, slave=1)
                 self.modbus_client.write_register(1306, self.auto_feeding_thread.flow4_trigger_count, slave=1)
                 self.modbus_client.write_register(1307, self.auto_feeding_thread.vp_vibration_count, slave=1)
+                
+                # 更新保護機制狀態
+                self.modbus_client.write_register(1311, self.auto_feeding_thread.consecutive_no_material_count, slave=1)
+                self.modbus_client.write_register(1312, self.auto_feeding_thread.flow4_consecutive_trigger_count, slave=1)
             
             if self.robot_job_thread:
                 self.modbus_client.write_register(1308, self.robot_job_thread.flow1_trigger_count, slave=1)
@@ -1084,12 +1243,16 @@ class AutoProgramRobotJobController:
             print("請先連接Modbus服務器")
             return
         
-        print("=== 啟動VP入料+機械臂協調控制系統 (DR專案版本) ===")
+        print("=== 啟動VP入料+機械臂協調控制系統 (DR專案修正版) ===")
         print("檢測類型: DR_F/STACK二分類")
         print("流程配置: Flow1(VP抓取) + Flow2(出料)")
         print("流程控制: 通過寫入1350地址來控制流程開關")
         print("  - 寫入1350=1: 啟動AutoProgram流程")
         print("  - 寫入1350=0: 停止AutoProgram流程")
+        print("修正功能:")
+        print("  1. 強化Flow1暫停機制，避免視野阻擋")
+        print("  2. 優化直振反應速度，料件不足閾值降為3個")
+        print("  3. 增加無料保護機制，連續無料5次自動停止")
         
         # 啟動控制監控執行緒
         self.start_control_monitor()
@@ -1098,7 +1261,7 @@ class AutoProgramRobotJobController:
     
     def stop_system(self):
         """停止協調控制系統"""
-        print("=== 停止VP入料+機械臂協調控制系統 (DR專案版本) ===")
+        print("=== 停止VP入料+機械臂協調控制系統 (DR專案修正版) ===")
         
         # 停止AutoProgram流程
         if self.auto_program_enabled:
@@ -1116,8 +1279,8 @@ class AutoProgramRobotJobController:
         self.print_statistics()
     
     def print_statistics(self):
-        """輸出統計資訊 - DR專案版本"""
-        print(f"\n=== DR專案協調控制系統統計 ===")
+        """輸出統計資訊 - DR專案版本 (修正版)"""
+        print(f"\n=== DR專案協調控制系統統計 (修正版) ===")
         
         if self.auto_feeding_thread:
             print(f"AutoFeeding統計:")
@@ -1125,6 +1288,8 @@ class AutoProgramRobotJobController:
             print(f"  DR_F找到次數: {self.auto_feeding_thread.dr_f_found_count}")
             print(f"  Flow4觸發次數: {self.auto_feeding_thread.flow4_trigger_count}")
             print(f"  VP震動次數: {self.auto_feeding_thread.vp_vibration_count}")
+            print(f"  連續無料次數: {self.auto_feeding_thread.consecutive_no_material_count}")
+            print(f"  Flow4連續觸發次數: {self.auto_feeding_thread.flow4_consecutive_trigger_count}")
             if self.auto_feeding_thread.cycle_count > 0:
                 success_rate = (self.auto_feeding_thread.dr_f_found_count / self.auto_feeding_thread.cycle_count) * 100
                 print(f"  DR_F找到率: {success_rate:.1f}%")
@@ -1133,9 +1298,25 @@ class AutoProgramRobotJobController:
             print(f"RobotJob統計:")
             print(f"  Flow1觸發次數: {self.robot_job_thread.flow1_trigger_count}")
             print(f"  Flow2完成次數: {self.robot_job_thread.flow2_complete_count}")  # DR專案使用Flow2
+        
+        print(f"無料保護狀態: {'已觸發' if self.no_material_protection_active else '正常'}")
+    
+    def reset_protection_state(self):
+        """重置無料保護狀態 - 手動重置功能"""
+        print("[系統] 重置無料保護狀態...")
+        self.no_material_protection_active = False
+        
+        if self.auto_feeding_thread:
+            self.auto_feeding_thread.consecutive_no_material_count = 0
+            self.auto_feeding_thread.flow4_consecutive_trigger_count = 0
+            print("[系統] AutoFeeding保護狀態已重置")
+        
+        # 更新寄存器
+        self.update_system_registers()
+        print("[系統] ✓ 無料保護狀態重置完成")
     
     def get_status_info(self) -> Dict[str, Any]:
-        """獲取狀態資訊"""
+        """獲取狀態資訊 (修正版)"""
         status = {
             "connected": self.connected,
             "system_status": self.system_status.name,
@@ -1144,9 +1325,16 @@ class AutoProgramRobotJobController:
             "auto_feeding_running": self.auto_feeding_thread.running if self.auto_feeding_thread else False,
             "robot_job_running": self.robot_job_thread.running if self.robot_job_thread else False,
             "control_monitor_running": self.control_monitor_running,
+            "no_material_protection_active": self.no_material_protection_active,
             "project_type": "DR",
             "detection_types": ["DR_F", "STACK"],
-            "flow_config": "Flow1(VP抓取) + Flow2(出料)"
+            "flow_config": "Flow1(VP抓取) + Flow2(出料)",
+            "version": "修正版",
+            "fixes": [
+                "強化Flow1暫停機制",
+                "優化直振反應速度",
+                "增加無料保護機制"
+            ]
         }
         
         if self.auto_feeding_thread:
@@ -1155,24 +1343,30 @@ class AutoProgramRobotJobController:
                 "dr_f_found_count": self.auto_feeding_thread.dr_f_found_count,
                 "flow4_trigger_count": self.auto_feeding_thread.flow4_trigger_count,
                 "vp_vibration_count": self.auto_feeding_thread.vp_vibration_count,
-                "feeding_ready": self.auto_feeding_thread.feeding_ready
+                "feeding_ready": self.auto_feeding_thread.feeding_ready,
+                "force_pause": self.auto_feeding_thread.force_pause,
+                "consecutive_no_material_count": self.auto_feeding_thread.consecutive_no_material_count,
+                "flow4_consecutive_trigger_count": self.auto_feeding_thread.flow4_consecutive_trigger_count,
+                "material_shortage_threshold": self.auto_feeding_thread.material_shortage_threshold
             })
         
         if self.robot_job_thread:
             status.update({
                 "prepare_done": self.robot_job_thread.prepare_done,
                 "flow1_trigger_count": self.robot_job_thread.flow1_trigger_count,
-                "flow2_complete_count": self.robot_job_thread.flow2_complete_count
+                "flow2_complete_count": self.robot_job_thread.flow2_complete_count,
+                "flow1_executing": self.robot_job_thread.flow1_executing
             })
         
         return status
 
 
 def main():
-    """主程序"""
-    print("VP入料+機械臂協調控制系統啟動 (DR專案版本)")
+    """主程序 (修正版)"""
+    print("VP入料+機械臂協調控制系統啟動 (DR專案修正版)")
     print("檢測類型: DR_F/STACK二分類")
     print("流程配置: Flow1(VP抓取) + Flow2(出料)")
+    print("修正功能: 強化暫停機制、優化反應速度、無料保護")
     
     # 創建控制器
     controller = AutoProgramRobotJobController()
@@ -1196,18 +1390,20 @@ def main():
         update_thread.start()
         
         # 主循環 - 等待用戶操作
-        print("\nDR專案指令說明:")
+        print("\nDR專案指令說明 (修正版):")
         print("  s - 顯示狀態")
         print("  start - 手動啟動AutoProgram流程 (等同於寫入1350=1)")
         print("  stop - 手動停止AutoProgram流程 (等同於寫入1350=0)")
         print("  pause - 暫停自動入料")
         print("  resume - 恢復自動入料")
+        print("  reset - 重置無料保護狀態")
         print("  r - 重啟系統")
         print("  q - 退出程序")
         print("\n流程控制說明:")
         print("  - Modbus寫入1350=1: 啟動AutoProgram流程")
         print("  - Modbus寫入1350=0: 停止AutoProgram流程")
         print("  - 當前控制狀態將自動監控並執行對應動作")
+        print("  - 無料保護: Flow4連續觸發5次或連續無料5次將自動停止")
         
         while True:
             try:
@@ -1217,9 +1413,14 @@ def main():
                     break
                 elif cmd == 's':
                     status = controller.get_status_info()
-                    print(f"\nDR專案系統狀態:")
+                    print(f"\nDR專案系統狀態 (修正版):")
                     for key, value in status.items():
-                        print(f"  {key}: {value}")
+                        if key == "fixes":
+                            print(f"  {key}:")
+                            for fix in value:
+                                print(f"    - {fix}")
+                        else:
+                            print(f"  {key}: {value}")
                 elif cmd == 'start':
                     print("手動啟動AutoProgram流程...")
                     if controller.write_register(controller.AUTO_PROGRAM_CONTROL, 1):
@@ -1232,6 +1433,8 @@ def main():
                         print("✓ 已寫入1350=0，AutoProgram流程將被停止")
                     else:
                         print("✗ 寫入1350=0失敗")
+                elif cmd == 'reset':
+                    controller.reset_protection_state()
                 elif cmd == 'r':
                     controller.stop_system()
                     time.sleep(1.0)

@@ -3,7 +3,7 @@
     "ip": "192.168.1.6",
     "dashboard_port": 29999,
     "move_port": 30003,
-    "default_speed": 40
+    "default_speed": 100
   },
   "modbus": {
     "server_ip": "127.0.0.1",

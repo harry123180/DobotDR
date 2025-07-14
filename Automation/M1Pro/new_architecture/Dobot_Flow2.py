@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_Flow2.py - Flow2 出料流程執行器
+Dobot_Flow2.py - Flow2 出料流程執行器 (DR專案優化版)
 整合AngleHighLevel角度檢測，使用外部點位檔案
 實現完整的出料作業流程，包含角度計算和J4角度控制
+優化角度檢測性能，減少等待時間
 """
 
 import time
@@ -59,7 +60,6 @@ class PointsManager:
     """點位管理器 - 支援cartesian和pose格式"""
     
     def __init__(self, points_file: str = "saved_points/robot_points.json"):
-        # 確保使用絕對路徑，相對於當前執行檔案的目錄
         if not os.path.isabs(points_file):
             current_dir = os.path.dirname(os.path.abspath(__file__))
             self.points_file = os.path.join(current_dir, points_file)
@@ -84,16 +84,13 @@ class PointsManager:
                 try:
                     # 支援兩種格式：pose 或 cartesian
                     if "pose" in point_data:
-                        # 原始格式
                         pose_data = point_data["pose"]
                     elif "cartesian" in point_data:
-                        # 新格式
                         pose_data = point_data["cartesian"]
                     else:
                         print(f"點位 {point_data.get('name', 'unknown')} 缺少座標數據")
                         continue
                     
-                    # 檢查關節數據
                     if "joint" not in point_data:
                         print(f"點位 {point_data.get('name', 'unknown')} 缺少關節數據")
                         continue
@@ -139,7 +136,7 @@ class PointsManager:
 
 
 class DrFlow2UnloadExecutor:
-    """Flow2: 出料流程執行器"""
+    """Flow2: 出料流程執行器 - DR專案優化版"""
     
     def __init__(self):
         # 核心組件 (通過initialize方法設置)
@@ -160,6 +157,10 @@ class DrFlow2UnloadExecutor:
         self.command_angle = None     # 計算後的指令角度 (target_angle + 45)
         self.angle_acquisition_success = False
         self.ANGLE_OFFSET = 45.0      # 角度偏移量
+        
+        # 優化參數
+        self.angle_detection_timeout = 3.0  # 角度檢測超時時間縮短到3秒
+        self.use_fast_angle_detection = True  # 啟用快速角度檢測
         
         # 初始化點位管理器
         self.points_manager = PointsManager()
@@ -188,7 +189,7 @@ class DrFlow2UnloadExecutor:
         if self.points_loaded:
             self.build_flow_steps()
         
-        print("✓ DrFlow2UnloadExecutor初始化完成")
+        print("✓ DrFlow2UnloadExecutor初始化完成 (優化版)")
         
     def initialize(self, robot, motion_state_machine, external_modules):
         """初始化Flow執行器"""
@@ -199,6 +200,7 @@ class DrFlow2UnloadExecutor:
         print(f"✓ Flow2執行器初始化完成")
         print(f"  可用模組: Gripper={self.external_modules.get('gripper') is not None}, "
               f"Angle={self.external_modules.get('angle') is not None}")
+        print(f"  優化設置: 角度檢測超時={self.angle_detection_timeout}秒, 快速檢測={'啟用' if self.use_fast_angle_detection else '停用'}")
         
     def _load_and_validate_points(self):
         """載入並驗證點位檔案"""
@@ -238,9 +240,10 @@ class DrFlow2UnloadExecutor:
             # 1. 移動到待機點
             {'type': 'move_to_point', 'params': {'point_name': 'standby', 'move_type': 'J'}},
             
-            # 2. AngleHighLevel角度檢測
-            {'type': 'angle_detection', 'params': {}},
+            # 2. AngleHighLevel角度檢測 (優化版)
+            {'type': 'angle_detection_fast', 'params': {}},
             {'type': 'move_to_point', 'params': {'point_name': 'standby', 'move_type': 'J'}},
+            
             # 3. 翻轉站序列
             {'type': 'move_to_point', 'params': {'point_name': 'Rotate_V2', 'move_type': 'J'}},
             {'type': 'move_to_point', 'params': {'point_name': 'Rotate_top', 'move_type': 'J'}},
@@ -248,22 +251,20 @@ class DrFlow2UnloadExecutor:
             
             # 4. 夾爪智能撐開
             {'type': 'gripper_smart_release', 'params': {'position': 370}},
-            #
+            
             # 5. 移動到翻轉頂部
             {'type': 'move_to_point', 'params': {'point_name': 'Rotate_top', 'move_type': 'J'}},
             
             # 6. 組裝序列 (帶J4角度控制)
             {'type': 'move_to_point', 'params': {'point_name': 'put_asm_Pre', 'move_type': 'J'}},
-            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_top', 'move_type': 'J'}},#move_to_point_with_j4
-            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_down', 'move_type': 'J'}},#move_to_point_with_j4
-            #
-
+            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_top', 'move_type': 'J'}},
+            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_down', 'move_type': 'J'}},
 
             # 7. 夾爪快速關閉
             {'type': 'gripper_close', 'params': {}},
-            #
+            
             # 8. 回程序列
-            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_top', 'move_type': 'J'}},#move_to_point_with_j4
+            {'type': 'move_to_point_with_j4', 'params': {'point_name': 'put_asm_top', 'move_type': 'J'}},
             {'type': 'move_to_point', 'params': {'point_name': 'back_standby_from_asm', 'move_type': 'J'}},
             {'type': 'move_to_point', 'params': {'point_name': 'standby', 'move_type': 'J'}},
         ]
@@ -325,8 +326,8 @@ class DrFlow2UnloadExecutor:
                     success = self._execute_move_to_point(step['params'])
                 elif step['type'] == 'move_to_point_with_j4':
                     success = self._execute_move_to_point_with_j4(step['params'])
-                elif step['type'] == 'angle_detection':
-                    success = self._execute_angle_detection()
+                elif step['type'] == 'angle_detection_fast':
+                    success = self._execute_angle_detection_fast()
                 elif step['type'] == 'gripper_close':
                     success = self._execute_gripper_close()
                 elif step['type'] == 'gripper_smart_release':
@@ -447,79 +448,107 @@ class DrFlow2UnloadExecutor:
             print(f"移動到點位(J4角度控制)失敗: {e}")
             return False
     
-    def _execute_angle_detection(self) -> bool:
-        """執行AngleHighLevel角度檢測"""
+    def _execute_angle_detection_fast(self) -> bool:
+        """執行AngleHighLevel角度檢測 - 優化版"""
         try:
-            print("  正在從AngleHighLevel獲取角度值...")
+            print("  [快速角度檢測] 開始檢測...")
+            detection_start_time = time.time()
             
             # 優先使用external_modules中的angle模組
             angle_controller = self.external_modules.get('angle')
             
             if not angle_controller:
-                print("  ✗ 角度模組未連接，嘗試動態導入...")
-                # 動態導入AngleHighLevel
-                try:
-                    from AngleHighLevel import AngleHighLevel
-                    angle_controller = AngleHighLevel()
-                    print("  ✓ 成功導入AngleHighLevel")
-                    
-                    # 測試連接
-                    if not angle_controller.connect():
-                        print("  ✗ AngleHighLevel連接失敗，使用預設角度")
-                        self.target_angle = 0.0
-                        self.command_angle = self.target_angle + self.ANGLE_OFFSET
-                        self.angle_acquisition_success = False
-                        print(f"  使用預設: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
-                        return True
-                        
-                except ImportError as e:
-                    print(f"  ✗ 無法導入AngleHighLevel: {e}")
-                    self.target_angle = 0.0
-                    self.command_angle = self.target_angle + self.ANGLE_OFFSET
-                    self.angle_acquisition_success = False
-                    print(f"  使用預設: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
-                    return True
-            else:
-                print("  ✓ 使用外部模組中的角度API")
-            
-            # 執行角度檢測 (使用paste.txt中的detect_angle方法)
-            print("  執行CCD3角度檢測(DR模式)...")
-            detection_result = angle_controller.detect_angle(detection_mode=1)  # DR模式
-            
-            if detection_result.result.value == "SUCCESS" and detection_result.target_angle is not None:
-                self.target_angle = detection_result.target_angle
-                self.command_angle = self.target_angle + self.ANGLE_OFFSET
-                self.angle_acquisition_success = True
-                
-                print(f"  ✓ 角度檢測成功:")
-                print(f"    目標角度 (target_angle): {self.target_angle:.2f}°")
-                print(f"    指令角度 (command_angle): {self.command_angle:.2f}°")
-                print(f"    角度偏移: {self.ANGLE_OFFSET}°")
-                print(f"    檢測時間: {detection_result.execution_time:.2f}秒")
-                
+                print("  [快速角度檢測] ✗ 角度模組未連接，快速使用預設值")
+                self._set_default_angle()
                 return True
-            else:
-                error_msg = detection_result.message if detection_result else '未知錯誤'
-                print(f"  ✗ 角度檢測失敗: {error_msg}")
+            
+            print("  [快速角度檢測] ✓ 使用外部模組中的角度API")
+            
+            # 檢查角度控制器連接狀態
+            if hasattr(angle_controller, 'connected') and not angle_controller.connected:
+                print("  [快速角度檢測] ⚠️ 角度控制器未連接，嘗試快速重連...")
+                if not angle_controller.connect():
+                    print("  [快速角度檢測] ✗ 快速重連失敗，使用預設值")
+                    self._set_default_angle()
+                    return True
+            
+            # 執行快速角度檢測
+            print("  [快速角度檢測] 執行CCD3角度檢測(DR模式)...")
+            
+            try:
+                # 使用超時機制執行角度檢測
+                detection_result = self._execute_angle_detection_with_timeout(angle_controller)
                 
-                # 使用預設角度
-                self.target_angle = 0.0
-                self.command_angle = self.target_angle + self.ANGLE_OFFSET
-                self.angle_acquisition_success = False
+                if detection_result is None:
+                    print(f"  [快速角度檢測] ✗ 檢測超時({self.angle_detection_timeout}秒)，使用預設值")
+                    self._set_default_angle()
+                    return True
                 
-                print(f"  使用預設角度: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
-                return True  # 繼續執行，使用預設角度
+                detection_time = time.time() - detection_start_time
+                
+                if (hasattr(detection_result, 'result') and 
+                    detection_result.result.value == "SUCCESS" and 
+                    detection_result.target_angle is not None):
+                    
+                    self.target_angle = detection_result.target_angle
+                    self.command_angle = self.target_angle + self.ANGLE_OFFSET
+                    self.angle_acquisition_success = True
+                    
+                    print(f"  [快速角度檢測] ✓ 角度檢測成功 (耗時: {detection_time:.2f}秒):")
+                    print(f"    目標角度: {self.target_angle:.2f}°")
+                    print(f"    指令角度: {self.command_angle:.2f}°")
+                    
+                    return True
+                else:
+                    error_msg = getattr(detection_result, 'message', '未知錯誤') if detection_result else '檢測失敗'
+                    print(f"  [快速角度檢測] ✗ 檢測失敗: {error_msg} (耗時: {detection_time:.2f}秒)")
+                    self._set_default_angle()
+                    return True
+                    
+            except Exception as detection_error:
+                detection_time = time.time() - detection_start_time
+                print(f"  [快速角度檢測] ✗ 檢測異常: {detection_error} (耗時: {detection_time:.2f}秒)")
+                self._set_default_angle()
+                return True
                 
         except Exception as e:
-            print(f"  ✗ 角度檢測異常: {e}")
-            
-            # 異常時使用預設角度
-            self.target_angle = 0.0
-            self.command_angle = self.target_angle + self.ANGLE_OFFSET
-            self.angle_acquisition_success = False
-            
-            print(f"  使用預設角度: target_angle={self.target_angle}°, command_angle={self.command_angle}°")
-            return True  # 繼續執行，使用預設角度
+            detection_time = time.time() - detection_start_time
+            print(f"  [快速角度檢測] ✗ 系統異常: {e} (耗時: {detection_time:.2f}秒)")
+            self._set_default_angle()
+            return True
+    
+    def _execute_angle_detection_with_timeout(self, angle_controller) -> Optional[Any]:
+        """帶超時的角度檢測執行"""
+        import threading
+        import queue
+        
+        result_queue = queue.Queue()
+        
+        def detection_thread():
+            try:
+                result = angle_controller.detect_angle(detection_mode=1)  # DR模式
+                result_queue.put(result)
+            except Exception as e:
+                result_queue.put(None)
+        
+        # 啟動檢測線程
+        thread = threading.Thread(target=detection_thread, daemon=True)
+        thread.start()
+        
+        # 等待結果或超時
+        try:
+            result = result_queue.get(timeout=self.angle_detection_timeout)
+            return result
+        except queue.Empty:
+            print(f"  [快速角度檢測] 檢測超時 ({self.angle_detection_timeout}秒)")
+            return None
+    
+    def _set_default_angle(self):
+        """設置預設角度值"""
+        self.target_angle = 0.0
+        self.command_angle = self.target_angle + self.ANGLE_OFFSET
+        self.angle_acquisition_success = False
+        print(f"  [快速角度檢測] 使用預設角度: target={self.target_angle}°, command={self.command_angle}°")
     
     def _execute_gripper_close(self) -> bool:
         """執行夾爪關閉"""

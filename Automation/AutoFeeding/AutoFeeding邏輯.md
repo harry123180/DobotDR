@@ -1,403 +1,424 @@
-# AutoFeeding邏輯說明 - DR專案版本
+# DR版本AutoFeeding獨立模組協調邏輯
 
-## 模組概述
+## 核心設計理念
 
-AutoFeeding_main.py是DR專案的獨立入料檢測模組，負責協調CCD1檢測、VP震動控制、Flow4送料觸發和DR_F保護區域判斷。透過Modbus寄存器與AutoProgram主控程序進行交握通訊，實現穩定可靠的自動入料功能。
+### **設計目標**
+- **持續供料**: 確保DR保護區域內始終有DR_F可用
+- **主動監控**: 直接監控Flow1控制地址(1201)，無需被動等待暫停指令
+- **簡化交握**: Flow1直接讀取座標(940-944)，不需要透過AutoProgram中轉
+- **自動運行**: 啟動後自動開始檢測，無需外部觸發
 
-### 系統特性
-- **檢測目標**: DR_F/STACK物件二分類檢測
-- **基地址範圍**: 900-999 (100個寄存器)
-- **通訊協議**: Modbus TCP (127.0.0.1:502)
-- **控制方式**: 寄存器交握，無Threading依賴
-- **保護區域**: DR專案特定四邊形區域
+### **主要改進**
+- **持續檢測**: 找到DR_F後不暫停，繼續檢測確保保護區域隨時有料件
+- **Flow1狀態監控**: 監控1201寄存器，當值為1時暫停自動進料程序
+- **矩形保護區域**: 適應DR專案的矩形保護區域判斷
+- **YOLO檢測適配**: 支援DR專案的三分類YOLO檢測系統
 
-## 核心檢測循環
+## DR保護區域定義
 
-### 邏輯流程圖
-```
-啟動 → 模組檢查 → CCD1檢測 → 結果判斷 → 執行動作 → 交握處理 → 等待週期
-  ↑                                                              ↓
-  ←──────────────────── 錯誤處理/暫停控制 ←────────────────────────┘
-```
-
-### 週期參數 (DR專案版本)
-| 參數 | 數值 | 說明 |
-|------|------|------|
-| 檢測週期間隔 | 1.5秒 | 主循環週期 |
-| CCD1檢測超時 | 8.0秒 | 檢測等待超時 |
-| VP震動持續 | 0.4秒 | 震動時間 |
-| VP停止延遲 | 0.15秒 | 震動停止等待 |
-| Flow4脈衝 | 0.08秒 | 送料脈衝時間 |
-| 交握確認超時 | 2.0秒 | 等待AutoProgram確認時間 |
-
-## 詳細流程步驟
-
-### 1. 前置檢查
-```
-檢查模組狀態:
-├── CCD1模組: 201寄存器 → Ready=1 & Initialized=1 & Alarm=0
-├── VP模組: 300=1 (閒置), 301=1 (已連接)
-└── 暫停標誌: pause_for_robot=false (921寄存器控制)
-```
-
-### 2. CCD1檢測協議 (DR專案版本)
-```
-觸發檢測:
-1. 寫入200=16 (拍照+檢測指令)
-2. 高頻輪詢等待: 203=1 & 204=1 & 205=1 (完成標誌，80ms間隔檢查)
-3. 讀取結果: 240(DR_F數量), 242(STACK數量), 243(總檢測數量)
-4. 提取座標: 261-280(DR_F世界座標，最多5個)
-5. 清空寄存器: 200,203,204,205=0
-```
-
-### 3. DR專案保護區域判斷
-```
-硬編碼四點座標:
-(-112, 243),     # 左上
-(-112, 339.21),  # 左下  
-(-4, 243),       # 右上
-(-4, 339)        # 右下
-
-射線法算法:
-def is_point_in_quad(x, y) -> bool:
-    # 中心點排序 + 射線交點計算
-    return inside_polygon
-```
-
-### 4. 動作決策邏輯 (DR專案版本)
-```
-if 找到保護區內DR_F:
-    ├── 複製座標到941-944寄存器 (32位世界座標)
-    ├── 寫入946,947 (檢測總數,DR_F數量)
-    ├── 設置940=1 (入料完成標誌)
-    ├── 等待945=1 (AutoProgram確認讀取，超時2秒)
-    ├── 收到確認後清空940-947=0
-    └── 進入暫停狀態等待AutoProgram處理
-
-elif 總檢測數量 < 3 (DR專案料件不足閾值):
-    ├── 觸發Flow4送料: 448=1 → 延遲0.08秒 → 448=0
-    ├── 累計連續直振次數
-    └── 連續5次 → 進入VP清空流程
-
-elif 總檢測數量 >= 3 (料件充足但無DR_F在保護區):
-    ├── VP向右震動: 320=5,321=4,322=50,323=43 (0.4秒)
-    ├── 停止震動: 320=3,324=99
-    ├── 等待0.3秒穩定，重新CCD1檢測
-    ├── 若無DR_F → VP擴散震動: 320=5,321=11,322=50,323=43 (0.4秒)
-    ├── 停止震動，等待0.3秒穩定
-    └── 最終重新CCD1檢測
-```
-
-### 5. VP清空流程 (連續直振5次觸發)
-```
-清空模式:
-1. VP震動翻正所有料件 (spread強度50頻率43)
-2. 重複VP震動最多6次:
-   ├── VP震動0.4秒
-   ├── 等待穩定0.5秒
-   ├── CCD1檢測是否為空
-   └── 連續3次空檢測 → 停止AutoFeeding
-3. 注意: 不操作機械臂相關寄存器(1200+)
-```
-
-## AutoFeeding ↔ AutoProgram 交握協議
-
-### 📤 AutoFeeding → AutoProgram (入料完成交握)
-```
-1. AutoFeeding找到保護區內DR_F
-2. 寫入座標到941-944寄存器:
-   - 941: 世界座標X高16位
-   - 942: 世界座標X低16位  
-   - 943: 世界座標Y高16位
-   - 944: 世界座標Y低16位
-3. 寫入檢測統計946,947寄存器:
-   - 946: 總檢測數量
-   - 947: DR_F數量
-4. 設置940=1 (入料完成標誌)
-5. 等待AutoProgram確認945=1 (超時2秒)
-6. 收到確認後清空940-947=0
-7. 進入暫停狀態等待921控制
-
-重要: 940寄存器不會自動清零，必須透過AutoProgram確認(945=1)或超時才清零
-```
-
-### 📥 AutoProgram → AutoFeeding (暫停控制交握)
-```
-1. AutoProgram寫入921=1 (暫停入料檢測)
-2. AutoFeeding檢測到暫停信號 → 停止檢測週期
-3. AutoProgram執行Flow1機械臂作業
-4. Flow1完成後AutoProgram寫入921=0 (恢復入料檢測)
-5. AutoFeeding恢復檢測週期
-
-暫停機制用途: 防止Flow1機械臂執行時入料檢測干擾
-```
-
-### 🎯 AutoProgram 啟動控制
-```
-1. AutoProgram寫入920=1 → 啟動AutoFeeding檢測循環
-2. AutoProgram寫入920=0 → 停止AutoFeeding檢測循環
-
-啟動時機: AutoProgram系統就緒且機械臂Ready時啟動AutoFeeding
-```
-
-## 寄存器映射表 (DR專案版本)
-
-### 狀態寄存器 (900-919)
-| 寄存器 | 功能 | 數值定義 |
-|--------|------|----------|
-| 900 | AutoFeeding狀態 | 0=停止,1=運行,2=暫停,3=檢測中,4=VP震動中,5=錯誤 |
-| 901 | 檢測週期計數 | 累計執行週期數 |
-| 902 | DR_F找到次數 | 成功找到保護區內DR_F次數 |
-| 903 | Flow4觸發次數 | 送料觸發累計次數 |
-| 904 | VP震動次數 | VP震動操作累計次數 |
-| 905 | 連續直振次數 | Flow4連續觸發次數 |
-| 906 | VP空檢測次數 | VP清空模式中空檢測次數 |
-| 907 | 錯誤代碼 | 最後錯誤代碼 |
-| 908 | 操作狀態 | 0=閒置,1=CCD檢測,2=VP控制,3=Flow4觸發 |
-| 909 | VP清空模式標誌 | 0=正常,1=VP清空中 |
-
-### 控制寄存器 (920-929)
-| 寄存器 | 功能 | AutoProgram操作 |
-|--------|------|-----------------|
-| 920 | 啟動/停止控制 | 1=啟動AutoFeeding, 0=停止AutoFeeding |
-| 921 | 暫停/恢復控制 | 1=暫停檢測(Flow1前), 0=恢復檢測(Flow1後) |
-| 922 | 單次檢測觸發 | 1=執行一次檢測 |
-| 923 | 錯誤清除 | 1=清除錯誤狀態 |
-| 924 | VP強制停止 | 1=緊急停止VP震動 |
-| 925 | Flow4強制觸發 | 1=強制觸發Flow4送料 |
-| 926 | 重置統計 | 1=重置所有統計資訊 |
-
-### 交握寄存器 (940-949)
-| 寄存器 | 功能 | 說明 |
-|--------|------|------|
-| 940 | 入料完成標誌 | AutoFeeding設置1，AutoProgram讀取後確認 |
-| 941 | DR_F世界座標X高位 | 32位座標高16位 |
-| 942 | DR_F世界座標X低位 | 32位座標低16位 |
-| 943 | DR_F世界座標Y高位 | 32位座標高16位 |
-| 944 | DR_F世界座標Y低位 | 32位座標低16位 |
-| 945 | AutoProgram確認 | AutoProgram寫入1確認讀取 |
-| 946 | 檢測總數 | 本次CCD1檢測到的總物件數 |
-| 947 | DR_F數量 | 本次CCD1檢測到的DR_F數量 |
-
-### 參數寄存器 (960-979)
-| 寄存器 | 功能 | 單位 |
-|--------|------|------|
-| 960 | 檢測週期間隔 | 毫秒 (預設1500) |
-| 961 | CCD1檢測超時 | 毫秒 (預設8000) |
-| 962 | VP震動強度 | 無單位 (預設50) |
-| 963 | VP震動頻率 | Hz (預設43) |
-| 964 | VP震動持續時間 | 毫秒 (預設400) |
-| 965 | Flow4連續觸發限制 | 次數 (預設5) |
-| 966 | VP空檢測次數閾值 | 次數 (預設3) |
-| 967 | Flow4脈衝持續時間 | 毫秒 (預設80) |
-| 968 | Flow4脈衝間隔時間 | 毫秒 (預設50) |
-| 969 | 料件不足閾值 | 個數 (預設3) |
-
-## VP震動參數 (DR專案專用)
-
-### 震動動作配置
-| 參數 | 數值 | 說明 |
-|------|------|------|
-| 向右動作碼 | 4 | 第一階段震動：向右移動料件 |
-| 擴散動作碼 | 11 | 第二階段震動：擴散散開料件 |
-| 震動強度 | 50 | DR專案最佳化強度值 |
-| 震動頻率 | 43Hz | DR專案最佳化頻率值 |
-| 震動持續時間 | 0.4秒 | 單次震動持續時間 |
-| 停止指令 | 3 | stop_all停止指令 |
-
-### 雙重震動策略
-```
-料件充足但無DR_F在保護區時:
-1. 第一步：向右震動 (動作碼4)
-   ├── 持續0.4秒
-   ├── 停止震動，等待0.3秒穩定
-   └── 重新CCD1檢測，若找到DR_F則完成
-
-2. 第二步：擴散震動 (動作碼11)
-   ├── 持續0.4秒  
-   ├── 停止震動，等待0.3秒穩定
-   └── 最終CCD1檢測
-```
-
-## Flow4參數配置
-
-### 送料控制
-| 參數 | 數值 | 說明 |
-|------|------|------|
-| 控制地址 | 448 | Flow4送料控制寄存器 |
-| 脈衝持續時間 | 0.08秒 | 448寄存器保持1的時間 |
-| 脈衝間隔時間 | 0.05秒 | 預留連續脈衝使用 |
-| 連續觸發限制 | 5次 | 超過後進入VP清空流程 |
-
-### 觸發條件
-- **料件不足**: 總檢測數量 < 3 (DR專案特定閾值)
-- **觸發邏輯**: 448=1 → 延遲0.08秒 → 448=0
-- **保護機制**: 連續5次觸發後強制進入VP清空流程
-
-## 保護機制
-
-### 連續直振限制
-| 機制 | 觸發條件 | 處理方式 |
-|------|----------|----------|
-| 連續直振限制 | Flow4連續5次 | 進入VP清空流程 |
-| VP空檢測限制 | 連續3次檢測為空 | 停止AutoFeeding |
-| CCD1檢測超時 | 8秒無回應 | 跳過本週期 |
-| 交握確認超時 | 2秒無AutoProgram確認 | 強制清空940=0 |
-| 模組狀態異常 | Ready=0或連接斷開 | 跳過本週期 |
-
-### 錯誤代碼定義
-| 錯誤碼 | 說明 | 處理方式 |
-|--------|------|----------|
-| 101 | CCD1模組無回應 | 檢查CCD1連接 |
-| 102 | CCD1未準備就緒 | 等待CCD1初始化完成 |
-| 103 | VP模組狀態異常 | 檢查VP連接狀態 |
-| 201 | CCD1指令寫入失敗 | 重試或重啟CCD1 |
-| 202 | CCD1檢測超時 | 檢查CCD1狀態 |
-| 301-302 | VP震動指令失敗 | 檢查VP連接 |
-| 401-402 | Flow4觸發失敗 | 檢查Flow4模組 |
-| 999 | 入料週期異常 | 檢查系統整體狀態 |
-
-## AutoProgram 開發參考
-
-### 核心狀態監控寄存器
-| 寄存器 | 功能 | AutoProgram用途 |
-|--------|------|-----------------|
-| 900 | AutoFeeding狀態 | 監控AF運行狀態 |
-| 940 | 入料完成標誌 | 輪詢檢查是否有新的DR_F |
-| 941-944 | DR_F世界座標 | 讀取目標座標給機械臂 |
-| 946-947 | 檢測統計 | 了解當前VP上料件情況 |
-
-### AutoProgram 協調邏輯建議
+### **保護區域座標**
 ```python
-class AutoProgramController:
-    def __init__(self):
-        self.prepare_done = False  # 是否已完成首次取料
+# DR保護區域四點矩形座標
+x_min = -112.0  # 左邊界
+x_max = -4.0    # 右邊界  
+y_min = 243.0   # 下邊界
+y_max = 339.21  # 上邊界
+```
+
+### **保護區域判斷邏輯**
+```python
+def is_point_in_rect(x: float, y: float) -> bool:
+    """判斷點是否在DR保護區域矩形內"""
+    return x_min <= x <= x_max and y_min <= y <= y_max
+```
+
+## Flow1監控邏輯
+
+### **Flow1狀態監控**
+```python
+def check_flow1_status(self) -> bool:
+    """主動監控Flow1控制狀態"""
+    current_motion_flow = self.read_register(1201)  # 當前運動Flow寄存器
+    flow1_now_active = (current_motion_flow == 1)
+    
+    if flow1_now_active != self.flow1_active:
+        if flow1_now_active:
+            print("檢測到Flow1啟動，暫停檢測")
+            self.status = AutoFeedingStatus.FLOW1_PAUSED
+        else:
+            print("檢測到Flow1停止，恢復檢測")
+            self.status = AutoFeedingStatus.RUNNING
+```
+
+### **監控時序**
+```
+AutoFeeding監控循環 (0.1秒間隔):
+1. 檢查1201寄存器值
+2. 1201=1 → 立即暫停檢測
+3. 1201=0 → 立即恢復檢測
+4. 全程無需外部控制
+```
+
+## YOLO檢測適配
+
+### **DR專案二分類檢測**
+- **檢測對象**: DR_F (正面物件) 和 STACK (堆疊物件)
+- **檢測模式**: YOLOv11二分類檢測
+- **目標物件**: 僅關注DR_F，STACK用於總數量統計
+
+### **DR專案檢測結果寄存器**
+| 地址 | 功能 | 說明 |
+|------|------|------|
+| 240 | DR_F檢測數量 | 0-5個DR_F |
+| 242 | STACK檢測數量 | 0-255個STACK |
+| 243 | 總檢測數量 | DR_F + STACK |
+| 261-280 | DR_F世界座標 | 每個DR_F佔4個寄存器(X高位、X低位、Y高位、Y低位) |
+
+### **檢測流程**
+```python
+def trigger_ccd1_detection(self) -> CCD1DetectionResult:
+    """觸發CCD1檢測 - 適配DR專案的YOLO檢測"""
+    # 1. 發送拍照+檢測指令
+    self.write_register(200, 16)
+    
+    # 2. 等待檢測完成
+    while timeout_not_reached:
+        if capture_complete and detect_complete and operation_success:
+            break
+    
+    # 3. 讀取DR YOLO檢測結果
+    dr_f_count = self.read_register(240)        # DR_F數量
+    stack_count = self.read_register(242)       # STACK數量
+    total_detections = self.read_register(243)  # 總檢測數量 (DR_F + STACK)
+    
+    # 4. 提取DR_F世界座標 (261-280)
+    for i in range(min(dr_f_count, 5)):
+        base_addr = 261 + (i * 4)
+        world_x = self.read_32bit_register(base_addr, base_addr + 1)
+        world_y = self.read_32bit_register(base_addr + 2, base_addr + 3)
+```
+
+## 簡化交握協議
+
+### **新版直接交握**
+```python
+# AutoFeeding設置DR_F可用
+def set_dr_f_available(self, coords: Tuple[float, float]):
+    self.dr_f_available = True
+    self.dr_f_coords = coords
+    
+    # 立即更新寄存器讓Flow1直接讀取
+    self.write_register(940, 1)  # DR_F可用標誌
+    self.write_32bit_register(941, 942, coords[0])  # X座標
+    self.write_32bit_register(943, 944, coords[1])  # Y座標
+
+# Flow1直接讀取座標並確認
+def check_coords_taken(self):
+    coords_taken = self.read_register(945)  # Flow1設置此標誌
+    if coords_taken == 1:
+        # 清除DR_F狀態，繼續檢測新的
+        self.dr_f_available = False
+        self.write_register(940, 0)
+        self.write_register(945, 0)
+```
+
+### **交握流程**
+```
+AutoFeeding ↔ Flow1 直接交握:
+1. AF找到DR_F → 設置940=1, 941-944=座標
+2. Flow1檢查940=1 → 讀取941-944座標
+3. Flow1讀取完成 → 設置945=1確認
+4. AF檢測到945=1 → 清除狀態，繼續檢測
+```
+
+## 寄存器映射
+
+### **DR_F狀態寄存器 (940-959)**
+| 地址 | 功能 | 讀寫方 | 說明 |
+|------|------|--------|------|
+| 940 | DR_F可用標誌 | AF寫入, Flow1讀取 | 0=無DR_F, 1=有DR_F可取 |
+| 941 | X座標高位 | AF寫入, Flow1讀取 | 32位世界座標X高16位 |
+| 942 | X座標低位 | AF寫入, Flow1讀取 | 32位世界座標X低16位 |
+| 943 | Y座標高位 | AF寫入, Flow1讀取 | 32位世界座標Y高16位 |
+| 944 | Y座標低位 | AF寫入, Flow1讀取 | 32位世界座標Y低16位 |
+| 945 | 座標已讀取標誌 | Flow1寫入, AF讀取 | Flow1確認已讀取座標 |
+
+### **Flow1控制寄存器**
+| 地址 | 功能 | 控制方 | 說明 |
+|------|------|--------|------|
+| 1201 | 當前執行Flow | Dobot_main | AF主動監控此地址 |
+
+### **AutoFeeding狀態寄存器 (900-919)**
+| 地址 | 功能 | 說明 |
+|------|------|------|
+| 900 | 模組狀態 | 0=停止, 1=運行, 2=Flow1暫停, 3=檢測中, 4=VP震動, 5=錯誤 |
+| 901 | 週期計數 | 累積檢測週期數 |
+| 902 | DR_F找到次數 | 累積找到DR_F次數 |
+| 903 | Flow4觸發次數 | 累積送料次數 |
+| 904 | VP震動次數 | 累積震動次數 |
+| 907 | 錯誤代碼 | 0=無錯誤, >0=錯誤類型 |
+| 908 | 操作狀態 | 0=閒置, 1=CCD檢測, 2=VP控制, 3=Flow4觸發 |
+| 909 | Flow1監控狀態 | 0=Flow1未執行, 1=Flow1執行中 |
+
+## 檢測邏輯流程
+
+### **入料檢測週期**
+```python
+def feeding_cycle(self) -> bool:
+    """執行一次入料檢測週期"""
+    # 1. 檢查模組狀態
+    if not self.check_modules_status():
+        return False
+    
+    # 2. CCD1檢測
+    detection_result = self.trigger_ccd1_detection()
+    
+    # 3. 尋找保護區域內的DR_F
+    target_coords = self.find_dr_f_in_protection_zone(detection_result)
+    
+    if target_coords:
+        # 找到DR_F - 設置可用狀態，繼續檢測
+        self.set_dr_f_available(target_coords)
         
-    def main_loop(self):
-        while True:
-            # 檢查機械臂Ready狀態
-            robot_ready = self.check_robot_ready()
-            
-            if robot_ready and not self.is_autofeeding_running():
-                # 啟動AutoFeeding
-                self.start_autofeeding()
-            
-            # 監控入料完成
-            if self.check_feeding_complete():
-                target_coords = self.read_target_coordinates()
-                
-                if not self.prepare_done:
-                    # 首次入料完成，執行Flow1
-                    self.pause_autofeeding()  # 921=1
-                    success = self.execute_flow1(target_coords)
-                    if success:
-                        self.prepare_done = True
-                    self.resume_autofeeding()  # 921=0
-                else:
-                    # 已準備好，等待外部Flow2觸發
-                    pass
-            
-            # 監控Flow2完成 (DR專案使用Flow2出料)
-            if self.check_flow2_complete():
-                self.prepare_done = False  # 重置狀態
-                self.clear_flow2_status()
-    
-    def start_autofeeding(self):
-        """啟動AutoFeeding"""
-        self.write_register(920, 1)
-    
-    def pause_autofeeding(self):
-        """暫停AutoFeeding(Flow1執行前)"""
-        self.write_register(921, 1)
-    
-    def resume_autofeeding(self):
-        """恢復AutoFeeding(Flow1執行後)"""
-        self.write_register(921, 0)
-    
-    def check_feeding_complete(self) -> bool:
-        """檢查入料完成"""
-        return self.read_register(940) == 1
-    
-    def read_target_coordinates(self) -> tuple:
-        """讀取目標座標並確認"""
-        x = self.read_32bit_register(941, 942)
-        y = self.read_32bit_register(943, 944)
+    elif detection_result.total_detections < 4:
+        # 料件不足 - 觸發Flow4送料
+        self.trigger_flow4_feeding()
         
-        # 確認讀取
-        self.write_register(945, 1)
+    else:
+        # 料件充足但無正面 - VP震動重檢
+        self.trigger_vp_vibration()
+        # 震動後立即重新檢測
+        retry_result = self.trigger_ccd1_detection()
+        retry_coords = self.find_dr_f_in_protection_zone(retry_result)
+        if retry_coords:
+            self.set_dr_f_available(retry_coords)
+```
+
+### **檢測決策邏輯**
+```
+檢測結果分析:
+├── 保護區內有DR_F → 設置可用狀態，繼續檢測
+├── 總料件數量<4 → Flow4送料
+└── 料件充足但無正面 → VP震動重檢
+    └── 震動後重檢 → 找到DR_F則設置可用
+```
+
+## 執行時序圖
+
+### **正常運作流程**
+```
+時間軸  DR AutoFeeding          Flow1              Dobot_main
+  |         |                     |                     |
+  t1    啟動檢測循環                |                     |
+  |         |                     |                     |
+  t2    找到DR_F                  |                     |
+  |     設置940=1,941-944         |                     |
+  |         |                     |                     |
+  t3        |              檢查940=1                   |
+  |         |              讀取941-944                 |
+  |         |              設置945=1                   |
+  |         |                     |                     |
+  t4    檢測到945=1               |           寫入1201=1
+  |     清除DR_F狀態              |                     |
+  |         |                     |                     |
+  t5    檢測到1201=1              |                     |
+  |     暫停檢測                    |              Flow1執行中
+  |         |                     |                     |
+  t6        |                     |           寫入1201=0
+  |         |                     |                     |
+  t7    檢測到1201=0              |                     |
+  |     恢復檢測                    |                     |
+  |         |                     |                     |
+  t8    繼續檢測新DR_F            |                     |
+```
+
+## 配置參數
+
+### **檢測參數配置**
+```json
+{
+  "autofeeding": {
+    "cycle_interval": 1.0,        // 檢測週期1秒
+    "ccd1_timeout": 5.0,          // CCD1超時5秒
+    "flow4_consecutive_limit": 5,  // 連續直振限制
+    "vp_empty_check_count": 3,    // VP空盤檢查次數
+    "auto_start": true            // 自動啟動檢測
+  }
+}
+```
+
+### **VP震動參數配置**
+```json
+{
+  "vp_params": {
+    "spread_action_code": 11,     // 震動動作碼
+    "spread_strength": 60,        // 震動強度60
+    "spread_frequency": 50,       // 震動頻率50Hz
+    "spread_duration": 0.3,       // 震動持續0.3秒
+    "stop_command_code": 3,       // 停止指令碼
+    "stop_delay": 0.1             // 停止延遲
+  }
+}
+```
+
+### **時序控制配置**
+```json
+{
+  "timing": {
+    "command_delay": 0.05,        // 指令延遲
+    "status_check_interval": 0.05, // 狀態檢查間隔
+    "register_clear_delay": 0.02,  // 寄存器清除延遲
+    "vp_stabilize_delay": 0.15,    // VP穩定延遲
+    "flow1_check_interval": 0.1    // Flow1監控間隔
+  }
+}
+```
+
+## 使用方式
+
+### **啟動AutoFeeding**
+```bash
+# 進入DR AutoFeeding目錄
+cd Automation/AutoFeeding/
+
+# 啟動DR AutoFeeding獨立模組
+python AutoFeeding_main.py
+```
+
+### **AutoFeeding自動行為**
+```
+啟動後自動執行:
+✓ 連接Modbus服務器 (127.0.0.1:502)
+✓ 初始化寄存器
+✓ 自動開始檢測循環
+✓ 主動監控Flow1狀態
+✓ 持續確保保護區域有DR_F
+```
+
+### **Flow1使用方式**
+```python
+# Flow1程序中讀取座標
+def read_autofeeding_coordinates():
+    # 檢查DR_F是否可用
+    dr_f_available = read_register(940)
+    if dr_f_available == 1:
+        # 讀取32位座標
+        x = read_32bit_register(941, 942)
+        y = read_32bit_register(943, 944)
+        
+        # 確認已讀取
+        write_register(945, 1)
         
         return (x, y)
+    return None
 ```
 
-### 時序協調圖
+## 主要改進功能
+
+### **持續檢測策略**
+- 找到DR_F後設置可用狀態，但不暫停檢測
+- 確保保護區域內始終有DR_F可用
+- 避免因單次檢測失敗造成的供料中斷
+
+### **主動Flow1監控**
+- 每0.1秒檢查1201寄存器狀態
+- Flow1執行時立即暫停檢測避免衝突
+- Flow1完成後立即恢復檢測
+
+### **自動啟動機制**
+- 程序啟動後自動開始檢測
+- 無需外部觸發指令
+- 支援配置檔案控制啟動行為
+
+### **錯誤處理機制**
+- 模組狀態檢查和自動重連
+- CCD1初始化狀態容錯處理
+- VP異常時的緊急停止功能
+
+## 狀態監控
+
+### **AutoFeeding狀態**
+- **0**: 停止
+- **1**: 運行中 (正常檢測)
+- **2**: Flow1暫停 (1201=1時)
+- **3**: 檢測中 (CCD1作業)
+- **4**: VP震動中
+- **5**: 錯誤
+
+### **Flow1監控狀態**
+- **0**: Flow1未執行
+- **1**: Flow1執行中
+
+### **DR_F狀態追蹤**
+```python
+self.dr_f_available     # 是否有DR_F可用
+self.dr_f_coords        # 當前DR_F座標
+self.dr_f_taken         # 座標是否已被讀取
 ```
-AutoProgram                 AutoFeeding              機械臂
-    |                           |                      |
-    |--- 920=1 啟動AF ---------->|                      |
-    |                           |                      |
-    |<------ 940=1 入料完成 -----|                      |
-    |                           |                      |
-    |--- 945=1 確認讀取 -------->|                      |
-    |--- 921=1 暫停AF ---------->|                      |
-    |                           |                      |
-    |--- Flow1 執行 --------------------------->|      |
-    |                           |              |      |
-    |<------ Flow1完成 <------------------------|      |
-    |                           |                      |
-    |--- 921=0 恢復AF ---------->|                      |
-    |                           |                      |
+
+## 使用優勢
+
+### **對開發者**
+- **簡化整合**: 不需要複雜的AutoProgram協調邏輯
+- **直接交握**: Flow1直接讀取座標，邏輯清晰
+- **自動運行**: 啟動即可工作，無需手動觸發
+- **狀態透明**: 所有狀態都有寄存器對應
+
+### **對系統運行**
+- **持續供料**: 保護區域隨時有DR_F可用
+- **快速響應**: 0.1秒間隔監控Flow1狀態
+- **無死鎖**: 主動監控機制避免等待卡住
+- **高可靠**: 獨立進程，異常不影響其他模組
+
+### **對維護調試**
+- **清晰日誌**: 所有狀態變化都有日誌記錄
+- **狀態可見**: 寄存器狀態可實時監控
+- **獨立運行**: 可單獨啟動測試
+- **簡單重啟**: 重啟不影響其他模組
+
+## 注意事項
+
+### **啟動順序**
+```
+建議啟動順序:
+1. 主Modbus TCP Server (端口502)
+2. CCD1視覺檢測模組
+3. VP震動盤模組  
+4. AutoFeeding_main.py (自動啟動檢測)
+5. Dobot_main (包含Flow1)
 ```
 
-## 統計資訊追蹤
+### **Flow1程序修改**
+```
+Flow1需要包含座標讀取邏輯:
+- 檢查940=1
+- 讀取941-944座標
+- 設置945=1確認
+- 執行後續動作
+```
 
-### 效能指標
-- **DR_F找到率** = 902 / 901 × 100% (DR_F找到次數 / 總週期數)
-- **送料效率** = 903 / 901 × 100% (Flow4觸發次數 / 總週期數)
-- **震動使用率** = 904 / 901 × 100% (VP震動次數 / 總週期數)
-- **系統穩定性** = (901 - 錯誤次數) / 901 × 100%
+### **AutoProgram角色變化**
+```
+AutoProgram不再需要:
+❌ 啟動/停止AutoFeeding
+❌ 暫停/恢復AutoFeeding
+❌ 座標中轉處理
+❌ 複雜交握協議
 
-### 統計重置
-通過寄存器926=1可重置所有統計資訊，便於階段性效能評估。
+AutoProgram現在只需要:
+✅ 監控系統整體狀態
+✅ Flow5完成後的狀態重置
+✅ 異常處理和恢復
+```
 
-## 實現優勢
+## 總結
 
-### 獨立性
-- 移除Threading，避免長時間運行問題
-- 獨立進程，可單獨啟動/停止/重啟
-- 模組異常不影響AutoProgram
+DR版本的AutoFeeding實現了真正的**背景服務**模式：
+- **持續不斷**的檢測確保DR_F供應
+- **主動監控**Flow1避免衝突
+- **直接交握**簡化整合難度
+- **自動運行**降低操作複雜度
+- **矩形保護區域**適應DR專案需求
+- **YOLO檢測適配**支援二分類檢測
 
-### 可靠性  
-- Modbus寄存器交握確保通訊穩定
-- 完整的異常處理與恢復機制
-- 狀態機設計確保邏輯清晰
-- 超時保護防止死鎖
-
-### 可維護性
-- 清晰的責任分離
-- 豐富的統計資訊便於調試
-- 標準化寄存器映射便於整合
-- 詳細的日誌輸出便於問題定位
-
-### DR專案適配
-- 針對DR_F/STACK物件最佳化
-- DR專案特定保護區域判斷
-- 雙重震動策略提升成功率
-- 參數配置完全匹配DR專案需求
-
-## 部署與使用
-
-### 啟動步驟
-1. 確保pymodbus 3.9.2已安裝
-2. 執行 `python AutoFeeding_main.py`
-3. 模組自動連接到 127.0.0.1:502
-4. 等待AutoProgram透過920=1啟動檢測
-
-### 配置檔案
-模組會自動在執行檔案同層目錄生成 `dr_autofeeding_config.json`，可調整所有參數。
-
-### 監控方式
-- 透過寄存器900-909監控即時狀態
-- 透過寄存器901-906監控統計資訊
-- 透過寄存器907監控錯誤代碼
-
-DR專案的AutoFeeding模組已實現絲滑、不斷、快速、準確的入料檢測效果，為機械臂提供穩定可靠的料件供應。
+這個設計讓AutoFeeding變成一個可靠的DR_F供應服務，Flow1可以隨時取得所需的座標，整個系統更加穩定和高效。

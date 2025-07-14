@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AutoProgram_app.py - DR專案AutoProgram Web控制界面
-提供AutoProgram流程控制、狀態監控、手動操作等功能
+AutoProgram_app.py - DR專案AutoProgram Web控制界面 (更新版)
+提供DR專案AutoProgram協調控制、AutoFeeding狀態監控、手動操作等功能
 基於Flask + SocketIO架構
+支援自動程序啟用/停用控制
+檢測類型: DR_F/STACK二分類，流程配置: Flow1+Flow2
 """
 
 import os
@@ -18,11 +20,11 @@ from pymodbus.exceptions import ModbusException, ConnectionException
 
 # 創建Flask應用
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'autoprogram_dr_v1.0'
+app.config['SECRET_KEY'] = 'dr_autoprogram_v2.0'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-class AutoProgramWebController:
-    """AutoProgram Web控制器"""
+class DrAutoProgramWebController:
+    """DR專案AutoProgram Web控制器 (更新版)"""
     
     def __init__(self, modbus_host="127.0.0.1", modbus_port=502):
         self.modbus_host = modbus_host
@@ -34,53 +36,64 @@ class AutoProgramWebController:
         self.monitor_thread = None
         self.monitoring = False
         
-        # 寄存器地址映射
+        # DR專案寄存器地址映射 (更新版)
         self.REGISTERS = {
-            # AutoProgram控制
-            'AUTO_PROGRAM_CONTROL': 1350,    # AutoProgram流程控制
+            # AutoProgram狀態 (1300-1319)
+            'SYSTEM_STATUS': 1300,              # 系統狀態
+            'PREPARE_DONE': 1301,               # prepare_done狀態
+            'AUTO_PROGRAM_ENABLED': 1302,       # 自動程序啟用狀態
+            'AF_DR_F_AVAILABLE': 1303,          # AutoFeeding DR_F狀態
+            'FLOW2_COMPLETE_STATUS': 1304,      # Flow2完成狀態 (DR專案用Flow2)
+            'COORDINATION_CYCLE_COUNT': 1305,   # 協調週期計數
+            'FLOW1_TRIGGER_COUNT': 1306,        # Flow1觸發次數
+            'FLOW2_COMPLETE_COUNT': 1307,       # Flow2完成次數 (DR專案用Flow2)
+            'DR_F_TAKEN_COUNT': 1308,           # DR_F取得次數
+            'ERROR_CODE': 1309,                 # 錯誤代碼
             
-            # 系統狀態
-            'SYSTEM_STATUS': 1300,           # 系統狀態
-            'AUTO_FEEDING_STATUS': 1301,     # AutoFeeding執行緒狀態
-            'ROBOT_JOB_STATUS': 1302,        # RobotJob執行緒狀態
+            # AutoProgram控制 (1320-1339)
+            'SYSTEM_CONTROL': 1320,             # 系統控制
+            'AUTO_PROGRAM_CONTROL': 1321,       # 自動程序啟用控制
+            'ERROR_CLEAR': 1322,                # 錯誤清除
+            'FORCE_RESET': 1323,                # 強制重置
             
-            # 統計資訊
-            'CYCLE_COUNT': 1304,             # 週期計數
-            'DR_F_FOUND_COUNT': 1305,        # DR_F找到次數
-            'FLOW4_TRIGGER_COUNT': 1306,     # Flow4觸發次數
-            'VP_VIBRATION_COUNT': 1307,      # VP震動次數
-            'FLOW1_TRIGGER_COUNT': 1308,     # Flow1觸發次數
-            'FLOW2_COMPLETE_COUNT': 1309,    # Flow2完成次數
+            # AutoFeeding座標 (1340-1359)
+            'AF_TARGET_X_HIGH': 1340,           # 目標座標X高位
+            'AF_TARGET_X_LOW': 1341,            # 目標座標X低位
+            'AF_TARGET_Y_HIGH': 1342,           # 目標座標Y高位
+            'AF_TARGET_Y_LOW': 1343,            # 目標座標Y低位
             
-            # 機械臂控制
-            'MOTION_STATUS': 1200,           # 運動狀態寄存器
-            'CURRENT_MOTION_FLOW': 1201,     # 當前運動Flow
-            'MOTION_PROGRESS': 1202,         # 運動進度
-            'FLOW1_CONTROL': 1240,           # Flow1控制
-            'FLOW2_CONTROL': 1241,           # Flow2控制
-            'FLOW1_COMPLETE': 1204,          # Flow1完成狀態
-            'FLOW2_COMPLETE': 1205,          # Flow2完成狀態
+            # AutoFeeding模組直接讀取 (940-945)
+            'AF_MODULE_STATUS': 900,            # AutoFeeding模組狀態
+            'AF_DR_F_AVAILABLE_DIRECT': 940,    # DR_F可用標誌(直讀)
+            'AF_TARGET_X_HIGH_DIRECT': 941,     # 目標座標X高位(直讀)
+            'AF_TARGET_X_LOW_DIRECT': 942,      # 目標座標X低位(直讀)
+            'AF_TARGET_Y_HIGH_DIRECT': 943,     # 目標座標Y高位(直讀)
+            'AF_TARGET_Y_LOW_DIRECT': 944,      # 目標座標Y低位(直讀)
+            'AF_COORDS_TAKEN': 945,             # 座標已讀取標誌
             
-            # CCD1檢測結果
-            'CCD1_STATUS': 201,              # CCD1狀態
-            'DR_F_COUNT': 240,               # DR_F數量
-            'STACK_COUNT': 242,              # STACK數量
-            'TOTAL_DETECTIONS': 243,         # 總檢測數量
+            # Dobot M1Pro (1200-1299)
+            'DOBOT_MOTION_STATUS': 1200,        # 運動狀態寄存器
+            'DOBOT_CURRENT_FLOW': 1201,         # 當前運動Flow
+            'DOBOT_MOTION_PROGRESS': 1202,      # 運動進度
+            'DOBOT_FLOW1_COMPLETE': 1204,       # Flow1完成狀態
+            'DOBOT_FLOW2_COMPLETE': 1205,       # Flow2完成狀態 (DR專案用Flow2)
+            'DOBOT_FLOW1_CONTROL': 1240,        # Flow1控制
+            'DOBOT_FLOW2_CONTROL': 1241,        # Flow2控制 (DR專案用Flow2)
+            
+            # CCD1檢測結果 (DR專案二分類)
+            'CCD1_STATUS': 201,                 # CCD1狀態
+            'DR_F_COUNT': 240,                  # DR_F數量
+            'STACK_COUNT': 242,                 # STACK數量
+            'TOTAL_DETECTIONS': 243,            # 總檢測數量
             
             # VP狀態
-            'VP_STATUS': 300,                # VP模組狀態
-            'VP_DEVICE_CONNECTION': 301,     # VP設備連接
-            'VP_VIBRATION_STATUS': 302,      # VP震動狀態
-            
-            # Flow4直振供應
-            'FLOW4_CONTROL': 448,            # Flow4控制
+            'VP_STATUS': 300,                   # VP模組狀態
+            'VP_DEVICE_CONNECTION': 301,        # VP設備連接
         }
         
-        # 自動交握狀態
-        self.auto_handshake_running = False
-        self.auto_handshake_thread = None
-        
-        print("AutoProgram Web控制器初始化完成")
+        print("DR專案AutoProgram Web控制器初始化完成 (更新版)")
+        print("檢測類型: DR_F/STACK二分類")
+        print("流程配置: Flow1+Flow2")
     
     def connect_modbus(self) -> bool:
         """連接Modbus服務器"""
@@ -149,6 +162,21 @@ class AutoProgramWebController:
         except Exception:
             return False
     
+    def read_32bit_coordinate(self, high_reg: str, low_reg: str) -> float:
+        """讀取32位座標"""
+        high_val = self.read_register(high_reg) or 0
+        low_val = self.read_register(low_reg) or 0
+        
+        # 合併32位值
+        combined = (high_val << 16) + low_val
+        
+        # 處理補碼(負數)
+        if combined >= 2147483648:  # 2^31
+            combined = combined - 4294967296  # 2^32
+        
+        # 轉換為毫米(除以100)
+        return combined / 100.0
+    
     def get_system_status(self) -> Dict[str, Any]:
         """獲取系統狀態"""
         status = {
@@ -157,29 +185,36 @@ class AutoProgramWebController:
             'modbus_host': self.modbus_host,
             'modbus_port': self.modbus_port,
             
-            # AutoProgram控制
-            'auto_program_enabled': bool(self.read_register('AUTO_PROGRAM_CONTROL')),
+            # DR專案資訊
+            'project_name': 'DR',
+            'detection_types': ['DR_F', 'STACK'],
+            'flow_config': 'Flow1+Flow2',
             
-            # 執行緒狀態
-            'auto_feeding_running': bool(self.read_register('AUTO_FEEDING_STATUS')),
-            'robot_job_running': bool(self.read_register('ROBOT_JOB_STATUS')),
-            
-            # 機械臂狀態
-            'motion_status': self.read_register('MOTION_STATUS') or 0,
-            'current_motion_flow': self.read_register('CURRENT_MOTION_FLOW') or 0,
-            'motion_progress': self.read_register('MOTION_PROGRESS') or 0,
-            'flow1_complete': bool(self.read_register('FLOW1_COMPLETE')),
-            'flow2_complete': bool(self.read_register('FLOW2_COMPLETE')),
-            
-            # 統計資訊
-            'cycle_count': self.read_register('CYCLE_COUNT') or 0,
-            'dr_f_found_count': self.read_register('DR_F_FOUND_COUNT') or 0,
-            'flow4_trigger_count': self.read_register('FLOW4_TRIGGER_COUNT') or 0,
-            'vp_vibration_count': self.read_register('VP_VIBRATION_COUNT') or 0,
+            # AutoProgram狀態
+            'system_status': self.read_register('SYSTEM_STATUS') or 0,
+            'prepare_done': bool(self.read_register('PREPARE_DONE')),
+            'auto_program_enabled': bool(self.read_register('AUTO_PROGRAM_ENABLED')),
+            'af_dr_f_available': bool(self.read_register('AF_DR_F_AVAILABLE')),
+            'flow2_complete_status': bool(self.read_register('FLOW2_COMPLETE_STATUS')),  # DR專案用Flow2
+            'coordination_cycle_count': self.read_register('COORDINATION_CYCLE_COUNT') or 0,
             'flow1_trigger_count': self.read_register('FLOW1_TRIGGER_COUNT') or 0,
-            'flow2_complete_count': self.read_register('FLOW2_COMPLETE_COUNT') or 0,
+            'flow2_complete_count': self.read_register('FLOW2_COMPLETE_COUNT') or 0,  # DR專案用Flow2
+            'dr_f_taken_count': self.read_register('DR_F_TAKEN_COUNT') or 0,
+            'error_code': self.read_register('ERROR_CODE') or 0,
             
-            # CCD1檢測結果
+            # AutoFeeding模組狀態(直讀)
+            'af_module_status': self.read_register('AF_MODULE_STATUS') or 0,
+            'af_dr_f_available_direct': bool(self.read_register('AF_DR_F_AVAILABLE_DIRECT')),
+            'af_coords_taken': bool(self.read_register('AF_COORDS_TAKEN')),
+            
+            # Dobot M1Pro狀態
+            'dobot_motion_status': self.read_register('DOBOT_MOTION_STATUS') or 0,
+            'dobot_current_flow': self.read_register('DOBOT_CURRENT_FLOW') or 0,
+            'dobot_motion_progress': self.read_register('DOBOT_MOTION_PROGRESS') or 0,
+            'dobot_flow1_complete': bool(self.read_register('DOBOT_FLOW1_COMPLETE')),
+            'dobot_flow2_complete': bool(self.read_register('DOBOT_FLOW2_COMPLETE')),  # DR專案用Flow2
+            
+            # CCD1檢測結果 (DR專案二分類)
             'ccd1_status': self.read_register('CCD1_STATUS') or 0,
             'dr_f_count': self.read_register('DR_F_COUNT') or 0,
             'stack_count': self.read_register('STACK_COUNT') or 0,
@@ -188,49 +223,78 @@ class AutoProgramWebController:
             # VP狀態
             'vp_status': self.read_register('VP_STATUS') or 0,
             'vp_device_connection': bool(self.read_register('VP_DEVICE_CONNECTION')),
-            'vp_vibration_status': self.read_register('VP_VIBRATION_STATUS') or 0,
             
-            # Flow4狀態
-            'flow4_control': self.read_register('FLOW4_CONTROL') or 0,
+            # 目標座標(來自AutoProgram複製)
+            'target_x': self.read_32bit_coordinate('AF_TARGET_X_HIGH', 'AF_TARGET_X_LOW'),
+            'target_y': self.read_32bit_coordinate('AF_TARGET_Y_HIGH', 'AF_TARGET_Y_LOW'),
             
-            # 自動交握狀態
-            'auto_handshake_running': self.auto_handshake_running,
+            # 目標座標(直接來自AutoFeeding)
+            'target_x_direct': self.read_32bit_coordinate('AF_TARGET_X_HIGH_DIRECT', 'AF_TARGET_X_LOW_DIRECT'),
+            'target_y_direct': self.read_32bit_coordinate('AF_TARGET_Y_HIGH_DIRECT', 'AF_TARGET_Y_LOW_DIRECT'),
             
             # 時間戳
             'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")
         }
         
-        # 判斷自動供料流程狀態
-        status['feeding_process_status'] = self._get_feeding_process_status(status)
+        # 判斷系統運行狀態
+        status['system_running'] = self._get_system_running_status(status)
+        status['autofeeding_process_status'] = self._get_autofeeding_process_status(status)
         
         return status
     
-    def _get_feeding_process_status(self, status: Dict) -> str:
-        """判斷自動供料流程狀態"""
-        if not status['auto_program_enabled']:
+    def _get_system_running_status(self, status: Dict) -> str:
+        """判斷系統運行狀態"""
+        system_status = status['system_status']
+        auto_enabled = status['auto_program_enabled']
+        
+        if system_status == 0:
             return "系統停止"
+        elif system_status == 1:
+            if auto_enabled:
+                return "運行中 (自動程序啟用)"
+            else:
+                return "運行中 (自動程序停用)"
+        elif system_status == 2:
+            return "Flow1已觸發"
+        elif system_status == 3:
+            return "Flow2已完成"  # DR專案用Flow2
+        elif system_status == 4:
+            return "錯誤"
+        else:
+            return f"未知狀態({system_status})"
+    
+    def _get_autofeeding_process_status(self, status: Dict) -> str:
+        """判斷AutoFeeding流程狀態"""
+        af_status = status['af_module_status']
+        dr_f_available = status['af_dr_f_available_direct']
+        coords_taken = status['af_coords_taken']
         
-        if not status['auto_feeding_running']:
-            return "入料程序未啟動"
+        status_text = ""
+        if af_status == 0:
+            status_text = "AutoFeeding模組停止"
+        elif af_status == 1:
+            status_text = "AutoFeeding模組運行中"
+        elif af_status == 2:
+            status_text = "AutoFeeding模組暫停"
+        elif af_status == 3:
+            status_text = "CCD1檢測中"
+        elif af_status == 4:
+            status_text = "VP震動中"
+        elif af_status == 5:
+            status_text = "AutoFeeding模組錯誤"
+        else:
+            status_text = f"未知狀態({af_status})"
         
-        # 檢查VP震動狀態
-        if status['vp_vibration_status'] > 0:
-            return "VP震動中"
+        # 添加DR_F狀態
+        if dr_f_available:
+            if coords_taken:
+                status_text += " (DR_F已被讀取)"
+            else:
+                status_text += " (DR_F可用)"
+        else:
+            status_text += " (無DR_F)"
         
-        # 檢查Flow4直振供應
-        if status['flow4_control'] > 0:
-            return "直振供應中"
-        
-        # 檢查CCD1辨識狀態
-        ccd1_status = status['ccd1_status']
-        if ccd1_status & 0x02:  # bit1=Running
-            return "CCD1辨識中"
-        
-        # 默認狀態
-        if status['auto_feeding_running']:
-            return "自動供料運行中"
-        
-        return "等待中"
+        return status_text
     
     def start_monitoring(self):
         """啟動狀態監控"""
@@ -266,93 +330,9 @@ class AutoProgramWebController:
             except Exception as e:
                 print(f"狀態監控異常: {e}")
                 time.sleep(5.0)
-    
-    def auto_handshake_flow(self):
-        """自動交握流程"""
-        try:
-            self.auto_handshake_running = True
-            print("開始執行自動交握流程...")
-            
-            # 步驟1: 確認Flow1完成狀態為1
-            step = 1
-            print(f"步驟{step}: 檢查Flow1完成狀態...")
-            flow1_complete = self.read_register('FLOW1_COMPLETE')
-            
-            if flow1_complete != 1:
-                print(f"✗ Flow1完成狀態為{flow1_complete}，不等於1，自動交握中止")
-                return False
-            
-            print(f"✓ Flow1完成狀態確認為1")
-            
-            # 步驟2: 清除Flow1完成狀態
-            step += 1
-            print(f"步驟{step}: 清除Flow1完成狀態...")
-            if not self.write_register('FLOW1_COMPLETE', 0):
-                print(f"✗ 清除Flow1完成狀態失敗")
-                return False
-            
-            print(f"✓ Flow1完成狀態已清除")
-            time.sleep(0.1)
-            
-            # 步驟3: 向Flow2地址寫1
-            step += 1
-            print(f"步驟{step}: 觸發Flow2...")
-            if not self.write_register('FLOW2_CONTROL', 1):
-                print(f"✗ 觸發Flow2失敗")
-                return False
-            
-            print(f"✓ Flow2已觸發")
-            
-            # 步驟4: 等待當前運動Flow變為2 (確認Flow2開始執行)
-            step += 1
-            print(f"步驟{step}: 等待Flow2開始執行...")
-            
-            timeout = 10.0  # 10秒超時
-            start_time = time.time()
-            
-            while (time.time() - start_time) < timeout:
-                current_flow = self.read_register('CURRENT_MOTION_FLOW')
-                if current_flow == 2:
-                    print(f"✓ Flow2已開始執行 (當前運動Flow: {current_flow})")
-                    break
-                
-                time.sleep(0.5)
-            else:
-                print(f"✗ 等待Flow2開始執行超時")
-                return False
-            
-            # 步驟5: 清除Flow2控制地址
-            step += 1
-            print(f"步驟{step}: 清除Flow2控制地址...")
-            if not self.write_register('FLOW2_CONTROL', 0):
-                print(f"✗ 清除Flow2控制地址失敗")
-                return False
-            
-            print(f"✓ Flow2控制地址已清除")
-            print("✅ 自動交握流程執行完成")
-            return True
-            
-        except Exception as e:
-            print(f"自動交握流程異常: {e}")
-            return False
-        finally:
-            self.auto_handshake_running = False
-    
-    def start_auto_handshake(self):
-        """啟動自動交握流程"""
-        if self.auto_handshake_running:
-            return {'success': False, 'message': '自動交握流程已在執行中'}
-        
-        self.auto_handshake_thread = threading.Thread(
-            target=self.auto_handshake_flow, 
-            daemon=True
-        )
-        self.auto_handshake_thread.start()
-        
-        return {'success': True, 'message': '自動交握流程已啟動'}
 
 # 創建全局控制器實例
-controller = AutoProgramWebController()
+controller = DrAutoProgramWebController()
 
 # ==================== Flask路由 ====================
 
@@ -360,9 +340,11 @@ controller = AutoProgramWebController()
 def index():
     """主頁面"""
     return render_template('AutoProgram.html')
+
 @app.route('/test')
 def test():
-    return "AutoProgram Web Server is running!"
+    return "DR專案AutoProgram Web Server is running! (更新版)"
+
 @app.route('/api/connect', methods=['POST'])
 def connect_modbus():
     """連接Modbus服務器"""
@@ -402,64 +384,135 @@ def get_status():
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
 
-@app.route('/api/control/autoprogram', methods=['POST'])
-def control_autoprogram():
-    """控制AutoProgram流程"""
+@app.route('/api/control/system', methods=['POST'])
+def control_system():
+    """控制AutoProgram系統"""
     try:
         data = request.get_json()
         action = data.get('action')  # 'start' or 'stop'
         
+        print(f"[DEBUG] 收到系統控制請求: {action}")  # DEBUG日誌
+        
         if action == 'start':
-            success = controller.write_register('AUTO_PROGRAM_CONTROL', 1)
-            message = 'AutoProgram流程已啟動' if success else 'AutoProgram流程啟動失敗'
+            success = controller.write_register('SYSTEM_CONTROL', 1)
+            print(f"[DEBUG] 寫入寄存器1320=1，結果: {success}")  # DEBUG日誌
+            message = 'DR專案AutoProgram系統已啟動 (1320=1)' if success else 'DR專案AutoProgram系統啟動失敗'
         elif action == 'stop':
+            success = controller.write_register('SYSTEM_CONTROL', 0)
+            print(f"[DEBUG] 寫入寄存器1320=0，結果: {success}")  # DEBUG日誌
+            message = 'DR專案AutoProgram系統已停止 (1320=0)' if success else 'DR專案AutoProgram系統停止失敗'
+        else:
+            return jsonify({'success': False, 'message': '無效的操作'})
+        
+        # 驗證寫入結果
+        verify_value = controller.read_register('SYSTEM_CONTROL')
+        print(f"[DEBUG] 驗證讀取寄存器1320值: {verify_value}")  # DEBUG日誌
+        
+        return jsonify({
+            'success': success,
+            'message': message,
+            'debug_info': f"寫入結果:{success}, 驗證值:{verify_value}"  # 添加DEBUG資訊
+        })
+        
+    except Exception as e:
+        print(f"[ERROR] 系統控制異常: {e}")  # ERROR日誌
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/api/control/auto_program', methods=['POST'])
+def control_auto_program():
+    """控制自動程序啟用/停用"""
+    try:
+        data = request.get_json()
+        action = data.get('action')  # 'enable' or 'disable'
+        
+        print(f"[DEBUG] 收到自動程序控制請求: {action}")  # DEBUG日誌
+        
+        if action == 'enable':
+            success = controller.write_register('AUTO_PROGRAM_CONTROL', 1)
+            print(f"[DEBUG] 寫入寄存器1321=1，結果: {success}")  # DEBUG日誌
+            message = '自動程序已啟用 (1321=1)' if success else '自動程序啟用失敗'
+        elif action == 'disable':
             success = controller.write_register('AUTO_PROGRAM_CONTROL', 0)
-            message = 'AutoProgram流程已停止' if success else 'AutoProgram流程停止失敗'
+            print(f"[DEBUG] 寫入寄存器1321=0，結果: {success}")  # DEBUG日誌
+            message = '自動程序已停用 (1321=0)' if success else '自動程序停用失敗'
         else:
             return jsonify({'success': False, 'message': '無效的操作'})
         
-        return jsonify({
-            'success': success,
-            'message': message
-        })
-        
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)})
-
-@app.route('/api/control/flow1', methods=['POST'])
-def control_flow1():
-    """控制Flow1完成狀態"""
-    try:
-        data = request.get_json()
-        action = data.get('action')  # 'clear'
-        
-        if action == 'clear':
-            success = controller.write_register('FLOW1_COMPLETE', 0)
-            message = 'Flow1完成狀態已清除' if success else 'Flow1完成狀態清除失敗'
-        else:
-            return jsonify({'success': False, 'message': '無效的操作'})
+        # 驗證寫入結果
+        verify_value = controller.read_register('AUTO_PROGRAM_CONTROL')
+        print(f"[DEBUG] 驗證讀取寄存器1321值: {verify_value}")  # DEBUG日誌
         
         return jsonify({
             'success': success,
-            'message': message
+            'message': message,
+            'debug_info': f"寫入結果:{success}, 驗證值:{verify_value}"  # 添加DEBUG資訊
         })
         
     except Exception as e:
+        print(f"[ERROR] 自動程序控制異常: {e}")  # ERROR日誌
         return jsonify({'success': False, 'message': str(e)})
 
-@app.route('/api/control/flow2', methods=['POST'])
-def control_flow2():
-    """控制Flow2"""
+@app.route('/api/control/dobot_flow1', methods=['POST'])
+def control_dobot_flow1():
+    """直接控制Dobot Flow1"""
     try:
         data = request.get_json()
-        action = data.get('action')  # 'start' or 'clear'
+        action = data.get('action')  # 'trigger', 'clear'
         
-        if action == 'start':
-            success = controller.write_register('FLOW2_CONTROL', 1)
-            message = 'Flow2已觸發' if success else 'Flow2觸發失敗'
+        if action == 'trigger':
+            success = controller.write_register('DOBOT_FLOW1_CONTROL', 1)
+            message = 'Dobot Flow1已觸發 (1240=1)' if success else 'Dobot Flow1觸發失敗'
         elif action == 'clear':
-            success = controller.write_register('FLOW2_CONTROL', 0)
-            message = 'Flow2控制地址已清除' if success else 'Flow2控制地址清除失敗'
+            success = controller.write_register('DOBOT_FLOW1_CONTROL', 0)
+            message = 'Dobot Flow1控制已清除 (1240=0)' if success else 'Dobot Flow1控制清除失敗'
+        else:
+            return jsonify({'success': False, 'message': '無效的操作'})
+        
+        return jsonify({
+            'success': success,
+            'message': message
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/api/control/dobot_flow2', methods=['POST'])
+def control_dobot_flow2():
+    """直接控制Dobot Flow2 (DR專案用Flow2)"""
+    try:
+        data = request.get_json()
+        action = data.get('action')  # 'trigger', 'clear'
+        
+        if action == 'trigger':
+            success = controller.write_register('DOBOT_FLOW2_CONTROL', 1)
+            message = 'Dobot Flow2已觸發 (1241=1)' if success else 'Dobot Flow2觸發失敗'
+        elif action == 'clear':
+            success = controller.write_register('DOBOT_FLOW2_CONTROL', 0)
+            message = 'Dobot Flow2控制已清除 (1241=0)' if success else 'Dobot Flow2控制清除失敗'
+        else:
+            return jsonify({'success': False, 'message': '無效的操作'})
+        
+        return jsonify({
+            'success': success,
+            'message': message
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/api/control/flow_complete', methods=['POST'])
+def control_flow_complete():
+    """清除Flow完成狀態"""
+    try:
+        data = request.get_json()
+        action = data.get('action')  # 'clear_flow1' or 'clear_flow2'
+        
+        if action == 'clear_flow1':
+            success = controller.write_register('DOBOT_FLOW1_COMPLETE', 0)
+            message = 'Flow1完成狀態已清除 (1204=0)' if success else 'Flow1完成狀態清除失敗'
+        elif action == 'clear_flow2':
+            success = controller.write_register('DOBOT_FLOW2_COMPLETE', 0)
+            message = 'Flow2完成狀態已清除 (1205=0)' if success else 'Flow2完成狀態清除失敗'  # DR專案用Flow2
         else:
             return jsonify({'success': False, 'message': '無效的操作'})
         
@@ -473,10 +526,82 @@ def control_flow2():
 
 @app.route('/api/control/auto_handshake', methods=['POST'])
 def auto_handshake():
-    """自動交握"""
+    """自動交握 - Flow1完成後自動觸發Flow2 (DR專案用Flow2)"""
     try:
-        result = controller.start_auto_handshake()
-        return jsonify(result)
+        logMessage = []
+        
+        # 1. 檢查Flow1完成狀態
+        flow1_complete = controller.read_register('DOBOT_FLOW1_COMPLETE')
+        logMessage.append(f"檢查Flow1完成狀態: {flow1_complete}")
+        
+        if not flow1_complete:
+            return jsonify({
+                'success': False,
+                'message': 'Flow1尚未完成，無法執行自動交握'
+            })
+        
+        logMessage.append("✓ Flow1已完成，開始自動交握流程")
+        
+        # 2. 清除Flow1完成狀態
+        clear_success = controller.write_register('DOBOT_FLOW1_COMPLETE', 0)
+        if clear_success:
+            logMessage.append("✓ Flow1完成狀態已清除")
+        else:
+            logMessage.append("✗ Flow1完成狀態清除失敗")
+            
+        # 3. 觸發Flow2 (DR專案用Flow2)
+        trigger_success = controller.write_register('DOBOT_FLOW2_CONTROL', 1)
+        if trigger_success:
+            logMessage.append("✓ Flow2已觸發")
+        else:
+            logMessage.append("✗ Flow2觸發失敗")
+            
+        # 4. 等待一小段時間後清除Flow2控制狀態
+        import time
+        time.sleep(0.1)
+        controller.write_register('DOBOT_FLOW2_CONTROL', 0)
+        logMessage.append("✓ Flow2控制狀態已清除")
+        
+        success = clear_success and trigger_success
+        message = " | ".join(logMessage)
+        
+        return jsonify({
+            'success': success,
+            'message': f"自動交握{'成功' if success else '部分失敗'}: {message}"
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False, 
+            'message': f'自動交握執行失敗: {str(e)}'
+        })
+
+@app.route('/api/control/coords_taken', methods=['POST'])
+def set_coords_taken():
+    """設置座標已讀取標誌"""
+    try:
+        success = controller.write_register('AF_COORDS_TAKEN', 1)
+        message = '座標已讀取標誌已設置 (945=1)' if success else '座標已讀取標誌設置失敗'
+        
+        return jsonify({
+            'success': success,
+            'message': message
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/api/control/error_clear', methods=['POST'])
+def error_clear():
+    """清除錯誤"""
+    try:
+        success = controller.write_register('ERROR_CLEAR', 1)
+        message = '錯誤已清除 (1322=1)' if success else '錯誤清除失敗'
+        
+        return jsonify({
+            'success': success,
+            'message': message
+        })
         
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
@@ -491,7 +616,7 @@ def handle_connect():
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    """客戶端斷開"""
+    """客戶端斷開連接"""
     print("客戶端已斷開連接")
 
 @socketio.on('request_status')
@@ -502,8 +627,11 @@ def handle_request_status():
 def main():
     """主函數"""
     print("=" * 60)
-    print("AutoProgram Web控制界面啟動中...")
-    print("DR專案版本 - AutoProgram流程控制與監控")
+    print("DR專案AutoProgram Web控制界面啟動中... (更新版)")
+    print("DR專案機械臂協調控制與監控")
+    print("檢測類型: DR_F/STACK二分類")
+    print("流程配置: Flow1+Flow2")
+    print("新增功能: 自動程序啟用/停用控制、AutoFeeding狀態監控")
     print("=" * 60)
     
     # 檢查模板文件
@@ -520,21 +648,23 @@ def main():
     
     try:
         print("🌐 Web服務器啟動中...")
-        print("📱 訪問地址: http://localhost:8061")
+        print("📱 訪問地址: http://localhost:5094")  # 使用不同端口避免衝突
         print("🎯 功能特性:")
-        print("   • AutoProgram流程控制 (1350地址)")
-        print("   • Flow1/Flow2狀態監控與控制")
-        print("   • 自動交握流程")
-        print("   • 自動供料狀態監控")
-        print("   • CCD1檢測結果顯示")
-        print("   • 即時運動進度條")
+        print("   • DR專案AutoProgram協調控制 (1300基地址)")
+        print("   • 自動程序啟用/停用控制 (1321)")
+        print("   • AutoFeeding狀態監控 (940-945)")
+        print("   • Dobot M1Pro Flow控制 (1240/1241)")
+        print("   • 自動交握控制 (Flow1→Flow2)")
+        print("   • 即時座標顯示")
+        print("   • 協調週期統計")
+        print("   • DR_F/STACK二分類檢測")
         print("=" * 60)
         
         # 啟動Web服務器
         socketio.run(
             app,
             host='0.0.0.0',
-            port=8061,
+            port=5094,  # 使用不同端口避免與CASE版本衝突
             debug=False
         )
         
@@ -545,7 +675,7 @@ def main():
     finally:
         # 清理資源
         controller.disconnect_modbus()
-        print("Web服務器已關閉")
+        print("DR專案Web服務器已關閉")
 
 if __name__ == '__main__':
     main()

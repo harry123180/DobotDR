@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Dobot_Flow1.py - Flow1 VP視覺抓取流程執行器
-使用外部點位檔案，禁止硬編碼座標
-整合CCD1HighLevel API進行智能檢測
+Dobot_Flow1.py - Flow1 VP視覺抓取流程執行器 (DR專案)
+- 使用外部點位檔案，禁止硬編碼座標
+- 整合AutoFeeding模組座標交握機制 (寄存器940-945)
+- 支援sync_enable控制高速/精準兩種模式
 """
 
 import time
@@ -12,6 +13,14 @@ import json
 from typing import Dict, Any, Optional, Tuple, List
 from dataclasses import dataclass
 from enum import Enum
+
+# 導入Modbus TCP Client (適配pymodbus 3.9.2)
+try:
+    from pymodbus.client import ModbusTcpClient
+    from pymodbus.exceptions import ModbusException, ConnectionException
+    MODBUS_AVAILABLE = True
+except ImportError:
+    MODBUS_AVAILABLE = False
 
 
 @dataclass
@@ -53,11 +62,176 @@ class FlowStatus(Enum):
     ERROR = "error"
 
 
+class AutoFeedingInterface:
+    """AutoFeeding座標交握接口 - DR專案專用"""
+    
+    def __init__(self, modbus_host: str = "127.0.0.1", modbus_port: int = 502):
+        self.modbus_host = modbus_host
+        self.modbus_port = modbus_port
+        self.modbus_client: Optional[ModbusTcpClient] = None
+        self.connected = False
+        
+        # AutoFeeding交握寄存器映射 (基地址940-945)
+        self.REGISTERS = {
+            'DR_F_AVAILABLE': 940,      # DR_F可用標誌 (0=無, 1=有)
+            'TARGET_X_HIGH': 941,       # DR_F座標X高位
+            'TARGET_X_LOW': 942,        # DR_F座標X低位  
+            'TARGET_Y_HIGH': 943,       # DR_F座標Y高位
+            'TARGET_Y_LOW': 944,        # DR_F座標Y低位
+            'COORDS_READ_CONFIRM': 945, # 座標已讀取確認 (Flow1設置)
+        }
+        
+        # 初始連接
+        self.ensure_connection()
+    
+    def ensure_connection(self) -> bool:
+        """確保連接已建立"""
+        if self.connected and self.modbus_client:
+            try:
+                # 快速連接測試
+                test_result = self.modbus_client.read_holding_registers(self.REGISTERS['DR_F_AVAILABLE'], 1, slave=1)
+                if not test_result.isError():
+                    return True
+            except:
+                pass
+        
+        # 需要重新連接
+        return self._establish_connection()
+    
+    def _establish_connection(self) -> bool:
+        """建立連接"""
+        try:
+            if self.modbus_client:
+                try:
+                    self.modbus_client.close()
+                except:
+                    pass
+            
+            self.modbus_client = ModbusTcpClient(
+                host=self.modbus_host,
+                port=self.modbus_port,
+                timeout=2.0
+            )
+            
+            if self.modbus_client.connect():
+                self.connected = True
+                print("✓ AutoFeeding連接已建立")
+                return True
+            else:
+                self.connected = False
+                print("✗ AutoFeeding連接失敗")
+                return False
+                
+        except Exception as e:
+            self.connected = False
+            print(f"AutoFeeding連接異常: {e}")
+            return False
+    
+    def disconnect(self):
+        """斷開連接"""
+        if self.modbus_client and self.connected:
+            try:
+                self.modbus_client.close()
+            except:
+                pass
+        self.connected = False
+        self.modbus_client = None
+    
+    def read_register(self, register_name: str) -> Optional[int]:
+        """讀取寄存器"""
+        if not self.ensure_connection() or register_name not in self.REGISTERS:
+            return None
+        
+        try:
+            address = self.REGISTERS[register_name]
+            result = self.modbus_client.read_holding_registers(address, count=1, slave=1)
+            
+            if not result.isError():
+                return result.registers[0]
+            else:
+                return None
+                
+        except Exception:
+            self.connected = False
+            return None
+    
+    def write_register(self, register_name: str, value: int) -> bool:
+        """寫入寄存器"""
+        if not self.ensure_connection() or register_name not in self.REGISTERS:
+            return False
+        
+        try:
+            address = self.REGISTERS[register_name]
+            result = self.modbus_client.write_register(address, value, slave=1)
+            return not result.isError()
+        except Exception:
+            self.connected = False
+            return False
+    
+    def check_dr_f_available(self) -> bool:
+        """檢查DR_F是否可用"""
+        dr_f_available = self.read_register('DR_F_AVAILABLE')
+        return dr_f_available == 1
+    
+    def read_dr_f_coordinates(self) -> Optional[Dict[str, float]]:
+        """讀取AutoFeeding DR_F座標"""
+        try:
+            # 檢查DR_F是否可用
+            if not self.check_dr_f_available():
+                print("AutoFeeding: DR_F不可用")
+                return None
+            
+            # 讀取32位座標寄存器
+            try:
+                result = self.modbus_client.read_holding_registers(
+                    self.REGISTERS['TARGET_X_HIGH'], 4, slave=1
+                )
+                if result.isError():
+                    return None
+                
+                x_high, x_low, y_high, y_low = result.registers
+                
+            except Exception:
+                # 批量讀取失敗，回退到單個讀取
+                x_high = self.read_register('TARGET_X_HIGH') or 0
+                x_low = self.read_register('TARGET_X_LOW') or 0
+                y_high = self.read_register('TARGET_Y_HIGH') or 0
+                y_low = self.read_register('TARGET_Y_LOW') or 0
+            
+            # 32位合併並轉換精度
+            world_x_int = (x_high << 16) | x_low
+            world_y_int = (y_high << 16) | y_low
+            
+            # 處理負數 (補碼轉換)
+            if world_x_int >= 2**31:
+                world_x_int -= 2**32
+            if world_y_int >= 2**31:
+                world_y_int -= 2**32
+            
+            # 恢復精度 (÷100)
+            world_x = world_x_int / 100.0
+            world_y = world_y_int / 100.0
+            
+            print(f"AutoFeeding座標讀取成功: X={world_x:.2f}, Y={world_y:.2f}")
+            return {
+                'x': world_x,
+                'y': world_y,
+                'source': 'autofeeding'
+            }
+            
+        except Exception as e:
+            print(f"讀取AutoFeeding座標異常: {e}")
+            return None
+    
+    def confirm_coordinates_read(self) -> bool:
+        """確認座標已讀取 (設置945=1)"""
+        return self.write_register('COORDS_READ_CONFIRM', 1)
+
+
 class PointsManager:
     """點位管理器 - 支援cartesian和pose格式"""
     
     def __init__(self, points_file: str = "saved_points/robot_points.json"):
-        # 確保使用絕對路徑，相對於當前執行檔案的目錄
         if not os.path.isabs(points_file):
             current_dir = os.path.dirname(os.path.abspath(__file__))
             self.points_file = os.path.join(current_dir, points_file)
@@ -82,16 +256,13 @@ class PointsManager:
                 try:
                     # 支援兩種格式：pose 或 cartesian
                     if "pose" in point_data:
-                        # 原始格式
                         pose_data = point_data["pose"]
                     elif "cartesian" in point_data:
-                        # 新格式
                         pose_data = point_data["cartesian"]
                     else:
                         print(f"點位 {point_data.get('name', 'unknown')} 缺少座標數據")
                         continue
                     
-                    # 檢查關節數據
                     if "joint" not in point_data:
                         print(f"點位 {point_data.get('name', 'unknown')} 缺少關節數據")
                         continue
@@ -143,9 +314,9 @@ class PointsManager:
 
 
 class DrFlow1VisionPickExecutor:
-    """Flow1: VP視覺抓取流程執行器"""
+    """Flow1: VP視覺抓取流程執行器 - DR專案AutoFeeding整合版"""
     
-    def __init__(self):
+    def __init__(self, sync_enable: bool = False):
         # 核心組件 (通過initialize方法設置)
         self.robot = None
         self.motion_state_machine = None
@@ -159,12 +330,18 @@ class DrFlow1VisionPickExecutor:
         self.start_time = 0.0
         self.last_error = ""
         
+        # 同步控制參數 - 新增
+        self.sync_enable = sync_enable
+        
         # 流程參數
         self.PICKUP_HEIGHT = 137.52  # 夾取高度
         
         # 初始化點位管理器
         self.points_manager = PointsManager()
         self.points_loaded = False
+        
+        # 初始化AutoFeeding接口
+        self.autofeeding_interface = AutoFeedingInterface()
         
         # Flow1需要的點位名稱
         self.REQUIRED_POINTS = [
@@ -186,7 +363,7 @@ class DrFlow1VisionPickExecutor:
         if self.points_loaded:
             self.build_flow_steps()
         
-        print("✓ DrFlow1VisionPickExecutor初始化完成")
+        print(f"✓ DrFlow1VisionPickExecutor初始化完成 (sync={'啟用' if sync_enable else '停用'})")
         
     def initialize(self, robot, motion_state_machine, external_modules):
         """初始化Flow執行器"""
@@ -196,8 +373,8 @@ class DrFlow1VisionPickExecutor:
         
         print(f"✓ Flow1執行器初始化完成")
         print(f"  可用模組: Gripper={self.external_modules.get('gripper') is not None}")
-        print(f"  CCD1檢測模式: 直接寄存器讀取 (基地址257-260)")
-        # 移除了對CCD1高層API的依賴檢查
+        print(f"  AutoFeeding交握: 寄存器940-945")
+        print(f"  同步控制: {'啟用' if self.sync_enable else '停用'}")
         
     def _load_and_validate_points(self):
         """載入並驗證點位檔案"""
@@ -234,11 +411,12 @@ class DrFlow1VisionPickExecutor:
             
         # 定義流程步驟
         self.motion_steps = [
-            # 1. 初始準備
+            # 1. AutoFeeding座標讀取
+            {'type': 'autofeeding_coordinates_read', 'params': {}},
+            
+            # 2. 初始準備
             {'type': 'move_to_point', 'params': {'point_name': 'standby', 'move_type': 'J'}},
             {'type': 'gripper_close', 'params': {}},
-            # 2. CCD1視覺檢測
-            {'type': 'ccd1_smart_detection', 'params': {}},
             
             # 3. 移動到VP上方檢測位置
             {'type': 'move_to_point', 'params': {'point_name': 'VP_TOPSIDE', 'move_type': 'J'}},
@@ -295,6 +473,16 @@ class DrFlow1VisionPickExecutor:
                 total_steps=self.total_steps
             )
         
+        # 檢查AutoFeeding連接
+        if not self.autofeeding_interface.ensure_connection():
+            return FlowResult(
+                success=False,
+                error_message="AutoFeeding連接失敗",
+                execution_time=time.time() - self.start_time,
+                steps_completed=self.current_step,
+                total_steps=self.total_steps
+            )
+        
         detected_position = None
         
         try:
@@ -322,8 +510,8 @@ class DrFlow1VisionPickExecutor:
                     success = self._execute_gripper_close()
                 elif step['type'] == 'gripper_smart_release':
                     success = self._execute_gripper_smart_release(step['params'])
-                elif step['type'] == 'ccd1_smart_detection':
-                    detected_position = self._execute_ccd1_smart_detection()
+                elif step['type'] == 'autofeeding_coordinates_read':
+                    detected_position = self._execute_autofeeding_coordinates_read()
                     success = detected_position is not None
                 elif step['type'] == 'move_to_detected_position_high':
                     success = self._execute_move_to_detected_high(detected_position)
@@ -368,7 +556,7 @@ class DrFlow1VisionPickExecutor:
             )
     
     def _execute_move_to_point(self, params: Dict[str, Any]) -> bool:
-        """執行移動到外部點位檔案的點位"""
+        """執行移動到外部點位檔案的點位 - 支援sync控制"""
         try:
             point_name = params['point_name']
             move_type = params['move_type']
@@ -379,19 +567,26 @@ class DrFlow1VisionPickExecutor:
                 print(f"錯誤: 點位管理器中找不到點位: {point_name}")
                 return False
             
-            print(f"移動到點位 {point_name}")
+            print(f"移動到點位 {point_name} (sync={'啟用' if self.sync_enable else '停用'})")
             print(f"  關節角度: (j1:{point.j1:.1f}, j2:{point.j2:.1f}, j3:{point.j3:.1f}, j4:{point.j4:.1f})")
             print(f"  笛卡爾座標: ({point.x:.2f}, {point.y:.2f}, {point.z:.2f}, {point.r:.2f})")
             
+            success = False
             if move_type == 'J':
                 # 使用關節角度運動
-                return self.robot.joint_move_j(point.j1, point.j2, point.j3, point.j4)
+                success = self.robot.joint_move_j(point.j1, point.j2, point.j3, point.j4)
             elif move_type == 'L':
                 # 直線運動使用笛卡爾座標
-                return self.robot.move_l(point.x, point.y, point.z, point.r)
+                success = self.robot.move_l(point.x, point.y, point.z, point.r)
             else:
                 print(f"未支援的移動類型: {move_type}")
                 return False
+            
+            # 可選同步控制
+            if success and self.sync_enable:
+                self.robot.sync()
+                
+            return success
                 
         except Exception as e:
             print(f"移動到點位失敗: {e}")
@@ -430,17 +625,7 @@ class DrFlow1VisionPickExecutor:
                 # 等待夾爪撐開操作完全完成
                 print("  等待夾爪撐開動作完成...")
                 time.sleep(1.5)  # 等待1.5秒確保夾爪完全撐開
-                if hasattr(gripper_api, 'get_current_position'):
-                    try:
-                        current_pos = gripper_api.get_current_position()
-                        if current_pos is not None:
-                            print(f"  夾爪當前位置: {current_pos}")
-                            if abs(current_pos - position) <= 20:  # 容差20
-                                print(f"  ✓ 夾爪已撐開到目標位置 (誤差: {abs(current_pos - position)})")
-                            else:
-                                print(f"  ⚠️ 夾爪位置偏差較大 (目標: {position}, 實際: {current_pos})")
-                    except Exception as e:
-                        print(f"  無法讀取夾爪位置: {e}")
+                
                 print(f"✓ 夾爪智能撐開完成 - 位置{position}")
                 return True
             else:
@@ -450,17 +635,64 @@ class DrFlow1VisionPickExecutor:
         except Exception as e:
             print(f"夾爪智能撐開異常: {e}")
             return False
+    
+    def _execute_autofeeding_coordinates_read(self) -> Optional[Dict[str, float]]:
+        """執行AutoFeeding座標讀取"""
+        try:
+            print("開始讀取AutoFeeding座標...")
+            
+            # 等待AutoFeeding提供DR_F座標 (最多等待10秒)
+            timeout = 10.0
+            start_time = time.time()
+            
+            while time.time() - start_time < timeout:
+                coord_data = self.autofeeding_interface.read_dr_f_coordinates()
+                if coord_data:
+                    break
+                time.sleep(0.1)  # 100ms檢查間隔
+            else:
+                print("等待AutoFeeding座標超時")
+                return None
+            
+            # 確認座標讀取
+            if not self.autofeeding_interface.confirm_coordinates_read():
+                print("確認座標讀取失敗")
+                return None
+            
+            # 獲取VP_TOPSIDE點位的Z高度和R值
+            vp_topside_point = self.points_manager.get_point('VP_TOPSIDE')
+            if not vp_topside_point:
+                print("錯誤: 無法獲取VP_TOPSIDE點位")
+                return None
+            
+            detected_pos = {
+                'x': coord_data['x'],                # AutoFeeding提供的X座標
+                'y': coord_data['y'],                # AutoFeeding提供的Y座標
+                'z': vp_topside_point.z,             # 繼承VP_TOPSIDE的Z高度
+                'r': vp_topside_point.r,             # 繼承VP_TOPSIDE的R角度
+                'source': 'autofeeding'
+            }
+            
+            print(f"AutoFeeding座標讀取成功:")
+            print(f"  DR_F座標: ({detected_pos['x']:.2f}, {detected_pos['y']:.2f})")
+            print(f"  繼承VP_TOPSIDE - Z:{detected_pos['z']:.2f}, R:{detected_pos['r']:.2f}")
+            
+            return detected_pos
+            
+        except Exception as e:
+            print(f"AutoFeeding座標讀取異常: {e}")
+            return None
+    
     def _execute_move_to_detected_high(self, detected_position: Optional[Dict[str, float]]) -> bool:
-        """移動到檢測位置(與VP_TOPSIDE同高) - 僅同步XY，R繼承VP_TOPSIDE"""
+        """移動到檢測位置(與VP_TOPSIDE同高) - 支援sync控制"""
         try:
             if not detected_position:
                 print("檢測位置為空，無法移動")
                 return False
             
-            # 🔥 關鍵新增：在MovL前切換到左手系
-            print("  切換到左手系（LorR=0）...")
+            # 座標系切換到右手系
+            print("  切換到右手系...")
             if hasattr(self.robot, 'dashboard_api') and self.robot.dashboard_api:
-                # 直接調用底層API進行座標系切換
                 try:
                     result = self.robot.dashboard_api.SetArmOrientation(1)  
                     if self.robot._parse_api_response(result):
@@ -472,21 +704,25 @@ class DrFlow1VisionPickExecutor:
             else:
                 print("  ⚠️ 無法訪問座標系切換API，跳過")
             
-            print(f"移動到檢測位置(與VP_TOPSIDE同高):")
+            print(f"移動到檢測位置(與VP_TOPSIDE同高) (sync={'啟用' if self.sync_enable else '停用'}):")
             print(f"  檢測XY: ({detected_position['x']:.2f}, {detected_position['y']:.2f})")
             print(f"  繼承Z: {detected_position['z']:.2f} (VP_TOPSIDE高度)")
             print(f"  繼承R: {detected_position['r']:.2f} (VP_TOPSIDE角度)")
             
-            # 使用MovL移動到檢測位置：檢測XY + VP_TOPSIDE的Z和R
+            # 使用MovL移動到檢測位置
             success = self.robot.move_l(
-                detected_position['x'],    # CCD1檢測的X座標
-                detected_position['y'],    # CCD1檢測的Y座標
-                detected_position['z'],    # VP_TOPSIDE的Z高度
-                detected_position['r']     # VP_TOPSIDE的R角度
+                detected_position['x'],
+                detected_position['y'],
+                detected_position['z'],
+                detected_position['r']
             )
             
+            # 可選同步控制
+            if success and self.sync_enable:
+                self.robot.sync()
+            
             if success:
-                print(f"✓ 移動到檢測位置完成 - XY同步檢測結果，ZR繼承VP_TOPSIDE，已切換左手系")
+                print(f"✓ 移動到檢測位置完成")
                 return True
             else:
                 print(f"✗ 移動到檢測位置失敗")
@@ -495,145 +731,33 @@ class DrFlow1VisionPickExecutor:
         except Exception as e:
             print(f"移動到檢測位置失敗: {e}")
             return False
-    def _execute_ccd1_smart_detection(self) -> Optional[Dict[str, float]]:
-        """執行CCD1智能檢測 - 修正版：讀取正確的DR_F世界座標地址"""
-        try:
-            # 導入pymodbus進行直接寄存器讀取
-            from pymodbus.client import ModbusTcpClient
-            
-            print("  使用CCD1寄存器直接讀取...")
-            
-            # 連接到Modbus服務器
-            modbus_client = ModbusTcpClient(
-                host="127.0.0.1",  # 根據你的Modbus服務器配置調整
-                port=502,
-                timeout=3.0
-            )
-            
-            if not modbus_client.connect():
-                print("  ⚠️ 無法連接到Modbus服務器")
-                return None
-            
-            try:
-                # 🔥 修正：讀取DR_F第1個目標的世界座標寄存器 (261-264)
-                # 261: DR_F_1_WORLD_X_HIGH, 262: DR_F_1_WORLD_X_LOW
-                # 263: DR_F_1_WORLD_Y_HIGH, 264: DR_F_1_WORLD_Y_LOW
-                result = modbus_client.read_holding_registers(
-                    address=261,    # 🔥 修正：起始地址改為261
-                    count=4,        # 讀取4個寄存器 (261-264)
-                    slave=1
-                )
-                
-                if hasattr(result, 'isError') and result.isError():
-                    print(f"  ✗ 讀取CCD1世界座標寄存器失敗: {result}")
-                    return None
-                
-                if not hasattr(result, 'registers') or len(result.registers) < 4:
-                    print("  ✗ 讀取的寄存器數據不足")
-                    return None
-                
-                # 解析32位世界座標 (×100精度)
-                x_high, x_low, y_high, y_low = result.registers
-                
-                print(f"  讀取寄存器261-264成功:")
-                print(f"    X_HIGH(261)={x_high}, X_LOW(262)={x_low}")
-                print(f"    Y_HIGH(263)={y_high}, Y_LOW(264)={y_low}")
-                
-                # 合併高低位並轉換為有符號32位整數
-                world_x_int = ((x_high << 16) | x_low)
-                world_y_int = ((y_high << 16) | y_low)
-                
-                # 處理有符號數 (如果最高位為1，則為負數)
-                if world_x_int & 0x80000000:
-                    world_x_int = world_x_int - 0x100000000
-                if world_y_int & 0x80000000:
-                    world_y_int = world_y_int - 0x100000000
-                
-                # 轉換為實際座標 (÷100恢復小數)
-                world_x = world_x_int / 100.0
-                world_y = world_y_int / 100.0
-                
-                print(f"  合併後32位整數: X={world_x_int}, Y={world_y_int}")
-                print(f"  實際世界座標: X={world_x:.2f}mm, Y={world_y:.2f}mm")
-                
-                # 檢查座標是否有效 (不為0)
-                if world_x == 0.0 and world_y == 0.0:
-                    print("  ⚠️ CCD1世界座標為零，可能無有效檢測結果")
-                    return None
-                
-                # 🔥 額外檢查：先確認DR_F數量是否>0
-                dr_f_count_result = modbus_client.read_holding_registers(
-                    address=240,    # DR_F_COUNT
-                    count=1,
-                    slave=1
-                )
-                
-                if hasattr(dr_f_count_result, 'registers') and len(dr_f_count_result.registers) > 0:
-                    dr_f_count = dr_f_count_result.registers[0]
-                    print(f"  DR_F檢測數量: {dr_f_count}")
-                    
-                    if dr_f_count == 0:
-                        print("  ⚠️ DR_F檢測數量為0，無有效目標")
-                        return None
-                else:
-                    print("  ⚠️ 無法讀取DR_F檢測數量")
-                
-                # 獲取VP_TOPSIDE點位的Z高度和R值
-                vp_topside_point = self.points_manager.get_point('VP_TOPSIDE')
-                if not vp_topside_point:
-                    print("錯誤: 無法獲取VP_TOPSIDE點位")
-                    return None
-                
-                detected_pos = {
-                    'x': world_x,                 # 使用CCD1檢測的DR_F世界X座標
-                    'y': world_y,                 # 使用CCD1檢測的DR_F世界Y座標
-                    'z': vp_topside_point.z,      # 使用VP_TOPSIDE的Z高度
-                    'r': vp_topside_point.r       # 繼承VP_TOPSIDE的R角度
-                }
-                
-                print(f"CCD1 DR_F世界座標讀取成功:")
-                print(f"  寄存器值: X_high={x_high}, X_low={x_low}, Y_high={y_high}, Y_low={y_low}")
-                print(f"  DR_F世界座標: ({detected_pos['x']:.2f}, {detected_pos['y']:.2f})mm")
-                print(f"  繼承VP_TOPSIDE - Z:{detected_pos['z']:.2f}, R:{detected_pos['r']:.2f}")
-                
-                return detected_pos
-                
-            finally:
-                # 確保關閉Modbus連接
-                modbus_client.close()
-                
-        except ImportError:
-            print("  ✗ 無法導入pymodbus，請確認pymodbus已安裝")
-            return None
-        except Exception as e:
-            print(f"CCD1寄存器讀取異常: {e}")
-            return None
     
     def _execute_move_to_detected_low(self, detected_position: Optional[Dict[str, float]]) -> bool:
-        """移動到檢測位置(夾取高度) - 僅同步XY，R繼承VP_TOPSIDE"""
+        """移動到檢測位置(夾取高度) - 支援sync控制"""
         try:
             if not detected_position:
                 print("檢測位置為空，無法移動")
                 return False
             
-            print(f"下降到夾取高度:")
+            print(f"下降到夾取高度 (sync={'啟用' if self.sync_enable else '停用'}):")
             print(f"  檢測XY: ({detected_position['x']:.2f}, {detected_position['y']:.2f})")
             print(f"  夾取高度Z: {self.PICKUP_HEIGHT:.2f}")
             print(f"  繼承R: {detected_position['r']:.2f} (VP_TOPSIDE角度)")
             
-            # 使用夾取高度：檢測XY + 固定夾取Z + VP_TOPSIDE的R
+            # 使用夾取高度
             success = self.robot.move_l(
-                detected_position['x'],    # CCD1檢測的X座標
-                detected_position['y'],    # CCD1檢測的Y座標
-                self.PICKUP_HEIGHT,        # 固定夾取高度137.52
-                detected_position['r']     # VP_TOPSIDE的R角度
+                detected_position['x'],
+                detected_position['y'],
+                self.PICKUP_HEIGHT,
+                detected_position['r']
             )
             
+            # 可選同步控制
+            if success and self.sync_enable:
+                self.robot.sync()
+                
             if success:
-                # 確保機械臂到位後才繼續
-                if hasattr(self.robot, 'sync'):
-                    self.robot.sync()
-                print(f"✓ 下降到夾取位置完成 - XY同步檢測結果，R繼承VP_TOPSIDE，夾取高度={self.PICKUP_HEIGHT:.2f}mm")
+                print(f"✓ 下降到夾取位置完成")
                 return True
             else:
                 print(f"✗ 下降到夾取位置失敗")
@@ -671,7 +795,14 @@ class DrFlow1VisionPickExecutor:
     
     def is_ready(self) -> bool:
         """檢查Flow1是否準備好執行"""
-        return self.points_loaded and self.total_steps > 0
+        return (self.points_loaded and 
+                self.total_steps > 0 and 
+                self.autofeeding_interface.connected)
+    
+    def cleanup(self):
+        """清理資源"""
+        if hasattr(self, 'autofeeding_interface'):
+            self.autofeeding_interface.disconnect()
 
 
 # 兼容性別名

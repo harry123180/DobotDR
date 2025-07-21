@@ -523,18 +523,18 @@ class AutoFeedingModule:
         success &= self.write_register(322, self.config['vp_params']['spread_strength'])
         success &= self.write_register(323, self.config['vp_params']['spread_frequency'])
         success &= self.write_register(324, int(time.time()) % 65535)
-        
+                
         if not success:
             self.error_code = 301
             return False
         
         # 震動持續時間
-        time.sleep(self.config['vp_params']['spread_duration'])
+        time.sleep(0.8)
         success = True
         success &= self.write_register(320, 5)  # execute_action
         success &= self.write_register(321, 11) #擴散
-        success &= self.write_register(322, 82)#強度
-        success &= self.write_register(323, 41)#頻率
+        success &= self.write_register(322, 98)#強度
+        success &= self.write_register(323, 64)#頻率
         success &= self.write_register(324, int(time.time()) % 65535)
         
         if not success:
@@ -542,7 +542,19 @@ class AutoFeedingModule:
             return False
         
         # 震動持續時間
-        time.sleep(self.config['vp_params']['spread_duration'])
+        time.sleep(0.8)
+        success = True
+        success &= self.write_register(320, 5)  # execute_action
+        success &= self.write_register(321, 0) #擴散
+        success &= self.write_register(322, 0)#強度
+        success &= self.write_register(323, 0)#頻率
+        success &= self.write_register(324, int(time.time()) % 65535)
+        if not success:
+            self.error_code = 301
+            return False
+        
+        # 震動持續時間
+        time.sleep(0.8)
         
         # 停止震動
         return self.stop_vp_vibration()

@@ -1,0 +1,7 @@
+2025-07-17 01:03:57 [INFO] RobotController:initialize:612 - 正在初始化機械臂: 192.168.1.6
+2025-07-17 01:03:57 [INFO] RobotController:initialize:619 - 清除錯誤成功
+2025-07-17 01:03:58 [INFO] RobotController:initialize:625 - 機械臂啟用成功
+2025-07-17 01:04:00 [INFO] RobotController:set_global_speed:670 - 全局速度設定成功: 100%
+2025-07-17 01:04:00 [INFO] RobotController:initialize:633 - 初始速度設定成功: 100%
+2025-07-17 01:04:00 [INFO] RobotController:initialize:638 - 機械臂初始化成功: 192.168.1.6
+2025-07-17 01:05:19 [INFO] RobotController:disconnect:854 - 機械臂已停用

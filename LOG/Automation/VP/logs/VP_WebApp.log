@@ -1,0 +1,1189 @@
+2025-07-17 00:27:33 [INFO] VP_WebApp:__init__:60 - 震動盤Web UI初始化開始
+2025-07-17 00:27:33 [INFO] VP_WebApp:load_config:119 - 已載入配置檔案: c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\VP\vp_app_config.json
+2025-07-17 00:27:33 [INFO] VP_WebApp:init_register_mapping:182 - 震動盤Web UI寄存器映射初始化:
+2025-07-17 00:27:33 [INFO] VP_WebApp:init_register_mapping:183 -   主服務器: 127.0.0.1:502
+2025-07-17 00:27:33 [INFO] VP_WebApp:init_register_mapping:184 -   基地址: 300
+2025-07-17 00:27:33 [INFO] VP_WebApp:init_register_mapping:185 -   指令寄存器: 320 ~ 325
+2025-07-17 00:27:33 [DEBUG] VP_WebApp:init_register_mapping:186 -   預設亮度: 28
+2025-07-17 00:27:33 [DEBUG] VP_WebApp:init_register_mapping:187 -   預設強度: 100
+2025-07-17 00:27:33 [DEBUG] VP_WebApp:init_register_mapping:188 -   預設頻率: 100
+2025-07-17 00:27:33 [INFO] VP_WebApp:__init__:84 - 震動盤Web UI初始化完成
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:937 - 震動盤Web控制應用啟動中...
+2025-07-17 00:27:33 [DEBUG] VP_WebApp:create_templates_directory:933 - templates目錄已存在: c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\VP\templates
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:943 - 嘗試自動連接主服務器...
+2025-07-17 00:27:33 [INFO] VP_WebApp:connect_modbus_server:662 - 正在連接主Modbus服務器: 127.0.0.1:502
+2025-07-17 00:27:33 [INFO] VP_WebApp:connect_modbus_server:672 - 連接到主Modbus服務器成功: 127.0.0.1:502
+2025-07-17 00:27:33 [INFO] VP_WebApp:status_monitor_loop:854 - 狀態監控循環開始
+2025-07-17 00:27:33 [INFO] VP_WebApp:start_monitoring:834 - 狀態監控執行緒已啟動
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:949 - Web服務器啟動 - http://0.0.0.0:5053
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:950 - 主Modbus服務器: 127.0.0.1:502
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:951 - VP模組基地址: 300
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:952 - 架構: VP_app → 主Modbus服務器 → VP_main → 震動盤(192.168.1.7:1000)
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:953 - 功能列表:
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:954 -   - VP_main模組寄存器監控
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:955 -   - 震動動作控制 (11種震動模式)
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:956 -   - 強度/頻率調整
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:957 -   - 停止功能 (指令3→VP_main→震動盤寄存器4)
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:958 -   - 背光控制 (亮度調節/開關)
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:959 -   - 錯誤重置
+2025-07-17 00:27:33 [INFO] VP_WebApp:run:960 - 按 Ctrl+C 停止應用
+2025-07-17 00:27:38 [INFO] VP_WebApp:handle_connect:640 - Web客戶端已連接
+2025-07-17 00:28:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 60
+2025-07-17 00:29:12 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:29:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 120
+2025-07-17 00:30:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 180
+2025-07-17 00:30:53 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:31:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 240
+2025-07-17 00:32:33 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:32:33 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:32:33 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:32:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 300
+2025-07-17 00:33:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 360
+2025-07-17 00:34:14 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:34:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 420
+2025-07-17 00:35:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 480
+2025-07-17 00:35:54 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:36:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 540
+2025-07-17 00:37:35 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:37:35 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:37:35 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:37:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 600
+2025-07-17 00:38:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 660
+2025-07-17 00:39:15 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:39:22 [INFO] VP_WebApp:set_backlight:472 - 設定背光開關: 開啟
+2025-07-17 00:39:22 [DEBUG] VP_WebApp:write_register:757 - 寫入寄存器 320: 1
+2025-07-17 00:39:22 [DEBUG] VP_WebApp:write_register:757 - 寫入寄存器 321: 0
+2025-07-17 00:39:22 [DEBUG] VP_WebApp:write_register:757 - 寫入寄存器 322: 0
+2025-07-17 00:39:22 [DEBUG] VP_WebApp:write_register:757 - 寫入寄存器 323: 0
+2025-07-17 00:39:22 [DEBUG] VP_WebApp:write_register:757 - 寫入寄存器 324: 2
+2025-07-17 00:39:22 [INFO] VP_WebApp:send_command:799 - 發送指令成功: enable_device (code=1, p1=0, p2=0, p3=0, id=2)
+2025-07-17 00:39:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 720
+2025-07-17 00:40:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 780
+2025-07-17 00:40:56 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:41:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 840
+2025-07-17 00:42:36 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:42:36 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:42:36 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:42:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 900
+2025-07-17 00:43:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 960
+2025-07-17 00:44:17 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:44:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1020
+2025-07-17 00:45:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1080
+2025-07-17 00:45:57 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:46:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1140
+2025-07-17 00:47:38 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:47:38 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:47:38 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:47:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1200
+2025-07-17 00:48:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1260
+2025-07-17 00:49:18 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:49:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1320
+2025-07-17 00:50:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1380
+2025-07-17 00:50:59 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:51:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1440
+2025-07-17 00:52:39 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:52:39 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:52:39 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:52:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1500
+2025-07-17 00:53:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1560
+2025-07-17 00:54:20 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:54:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1620
+2025-07-17 00:55:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1680
+2025-07-17 00:56:00 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:56:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1740
+2025-07-17 00:57:41 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:57:41 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 00:57:41 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:57:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1800
+2025-07-17 00:58:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1860
+2025-07-17 00:59:21 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 00:59:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1920
+2025-07-17 01:00:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 1980
+2025-07-17 01:01:02 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:01:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2040
+2025-07-17 01:02:42 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:02:42 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:02:42 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:02:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2100
+2025-07-17 01:03:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2160
+2025-07-17 01:04:23 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:04:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2220
+2025-07-17 01:05:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2280
+2025-07-17 01:06:03 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:06:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2340
+2025-07-17 01:07:44 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:07:44 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:07:44 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:07:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2400
+2025-07-17 01:08:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2460
+2025-07-17 01:09:24 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:09:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2520
+2025-07-17 01:10:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2580
+2025-07-17 01:11:05 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:11:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2640
+2025-07-17 01:12:45 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:12:45 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:12:45 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:12:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2700
+2025-07-17 01:13:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2760
+2025-07-17 01:14:26 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:14:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2820
+2025-07-17 01:15:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2880
+2025-07-17 01:16:06 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:16:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 2940
+2025-07-17 01:17:47 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:17:47 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:17:47 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:17:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3000
+2025-07-17 01:18:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3060
+2025-07-17 01:19:27 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:19:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3120
+2025-07-17 01:20:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3180
+2025-07-17 01:21:08 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:21:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3240
+2025-07-17 01:22:48 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:22:48 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:22:48 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:22:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3300
+2025-07-17 01:23:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3360
+2025-07-17 01:24:29 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:24:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3420
+2025-07-17 01:25:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3480
+2025-07-17 01:26:09 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:26:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3540
+2025-07-17 01:27:50 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:27:50 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:27:50 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:27:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3600
+2025-07-17 01:28:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3660
+2025-07-17 01:29:30 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:29:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3720
+2025-07-17 01:30:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3780
+2025-07-17 01:31:11 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:31:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3840
+2025-07-17 01:32:51 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:32:51 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:32:51 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:32:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3900
+2025-07-17 01:33:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 3960
+2025-07-17 01:34:32 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:34:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4020
+2025-07-17 01:35:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4080
+2025-07-17 01:36:12 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:36:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4140
+2025-07-17 01:37:53 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:37:53 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:37:53 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:37:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4200
+2025-07-17 01:38:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4260
+2025-07-17 01:39:33 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:39:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4320
+2025-07-17 01:40:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4380
+2025-07-17 01:41:14 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:41:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4440
+2025-07-17 01:42:54 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:42:54 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:42:54 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:42:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4500
+2025-07-17 01:43:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4560
+2025-07-17 01:44:35 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:44:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4620
+2025-07-17 01:45:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4680
+2025-07-17 01:46:15 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:46:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4740
+2025-07-17 01:47:56 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:47:56 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:47:56 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:47:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4800
+2025-07-17 01:48:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4860
+2025-07-17 01:49:36 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:49:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4920
+2025-07-17 01:50:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 4980
+2025-07-17 01:51:17 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:51:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5040
+2025-07-17 01:52:57 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:52:57 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:52:57 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:52:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5100
+2025-07-17 01:53:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5160
+2025-07-17 01:54:38 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:54:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5220
+2025-07-17 01:55:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5280
+2025-07-17 01:56:18 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:56:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5340
+2025-07-17 01:57:59 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:57:59 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 01:57:59 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:57:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5400
+2025-07-17 01:58:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5460
+2025-07-17 01:59:39 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 01:59:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5520
+2025-07-17 02:01:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5580
+2025-07-17 02:01:20 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:02:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5640
+2025-07-17 02:03:00 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:03:00 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:03:00 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:03:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5700
+2025-07-17 02:04:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5760
+2025-07-17 02:04:41 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:05:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5820
+2025-07-17 02:06:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5880
+2025-07-17 02:06:21 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:07:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 5940
+2025-07-17 02:08:02 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:08:02 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:08:02 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:08:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6000
+2025-07-17 02:09:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6060
+2025-07-17 02:09:43 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:10:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6120
+2025-07-17 02:11:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6180
+2025-07-17 02:11:23 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:12:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6240
+2025-07-17 02:13:04 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:13:04 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:13:04 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:13:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6300
+2025-07-17 02:14:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6360
+2025-07-17 02:14:44 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:15:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6420
+2025-07-17 02:16:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6480
+2025-07-17 02:16:25 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:17:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6540
+2025-07-17 02:18:05 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:18:05 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:18:05 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:18:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6600
+2025-07-17 02:19:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6660
+2025-07-17 02:19:46 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:20:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6720
+2025-07-17 02:21:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6780
+2025-07-17 02:21:26 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:22:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6840
+2025-07-17 02:23:07 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:23:07 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:23:07 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:23:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6900
+2025-07-17 02:24:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 6960
+2025-07-17 02:24:47 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:25:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7020
+2025-07-17 02:26:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7080
+2025-07-17 02:26:28 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:27:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7140
+2025-07-17 02:28:08 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:28:08 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:28:08 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:28:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7200
+2025-07-17 02:29:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7260
+2025-07-17 02:29:49 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:30:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7320
+2025-07-17 02:31:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7380
+2025-07-17 02:31:29 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:32:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7440
+2025-07-17 02:33:10 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:33:10 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:33:10 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:33:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7500
+2025-07-17 02:34:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7560
+2025-07-17 02:34:50 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:35:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7620
+2025-07-17 02:36:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7680
+2025-07-17 02:36:31 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:37:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7740
+2025-07-17 02:38:11 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:38:11 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:38:11 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:38:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7800
+2025-07-17 02:39:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7860
+2025-07-17 02:39:52 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:40:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7920
+2025-07-17 02:41:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 7980
+2025-07-17 02:41:33 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:42:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8040
+2025-07-17 02:43:13 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:43:13 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:43:13 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:43:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8100
+2025-07-17 02:44:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8160
+2025-07-17 02:44:54 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:45:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8220
+2025-07-17 02:46:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8280
+2025-07-17 02:46:34 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:47:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8340
+2025-07-17 02:48:15 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:48:15 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:48:15 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:48:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8400
+2025-07-17 02:49:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8460
+2025-07-17 02:49:55 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:50:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8520
+2025-07-17 02:51:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8580
+2025-07-17 02:51:36 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:52:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8640
+2025-07-17 02:53:16 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:53:16 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:53:16 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:53:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8700
+2025-07-17 02:54:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8760
+2025-07-17 02:54:57 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:55:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8820
+2025-07-17 02:56:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8880
+2025-07-17 02:56:37 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:57:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 8940
+2025-07-17 02:58:18 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:58:18 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 02:58:18 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 02:58:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9000
+2025-07-17 02:59:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9060
+2025-07-17 02:59:58 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:00:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9120
+2025-07-17 03:01:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9180
+2025-07-17 03:01:39 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:02:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9240
+2025-07-17 03:03:19 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:03:19 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:03:19 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:03:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9300
+2025-07-17 03:04:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9360
+2025-07-17 03:05:00 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:05:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9420
+2025-07-17 03:06:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9480
+2025-07-17 03:06:41 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:07:21 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9540
+2025-07-17 03:08:21 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:08:21 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:08:21 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:08:21 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9600
+2025-07-17 03:09:21 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9660
+2025-07-17 03:10:02 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:10:22 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9720
+2025-07-17 03:11:22 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9780
+2025-07-17 03:11:42 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:12:22 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9840
+2025-07-17 03:13:23 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:13:23 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:13:23 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:13:23 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9900
+2025-07-17 03:14:23 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 9960
+2025-07-17 03:15:03 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:15:23 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10020
+2025-07-17 03:16:24 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10080
+2025-07-17 03:16:44 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:17:24 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10140
+2025-07-17 03:18:24 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:18:24 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:18:24 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:18:24 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10200
+2025-07-17 03:19:25 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10260
+2025-07-17 03:20:05 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:20:25 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10320
+2025-07-17 03:21:25 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10380
+2025-07-17 03:21:45 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:22:25 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10440
+2025-07-17 03:23:26 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:23:26 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:23:26 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:23:26 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10500
+2025-07-17 03:24:26 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10560
+2025-07-17 03:25:06 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:25:26 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10620
+2025-07-17 03:26:27 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10680
+2025-07-17 03:26:47 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:27:27 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10740
+2025-07-17 03:28:27 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:28:27 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:28:27 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:28:27 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10800
+2025-07-17 03:29:27 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10860
+2025-07-17 03:30:08 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:30:28 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10920
+2025-07-17 03:31:28 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 10980
+2025-07-17 03:31:48 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:32:28 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11040
+2025-07-17 03:33:29 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:33:29 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:33:29 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:33:29 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11100
+2025-07-17 03:34:29 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11160
+2025-07-17 03:35:09 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:35:29 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11220
+2025-07-17 03:36:29 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11280
+2025-07-17 03:36:49 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:37:30 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11340
+2025-07-17 03:38:30 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:38:30 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:38:30 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:38:30 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11400
+2025-07-17 03:39:30 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11460
+2025-07-17 03:40:10 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:40:31 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11520
+2025-07-17 03:41:31 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11580
+2025-07-17 03:41:51 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:42:31 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11640
+2025-07-17 03:43:31 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:43:31 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:43:31 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:43:31 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11700
+2025-07-17 03:44:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11760
+2025-07-17 03:45:12 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:45:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11820
+2025-07-17 03:46:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11880
+2025-07-17 03:46:52 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:47:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 11940
+2025-07-17 03:48:33 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:48:33 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:48:33 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:48:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12000
+2025-07-17 03:49:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12060
+2025-07-17 03:50:13 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:50:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12120
+2025-07-17 03:51:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12180
+2025-07-17 03:51:54 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:52:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12240
+2025-07-17 03:53:34 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:53:34 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:53:34 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:53:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12300
+2025-07-17 03:54:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12360
+2025-07-17 03:55:15 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:55:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12420
+2025-07-17 03:56:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12480
+2025-07-17 03:56:55 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:57:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12540
+2025-07-17 03:58:35 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:58:35 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 03:58:35 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 03:58:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12600
+2025-07-17 03:59:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12660
+2025-07-17 04:00:16 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:00:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12720
+2025-07-17 04:01:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12780
+2025-07-17 04:01:56 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:02:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12840
+2025-07-17 04:03:37 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:03:37 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:03:37 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:03:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12900
+2025-07-17 04:04:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 12960
+2025-07-17 04:05:17 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:05:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13020
+2025-07-17 04:06:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13080
+2025-07-17 04:06:58 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:07:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13140
+2025-07-17 04:08:38 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:08:38 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:08:38 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:08:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13200
+2025-07-17 04:09:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13260
+2025-07-17 04:10:19 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:10:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13320
+2025-07-17 04:11:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13380
+2025-07-17 04:11:59 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:12:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13440
+2025-07-17 04:13:40 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:13:40 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:13:40 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:13:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13500
+2025-07-17 04:14:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13560
+2025-07-17 04:15:20 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:15:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13620
+2025-07-17 04:16:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13680
+2025-07-17 04:17:01 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:17:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13740
+2025-07-17 04:18:41 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:18:41 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:18:41 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:18:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13800
+2025-07-17 04:19:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13860
+2025-07-17 04:20:22 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:20:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13920
+2025-07-17 04:21:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 13980
+2025-07-17 04:22:02 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:22:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14040
+2025-07-17 04:23:43 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:23:43 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:23:43 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:23:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14100
+2025-07-17 04:24:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14160
+2025-07-17 04:25:23 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:25:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14220
+2025-07-17 04:26:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14280
+2025-07-17 04:27:04 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:27:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14340
+2025-07-17 04:28:44 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:28:44 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:28:44 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:28:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14400
+2025-07-17 04:29:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14460
+2025-07-17 04:30:25 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:30:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14520
+2025-07-17 04:31:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14580
+2025-07-17 04:32:05 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:32:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14640
+2025-07-17 04:33:46 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:33:46 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:33:46 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:33:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14700
+2025-07-17 04:34:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14760
+2025-07-17 04:35:26 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:35:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14820
+2025-07-17 04:36:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14880
+2025-07-17 04:37:06 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:37:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 14940
+2025-07-17 04:38:47 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:38:47 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:38:47 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:38:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15000
+2025-07-17 04:39:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15060
+2025-07-17 04:40:27 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:40:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15120
+2025-07-17 04:41:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15180
+2025-07-17 04:42:08 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:42:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15240
+2025-07-17 04:43:48 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:43:48 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:43:48 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:43:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15300
+2025-07-17 04:44:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15360
+2025-07-17 04:45:29 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:45:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15420
+2025-07-17 04:46:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15480
+2025-07-17 04:47:09 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:47:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15540
+2025-07-17 04:48:50 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:48:50 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:48:50 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:48:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15600
+2025-07-17 04:49:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15660
+2025-07-17 04:50:30 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:50:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15720
+2025-07-17 04:51:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15780
+2025-07-17 04:52:11 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:52:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15840
+2025-07-17 04:53:51 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:53:51 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:53:51 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:53:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15900
+2025-07-17 04:54:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 15960
+2025-07-17 04:55:32 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:55:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16020
+2025-07-17 04:56:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16080
+2025-07-17 04:57:12 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:57:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16140
+2025-07-17 04:58:53 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:58:53 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 04:58:53 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 04:58:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16200
+2025-07-17 04:59:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16260
+2025-07-17 05:00:33 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:00:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16320
+2025-07-17 05:01:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16380
+2025-07-17 05:02:14 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:02:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16440
+2025-07-17 05:03:54 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:03:54 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:03:54 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:03:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16500
+2025-07-17 05:04:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16560
+2025-07-17 05:05:35 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:05:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16620
+2025-07-17 05:06:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16680
+2025-07-17 05:07:15 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:07:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16740
+2025-07-17 05:08:56 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:08:56 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:08:56 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:08:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16800
+2025-07-17 05:09:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16860
+2025-07-17 05:10:36 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:10:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16920
+2025-07-17 05:11:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 16980
+2025-07-17 05:12:16 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:12:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17040
+2025-07-17 05:13:57 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:13:57 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:13:57 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:13:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17100
+2025-07-17 05:14:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17160
+2025-07-17 05:15:37 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:15:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17220
+2025-07-17 05:16:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17280
+2025-07-17 05:17:18 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:17:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17340
+2025-07-17 05:18:58 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:18:58 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:18:58 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:18:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17400
+2025-07-17 05:19:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17460
+2025-07-17 05:20:39 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:20:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17520
+2025-07-17 05:21:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17580
+2025-07-17 05:22:19 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:23:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17640
+2025-07-17 05:24:00 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:24:00 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:24:00 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:24:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17700
+2025-07-17 05:25:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17760
+2025-07-17 05:25:40 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:26:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17820
+2025-07-17 05:27:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17880
+2025-07-17 05:27:21 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:28:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 17940
+2025-07-17 05:29:01 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:29:01 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:29:01 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:29:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18000
+2025-07-17 05:30:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18060
+2025-07-17 05:30:42 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:31:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18120
+2025-07-17 05:32:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18180
+2025-07-17 05:32:22 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:33:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18240
+2025-07-17 05:34:03 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:34:03 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:34:03 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:34:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18300
+2025-07-17 05:35:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18360
+2025-07-17 05:35:43 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:36:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18420
+2025-07-17 05:37:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18480
+2025-07-17 05:37:24 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:38:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18540
+2025-07-17 05:39:04 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:39:04 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:39:04 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:39:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18600
+2025-07-17 05:40:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18660
+2025-07-17 05:40:45 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:41:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18720
+2025-07-17 05:42:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18780
+2025-07-17 05:42:25 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:43:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18840
+2025-07-17 05:44:06 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:44:06 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:44:06 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:44:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18900
+2025-07-17 05:45:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 18960
+2025-07-17 05:45:46 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:46:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19020
+2025-07-17 05:47:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19080
+2025-07-17 05:47:27 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:48:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19140
+2025-07-17 05:49:07 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:49:07 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:49:07 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:49:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19200
+2025-07-17 05:50:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19260
+2025-07-17 05:50:48 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:51:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19320
+2025-07-17 05:52:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19380
+2025-07-17 05:52:28 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:53:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19440
+2025-07-17 05:54:08 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:54:08 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:54:08 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:54:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19500
+2025-07-17 05:55:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19560
+2025-07-17 05:55:49 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:56:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19620
+2025-07-17 05:57:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19680
+2025-07-17 05:57:29 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:58:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19740
+2025-07-17 05:59:10 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:59:10 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 05:59:10 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 05:59:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19800
+2025-07-17 06:00:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19860
+2025-07-17 06:00:50 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:01:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19920
+2025-07-17 06:02:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 19980
+2025-07-17 06:02:31 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:03:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20040
+2025-07-17 06:04:11 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:04:11 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:04:11 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:04:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20100
+2025-07-17 06:05:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20160
+2025-07-17 06:05:52 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:06:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20220
+2025-07-17 06:07:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20280
+2025-07-17 06:07:32 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:08:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20340
+2025-07-17 06:09:13 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:09:13 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:09:13 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:09:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20400
+2025-07-17 06:10:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20460
+2025-07-17 06:10:53 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:11:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20520
+2025-07-17 06:12:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20580
+2025-07-17 06:12:34 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:13:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20640
+2025-07-17 06:14:14 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:14:14 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:14:14 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:14:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20700
+2025-07-17 06:15:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20760
+2025-07-17 06:15:55 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:16:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20820
+2025-07-17 06:17:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20880
+2025-07-17 06:17:35 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:18:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 20940
+2025-07-17 06:19:16 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:19:16 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:19:16 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:19:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21000
+2025-07-17 06:20:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21060
+2025-07-17 06:20:56 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:21:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21120
+2025-07-17 06:22:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21180
+2025-07-17 06:22:37 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:23:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21240
+2025-07-17 06:24:17 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:24:17 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:24:17 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:24:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21300
+2025-07-17 06:25:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21360
+2025-07-17 06:25:58 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:26:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21420
+2025-07-17 06:27:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21480
+2025-07-17 06:27:38 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:28:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21540
+2025-07-17 06:29:19 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:29:19 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:29:19 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:29:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21600
+2025-07-17 06:30:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21660
+2025-07-17 06:30:59 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:31:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21720
+2025-07-17 06:32:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21780
+2025-07-17 06:32:40 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:33:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21840
+2025-07-17 06:34:20 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:34:20 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:34:20 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:34:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21900
+2025-07-17 06:35:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 21960
+2025-07-17 06:36:01 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:36:21 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22020
+2025-07-17 06:37:21 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22080
+2025-07-17 06:37:41 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:38:21 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22140
+2025-07-17 06:39:22 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:39:22 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:39:22 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:39:22 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22200
+2025-07-17 06:40:22 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22260
+2025-07-17 06:41:02 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:41:22 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22320
+2025-07-17 06:42:22 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22380
+2025-07-17 06:42:42 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:43:23 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22440
+2025-07-17 06:44:23 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:44:23 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:44:23 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:44:23 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22500
+2025-07-17 06:45:23 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22560
+2025-07-17 06:46:03 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:46:24 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22620
+2025-07-17 06:47:24 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22680
+2025-07-17 06:47:44 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:48:24 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22740
+2025-07-17 06:49:24 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:49:24 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:49:24 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:49:24 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22800
+2025-07-17 06:50:25 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22860
+2025-07-17 06:51:05 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:51:25 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22920
+2025-07-17 06:52:25 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 22980
+2025-07-17 06:52:45 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:53:26 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23040
+2025-07-17 06:54:26 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:54:26 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:54:26 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:54:26 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23100
+2025-07-17 06:55:26 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23160
+2025-07-17 06:56:06 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:56:26 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23220
+2025-07-17 06:57:27 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23280
+2025-07-17 06:57:47 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:58:27 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23340
+2025-07-17 06:59:27 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:59:27 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 06:59:27 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 06:59:27 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23400
+2025-07-17 07:00:28 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23460
+2025-07-17 07:01:08 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:01:28 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23520
+2025-07-17 07:02:28 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23580
+2025-07-17 07:02:48 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:03:28 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23640
+2025-07-17 07:04:29 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:04:29 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:04:29 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:04:29 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23700
+2025-07-17 07:05:29 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23760
+2025-07-17 07:06:09 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:06:29 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23820
+2025-07-17 07:07:30 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23880
+2025-07-17 07:07:50 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:08:30 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 23940
+2025-07-17 07:09:30 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:09:30 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:09:30 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:09:30 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24000
+2025-07-17 07:10:30 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24060
+2025-07-17 07:11:11 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:11:31 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24120
+2025-07-17 07:12:31 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24180
+2025-07-17 07:12:51 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:13:31 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24240
+2025-07-17 07:14:32 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:14:32 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:14:32 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:14:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24300
+2025-07-17 07:15:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24360
+2025-07-17 07:16:12 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:16:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24420
+2025-07-17 07:17:32 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24480
+2025-07-17 07:17:53 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:18:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24540
+2025-07-17 07:19:33 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:19:33 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:19:33 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:19:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24600
+2025-07-17 07:20:33 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24660
+2025-07-17 07:21:14 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:21:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24720
+2025-07-17 07:22:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24780
+2025-07-17 07:22:54 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:23:34 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24840
+2025-07-17 07:24:34 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:24:34 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:24:35 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:24:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24900
+2025-07-17 07:25:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 24960
+2025-07-17 07:26:15 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:26:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25020
+2025-07-17 07:27:35 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25080
+2025-07-17 07:27:55 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:28:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25140
+2025-07-17 07:29:36 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:29:36 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:29:36 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:29:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25200
+2025-07-17 07:30:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25260
+2025-07-17 07:31:16 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:31:36 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25320
+2025-07-17 07:32:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25380
+2025-07-17 07:32:57 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:33:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25440
+2025-07-17 07:34:37 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:34:37 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:34:37 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:34:37 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25500
+2025-07-17 07:35:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25560
+2025-07-17 07:36:18 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:36:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25620
+2025-07-17 07:37:38 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25680
+2025-07-17 07:37:58 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:38:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25740
+2025-07-17 07:39:39 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:39:39 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:39:39 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:39:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25800
+2025-07-17 07:40:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25860
+2025-07-17 07:41:19 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:41:39 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25920
+2025-07-17 07:42:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 25980
+2025-07-17 07:43:00 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:43:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26040
+2025-07-17 07:44:40 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:44:40 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:44:40 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:44:40 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26100
+2025-07-17 07:45:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26160
+2025-07-17 07:46:21 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:46:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26220
+2025-07-17 07:47:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26280
+2025-07-17 07:48:01 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:48:41 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26340
+2025-07-17 07:49:42 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:49:42 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:49:42 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:49:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26400
+2025-07-17 07:50:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26460
+2025-07-17 07:51:22 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:51:42 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26520
+2025-07-17 07:52:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26580
+2025-07-17 07:53:03 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:53:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26640
+2025-07-17 07:54:43 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:54:43 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:54:43 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:54:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26700
+2025-07-17 07:55:43 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26760
+2025-07-17 07:56:24 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:56:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26820
+2025-07-17 07:57:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26880
+2025-07-17 07:58:04 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:58:44 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 26940
+2025-07-17 07:59:45 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:59:45 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 07:59:45 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 07:59:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27000
+2025-07-17 08:00:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27060
+2025-07-17 08:01:25 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:01:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27120
+2025-07-17 08:02:45 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27180
+2025-07-17 08:03:06 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:03:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27240
+2025-07-17 08:04:46 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:04:46 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:04:46 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:04:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27300
+2025-07-17 08:05:46 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27360
+2025-07-17 08:06:26 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:06:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27420
+2025-07-17 08:07:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27480
+2025-07-17 08:08:07 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:08:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27540
+2025-07-17 08:09:47 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:09:47 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:09:47 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:09:47 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27600
+2025-07-17 08:10:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27660
+2025-07-17 08:11:28 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:11:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27720
+2025-07-17 08:12:48 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27780
+2025-07-17 08:13:08 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:13:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27840
+2025-07-17 08:14:49 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:14:49 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:14:49 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:14:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27900
+2025-07-17 08:15:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 27960
+2025-07-17 08:16:29 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:16:49 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28020
+2025-07-17 08:17:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28080
+2025-07-17 08:18:10 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:18:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28140
+2025-07-17 08:19:50 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:19:50 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:19:50 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:19:50 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28200
+2025-07-17 08:20:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28260
+2025-07-17 08:21:31 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:21:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28320
+2025-07-17 08:22:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28380
+2025-07-17 08:23:11 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:23:51 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28440
+2025-07-17 08:24:52 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:24:52 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:24:52 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:24:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28500
+2025-07-17 08:25:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28560
+2025-07-17 08:26:32 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:26:52 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28620
+2025-07-17 08:27:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28680
+2025-07-17 08:28:13 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:28:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28740
+2025-07-17 08:29:53 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:29:53 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:29:53 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:29:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28800
+2025-07-17 08:30:53 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28860
+2025-07-17 08:31:34 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:31:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28920
+2025-07-17 08:32:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 28980
+2025-07-17 08:33:14 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:33:54 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29040
+2025-07-17 08:34:55 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:34:55 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:34:55 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:34:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29100
+2025-07-17 08:35:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29160
+2025-07-17 08:36:35 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:36:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29220
+2025-07-17 08:37:55 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29280
+2025-07-17 08:38:16 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:38:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29340
+2025-07-17 08:39:56 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:39:56 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:39:56 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:39:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29400
+2025-07-17 08:40:56 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29460
+2025-07-17 08:41:37 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:41:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29520
+2025-07-17 08:42:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29580
+2025-07-17 08:43:17 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:43:57 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29640
+2025-07-17 08:44:58 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:44:58 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:44:58 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:44:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29700
+2025-07-17 08:45:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29760
+2025-07-17 08:46:38 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:46:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29820
+2025-07-17 08:47:58 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29880
+2025-07-17 08:48:18 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:48:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 29940
+2025-07-17 08:49:59 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:49:59 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:49:59 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:49:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30000
+2025-07-17 08:50:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30060
+2025-07-17 08:51:39 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:51:59 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30120
+2025-07-17 08:53:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30180
+2025-07-17 08:53:20 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:54:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30240
+2025-07-17 08:55:00 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:55:00 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 08:55:00 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:55:00 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30300
+2025-07-17 08:56:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30360
+2025-07-17 08:56:41 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:57:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30420
+2025-07-17 08:58:01 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30480
+2025-07-17 08:58:21 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 08:59:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30540
+2025-07-17 09:00:02 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:00:02 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:00:02 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:00:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30600
+2025-07-17 09:01:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30660
+2025-07-17 09:01:42 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:02:02 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30720
+2025-07-17 09:03:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30780
+2025-07-17 09:03:23 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:04:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30840
+2025-07-17 09:05:03 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:05:03 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:05:03 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:05:03 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30900
+2025-07-17 09:06:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 30960
+2025-07-17 09:06:44 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:07:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31020
+2025-07-17 09:08:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31080
+2025-07-17 09:08:24 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:09:04 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31140
+2025-07-17 09:10:05 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:10:05 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:10:05 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:10:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31200
+2025-07-17 09:11:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31260
+2025-07-17 09:11:45 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:12:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31320
+2025-07-17 09:13:05 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31380
+2025-07-17 09:13:26 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:14:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31440
+2025-07-17 09:15:06 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:15:06 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:15:06 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:15:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31500
+2025-07-17 09:16:06 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31560
+2025-07-17 09:16:47 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:17:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31620
+2025-07-17 09:18:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31680
+2025-07-17 09:18:27 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:19:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31740
+2025-07-17 09:20:07 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:20:07 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:20:07 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:20:07 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31800
+2025-07-17 09:21:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31860
+2025-07-17 09:21:48 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:22:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31920
+2025-07-17 09:23:08 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 31980
+2025-07-17 09:23:28 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:24:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32040
+2025-07-17 09:25:09 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:25:09 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:25:09 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:25:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32100
+2025-07-17 09:26:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32160
+2025-07-17 09:26:49 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:27:09 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32220
+2025-07-17 09:28:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32280
+2025-07-17 09:28:30 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:29:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32340
+2025-07-17 09:30:10 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:30:10 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:30:10 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:30:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32400
+2025-07-17 09:31:10 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32460
+2025-07-17 09:31:51 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:32:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32520
+2025-07-17 09:33:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32580
+2025-07-17 09:33:31 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:34:11 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32640
+2025-07-17 09:35:12 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:35:12 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:35:12 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:35:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32700
+2025-07-17 09:36:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32760
+2025-07-17 09:36:52 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:37:12 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32820
+2025-07-17 09:38:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32880
+2025-07-17 09:38:33 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:39:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 32940
+2025-07-17 09:40:13 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:40:13 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:40:13 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:40:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33000
+2025-07-17 09:41:13 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33060
+2025-07-17 09:41:54 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:42:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33120
+2025-07-17 09:43:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33180
+2025-07-17 09:43:34 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:44:14 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33240
+2025-07-17 09:45:15 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:45:15 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:45:15 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:45:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33300
+2025-07-17 09:46:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33360
+2025-07-17 09:46:55 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:47:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33420
+2025-07-17 09:48:15 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33480
+2025-07-17 09:48:36 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:49:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33540
+2025-07-17 09:50:16 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:50:16 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:50:16 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:50:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33600
+2025-07-17 09:51:16 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33660
+2025-07-17 09:51:57 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:52:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33720
+2025-07-17 09:53:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33780
+2025-07-17 09:53:37 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:54:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33840
+2025-07-17 09:55:17 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:55:17 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 09:55:17 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:55:17 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33900
+2025-07-17 09:56:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 33960
+2025-07-17 09:56:58 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:57:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 34020
+2025-07-17 09:58:18 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 34080
+2025-07-17 09:58:38 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 09:59:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 34140
+2025-07-17 10:00:19 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 10:00:19 [DEBUG] VP_WebApp:read_register:734 - 讀取寄存器 300: 1
+2025-07-17 10:00:19 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 10:00:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 34200
+2025-07-17 10:01:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 34260
+2025-07-17 10:01:59 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 10:02:19 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 34320
+2025-07-17 10:03:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 34380
+2025-07-17 10:03:40 [DEBUG] VP_WebApp:get_current_status:916 - VP模組狀態更新 - 模組狀態: 1
+2025-07-17 10:04:20 [DEBUG] VP_WebApp:status_monitor_loop:873 - 狀態監控正常運行 - 更新計數: 34440
+2025-07-17 10:04:35 [INFO] VP_WebApp:cleanup:977 - 正在清理資源...
+2025-07-17 10:04:35 [INFO] VP_WebApp:status_monitor_loop:881 - 狀態監控循環結束
+2025-07-17 10:04:35 [INFO] VP_WebApp:cleanup:977 - 正在清理資源...
+2025-07-17 10:04:35 [DEBUG] VP_WebApp:stop_monitoring:839 - 狀態監控未在運行
+2025-07-17 10:04:35 [INFO] VP_WebApp:cleanup:982 - 主Modbus連接已安全斷開
+2025-07-17 10:04:35 [INFO] VP_WebApp:cleanup:985 - 資源清理完成

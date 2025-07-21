@@ -1,0 +1,245 @@
+2025-07-17 00:17:09 [INFO] CCD1Vision:<module>:69 - YOLOv11模組導入成功
+2025-07-17 00:17:09 [INFO] CCD1Vision:<module>:80 - Modbus Client模組導入成功 (pymodbus 3.9.2)
+2025-07-17 00:17:09 [INFO] CCD1Vision:<module>:91 - 相機管理模組導入成功
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2257 - ================================================================================
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2258 - CCD1視覺控制系統啟動中 (YOLOv11版本 - Logging增強版)...
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2259 - 功能特性:
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2260 - • YOLOv11物件檢測 (DR_F/STACK)
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2261 - • 握手式狀態機控制
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2262 - • Modbus TCP Client架構
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2263 - • 50ms高頻輪詢
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2264 - • 世界座標轉換
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2265 - • 置信度閾值動態調整
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2266 - • 完整日誌系統 (輪替保存)
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2267 - • 自動載入最大編號模型
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2268 - ================================================================================
+2025-07-17 00:17:09 [INFO] CCD1Vision:initialize_controller:1576 - 正在初始化CCD1視覺控制器 (YOLOv11版本)...
+2025-07-17 00:17:09 [ERROR] CCD1Vision:initialize_controller:1582 - CCD1視覺控制器初始化失敗: 'EnhancedModbusTcpClientService' object has no attribute 'set_vision_controller'
+Traceback (most recent call last):
+  File "c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\CCD1\CCD1VisionCodeYOLO.py", line 1577, in initialize_controller
+    controller = CCD1VisionController()
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\CCD1\CCD1VisionCodeYOLO.py", line 1043, in __init__
+    self.modbus_client.set_vision_controller(self)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EnhancedModbusTcpClientService' object has no attribute 'set_vision_controller'. Did you mean: 'vision_controller'?
+2025-07-17 00:17:09 [ERROR] CCD1Vision:main:2312 - 系統初始化失敗，無法啟動
+2025-07-17 00:17:09 [ERROR] CCD1Vision:main:2313 - 請檢查以下項目:
+2025-07-17 00:17:09 [ERROR] CCD1Vision:main:2314 - 1. YOLOv11模型檔案 (best.pt) 是否存在
+2025-07-17 00:17:09 [ERROR] CCD1Vision:main:2315 - 2. ultralytics模組是否已安裝
+2025-07-17 00:17:09 [ERROR] CCD1Vision:main:2316 - 3. 相機管理模組是否可用
+2025-07-17 00:17:09 [INFO] CCD1Vision:main:2329 - 系統已安全關閉
+2025-07-17 00:29:51 [INFO] CCD1Vision:<module>:69 - YOLOv11模組導入成功
+2025-07-17 00:29:52 [INFO] CCD1Vision:<module>:80 - Modbus Client模組導入成功 (pymodbus 3.9.2)
+2025-07-17 00:29:52 [INFO] CCD1Vision:<module>:91 - 相機管理模組導入成功
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2373 - ================================================================================
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2374 - CCD1視覺控制系統啟動中 (YOLOv11版本 - Logging增強版)...
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2375 - 功能特性:
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2376 - • YOLOv11物件檢測 (DR_F/STACK)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2377 - • 握手式狀態機控制
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2378 - • Modbus TCP Client架構
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2379 - • 50ms高頻輪詢
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2380 - • 世界座標轉換
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2381 - • 置信度閾值動態調整
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2382 - • 完整日誌系統 (輪替保存)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2383 - • 自動載入最大編號模型
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2384 - ================================================================================
+2025-07-17 00:29:52 [INFO] CCD1Vision:initialize_controller:2138 - 正在初始化CCD1視覺控制器 (YOLOv11版本)...
+2025-07-17 00:29:52 [INFO] CCD1Vision:initialize_controller:2140 - CCD1視覺控制器初始化成功
+2025-07-17 00:29:52 [INFO] CCD1Vision:initialize_controller:2141 - 所有組件已自動初始化完成
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2396 - Web介面啟動中...
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2397 - 訪問地址: http://localhost:5051
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2398 - 系統功能:
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2399 - • 相機連接管理 (192.168.1.8)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2400 - • YOLOv11檢測參數調整
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2401 - • DR_F/STACK分類檢測
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2402 - • Modbus TCP握手協議
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2403 - • 即時狀態監控
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2404 - • 標定檔案管理
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2405 - • 完整執行緒安全日誌
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2406 - 使用說明:
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2407 - 1. 連接到Modbus服務器 (127.0.0.1:502)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2408 - 2. 初始化相機連接
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2409 - 3. 調整置信度閾值
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2410 - 4. 載入標定檔案 (可選)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2411 - 5. 通過PLC控制拍照和檢測
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2412 - 寄存器映射:
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2413 - • 控制: 200-201 (指令/狀態)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2414 - • 參數: 210-219 (置信度等)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2415 - • 結果: 240-259 (檢測結果)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2416 - • 世界座標: 260-279 (座標轉換)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2417 - • 統計: 280-299 (時間/計數)
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2418 - 日誌系統:
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2419 - • 日誌位置: ./logs/
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2420 - • 檔案輪替: 10MB/檔，保留7檔
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2421 - • 記錄級別: DEBUG/INFO/WARNING/ERROR/CRITICAL
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2422 - • 執行緒安全: 支援並發寫入
+2025-07-17 00:29:52 [INFO] CCD1Vision:main:2423 - ================================================================================
+2025-07-17 00:29:58 [INFO] CCD1Vision:handle_connect:2356 - 新的SocketIO客戶端已連接
+2025-07-17 00:30:03 [INFO] CCD1Vision:handle_disconnect:2363 - SocketIO客戶端已斷開
+2025-07-17 00:30:03 [INFO] CCD1Vision:handle_connect:2356 - 新的SocketIO客戶端已連接
+2025-07-17 00:30:04 [INFO] CCD1Vision:handle_disconnect:2363 - SocketIO客戶端已斷開
+2025-07-17 00:30:05 [INFO] CCD1Vision:handle_connect:2356 - 新的SocketIO客戶端已連接
+2025-07-17 00:35:27 [INFO] CCD1Vision:main:2445 - 系統已安全關閉
+2025-07-17 00:35:31 [INFO] CCD1Vision:<module>:69 - YOLOv11模組導入成功
+2025-07-17 00:35:31 [INFO] CCD1Vision:<module>:80 - Modbus Client模組導入成功 (pymodbus 3.9.2)
+2025-07-17 00:35:31 [INFO] CCD1Vision:<module>:91 - 相機管理模組導入成功
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2360 - ================================================================================
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2361 - CCD1視覺控制系統啟動中 (YOLOv11版本 - Logging增強版)...
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2362 - 功能特性:
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2363 - • YOLOv11物件檢測 (DR_F/STACK)
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2364 - • 握手式狀態機控制
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2365 - • Modbus TCP Client架構
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2366 - • 50ms高頻輪詢
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2367 - • 世界座標轉換
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2368 - • 置信度閾值動態調整
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2369 - • 完整日誌系統 (輪替保存)
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2370 - • 自動載入最大編號模型
+2025-07-17 00:35:31 [INFO] CCD1Vision:main:2371 - ================================================================================
+2025-07-17 00:35:31 [INFO] CCD1Vision:initialize_controller:2125 - 正在初始化CCD1視覺控制器 (YOLOv11版本)...
+2025-07-17 00:35:33 [INFO] CCD1Vision:initialize_controller:2127 - CCD1視覺控制器初始化成功
+2025-07-17 00:35:33 [INFO] CCD1Vision:initialize_controller:2128 - 所有組件已自動初始化完成
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2383 - Web介面啟動中...
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2384 - 訪問地址: http://localhost:5051
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2385 - 系統功能:
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2386 - • 相機連接管理 (192.168.1.8)
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2387 - • YOLOv11檢測參數調整
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2388 - • DR_F/STACK分類檢測
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2389 - • Modbus TCP握手協議
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2390 - • 即時狀態監控
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2391 - • 標定檔案管理
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2392 - • 完整執行緒安全日誌
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2393 - 使用說明:
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2394 - 1. 連接到Modbus服務器 (127.0.0.1:502)
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2395 - 2. 初始化相機連接
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2396 - 3. 調整置信度閾值
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2397 - 4. 載入標定檔案 (可選)
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2398 - 5. 通過PLC控制拍照和檢測
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2399 - 寄存器映射:
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2400 - • 控制: 200-201 (指令/狀態)
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2401 - • 參數: 210-219 (置信度等)
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2402 - • 結果: 240-259 (檢測結果)
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2403 - • 世界座標: 260-279 (座標轉換)
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2404 - • 統計: 280-299 (時間/計數)
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2405 - 日誌系統:
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2406 - • 日誌位置: ./logs/
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2407 - • 檔案輪替: 10MB/檔，保留7檔
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2408 - • 記錄級別: DEBUG/INFO/WARNING/ERROR/CRITICAL
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2409 - • 執行緒安全: 支援並發寫入
+2025-07-17 00:35:33 [INFO] CCD1Vision:main:2410 - ================================================================================
+2025-07-17 00:35:35 [INFO] CCD1Vision:main:2423 - 用戶中斷，正在關閉系統...
+2025-07-17 00:39:09 [INFO] CCD1Vision:<module>:69 - YOLOv11模組導入成功
+2025-07-17 00:39:09 [INFO] CCD1Vision:<module>:80 - Modbus Client模組導入成功 (pymodbus 3.9.2)
+2025-07-17 00:39:09 [INFO] CCD1Vision:<module>:91 - 相機管理模組導入成功
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2362 - ================================================================================
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2363 - CCD1視覺控制系統啟動中 (YOLOv11版本 - Logging增強版)...
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2364 - 功能特性:
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2365 - • YOLOv11物件檢測 (DR_F/STACK)
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2366 - • 握手式狀態機控制
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2367 - • Modbus TCP Client架構
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2368 - • 50ms高頻輪詢
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2369 - • 世界座標轉換
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2370 - • 置信度閾值動態調整
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2371 - • 完整日誌系統 (輪替保存)
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2372 - • 自動載入最大編號模型
+2025-07-17 00:39:09 [INFO] CCD1Vision:main:2373 - ================================================================================
+2025-07-17 00:39:09 [INFO] CCD1Vision:initialize_controller:2127 - 正在初始化CCD1視覺控制器 (YOLOv11版本)...
+2025-07-17 00:39:11 [INFO] CCD1Vision:initialize_controller:2129 - CCD1視覺控制器初始化成功
+2025-07-17 00:39:11 [INFO] CCD1Vision:initialize_controller:2130 - 所有組件已自動初始化完成
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2385 - Web介面啟動中...
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2386 - 訪問地址: http://localhost:5051
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2387 - 系統功能:
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2388 - • 相機連接管理 (192.168.1.8)
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2389 - • YOLOv11檢測參數調整
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2390 - • DR_F/STACK分類檢測
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2391 - • Modbus TCP握手協議
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2392 - • 即時狀態監控
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2393 - • 標定檔案管理
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2394 - • 完整執行緒安全日誌
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2395 - 使用說明:
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2396 - 1. 連接到Modbus服務器 (127.0.0.1:502)
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2397 - 2. 初始化相機連接
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2398 - 3. 調整置信度閾值
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2399 - 4. 載入標定檔案 (可選)
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2400 - 5. 通過PLC控制拍照和檢測
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2401 - 寄存器映射:
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2402 - • 控制: 200-201 (指令/狀態)
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2403 - • 參數: 210-219 (置信度等)
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2404 - • 結果: 240-259 (檢測結果)
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2405 - • 世界座標: 260-279 (座標轉換)
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2406 - • 統計: 280-299 (時間/計數)
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2407 - 日誌系統:
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2408 - • 日誌位置: ./logs/
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2409 - • 檔案輪替: 10MB/檔，保留7檔
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2410 - • 記錄級別: DEBUG/INFO/WARNING/ERROR/CRITICAL
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2411 - • 執行緒安全: 支援並發寫入
+2025-07-17 00:39:11 [INFO] CCD1Vision:main:2412 - ================================================================================
+2025-07-17 00:39:15 [INFO] CCD1Vision:handle_connect:2345 - 新的SocketIO客戶端已連接
+2025-07-17 00:39:17 [INFO] CCD1Vision:capture_and_detect:2220 - Flask API - 準備寫入檢測結果到Modbus寄存器...
+2025-07-17 00:39:17 [INFO] CCD1Vision:capture_and_detect:2223 - Flask API - Modbus寄存器寫入完成
+2025-07-17 00:39:17 [DEBUG] CCD1Vision:capture_and_detect:2264 - API響應數據檢查:
+2025-07-17 00:39:17 [DEBUG] CCD1Vision:capture_and_detect:2265 - DR_F: 0
+2025-07-17 00:39:17 [DEBUG] CCD1Vision:capture_and_detect:2266 - STACK: 0
+2025-07-17 00:39:17 [DEBUG] CCD1Vision:capture_and_detect:2267 - 模型ID: 1
+2025-07-17 00:39:26 [INFO] CCD1Vision:capture_and_detect:2220 - Flask API - 準備寫入檢測結果到Modbus寄存器...
+2025-07-17 00:39:26 [INFO] CCD1Vision:capture_and_detect:2223 - Flask API - Modbus寄存器寫入完成
+2025-07-17 00:39:26 [DEBUG] CCD1Vision:capture_and_detect:2264 - API響應數據檢查:
+2025-07-17 00:39:26 [DEBUG] CCD1Vision:capture_and_detect:2265 - DR_F: 6
+2025-07-17 00:39:26 [DEBUG] CCD1Vision:capture_and_detect:2266 - STACK: 4
+2025-07-17 00:39:26 [DEBUG] CCD1Vision:capture_and_detect:2267 - 模型ID: 1
+2025-07-17 00:42:49 [INFO] CCD1Vision:capture_and_detect:2220 - Flask API - 準備寫入檢測結果到Modbus寄存器...
+2025-07-17 00:42:49 [INFO] CCD1Vision:capture_and_detect:2223 - Flask API - Modbus寄存器寫入完成
+2025-07-17 00:42:49 [DEBUG] CCD1Vision:capture_and_detect:2264 - API響應數據檢查:
+2025-07-17 00:42:49 [DEBUG] CCD1Vision:capture_and_detect:2265 - DR_F: 7
+2025-07-17 00:42:49 [DEBUG] CCD1Vision:capture_and_detect:2266 - STACK: 3
+2025-07-17 00:42:49 [DEBUG] CCD1Vision:capture_and_detect:2267 - 模型ID: 1
+2025-07-17 00:46:04 [INFO] CCD1Vision:main:2434 - 系統已安全關閉
+2025-07-17 00:46:07 [INFO] CCD1Vision:<module>:69 - YOLOv11模組導入成功
+2025-07-17 00:46:07 [INFO] CCD1Vision:<module>:80 - Modbus Client模組導入成功 (pymodbus 3.9.2)
+2025-07-17 00:46:07 [INFO] CCD1Vision:<module>:91 - 相機管理模組導入成功
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2380 - ================================================================================
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2381 - CCD1視覺控制系統啟動中 (YOLOv11版本 - Logging增強版)...
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2382 - 功能特性:
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2383 - • YOLOv11物件檢測 (DR_F/STACK)
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2384 - • 握手式狀態機控制
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2385 - • Modbus TCP Client架構
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2386 - • 50ms高頻輪詢
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2387 - • 世界座標轉換
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2388 - • 置信度閾值動態調整
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2389 - • 完整日誌系統 (輪替保存)
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2390 - • 自動載入最大編號模型
+2025-07-17 00:46:07 [INFO] CCD1Vision:main:2391 - ================================================================================
+2025-07-17 00:46:07 [INFO] CCD1Vision:initialize_controller:2145 - 正在初始化CCD1視覺控制器 (YOLOv11版本)...
+2025-07-17 00:46:09 [INFO] CCD1Vision:initialize_controller:2147 - CCD1視覺控制器初始化成功
+2025-07-17 00:46:09 [INFO] CCD1Vision:initialize_controller:2148 - 所有組件已自動初始化完成
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2403 - Web介面啟動中...
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2404 - 訪問地址: http://localhost:5051
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2405 - 系統功能:
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2406 - • 相機連接管理 (192.168.1.8)
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2407 - • YOLOv11檢測參數調整
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2408 - • DR_F/STACK分類檢測
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2409 - • Modbus TCP握手協議
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2410 - • 即時狀態監控
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2411 - • 標定檔案管理
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2412 - • 完整執行緒安全日誌
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2413 - 使用說明:
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2414 - 1. 連接到Modbus服務器 (127.0.0.1:502)
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2415 - 2. 初始化相機連接
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2416 - 3. 調整置信度閾值
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2417 - 4. 載入標定檔案 (可選)
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2418 - 5. 通過PLC控制拍照和檢測
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2419 - 寄存器映射:
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2420 - • 控制: 200-201 (指令/狀態)
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2421 - • 參數: 210-219 (置信度等)
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2422 - • 結果: 240-259 (檢測結果)
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2423 - • 世界座標: 260-279 (座標轉換)
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2424 - • 統計: 280-299 (時間/計數)
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2425 - 日誌系統:
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2426 - • 日誌位置: ./logs/
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2427 - • 檔案輪替: 10MB/檔，保留7檔
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2428 - • 記錄級別: DEBUG/INFO/WARNING/ERROR/CRITICAL
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2429 - • 執行緒安全: 支援並發寫入
+2025-07-17 00:46:09 [INFO] CCD1Vision:main:2430 - ================================================================================
+2025-07-17 00:46:10 [INFO] CCD1Vision:handle_connect:2363 - 新的SocketIO客戶端已連接
+2025-07-17 01:47:51 [INFO] CCD1Vision:handle_disconnect:2370 - SocketIO客戶端已斷開
+2025-07-17 10:04:28 [INFO] CCD1Vision:main:2452 - 系統已安全關閉

@@ -1,0 +1,28 @@
+2025-07-17 00:29:52 [INFO] YOLOModelManager:scan_model_files:169 - 掃描YOLO模型檔案...
+2025-07-17 00:29:52 [INFO] YOLOModelManager:scan_model_files:190 - 總共發現 0 個模型檔案
+2025-07-17 00:29:52 [INFO] YOLOModelManager:scan_model_files:196 - 將best.pt指定為模型1
+2025-07-17 00:29:52 [INFO] YOLOModelManager:load_highest_model:245 - 嘗試載入最大編號模型: 模型1
+2025-07-17 00:29:52 [INFO] YOLOModelManager:load_model:218 - 載入模型1: c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\CCD1\best.pt
+2025-07-17 00:29:52 [INFO] YOLOModelManager:load_model:226 - 模型1載入成功
+2025-07-17 00:29:52 [INFO] YOLOModelManager:load_highest_model:249 - 成功載入最大編號模型1
+2025-07-17 00:35:31 [INFO] YOLOModelManager:scan_model_files:169 - 掃描YOLO模型檔案...
+2025-07-17 00:35:31 [INFO] YOLOModelManager:scan_model_files:190 - 總共發現 0 個模型檔案
+2025-07-17 00:35:31 [INFO] YOLOModelManager:scan_model_files:196 - 將best.pt指定為模型1
+2025-07-17 00:35:31 [INFO] YOLOModelManager:load_highest_model:245 - 嘗試載入最大編號模型: 模型1
+2025-07-17 00:35:31 [INFO] YOLOModelManager:load_model:218 - 載入模型1: c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\CCD1\best.pt
+2025-07-17 00:35:31 [INFO] YOLOModelManager:load_model:226 - 模型1載入成功
+2025-07-17 00:35:31 [INFO] YOLOModelManager:load_highest_model:249 - 成功載入最大編號模型1
+2025-07-17 00:39:09 [INFO] YOLOModelManager:scan_model_files:169 - 掃描YOLO模型檔案...
+2025-07-17 00:39:09 [INFO] YOLOModelManager:scan_model_files:190 - 總共發現 0 個模型檔案
+2025-07-17 00:39:09 [INFO] YOLOModelManager:scan_model_files:196 - 將best.pt指定為模型1
+2025-07-17 00:39:09 [INFO] YOLOModelManager:load_highest_model:245 - 嘗試載入最大編號模型: 模型1
+2025-07-17 00:39:09 [INFO] YOLOModelManager:load_model:218 - 載入模型1: c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\CCD1\best.pt
+2025-07-17 00:39:09 [INFO] YOLOModelManager:load_model:226 - 模型1載入成功
+2025-07-17 00:39:09 [INFO] YOLOModelManager:load_highest_model:249 - 成功載入最大編號模型1
+2025-07-17 00:46:07 [INFO] YOLOModelManager:scan_model_files:169 - 掃描YOLO模型檔案...
+2025-07-17 00:46:07 [INFO] YOLOModelManager:scan_model_files:190 - 總共發現 0 個模型檔案
+2025-07-17 00:46:07 [INFO] YOLOModelManager:scan_model_files:196 - 將best.pt指定為模型1
+2025-07-17 00:46:07 [INFO] YOLOModelManager:load_highest_model:245 - 嘗試載入最大編號模型: 模型1
+2025-07-17 00:46:07 [INFO] YOLOModelManager:load_model:218 - 載入模型1: c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\CCD1\best.pt
+2025-07-17 00:46:07 [INFO] YOLOModelManager:load_model:226 - 模型1載入成功
+2025-07-17 00:46:07 [INFO] YOLOModelManager:load_highest_model:249 - 成功載入最大編號模型1

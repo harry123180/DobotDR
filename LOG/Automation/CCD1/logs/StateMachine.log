@@ -1,0 +1,3 @@
+2025-07-17 00:35:33 [DEBUG] StateMachine:set_bit:874 - 狀態位變更: INITIALIZED=True
+2025-07-17 00:39:11 [DEBUG] StateMachine:set_bit:874 - 狀態位變更: INITIALIZED=True
+2025-07-17 00:46:09 [DEBUG] StateMachine:set_bit:874 - 狀態位變更: INITIALIZED=True

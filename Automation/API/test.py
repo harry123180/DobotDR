@@ -1,394 +1,406 @@
+# -*- coding: utf-8 -*-
+"""
+enhanced_test.py - CCD1增強崩潰測試
+針對真實YOLOv11模型和座標轉換的崩潰測試
+"""
+
 import sys
+import os
 import time
-import random
-import cv2
 import numpy as np
-import statistics
+import cv2
+import psutil
+import gc
+import threading
+import signal
+import traceback
+from typing import Optional, Tuple
+from dataclasses import dataclass
 
-# 導入您現有的相機管理模組
+# 導入CCD1模組
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 try:
-    from camera_manager import initialize_all_cameras, get_image, shutdown_all
-    CAMERA_MANAGER_AVAILABLE = True
-except ImportError:
-    print("❌ 無法導入 camera_manager 模組")
-    CAMERA_MANAGER_AVAILABLE = False
+    from camera_manager import OptimizedCameraManager, CameraConfig, CameraMode, PixelFormat
+    CAMERA_AVAILABLE = True
+except ImportError as e:
+    print(f"❌ 無法導入camera_manager: {e}")
+    CAMERA_AVAILABLE = False
 
-class VisionTimingTest:
-    def __init__(self, camera_name="cam_3"):
-        self.camera_name = camera_name
+try:
+    from ultralytics import YOLO
+    YOLO_AVAILABLE = True
+except ImportError as e:
+    print(f"❌ 無法導入YOLOv11: {e}")
+    YOLO_AVAILABLE = False
+
+
+class CrashDetector:
+    """崩潰檢測器"""
+    
+    def __init__(self):
+        self.crash_detected = False
+        self.crash_info = None
+        self.setup_crash_handlers()
+    
+    def setup_crash_handlers(self):
+        """設置崩潰處理器"""
+        def crash_handler(signum, frame):
+            self.crash_detected = True
+            self.crash_info = {
+                'signal': signum,
+                'frame': frame,
+                'traceback': traceback.format_stack(frame)
+            }
+            print(f"💥 檢測到程式崩潰信號: {signum}")
+            print(f"💥 崩潰位置: {traceback.format_stack(frame)[-2]}")
         
-        # 時間記錄
-        self.timing_records = []
+        # 註冊信號處理器
+        signal.signal(signal.SIGTERM, crash_handler)
+        signal.signal(signal.SIGINT, crash_handler)
         
-        # 圓形檢測參數
-        self.threshold_roundness = 0.85
-        self.min_area = 30000  # 最小面積閾值
+        # Windows特有
+        if hasattr(signal, 'SIGBREAK'):
+            signal.signal(signal.SIGBREAK, crash_handler)
+
+
+class EnhancedCCD1Test:
+    """增強版CCD1測試"""
+    
+    def __init__(self):
+        self.camera_manager = None
+        self.yolo_model = None
+        self.crash_detector = CrashDetector()
+        self.test_results = []
         
-    def initialize_cameras(self):
-        """初始化相機系統"""
-        if not CAMERA_MANAGER_AVAILABLE:
-            print("❌ camera_manager 模組不可用")
+        # 模擬座標轉換器
+        self.coordinate_transformer = None
+    
+    def setup_real_yolo(self) -> bool:
+        """設置真實YOLOv11模型"""
+        if not YOLO_AVAILABLE:
+            print("⚠️ YOLOv11不可用")
             return False
-            
+        
         try:
-            print("🚀 初始化相機系統...")
-            start_time = time.time()
+            # 嘗試載入真實模型
+            model_files = ["best.pt", "yolo11n.pt", "yolov8n.pt"]
             
-            initialize_all_cameras()
-            time.sleep(2)  # 等待初始化完成
+            for model_file in model_files:
+                if os.path.exists(model_file):
+                    print(f"🔄 載入模型: {model_file}")
+                    self.yolo_model = YOLO(model_file)
+                    print(f"✅ 成功載入模型: {model_file}")
+                    return True
             
-            init_time = time.time() - start_time
-            print(f"✅ 相機系統初始化完成，耗時: {init_time:.3f}秒")
+            # 如果沒有本地模型，下載預訓練模型
+            print("📥 下載YOLOv11nano模型...")
+            self.yolo_model = YOLO("yolo11n.pt")  # 自動下載
+            print("✅ 成功下載並載入YOLOv11nano模型")
             return True
             
         except Exception as e:
-            print(f"❌ 相機系統初始化失敗: {e}")
+            print(f"❌ 載入YOLOv11模型失敗: {e}")
             return False
     
-    def capture_image(self):
-        """捕獲圖像"""
-        capture_start = time.time()
+    def setup_coordinate_transformer(self):
+        """設置座標轉換器（模擬CCD1的轉換邏輯）"""
+        # 模擬標定數據
+        self.camera_matrix = np.array([
+            [2500.0, 0.0, 1296.0],
+            [0.0, 2500.0, 972.0],
+            [0.0, 0.0, 1.0]
+        ], dtype=np.float64)
         
-        try:
-            # 使用您的相機管理器獲取圖像
-            raw_bytes = get_image(self.camera_name)
-            
-            # 轉換為numpy數組 (使用您現有的格式)
-            image = np.frombuffer(raw_bytes, dtype=np.uint8).reshape((1944, 2592))
-            
-            capture_time = time.time() - capture_start
-            return image, capture_time
-            
-        except Exception as e:
-            print(f"❌ 捕獲圖像失敗: {e}")
-            capture_time = time.time() - capture_start
-            return None, capture_time
-    
-    def is_circle(self, contour, tolerance=0.2):
-        """判斷輪廓是否為圓形 (使用您現有的算法)"""
-        area = cv2.contourArea(contour)
-        perimeter = cv2.arcLength(contour, True)
-        if perimeter == 0:
-            return False
-        circularity = 4 * np.pi * area / (perimeter * perimeter)
-        return 1 - tolerance < circularity < 1 + tolerance
-    
-    def detect_circles_method1(self, image):
-        """檢測圓形 - 方法1: 使用您現有的Canny算法"""
-        if image is None:
-            return 0, 0
-            
-        detect_start = time.time()
+        self.dist_coeffs = np.zeros((1, 5), dtype=np.float64)
         
-        try:
-            # 模糊處理
-            blurred = cv2.GaussianBlur(image, (9, 9), 2)
-            
-            # Canny 邊緣檢測
-            edges = cv2.Canny(blurred, 20, 60)
-            
-            # 輪廓檢測
-            contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            
-            # 圓形計數
-            circle_count = 0
-            for contour in contours:
-                area = cv2.contourArea(contour)
-                if self.is_circle(contour) and area > self.min_area:
-                    circle_count += 1
-                    
-            detect_time = time.time() - detect_start
-            return circle_count, detect_time
-            
-        except Exception as e:
-            print(f"❌ 圓形檢測失敗: {e}")
-            detect_time = time.time() - detect_start
-            return 0, detect_time
-    
-    def detect_circles_method2(self, image):
-        """檢測圓形 - 方法2: 使用改進的形態學算法"""
-        if image is None:
-            return 0, 0
-            
-        detect_start = time.time()
+        # 模擬外參
+        self.rvec = np.array([0.1, 0.2, 0.3], dtype=np.float64)
+        self.tvec = np.array([0.0, 0.0, 500.0], dtype=np.float64)
         
+        print("✅ 座標轉換器設置完成")
+    
+    def pixel_to_world(self, pixel_coords):
+        """模擬像素到世界座標轉換（複製CCD1邏輯）"""
         try:
-            # 直方圖均衡與模糊
-            equalized = cv2.equalizeHist(image)
-            blurred = cv2.GaussianBlur(equalized, (3, 3), 0)
+            if not pixel_coords:
+                return []
             
-            # 門檻二值化
-            _, binary_thresh = cv2.threshold(blurred, 170, 255, cv2.THRESH_BINARY)
-            
-            # 初始邊緣偵測
-            edges_initial = cv2.Canny(binary_thresh, 10, 350)
-            
-            # 建立形態學kernel
-            kernel_dilate = np.ones((13, 13), np.uint8)
-            kernel_erode = np.ones((11, 11), np.uint8)
-            
-            # 輪廓填滿處理
-            contours_initial, _ = cv2.findContours(edges_initial, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            filled_mask = np.zeros_like(cv2.cvtColor(image, cv2.COLOR_GRAY2BGR))
-            cv2.drawContours(filled_mask, contours_initial, -1, (255, 255, 255), thickness=cv2.FILLED)
-            
-            # 反轉並進行形態學處理
-            inverted_mask = cv2.bitwise_not(filled_mask)
-            morphed_mask = cv2.dilate(inverted_mask, kernel_dilate, iterations=1)
-            morphed_mask = cv2.erode(morphed_mask, kernel_erode, iterations=1)
-            
-            # 再次邊緣偵測
-            edges_final = cv2.Canny(morphed_mask, 10, 350)
-            contours_final, _ = cv2.findContours(edges_final, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            
-            # 圓形檢測
-            circle_count = 0
-            for cnt in contours_final:
-                area = cv2.contourArea(cnt)
-                perimeter = cv2.arcLength(cnt, True)
+            world_coords = []
+            for px, py in pixel_coords:
+                # 模擬去畸變
+                pixel_point = np.array([[[float(px), float(py)]]], dtype=np.float32)
+                undistorted_points = cv2.undistortPoints(
+                    pixel_point, 
+                    self.camera_matrix, 
+                    self.dist_coeffs
+                )
                 
-                if perimeter == 0 or area < 30:
-                    continue
-                    
-                roundness = (4 * np.pi * area) / (perimeter ** 2)
+                x_norm, y_norm = undistorted_points[0][0]
+                normalized_coords = np.array([x_norm, y_norm, 1.0])
                 
-                if roundness > self.threshold_roundness:
-                    circle_count += 1
-                    
-            detect_time = time.time() - detect_start
-            return circle_count, detect_time
-            
-        except Exception as e:
-            print(f"❌ 圓形檢測失敗 (方法2): {e}")
-            detect_time = time.time() - detect_start
-            return 0, detect_time
-    
-    def cleanup_cameras(self):
-        """清理相機資源"""
-        cleanup_start = time.time()
-        
-        try:
-            shutdown_all()
-            cleanup_time = time.time() - cleanup_start
-            return cleanup_time
-            
-        except Exception as e:
-            print(f"❌ 清理相機資源失敗: {e}")
-            cleanup_time = time.time() - cleanup_start
-            return cleanup_time
-    
-    def run_single_test(self, test_index, detection_method=1):
-        """執行單次測試"""
-        print(f"\n--- 第 {test_index + 1} 次測試 ---")
-        
-        # 隨機延遲模擬真實觸發
-        delay = random.uniform(0.1, 1.0)
-        time.sleep(delay)
-        
-        total_start = time.time()
-        
-        # 捕獲圖像
-        image, capture_time = self.capture_image()
-        if image is None:
-            print(f"❌ 第 {test_index + 1} 次測試捕獲圖像失敗")
-            return None
-            
-        # 檢測圓形 (使用指定的檢測方法)
-        if detection_method == 1:
-            circle_count, detect_time = self.detect_circles_method1(image)
-        else:
-            circle_count, detect_time = self.detect_circles_method2(image)
-        
-        total_time = time.time() - total_start
-        
-        # 記錄結果
-        result = {
-            'test_index': test_index + 1,
-            'circle_count': circle_count,
-            'capture_time': capture_time,
-            'detect_time': detect_time,
-            'total_time': total_time,
-            'detection_method': detection_method
-        }
-        
-        print(f"✅ 檢測到圓形數量: {circle_count}")
-        print(f"📊 拍照耗時: {capture_time:.3f}秒")
-        print(f"📊 檢測耗時: {detect_time:.3f}秒")
-        print(f"📊 總耗時: {total_time:.3f}秒")
-        print(f"📊 使用檢測方法: {detection_method}")
-        
-        return result
-    
-    def run_timing_test(self, num_tests=10, detection_method=1):
-        """執行完整的耗時測試"""
-        print(f"🚀 開始進行 {num_tests} 次視覺辨識流程耗時測試")
-        print(f"🎯 使用相機: {self.camera_name}")
-        print(f"🔍 檢測方法: {'Canny邊緣檢測' if detection_method == 1 else '形態學算法'}")
-        print("=" * 50)
-        
-        # 初始化相機系統
-        if not self.initialize_cameras():
-            return
-        
-        try:
-            for i in range(num_tests):
-                result = self.run_single_test(i, detection_method)
-                if result:
-                    self.timing_records.append(result)
-                else:
-                    print(f"⚠️ 第 {i + 1} 次測試失敗，跳過")
-                    
-        finally:
-            # 清理相機資源
-            cleanup_time = self.cleanup_cameras()
-            print(f"\n🧹 清理耗時: {cleanup_time:.3f}秒")
-            
-        # 生成統計報告
-        self.generate_report()
-    
-    def run_comparison_test(self, num_tests=5):
-        """執行兩種檢測方法的對比測試"""
-        print(f"🚀 開始進行檢測方法對比測試 ({num_tests} 次)")
-        print(f"🎯 使用相機: {self.camera_name}")
-        print("=" * 50)
-        
-        # 初始化相機系統
-        if not self.initialize_cameras():
-            return
-        
-        try:
-            for i in range(num_tests):
-                print(f"\n=== 第 {i + 1} 次對比測試 ===")
+                # 模擬深度計算
+                rotation_matrix, _ = cv2.Rodrigues(self.rvec)
+                R3 = rotation_matrix[2, :]
+                denominator = np.dot(R3, normalized_coords)
                 
-                # 捕獲一次圖像
-                image, capture_time = self.capture_image()
-                if image is None:
-                    print(f"❌ 第 {i + 1} 次測試捕獲圖像失敗")
+                if abs(denominator) < 1e-6:
                     continue
                 
-                print(f"📊 拍照耗時: {capture_time:.3f}秒")
+                depth_scale = (0 - self.tvec[2]) / denominator
+                camera_point = depth_scale * normalized_coords
                 
-                # 方法1: Canny檢測
-                circle_count1, detect_time1 = self.detect_circles_method1(image)
-                print(f"🔍 方法1 (Canny): {circle_count1} 個圓形, 耗時 {detect_time1:.3f}秒")
+                # 轉換到世界座標
+                tvec_3d = self.tvec.reshape(3)
+                translated_point = camera_point - tvec_3d
+                world_point_3d = np.dot(rotation_matrix.T, translated_point)
                 
-                # 方法2: 形態學檢測  
-                circle_count2, detect_time2 = self.detect_circles_method2(image)
-                print(f"🔍 方法2 (形態學): {circle_count2} 個圓形, 耗時 {detect_time2:.3f}秒")
+                world_x = float(world_point_3d[0])
+                world_y = float(world_point_3d[1])
                 
-                # 對比分析
-                if circle_count1 == circle_count2:
-                    print("✅ 兩種方法檢測結果一致")
-                else:
-                    print(f"⚠️ 檢測結果不一致: 方法1={circle_count1}, 方法2={circle_count2}")
-                
-                print(f"⚡ 速度對比: 方法1 {'更快' if detect_time1 < detect_time2 else '更慢'}")
-                
-        finally:
-            # 清理相機資源
-            cleanup_time = self.cleanup_cameras()
-            print(f"\n🧹 清理耗時: {cleanup_time:.3f}秒")
-    
-    def generate_report(self):
-        """生成統計報告"""
-        if not self.timing_records:
-            print("❌ 沒有有效的測試記錄")
-            return
+                world_coords.append((world_x, world_y))
             
-        print("\n" + "=" * 60)
-        print("📈 測試統計報告")
+            return world_coords
+            
+        except Exception as e:
+            print(f"❌ 座標轉換失敗: {e}")
+            raise e  # 重新拋出異常以檢測崩潰
+    
+    def test_yolo_detection_intensive(self, image: np.ndarray) -> dict:
+        """測試真實YOLOv11檢測"""
+        try:
+            if self.yolo_model is None:
+                return {'success': False, 'error': 'No model loaded'}
+            
+            print(f"🔍 執行YOLOv11檢測: 圖像形狀={image.shape}")
+            
+            # 真實YOLOv11檢測
+            results = self.yolo_model(image, conf=0.8, verbose=False)
+            
+            # 處理檢測結果
+            detections = []
+            if results and len(results) > 0:
+                result = results[0]
+                if result.boxes is not None and len(result.boxes) > 0:
+                    boxes = result.boxes.cpu().numpy()
+                    
+                    for box in boxes:
+                        class_id = int(box.cls[0])
+                        confidence = float(box.conf[0])
+                        x1, y1, x2, y2 = box.xyxy[0]
+                        center_x = float((x1 + x2) / 2)
+                        center_y = float((y1 + y2) / 2)
+                        
+                        detections.append({
+                            'class_id': class_id,
+                            'confidence': confidence,
+                            'center': (center_x, center_y)
+                        })
+            
+            print(f"✅ 檢測完成: 發現{len(detections)}個目標")
+            
+            # 🔥 關鍵測試：座標轉換（CCD1崩潰點）
+            if detections:
+                pixel_coords = [det['center'] for det in detections]
+                print(f"🌍 開始座標轉換: {len(pixel_coords)}個點")
+                
+                world_coords = self.pixel_to_world(pixel_coords)
+                print(f"✅ 座標轉換完成: {len(world_coords)}個點")
+                
+                return {
+                    'success': True,
+                    'detections': len(detections),
+                    'pixel_coords': pixel_coords,
+                    'world_coords': world_coords,
+                    'real_model': True
+                }
+            else:
+                return {
+                    'success': True,
+                    'detections': 0,
+                    'pixel_coords': [],
+                    'world_coords': [],
+                    'real_model': True
+                }
+            
+        except Exception as e:
+            print(f"💥 YOLOv11檢測異常: {type(e).__name__}: {e}")
+            print(f"💥 詳細錯誤: {traceback.format_exc()}")
+            
+            # 記錄崩潰信息
+            self.crash_detector.crash_detected = True
+            self.crash_detector.crash_info = {
+                'exception_type': type(e).__name__,
+                'exception_message': str(e),
+                'traceback': traceback.format_exc()
+            }
+            
+            raise e  # 重新拋出以模擬真實崩潰
+    
+    def test_crash_scenarios(self) -> dict:
+        """測試各種崩潰場景"""
+        print("\n🧨 開始崩潰場景測試")
         print("=" * 60)
         
-        # 基本統計
-        total_tests = len(self.timing_records)
-        circle_counts = [r['circle_count'] for r in self.timing_records]
-        capture_times = [r['capture_time'] for r in self.timing_records]
-        detect_times = [r['detect_time'] for r in self.timing_records]
-        total_times = [r['total_time'] for r in self.timing_records]
+        if not CAMERA_AVAILABLE:
+            print("❌ 相機不可用，跳過測試")
+            return {'success': False, 'error': 'Camera not available'}
         
-        print(f"📊 測試配置:")
-        print(f"   • 使用相機: {self.camera_name}")
-        print(f"   • 檢測方法: {'Canny邊緣檢測' if self.timing_records[0].get('detection_method', 1) == 1 else '形態學算法'}")
-        print(f"   • 總測試次數: {total_tests}")
-        print(f"   • 成功率: {total_tests}/10 ({total_tests/10*100:.1f}%)")
+        # 設置相機
+        config = CameraConfig(
+            name="crash_test_camera",
+            ip="192.168.1.8",
+            bandwidth_limit_mbps=200,
+            frame_rate=5.0,
+            exposure_time=50000.0,
+            use_latest_frame_only=True
+        )
         
-        print(f"\n🎯 圓形檢測結果:")
-        print(f"   • 平均檢測到: {statistics.mean(circle_counts):.1f} 個圓形")
-        print(f"   • 最多檢測到: {max(circle_counts)} 個圓形")
-        print(f"   • 最少檢測到: {min(circle_counts)} 個圓形")
-        if len(circle_counts) > 1:
-            print(f"   • 標準差: {statistics.stdev(circle_counts):.2f}")
+        self.camera_manager = OptimizedCameraManager()
+        self.camera_manager.add_camera("crash_test_camera", config)
         
-        print(f"\n⏱️ 拍照耗時統計:")
-        print(f"   • 平均耗時: {statistics.mean(capture_times):.3f} 秒")
-        print(f"   • 最長耗時: {max(capture_times):.3f} 秒")
-        print(f"   • 最短耗時: {min(capture_times):.3f} 秒")
-        if len(capture_times) > 1:
-            print(f"   • 標準差: {statistics.stdev(capture_times):.3f} 秒")
+        if not self.camera_manager.connect_camera("crash_test_camera"):
+            print("❌ 相機連接失敗")
+            return {'success': False, 'error': 'Camera connection failed'}
         
-        print(f"\n🔍 檢測耗時統計:")
-        print(f"   • 平均耗時: {statistics.mean(detect_times):.3f} 秒")
-        print(f"   • 最長耗時: {max(detect_times):.3f} 秒")
-        print(f"   • 最短耗時: {min(detect_times):.3f} 秒")
-        if len(detect_times) > 1:
-            print(f"   • 標準差: {statistics.stdev(detect_times):.3f} 秒")
+        self.camera_manager.start_streaming(["crash_test_camera"])
         
-        print(f"\n⚡ 總流程耗時統計:")
-        print(f"   • 平均耗時: {statistics.mean(total_times):.3f} 秒")
-        print(f"   • 最長耗時: {max(total_times):.3f} 秒")
-        print(f"   • 最短耗時: {min(total_times):.3f} 秒")
-        if len(total_times) > 1:
-            print(f"   • 標準差: {statistics.stdev(total_times):.3f} 秒")
+        # 設置YOLOv11
+        if not self.setup_real_yolo():
+            print("❌ YOLOv11設置失敗")
+            return {'success': False, 'error': 'YOLO setup failed'}
         
-        # 性能評估
-        avg_total_time = statistics.mean(total_times)
-        fps_estimate = 1.0 / avg_total_time if avg_total_time > 0 else 0
-        print(f"\n🚀 性能評估:")
-        print(f"   • 理論最大幀率: {fps_estimate:.1f} FPS")
-        print(f"   • 單次檢測平均耗時: {avg_total_time:.3f} 秒")
+        # 設置座標轉換器
+        self.setup_coordinate_transformer()
         
-        # 詳細結果表格
-        print(f"\n📋 詳細測試結果:")
-        print("次數 | 圓形數 | 拍照(s) | 檢測(s) | 總計(s) | 方法")
-        print("-" * 60)
-        for r in self.timing_records:
-            method_str = "Canny" if r.get('detection_method', 1) == 1 else "形態學"
-            print(f"{r['test_index']:2d}   |   {r['circle_count']:2d}   | {r['capture_time']:6.3f} | {r['detect_time']:6.3f} | {r['total_time']:6.3f} | {method_str}")
+        # 開始高強度測試
+        crash_results = []
+        
+        for i in range(50):  # 50次高強度測試
+            try:
+                print(f"\n🔄 崩潰測試 {i+1}/50")
+                
+                # 檢查記憶體狀態
+                memory_percent = psutil.virtual_memory().percent
+                print(f"📊 記憶體使用率: {memory_percent:.1f}%")
+                
+                # 拍照
+                frame_data = self.camera_manager.capture_new_frame("crash_test_camera", timeout=2000)
+                if frame_data is None:
+                    print("❌ 拍照失敗")
+                    continue
+                
+                # 圖像處理
+                image = frame_data.data
+                if len(image.shape) == 2:
+                    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+                
+                # 🔥 關鍵測試：YOLOv11檢測 + 座標轉換
+                detection_result = self.test_yolo_detection_intensive(image)
+                
+                crash_results.append({
+                    'iteration': i + 1,
+                    'success': True,
+                    'detections': detection_result.get('detections', 0),
+                    'memory_percent': psutil.virtual_memory().percent
+                })
+                
+                print(f"   ✅ 測試 {i+1} 成功")
+                
+                # 檢查崩潰
+                if self.crash_detector.crash_detected:
+                    print(f"💥 檢測到崩潰在第 {i+1} 次迭代！")
+                    break
+                
+                # 高頻測試，減少延遲
+                time.sleep(0.1)
+                
+            except KeyboardInterrupt:
+                print(f"⏹️ 用戶中斷測試")
+                break
+                
+            except Exception as e:
+                print(f"💥 第 {i+1} 次測試崩潰: {type(e).__name__}: {e}")
+                crash_results.append({
+                    'iteration': i + 1,
+                    'success': False,
+                    'error': str(e),
+                    'error_type': type(e).__name__
+                })
+                
+                # 模擬CCD1的崩潰行為
+                if isinstance(e, (MemoryError, RuntimeError, SystemError)):
+                    print(f"💥 致命錯誤，模擬程式崩潰")
+                    break
+        
+        return {
+            'success': True,
+            'crash_detected': self.crash_detector.crash_detected,
+            'crash_info': self.crash_detector.crash_info,
+            'completed_iterations': len([r for r in crash_results if r.get('success', False)]),
+            'total_iterations': len(crash_results),
+            'results': crash_results
+        }
+    
+    def cleanup(self):
+        """清理資源"""
+        try:
+            if self.camera_manager:
+                self.camera_manager.shutdown()
+            print("✅ 資源清理完成")
+        except Exception as e:
+            print(f"❌ 清理失敗: {e}")
+
 
 def main():
-    """主函數"""
-    print("🎯 視覺辨識流程耗時測試工具")
-    print("=" * 40)
+    """主測試函數"""
+    print("🚀 CCD1增強崩潰測試開始")
+    print("=" * 60)
     
-    # 設置目標相機名稱 (根據您的camera_manager配置調整)
-    camera_name = "cam_3"  # 您可以修改這個相機名稱
-    
-    # 創建測試實例
-    tester = VisionTimingTest(camera_name)
-    
-    # 選擇測試模式
-    print("請選擇測試模式:")
-    print("1. 基本測試 (Canny檢測方法)")
-    print("2. 基本測試 (形態學檢測方法)")
-    print("3. 檢測方法對比測試")
+    test = EnhancedCCD1Test()
     
     try:
-        choice = input("請輸入選擇 (1-3): ").strip()
+        # 執行崩潰場景測試
+        result = test.test_crash_scenarios()
         
-        if choice == "1":
-            tester.run_timing_test(10, detection_method=1)
-        elif choice == "2":
-            tester.run_timing_test(10, detection_method=2)
-        elif choice == "3":
-            tester.run_comparison_test(5)
-        else:
-            print("無效選擇，使用默認模式...")
-            tester.run_timing_test(10, detection_method=1)
+        # 輸出結果
+        print("\n" + "=" * 60)
+        print("📋 崩潰測試結果總結")
+        print("=" * 60)
+        
+        if result['success']:
+            print(f"崩潰檢測: {'✅ 是' if result['crash_detected'] else '❌ 否'}")
+            print(f"完成迭代: {result['completed_iterations']}/{result['total_iterations']}")
             
+            if result['crash_detected']:
+                print(f"\n💥 崩潰詳情:")
+                crash_info = result.get('crash_info', {})
+                print(f"   錯誤類型: {crash_info.get('exception_type', 'Unknown')}")
+                print(f"   錯誤訊息: {crash_info.get('exception_message', 'Unknown')}")
+                
+                print(f"\n🔍 可能的CCD1崩潰原因:")
+                print(f"   1. YOLOv11模型載入/推論問題")
+                print(f"   2. 座標轉換計算異常")
+                print(f"   3. 海康SDK底層問題")
+                print(f"   4. OpenCV函數異常")
+            else:
+                print(f"\n✅ 未檢測到崩潰，CCD1問題可能是:")
+                print(f"   1. 硬體問題（相機、網路）")
+                print(f"   2. 作業系統層級問題")
+                print(f"   3. 其他環境因素")
+        else:
+            print(f"測試失敗: {result.get('error', 'Unknown error')}")
+    
     except KeyboardInterrupt:
-        print("\n🛑 用戶中斷測試")
+        print(f"\n⏹️ 測試被用戶中斷")
+    
     except Exception as e:
-        print(f"\n❌ 測試過程中發生錯誤: {e}")
+        print(f"\n❌ 測試異常: {e}")
+        print(f"詳細錯誤: {traceback.format_exc()}")
+    
+    finally:
+        test.cleanup()
+
 
 if __name__ == "__main__":
     main()

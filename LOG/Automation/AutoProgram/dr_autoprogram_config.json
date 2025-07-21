@@ -1,0 +1,31 @@
+{
+  "auto_program": {
+    "cycle_interval": 2.0,
+    "ccd1_timeout": 10.0,
+    "vp_vibration_duration": 0.5,
+    "vp_stop_delay": 0.2,
+    "flow4_pulse_duration": 0.1,
+    "max_dr_f_check": 5
+  },
+  "vp_params": {
+    "spread_action_code": 11,
+    "spread_strength": 50,
+    "spread_frequency": 43,
+    "spread_duration": 0.5,
+    "stop_command_code": 3
+  },
+  "timing": {
+    "command_delay": 0.1,
+    "status_check_interval": 0.1,
+    "register_clear_delay": 0.05
+  },
+  "modbus_mapping": {
+    "base_address": 1300,
+    "auto_program_control": 1350,
+    "motion_status": 1200,
+    "flow1_control": 1240,
+    "flow2_control": 1241,
+    "flow1_complete": 1204,
+    "flow2_complete": 1205
+  }
+}

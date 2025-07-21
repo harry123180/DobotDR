@@ -1,0 +1,5 @@
+2025-07-17 01:04:00 [INFO] Thread_Flow4VibrationFeed:initialize_flows:1127 - Flow4震動投料執行器初始化完成
+2025-07-17 01:04:00 [INFO] Thread_Flow4VibrationFeed:run:1135 - 執行緒啟動，專用佇列接收DIO_VIBRATION指令
+2025-07-17 01:04:00 [INFO] Thread_Flow4VibrationFeed:start_thread:883 - 執行緒已啟動
+2025-07-17 01:05:18 [INFO] Thread_Flow4VibrationFeed:stop_thread:887 - 執行緒停止信號已發送
+2025-07-17 01:05:18 [INFO] Thread_Flow4VibrationFeed:run:1160 - 執行緒結束

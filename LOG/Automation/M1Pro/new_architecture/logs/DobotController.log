@@ -1,0 +1,81 @@
+2025-07-17 01:03:57 [INFO] DobotController:_load_config:1339 - 載入配置檔案成功: c:\Users\user\Documents\GitHub\DobotDR\LOG\Automation\M1Pro\new_architecture\dobot_config.json
+2025-07-17 01:03:57 [INFO] DobotController:start:1362 - === 啟動Dobot新架構混合交握控制器 (DR專案) ===
+2025-07-17 01:03:57 [INFO] DobotController:start:1363 - 運動類Flow (Flow1,2): 基地址1200-1249，狀態機交握
+2025-07-17 01:03:57 [INFO] DobotController:start:1364 - IO類Flow (Flow4): 地址448，專用佇列併行
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_robot:1398 - 機械臂控制器初始化成功
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_modbus:1409 - 連接Modbus服務器: 127.0.0.1:502
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_modbus:1418 - Modbus客戶端連接成功
+2025-07-17 01:04:00 [INFO] DobotController:_test_motion_register_access:1438 - 驗證運動類寄存器範圍 (1200-1249) 讀寫權限...
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1441 - 讀取運動狀態寄存器 1200-1209
+2025-07-17 01:04:00 [INFO] DobotController:_test_motion_register_access:1447 - 讀取運動狀態寄存器成功: 10個寄存器
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1200: 10
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1201: 1
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1202: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1203: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1204: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1205: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1206: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1207: 1
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1208: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1450 - 寄存器1209: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1453 - 測試寫入運動狀態寄存器 1200
+2025-07-17 01:04:00 [INFO] DobotController:_test_motion_register_access:1460 - 寫入運動狀態寄存器成功: 1200 = 8
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1466 - 驗證寫入結果: 1200 = 8
+2025-07-17 01:04:00 [INFO] DobotController:_test_motion_register_access:1468 - 運動狀態寄存器寫入驗證成功
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1473 - 讀取運動控制寄存器 1240-1244
+2025-07-17 01:04:00 [INFO] DobotController:_test_motion_register_access:1479 - 讀取運動控制寄存器成功: 5個寄存器
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1482 - 寄存器1240: 1
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1482 - 寄存器1241: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1482 - 寄存器1242: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1482 - 寄存器1243: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_motion_register_access:1482 - 寄存器1244: 0
+2025-07-17 01:04:00 [INFO] DobotController:_test_io_register_access:1490 - 驗證IO類寄存器範圍 (447-449) 讀寫權限...
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_io_register_access:1493 - 讀取IO控制寄存器 448
+2025-07-17 01:04:00 [INFO] DobotController:_test_io_register_access:1499 - 讀取IO控制寄存器成功: 1個寄存器
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_io_register_access:1502 - 寄存器448: 0
+2025-07-17 01:04:00 [DEBUG] DobotController:_test_io_register_access:1505 - 測試寫入IO控制寄存器 448
+2025-07-17 01:04:00 [INFO] DobotController:_test_io_register_access:1512 - 寫入IO控制寄存器成功: 448 = 0
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_motion_state_machine:1519 - === 初始化運動類狀態機 (DR專案) ===
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_motion_state_machine:1520 - 新架構地址範圍: 1200-1249
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_motion_state_machine:1521 - 狀態寄存器: 1200-1209
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_motion_state_machine:1522 - 控制寄存器: 1240-1244
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_motion_state_machine:1523 - 解決地址衝突: 避開CCD2模組1000-1099範圍
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_motion_state_machine:1527 - 運動類狀態機初始化完成 - 新基地址1200 (DR專案)
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_external_modules:1540 - CCD1高階API連接成功
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_external_modules:1557 - 夾爪高階API連接成功
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_external_modules:1570 - 角度校正API連接成功
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_external_modules:1576 - 外部模組初始化完成
+2025-07-17 01:04:00 [INFO] DobotController:_initialize_threads:1602 - 執行緒初始化完成 - 新架構混合交握 (DR專案)
+2025-07-17 01:04:00 [DEBUG] DobotController:_print_system_status:1861 - 系統狀態 (循環計數: 1) - DR專案
+2025-07-17 01:04:00 [INFO] DobotController:_start_handshake_loop:1613 - 新架構混合交握循環啟動 (DR專案)
+2025-07-17 01:04:00 [INFO] DobotController:start:1381 - Dobot新架構混合交握控制器啟動成功 (DR專案)
+2025-07-17 01:04:00 [DEBUG] DobotController:_print_system_status:1878 - 運動狀態: 9 (1001), 當前Flow: 1, 進度: 0%
+2025-07-17 01:04:10 [DEBUG] DobotController:_print_system_status:1861 - 系統狀態 (循環計數: 904) - DR專案
+2025-07-17 01:04:10 [DEBUG] DobotController:_print_system_status:1878 - 運動狀態: 10 (1010), 當前Flow: 1, 進度: 0%
+2025-07-17 01:04:20 [DEBUG] DobotController:_print_system_status:1861 - 系統狀態 (循環計數: 1808) - DR專案
+2025-07-17 01:04:20 [DEBUG] DobotController:_print_system_status:1878 - 運動狀態: 12 (1100), 當前Flow: 0, 進度: 0%
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1859 - 系統狀態 (循環計數: 2700) - DR專案
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1874 - 運動狀態: 12 (1100) - 地址1200
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1875 - 當前Flow: 0, 進度: 0% - 地址1201-1202
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1876 - Flow完成狀態: F1=0, F2=0 - 地址1204-1205
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1885 - Motion執行緒: 運行中, 操作計數: 1
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1887 - Flow4執行緒: 運行中, 操作計數: 0
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1890 - 佇列大小: Motion=0, Flow4=0
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1891 - 機械臂連接: 連接
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1892 - Modbus連接: 連接
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1893 - 新架構地址: 狀態1200-1209, 控制1240-1249
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1894 - 輪詢間隔: 10ms (優化版)
+2025-07-17 01:04:30 [INFO] DobotController:_print_system_status:1898 - 系統運行時間: 0.0小時
+2025-07-17 01:04:40 [DEBUG] DobotController:_print_system_status:1861 - 系統狀態 (循環計數: 3593) - DR專案
+2025-07-17 01:04:40 [DEBUG] DobotController:_print_system_status:1878 - 運動狀態: 12 (1100), 當前Flow: 0, 進度: 0%
+2025-07-17 01:04:50 [DEBUG] DobotController:_print_system_status:1861 - 系統狀態 (循環計數: 4489) - DR專案
+2025-07-17 01:04:50 [DEBUG] DobotController:_print_system_status:1878 - 運動狀態: 12 (1100), 當前Flow: 0, 進度: 0%
+2025-07-17 01:05:00 [DEBUG] DobotController:_print_system_status:1861 - 系統狀態 (循環計數: 5378) - DR專案
+2025-07-17 01:05:00 [DEBUG] DobotController:_print_system_status:1878 - 運動狀態: 12 (1100), 當前Flow: 0, 進度: 0%
+2025-07-17 01:05:10 [DEBUG] DobotController:_print_system_status:1861 - 系統狀態 (循環計數: 6275) - DR專案
+2025-07-17 01:05:10 [DEBUG] DobotController:_print_system_status:1878 - 運動狀態: 12 (1100), 當前Flow: 0, 進度: 0%
+2025-07-17 01:05:18 [INFO] DobotController:stop:1905 - === 停止Dobot新架構混合交握控制器 (DR專案) ===
+2025-07-17 01:05:19 [INFO] DobotController:stop:1925 - 外部模組 ccd1 已斷開
+2025-07-17 01:05:19 [INFO] DobotController:stop:1925 - 外部模組 gripper 已斷開
+2025-07-17 01:05:19 [INFO] DobotController:stop:1925 - 外部模組 angle 已斷開
+2025-07-17 01:05:19 [INFO] DobotController:stop:1929 - Dobot新架構混合交握控制器已停止 (DR專案)

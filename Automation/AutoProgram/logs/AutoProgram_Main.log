@@ -1,0 +1,16 @@
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:873 - DR專案機械臂協調控制模組啟動 (主動觸發Flow1版)
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:874 - 主動觸發策略: AutoProgram讀取座標後立即主動觸發Flow1
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:875 - 執行流程: Flow2 done->AutoFeeding done->AutoProgram get coordinates->AutoProgram trigger Flow1->Flow1 get coordinates->work flow
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:884 - 啟動控制循環，等待指令...
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:901 - DR專案指令說明 (主動觸發Flow1版):
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:902 -   s - 顯示狀態
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:903 -   start - 手動啟動系統
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:904 -   stop - 手動停止系統
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:905 -   enable - 啟用自動程序
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:906 -   disable - 停用自動程序
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:907 -   flow1 - 手動觸發Flow1
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:908 -   coords - 手動讀取並存儲座標
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:909 -   clear_coords - 清除AutoProgram座標
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:910 -   check_af - 檢查AutoFeeding狀態
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:911 -   check_ap_coords - 檢查AutoProgram座標
+2025-07-17 00:50:56 [INFO] AutoProgram_Main:main:912 -   q - 退出程序

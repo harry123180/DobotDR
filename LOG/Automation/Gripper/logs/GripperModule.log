@@ -1,0 +1,1714 @@
+2025-07-17 00:28:24 [INFO] GripperModule:load_config:145 - 配置檔案載入成功
+2025-07-17 00:28:24 [INFO] GripperModule:__init__:95 - 夾爪模組啟動 (增強優化版本) - 基地址: 500-589
+2025-07-17 00:28:24 [INFO] GripperModule:ultra_fast_loop:383 - 主循環執行緒已啟動
+2025-07-17 00:28:24 [INFO] GripperModule:start:460 - 夾爪模組已啟動 (增強優化版本)
+2025-07-17 00:28:24 [INFO] GripperModule:connect_main_server:165 - 正在連接 127.0.0.1:502
+2025-07-17 00:28:24 [INFO] GripperModule:start:461 - 循環間隔: 50.0ms
+2025-07-17 00:28:24 [INFO] GripperModule:start:462 - 指令延遲: 20.0ms
+2025-07-17 00:28:24 [INFO] GripperModule:connect_main_server:175 - 主服務器連接建立成功
+2025-07-17 00:28:24 [INFO] GripperModule:start:463 - 狀態更新模式: 完整狀態更新
+2025-07-17 00:28:24 [INFO] GripperModule:connect_rtu_devices:190 - 正在連接RTU設備 COM3
+2025-07-17 00:28:24 [INFO] GripperModule:start:464 - 專注於PGC夾爪超快速響應 + 完整狀態更新
+2025-07-17 00:28:24 [INFO] GripperModule:connect_rtu_devices:202 - RTU設備連接建立成功
+2025-07-17 00:28:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:28:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:29:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:29:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:30:06 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 0, 平均響應: 0.0ms, 狀態模式: 完整, 運行時間: 102.6秒
+2025-07-17 00:30:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:30:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:30:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:31:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:31:49 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 0, 平均響應: 0.0ms, 狀態模式: 完整, 運行時間: 205.1秒
+2025-07-17 00:31:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:32:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:32:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:33:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:33:31 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 0, 平均響應: 0.0ms, 狀態模式: 完整, 運行時間: 307.7秒
+2025-07-17 00:33:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:33:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:34:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:34:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:35:14 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 0, 平均響應: 0.0ms, 狀態模式: 完整, 運行時間: 410.2秒
+2025-07-17 00:35:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:35:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:36:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:36:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:36:56 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 0, 平均響應: 0.0ms, 狀態模式: 完整, 運行時間: 512.8秒
+2025-07-17 00:36:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:37:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:37:29 [DEBUG] GripperModule:ultra_fast_command_processor:296 - 超快速PGC指令: cmd=1, param1=0, id=1
+2025-07-17 00:37:29 [INFO] GripperModule:ultra_fast_command_processor:311 - PGC指令執行成功 - 響應時間: 21.1ms
+2025-07-17 00:37:31 [DEBUG] GripperModule:ultra_fast_command_processor:296 - 超快速PGC指令: cmd=3, param1=370, id=2
+2025-07-17 00:37:31 [WARNING] GripperModule:execute_pgc_command_ultra:239 - PGC指令執行失敗: cmd=3, param1=370
+2025-07-17 00:37:31 [WARNING] GripperModule:ultra_fast_command_processor:313 - PGC指令執行失敗 - 響應時間: 14.5ms
+2025-07-17 00:37:37 [DEBUG] GripperModule:ultra_fast_command_processor:296 - 超快速PGC指令: cmd=8, param1=0, id=3
+2025-07-17 00:37:37 [INFO] GripperModule:ultra_fast_command_processor:311 - PGC指令執行成功 - 響應時間: 7.6ms
+2025-07-17 00:37:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:38:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:38:39 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 615.3秒
+2025-07-17 00:38:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:39:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:39:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:39:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:40:21 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 717.8秒
+2025-07-17 00:40:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:40:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:41:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:41:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:42:04 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 820.3秒
+2025-07-17 00:42:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:42:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:42:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:43:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:43:46 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 922.7秒
+2025-07-17 00:43:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:44:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:44:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:45:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:45:29 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 1025.0秒
+2025-07-17 00:45:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:45:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:46:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:46:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:47:11 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 1127.4秒
+2025-07-17 00:47:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:47:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:48:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:48:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:48:54 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 1230.0秒
+2025-07-17 00:48:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:49:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:49:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:50:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:50:36 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 1332.3秒
+2025-07-17 00:50:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:51:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:51:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:51:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:52:18 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 1434.7秒
+2025-07-17 00:52:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:52:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:53:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:53:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:54:01 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 3, 平均響應: 3.8ms, 狀態模式: 完整, 運行時間: 1537.0秒
+2025-07-17 00:54:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=0
+2025-07-17 00:54:07 [DEBUG] GripperModule:ultra_fast_command_processor:296 - 超快速PGC指令: cmd=1, param1=0, id=1
+2025-07-17 00:54:07 [INFO] GripperModule:ultra_fast_command_processor:311 - PGC指令執行成功 - 響應時間: 21.1ms
+2025-07-17 00:54:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:54:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:55:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:55:43 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 1639.5秒
+2025-07-17 00:55:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:56:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:56:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:57:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:57:26 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 1742.1秒
+2025-07-17 00:57:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:57:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:58:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:58:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:59:08 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 1844.7秒
+2025-07-17 00:59:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 00:59:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:00:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:00:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:00:51 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 1947.2秒
+2025-07-17 01:00:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:01:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:01:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:02:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:02:33 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2049.7秒
+2025-07-17 01:02:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:02:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:03:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:03:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:04:16 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2152.2秒
+2025-07-17 01:04:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:04:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:05:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:05:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:05:58 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2254.5秒
+2025-07-17 01:05:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:06:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:06:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:07:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:07:41 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2357.0秒
+2025-07-17 01:07:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:08:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:08:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:08:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:09:23 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2459.6秒
+2025-07-17 01:09:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:09:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:10:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:10:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:11:06 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2561.9秒
+2025-07-17 01:11:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:11:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:11:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:12:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:12:48 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2664.4秒
+2025-07-17 01:12:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:13:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:13:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:14:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:14:30 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2766.8秒
+2025-07-17 01:14:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:14:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:15:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:15:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:16:13 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2869.4秒
+2025-07-17 01:16:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:16:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:17:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:17:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:17:56 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 2971.9秒
+2025-07-17 01:17:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:18:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:18:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:19:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:19:38 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3074.3秒
+2025-07-17 01:19:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:20:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:20:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:20:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:21:20 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3176.8秒
+2025-07-17 01:21:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:21:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:22:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:22:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:23:03 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3279.3秒
+2025-07-17 01:23:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:23:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:23:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:24:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:24:45 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3381.7秒
+2025-07-17 01:24:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:25:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:25:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:26:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:26:28 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3484.2秒
+2025-07-17 01:26:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:26:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:27:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:27:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:28:10 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3586.7秒
+2025-07-17 01:28:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:28:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:29:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:29:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:29:53 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3689.1秒
+2025-07-17 01:29:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:30:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:30:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:31:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:31:35 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3791.5秒
+2025-07-17 01:31:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:32:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:32:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:32:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:33:18 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3893.9秒
+2025-07-17 01:33:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:33:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:34:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:34:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:35:00 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 3996.3秒
+2025-07-17 01:35:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:35:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:35:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:36:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:36:42 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4098.7秒
+2025-07-17 01:36:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:37:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:37:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:37:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:38:25 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4201.2秒
+2025-07-17 01:38:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:38:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:39:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:39:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:40:07 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4303.6秒
+2025-07-17 01:40:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:40:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:40:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:41:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:41:50 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4406.0秒
+2025-07-17 01:41:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:42:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:42:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:43:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:43:32 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4508.4秒
+2025-07-17 01:43:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:43:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:44:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:44:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:45:14 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4610.8秒
+2025-07-17 01:45:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:45:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:46:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:46:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:46:57 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4713.2秒
+2025-07-17 01:46:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:47:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:47:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:48:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:48:39 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4815.6秒
+2025-07-17 01:48:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:49:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:49:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:49:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:50:22 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 4918.0秒
+2025-07-17 01:50:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:50:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:51:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:51:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:52:04 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5020.4秒
+2025-07-17 01:52:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:52:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:52:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:53:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:53:47 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5122.9秒
+2025-07-17 01:53:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:54:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:54:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:55:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:55:29 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5225.4秒
+2025-07-17 01:55:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:55:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:56:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:56:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:57:11 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5327.9秒
+2025-07-17 01:57:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:57:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:58:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:58:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:58:54 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5430.3秒
+2025-07-17 01:58:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:59:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 01:59:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:00:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:00:36 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5532.7秒
+2025-07-17 02:00:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:01:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:01:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:01:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:02:19 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5635.2秒
+2025-07-17 02:02:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:02:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:03:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:03:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:04:01 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5737.6秒
+2025-07-17 02:04:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:04:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:04:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:05:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:05:44 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5840.1秒
+2025-07-17 02:05:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:06:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:06:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:07:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:07:26 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 5942.5秒
+2025-07-17 02:07:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:07:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:08:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:08:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:09:09 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6044.9秒
+2025-07-17 02:09:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:09:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:10:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:10:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:10:51 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6147.2秒
+2025-07-17 02:10:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:11:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:11:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:12:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:12:33 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6249.7秒
+2025-07-17 02:12:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:12:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:13:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:13:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:14:16 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6352.2秒
+2025-07-17 02:14:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:14:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:15:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:15:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:15:58 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6454.6秒
+2025-07-17 02:15:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:16:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:16:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:17:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:17:41 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6556.9秒
+2025-07-17 02:17:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:18:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:18:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:18:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:19:23 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6659.4秒
+2025-07-17 02:19:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:19:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:20:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:20:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:21:05 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6761.8秒
+2025-07-17 02:21:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:21:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:21:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:22:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:22:48 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6864.2秒
+2025-07-17 02:22:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:23:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:23:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:24:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:24:30 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 6966.6秒
+2025-07-17 02:24:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:24:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:25:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:25:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:26:13 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7069.0秒
+2025-07-17 02:26:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:26:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:27:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:27:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:27:55 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7171.4秒
+2025-07-17 02:27:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:28:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:28:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:29:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:29:37 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7273.9秒
+2025-07-17 02:29:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:30:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:30:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:30:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:31:20 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7376.4秒
+2025-07-17 02:31:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:31:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:32:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:32:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:33:02 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7478.8秒
+2025-07-17 02:33:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:33:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:33:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:34:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:34:45 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7581.3秒
+2025-07-17 02:34:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:35:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:35:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:36:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:36:27 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7683.9秒
+2025-07-17 02:36:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:36:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:37:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:37:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:38:10 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7786.3秒
+2025-07-17 02:38:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:38:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:39:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:39:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:39:52 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7888.8秒
+2025-07-17 02:39:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:40:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:40:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:41:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:41:35 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 7991.2秒
+2025-07-17 02:41:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:42:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:42:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:42:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:43:17 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8093.6秒
+2025-07-17 02:43:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:43:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:44:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:44:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:45:00 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8196.0秒
+2025-07-17 02:45:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:45:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:45:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:46:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:46:42 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8298.4秒
+2025-07-17 02:46:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:47:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:47:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:47:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:48:24 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8400.8秒
+2025-07-17 02:48:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:48:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:49:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:49:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:50:07 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8503.1秒
+2025-07-17 02:50:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:50:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:50:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:51:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:51:49 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8605.6秒
+2025-07-17 02:51:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:52:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:52:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:53:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:53:32 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8708.0秒
+2025-07-17 02:53:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:53:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:54:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:54:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:55:14 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8810.4秒
+2025-07-17 02:55:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:55:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:56:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:56:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:56:56 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 8912.8秒
+2025-07-17 02:56:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:57:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:57:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:58:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:58:39 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9015.2秒
+2025-07-17 02:58:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:59:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:59:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 02:59:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:00:21 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9117.6秒
+2025-07-17 03:00:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:00:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:01:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:01:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:02:04 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9220.0秒
+2025-07-17 03:02:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:02:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:02:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:03:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:03:46 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9322.4秒
+2025-07-17 03:03:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:04:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:04:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:05:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:05:28 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9424.8秒
+2025-07-17 03:05:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:05:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:06:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:06:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:07:11 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9527.2秒
+2025-07-17 03:07:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:07:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:08:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:08:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:08:53 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9629.7秒
+2025-07-17 03:08:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:09:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:09:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:10:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:10:36 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9732.1秒
+2025-07-17 03:10:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:11:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:11:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:11:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:12:18 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9834.5秒
+2025-07-17 03:12:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:12:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:13:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:13:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:14:01 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 9937.0秒
+2025-07-17 03:14:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:14:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:14:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:15:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:15:43 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10039.4秒
+2025-07-17 03:15:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:16:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:16:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:17:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:17:25 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10141.8秒
+2025-07-17 03:17:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:17:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:18:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:18:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:19:08 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10244.2秒
+2025-07-17 03:19:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:19:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:19:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:20:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:20:50 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10346.6秒
+2025-07-17 03:20:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:21:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:21:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:22:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:22:33 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10449.0秒
+2025-07-17 03:22:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:22:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:23:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:23:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:24:15 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10551.3秒
+2025-07-17 03:24:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:24:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:25:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:25:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:25:57 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10653.7秒
+2025-07-17 03:25:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:26:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:26:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:27:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:27:40 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10756.2秒
+2025-07-17 03:27:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:28:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:28:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:28:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:29:22 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10858.6秒
+2025-07-17 03:29:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:29:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:30:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:30:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:31:05 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 10961.0秒
+2025-07-17 03:31:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:31:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:31:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:32:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:32:47 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11063.4秒
+2025-07-17 03:32:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:33:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:33:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:34:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:34:29 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11165.9秒
+2025-07-17 03:34:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:34:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:35:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:35:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:36:12 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11268.3秒
+2025-07-17 03:36:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:36:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:37:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:37:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:37:54 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11370.8秒
+2025-07-17 03:37:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:38:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:38:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:39:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:39:37 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11473.2秒
+2025-07-17 03:39:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:40:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:40:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:40:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:41:19 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11575.6秒
+2025-07-17 03:41:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:41:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:42:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:42:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:43:02 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11678.0秒
+2025-07-17 03:43:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:43:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:43:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:44:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:44:44 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11780.5秒
+2025-07-17 03:44:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:45:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:45:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:46:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:46:27 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11882.9秒
+2025-07-17 03:46:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:46:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:47:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:47:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:48:09 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 11985.3秒
+2025-07-17 03:48:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:48:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:49:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:49:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:49:51 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12087.7秒
+2025-07-17 03:49:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:50:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:50:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:51:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:51:34 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12190.0秒
+2025-07-17 03:51:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:51:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:52:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:52:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:53:16 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12292.5秒
+2025-07-17 03:53:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:53:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:54:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:54:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:54:58 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12394.8秒
+2025-07-17 03:54:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:55:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:55:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:56:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:56:41 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12497.3秒
+2025-07-17 03:56:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:57:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:57:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:57:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:58:23 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12599.6秒
+2025-07-17 03:58:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:58:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:59:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 03:59:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:00:06 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12702.0秒
+2025-07-17 04:00:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:00:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:00:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:01:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:01:48 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12804.3秒
+2025-07-17 04:01:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:02:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:02:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:03:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:03:30 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 12906.8秒
+2025-07-17 04:03:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:03:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:04:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:04:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:05:13 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13009.2秒
+2025-07-17 04:05:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:05:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:06:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:06:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:06:55 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13111.6秒
+2025-07-17 04:06:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:07:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:07:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:08:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:08:38 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13214.1秒
+2025-07-17 04:08:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:09:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:09:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:09:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:10:20 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13316.5秒
+2025-07-17 04:10:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:10:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:11:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:11:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:12:03 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13419.0秒
+2025-07-17 04:12:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:12:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:12:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:13:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:13:45 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13521.3秒
+2025-07-17 04:13:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:14:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:14:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:15:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:15:27 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13623.7秒
+2025-07-17 04:15:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:15:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:16:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:16:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:17:10 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13726.2秒
+2025-07-17 04:17:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:17:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:18:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:18:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:18:52 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13828.5秒
+2025-07-17 04:18:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:19:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:19:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:20:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:20:35 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 13930.9秒
+2025-07-17 04:20:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:21:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:21:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:21:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:22:17 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14033.3秒
+2025-07-17 04:22:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:22:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:23:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:23:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:23:59 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14135.8秒
+2025-07-17 04:24:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:24:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:24:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:25:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:25:42 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14238.3秒
+2025-07-17 04:25:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:26:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:26:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:26:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:27:24 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14340.7秒
+2025-07-17 04:27:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:27:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:28:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:28:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:29:07 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14443.1秒
+2025-07-17 04:29:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:29:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:29:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:30:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:30:49 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14545.5秒
+2025-07-17 04:30:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:31:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:31:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:32:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:32:32 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14647.9秒
+2025-07-17 04:32:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:32:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:33:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:33:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:34:14 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14750.3秒
+2025-07-17 04:34:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:34:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:35:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:35:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:35:56 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14852.7秒
+2025-07-17 04:35:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:36:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:36:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:37:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:37:39 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 14955.1秒
+2025-07-17 04:37:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:38:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:38:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:38:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:39:21 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15057.5秒
+2025-07-17 04:39:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:39:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:40:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:40:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:41:04 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15160.0秒
+2025-07-17 04:41:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:41:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:41:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:42:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:42:46 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15262.2秒
+2025-07-17 04:42:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:43:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:43:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:44:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:44:28 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15364.7秒
+2025-07-17 04:44:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:44:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:45:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:45:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:46:11 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15467.1秒
+2025-07-17 04:46:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:46:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:47:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:47:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:47:53 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15569.5秒
+2025-07-17 04:47:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:48:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:48:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:49:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:49:36 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15672.0秒
+2025-07-17 04:49:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:50:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:50:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:50:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:51:18 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15774.4秒
+2025-07-17 04:51:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:51:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:52:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:52:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:53:00 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15876.8秒
+2025-07-17 04:53:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:53:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:53:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:54:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:54:43 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 15979.3秒
+2025-07-17 04:54:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:55:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:55:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:56:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:56:25 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16081.8秒
+2025-07-17 04:56:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:56:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:57:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:57:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:58:08 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16184.2秒
+2025-07-17 04:58:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:58:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:58:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:59:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 04:59:50 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16286.7秒
+2025-07-17 04:59:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:00:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:00:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:01:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:01:33 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16389.1秒
+2025-07-17 05:01:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:01:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:02:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:02:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:03:15 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16491.5秒
+2025-07-17 05:03:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:03:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:04:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:04:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:04:58 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16594.0秒
+2025-07-17 05:04:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:05:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:05:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:06:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:06:40 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16696.3秒
+2025-07-17 05:06:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:07:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:07:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:07:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:08:22 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16798.7秒
+2025-07-17 05:08:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:08:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:09:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:09:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:10:05 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 16901.3秒
+2025-07-17 05:10:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:10:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:10:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:11:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:11:47 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17003.7秒
+2025-07-17 05:11:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:12:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:12:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:13:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:13:30 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17106.3秒
+2025-07-17 05:13:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:13:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:14:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:14:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:15:12 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17208.7秒
+2025-07-17 05:15:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:15:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:16:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:16:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:16:55 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17311.2秒
+2025-07-17 05:16:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:17:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:17:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:18:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:18:37 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17413.6秒
+2025-07-17 05:18:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:19:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:19:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:19:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:20:20 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17516.0秒
+2025-07-17 05:20:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:20:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:21:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:21:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:22:02 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17618.5秒
+2025-07-17 05:22:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:22:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:22:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:23:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:23:45 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17721.0秒
+2025-07-17 05:23:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:24:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:24:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:25:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:25:27 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17823.5秒
+2025-07-17 05:25:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:25:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:26:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:26:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:27:10 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 17925.9秒
+2025-07-17 05:27:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:27:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:28:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:28:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:28:52 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18028.3秒
+2025-07-17 05:28:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:29:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:29:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:30:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:30:34 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18130.6秒
+2025-07-17 05:30:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:31:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:31:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:31:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:32:17 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18233.0秒
+2025-07-17 05:32:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:32:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:33:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:33:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:33:59 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18335.5秒
+2025-07-17 05:33:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:34:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:34:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:35:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:35:42 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18437.9秒
+2025-07-17 05:35:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:36:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:36:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:36:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:37:24 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18540.3秒
+2025-07-17 05:37:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:37:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:38:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:38:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:39:06 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18642.8秒
+2025-07-17 05:39:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:39:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:39:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:40:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:40:49 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18745.3秒
+2025-07-17 05:40:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:41:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:41:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:42:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:42:31 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18847.7秒
+2025-07-17 05:42:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:42:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:43:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:43:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:44:14 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 18950.1秒
+2025-07-17 05:44:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:44:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:45:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:45:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:45:56 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19052.6秒
+2025-07-17 05:45:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:46:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:46:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:47:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:47:39 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19155.0秒
+2025-07-17 05:47:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:48:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:48:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:48:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:49:21 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19257.4秒
+2025-07-17 05:49:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:49:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:50:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:50:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:51:03 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19359.9秒
+2025-07-17 05:51:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:51:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:51:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:52:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:52:46 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19462.4秒
+2025-07-17 05:52:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:53:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:53:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:54:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:54:28 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19564.7秒
+2025-07-17 05:54:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:54:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:55:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:55:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:56:11 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19667.2秒
+2025-07-17 05:56:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:56:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:57:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:57:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:57:53 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19769.7秒
+2025-07-17 05:57:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:58:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:58:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:59:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 05:59:36 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19872.2秒
+2025-07-17 05:59:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:00:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:00:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:00:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:01:18 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 19974.6秒
+2025-07-17 06:01:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:01:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:02:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:02:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:03:01 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20077.1秒
+2025-07-17 06:03:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:03:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:03:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:04:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:04:43 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20179.5秒
+2025-07-17 06:04:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:05:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:05:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:06:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:06:26 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20281.9秒
+2025-07-17 06:06:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:06:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:07:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:07:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:08:08 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20384.4秒
+2025-07-17 06:08:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:08:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:08:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:09:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:09:50 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20486.8秒
+2025-07-17 06:09:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:10:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:10:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:11:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:11:33 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20589.2秒
+2025-07-17 06:11:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:11:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:12:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:12:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:13:15 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20691.6秒
+2025-07-17 06:13:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:13:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:14:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:14:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:14:58 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20794.0秒
+2025-07-17 06:14:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:15:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:15:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:16:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:16:40 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20896.4秒
+2025-07-17 06:16:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:17:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:17:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:17:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:18:22 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 20998.9秒
+2025-07-17 06:18:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:18:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:19:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:19:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:20:05 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21101.3秒
+2025-07-17 06:20:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:20:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:20:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:21:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:21:47 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21203.7秒
+2025-07-17 06:21:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:22:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:22:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:23:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:23:30 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21306.2秒
+2025-07-17 06:23:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:23:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:24:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:24:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:25:12 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21408.6秒
+2025-07-17 06:25:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:25:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:26:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:26:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:26:55 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21511.0秒
+2025-07-17 06:26:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:27:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:27:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:28:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:28:37 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21613.4秒
+2025-07-17 06:28:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:29:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:29:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:29:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:30:20 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21715.9秒
+2025-07-17 06:30:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:30:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:31:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:31:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:32:02 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21818.4秒
+2025-07-17 06:32:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:32:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:32:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:33:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:33:45 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 21920.9秒
+2025-07-17 06:33:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:34:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:34:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:35:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:35:27 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22023.5秒
+2025-07-17 06:35:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:35:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:36:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:36:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:37:10 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22125.9秒
+2025-07-17 06:37:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:37:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:38:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:38:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:38:52 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22228.4秒
+2025-07-17 06:38:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:39:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:39:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:40:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:40:34 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22330.8秒
+2025-07-17 06:40:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:41:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:41:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:41:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:42:17 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22433.3秒
+2025-07-17 06:42:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:42:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:43:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:43:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:43:59 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22535.7秒
+2025-07-17 06:43:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:44:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:44:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:45:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:45:42 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22638.1秒
+2025-07-17 06:45:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:46:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:46:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:46:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:47:24 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22740.5秒
+2025-07-17 06:47:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:47:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:48:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:48:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:49:07 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22842.9秒
+2025-07-17 06:49:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:49:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:49:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:50:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:50:49 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 22945.3秒
+2025-07-17 06:50:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:51:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:51:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:52:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:52:31 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23047.8秒
+2025-07-17 06:52:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:52:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:53:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:53:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:54:14 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23150.3秒
+2025-07-17 06:54:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:54:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:55:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:55:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:55:56 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23252.6秒
+2025-07-17 06:55:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:56:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:56:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:57:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:57:39 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23355.0秒
+2025-07-17 06:57:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:58:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:58:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:58:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:59:21 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23457.4秒
+2025-07-17 06:59:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 06:59:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:00:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:00:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:01:04 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23559.9秒
+2025-07-17 07:01:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:01:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:01:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:02:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:02:46 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23662.4秒
+2025-07-17 07:02:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:03:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:03:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:04:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:04:28 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23764.9秒
+2025-07-17 07:04:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:04:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:05:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:05:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:06:11 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23867.4秒
+2025-07-17 07:06:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:06:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:07:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:07:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:07:53 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 23969.8秒
+2025-07-17 07:07:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:08:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:08:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:09:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:09:36 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24072.2秒
+2025-07-17 07:09:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:10:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:10:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:10:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:11:18 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24174.7秒
+2025-07-17 07:11:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:11:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:12:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:12:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:13:01 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24277.2秒
+2025-07-17 07:13:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:13:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:13:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:14:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:14:43 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24379.6秒
+2025-07-17 07:14:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:15:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:15:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:16:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:16:26 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24481.9秒
+2025-07-17 07:16:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:16:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:17:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:17:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:18:08 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24584.5秒
+2025-07-17 07:18:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:18:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:18:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:19:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:19:51 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24686.9秒
+2025-07-17 07:19:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:20:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:20:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:21:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:21:33 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24789.4秒
+2025-07-17 07:21:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:21:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:22:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:22:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:23:16 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24891.9秒
+2025-07-17 07:23:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:23:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:24:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:24:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:24:58 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 24994.3秒
+2025-07-17 07:24:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:25:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:25:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:26:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:26:40 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25096.8秒
+2025-07-17 07:26:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:27:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:27:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:27:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:28:23 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25199.3秒
+2025-07-17 07:28:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:28:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:29:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:29:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:30:05 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25301.8秒
+2025-07-17 07:30:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:30:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:30:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:31:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:31:48 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25404.3秒
+2025-07-17 07:31:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:32:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:32:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:33:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:33:30 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25506.7秒
+2025-07-17 07:33:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:33:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:34:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:34:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:35:13 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25609.1秒
+2025-07-17 07:35:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:35:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:36:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:36:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:36:55 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25711.6秒
+2025-07-17 07:36:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:37:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:37:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:38:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:38:38 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25814.0秒
+2025-07-17 07:38:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:39:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:39:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:39:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:40:20 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 25916.5秒
+2025-07-17 07:40:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:40:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:41:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:41:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:42:02 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26018.8秒
+2025-07-17 07:42:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:42:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:42:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:43:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:43:45 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26121.3秒
+2025-07-17 07:43:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:44:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:44:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:45:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:45:27 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26223.9秒
+2025-07-17 07:45:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:45:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:46:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:46:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:47:10 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26326.3秒
+2025-07-17 07:47:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:47:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:48:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:48:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:48:52 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26428.6秒
+2025-07-17 07:48:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:49:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:49:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:50:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:50:35 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26531.1秒
+2025-07-17 07:50:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:51:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:51:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:51:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:52:17 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26633.6秒
+2025-07-17 07:52:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:52:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:53:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:53:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:54:00 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26735.9秒
+2025-07-17 07:54:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:54:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:54:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:55:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:55:42 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26838.4秒
+2025-07-17 07:55:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:56:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:56:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:56:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:57:24 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 26940.8秒
+2025-07-17 07:57:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:57:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:58:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:58:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:59:07 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27043.3秒
+2025-07-17 07:59:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:59:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 07:59:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:00:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:00:49 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27145.7秒
+2025-07-17 08:00:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:01:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:01:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:02:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:02:32 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27248.0秒
+2025-07-17 08:02:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:02:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:03:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:03:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:04:14 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27350.4秒
+2025-07-17 08:04:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:04:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:05:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:05:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:05:56 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27452.9秒
+2025-07-17 08:05:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:06:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:06:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:07:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:07:39 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27555.3秒
+2025-07-17 08:07:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:08:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:08:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:08:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:09:21 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27657.7秒
+2025-07-17 08:09:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:09:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:10:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:10:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:11:04 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27760.1秒
+2025-07-17 08:11:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:11:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:11:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:12:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:12:46 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27862.5秒
+2025-07-17 08:12:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:13:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:13:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:14:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:14:29 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 27964.9秒
+2025-07-17 08:14:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:14:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:15:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:15:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:16:11 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28067.4秒
+2025-07-17 08:16:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:16:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:17:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:17:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:17:53 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28169.9秒
+2025-07-17 08:17:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:18:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:18:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:19:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:19:36 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28272.3秒
+2025-07-17 08:19:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:20:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:20:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:20:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:21:18 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28374.8秒
+2025-07-17 08:21:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:21:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:22:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:22:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:23:01 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28477.3秒
+2025-07-17 08:23:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:23:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:23:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:24:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:24:43 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28579.8秒
+2025-07-17 08:24:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:25:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:25:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:26:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:26:26 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28682.2秒
+2025-07-17 08:26:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:26:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:27:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:27:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:28:08 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28784.6秒
+2025-07-17 08:28:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:28:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:29:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:29:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:29:51 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28887.1秒
+2025-07-17 08:29:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:30:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:30:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:31:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:31:33 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 28989.5秒
+2025-07-17 08:31:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:31:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:32:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:32:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:33:16 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29092.0秒
+2025-07-17 08:33:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:33:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:34:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:34:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:34:58 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29194.4秒
+2025-07-17 08:34:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:35:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:35:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:36:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:36:41 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29297.0秒
+2025-07-17 08:36:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:37:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:37:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:37:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:38:23 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29399.4秒
+2025-07-17 08:38:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:38:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:39:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:39:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:40:05 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29501.8秒
+2025-07-17 08:40:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:40:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:40:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:41:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:41:48 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29604.2秒
+2025-07-17 08:41:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:42:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:42:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:43:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:43:30 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29706.6秒
+2025-07-17 08:43:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:43:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:44:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:44:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:45:13 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29809.0秒
+2025-07-17 08:45:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:45:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:46:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:46:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:46:55 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 29911.5秒
+2025-07-17 08:46:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:47:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:47:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:48:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:48:37 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30013.8秒
+2025-07-17 08:48:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:49:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:49:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:49:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:50:20 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30116.3秒
+2025-07-17 08:50:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:50:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:51:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:51:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:52:02 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30218.7秒
+2025-07-17 08:52:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:52:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:52:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:53:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:53:45 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30321.0秒
+2025-07-17 08:53:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:54:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:54:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:55:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:55:27 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30423.5秒
+2025-07-17 08:55:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:55:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:56:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:56:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:57:10 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30525.9秒
+2025-07-17 08:57:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:57:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:58:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:58:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:58:52 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30628.4秒
+2025-07-17 08:58:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:59:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 08:59:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:00:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:00:34 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30730.8秒
+2025-07-17 09:00:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:01:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:01:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:01:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:02:17 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30833.3秒
+2025-07-17 09:02:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:02:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:03:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:03:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:03:59 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 30935.8秒
+2025-07-17 09:04:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:04:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:04:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:05:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:05:42 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31038.2秒
+2025-07-17 09:05:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:06:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:06:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:06:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:07:24 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31140.6秒
+2025-07-17 09:07:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:07:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:08:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:08:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:09:07 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31243.1秒
+2025-07-17 09:09:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:09:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:09:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:10:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:10:49 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31345.6秒
+2025-07-17 09:10:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:11:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:11:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:12:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:12:32 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31448.0秒
+2025-07-17 09:12:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:12:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:13:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:13:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:14:14 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31550.4秒
+2025-07-17 09:14:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:14:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:15:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:15:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:15:56 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31652.8秒
+2025-07-17 09:15:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:16:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:16:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:17:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:17:39 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31755.1秒
+2025-07-17 09:17:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:18:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:18:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:18:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:19:21 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31857.6秒
+2025-07-17 09:19:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:19:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:20:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:20:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:21:04 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 31959.9秒
+2025-07-17 09:21:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:21:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:21:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:22:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:22:46 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32062.4秒
+2025-07-17 09:22:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:23:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:23:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:24:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:24:28 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32164.9秒
+2025-07-17 09:24:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:24:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:25:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:25:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:26:11 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32267.2秒
+2025-07-17 09:26:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:26:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:27:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:27:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:27:53 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32369.7秒
+2025-07-17 09:27:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:28:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:28:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:29:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:29:36 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32472.0秒
+2025-07-17 09:29:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:30:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:30:27 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:30:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:31:18 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32574.5秒
+2025-07-17 09:31:18 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:31:44 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:32:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:32:35 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:33:01 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32676.9秒
+2025-07-17 09:33:01 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:33:26 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:33:52 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:34:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:34:43 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32779.3秒
+2025-07-17 09:34:43 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:35:09 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:35:34 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:36:00 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:36:25 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32881.7秒
+2025-07-17 09:36:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:36:51 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:37:17 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:37:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:38:08 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 32984.1秒
+2025-07-17 09:38:08 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:38:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:38:59 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:39:25 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:39:50 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33086.6秒
+2025-07-17 09:39:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:40:16 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:40:42 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:41:07 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:41:33 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33189.0秒
+2025-07-17 09:41:33 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:41:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:42:24 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:42:50 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:43:15 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33291.5秒
+2025-07-17 09:43:15 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:43:41 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:44:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:44:32 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:44:57 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33393.8秒
+2025-07-17 09:44:58 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:45:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:45:49 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:46:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:46:40 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33496.4秒
+2025-07-17 09:46:40 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:47:06 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:47:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:47:57 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:48:22 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33598.8秒
+2025-07-17 09:48:23 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:48:48 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:49:14 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:49:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:50:05 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33701.2秒
+2025-07-17 09:50:05 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:50:31 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:50:56 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:51:22 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:51:47 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33803.7秒
+2025-07-17 09:51:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:52:13 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:52:39 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:53:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:53:30 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 33906.1秒
+2025-07-17 09:53:30 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:53:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:54:21 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:54:47 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:55:12 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 34008.6秒
+2025-07-17 09:55:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:55:38 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:56:04 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:56:29 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:56:55 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 34111.0秒
+2025-07-17 09:56:55 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:57:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:57:46 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:58:12 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:58:37 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 34213.5秒
+2025-07-17 09:58:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:59:03 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:59:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 09:59:54 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:00:20 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 34316.0秒
+2025-07-17 10:00:20 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:00:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:01:11 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:01:37 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:02:02 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 34418.4秒
+2025-07-17 10:02:02 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:02:28 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:02:53 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:03:19 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:03:44 [INFO] GripperModule:ultra_fast_loop:430 - 性能統計 - 總指令: 4, 平均響應: 5.5ms, 狀態模式: 完整, 運行時間: 34520.8秒
+2025-07-17 10:03:45 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:04:10 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:04:36 [DEBUG] GripperModule:enhanced_status_update:352 - PGC狀態更新: init=1, grip=1, pos=1000
+2025-07-17 10:04:36 [INFO] GripperModule:stop:474 - 正在停止夾爪模組...
+2025-07-17 10:04:36 [INFO] GripperModule:ultra_fast_loop:447 - 主循環執行緒已停止
+2025-07-17 10:04:36 [INFO] GripperModule:stop:487 - 主服務器連接已關閉
+2025-07-17 10:04:36 [INFO] GripperModule:stop:494 - RTU設備連接已關閉
+2025-07-17 10:04:36 [INFO] GripperModule:stop:498 - 夾爪模組已停止

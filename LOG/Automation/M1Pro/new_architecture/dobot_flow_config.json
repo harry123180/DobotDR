@@ -1,0 +1,36 @@
+{
+  "modbus_server": {
+    "host": "127.0.0.1",
+    "port": 502,
+    "timeout": 3.0
+  },
+  "web_server": {
+    "host": "0.0.0.0",
+    "port": 5058,
+    "debug": false
+  },
+  "gripper": {
+    "type": "PGE",
+    "enabled": true
+  },
+  "ui_settings": {
+    "auto_refresh": true,
+    "refresh_interval": 2.0
+  },
+  "registers": {
+    "ccd1_control": 200,
+    "ccd1_status": 201,
+    "ccd1_count": 240,
+    "ccd3_control": 800,
+    "ccd3_status": 801,
+    "ccd3_result": 840,
+    "flow1_control": 1240,
+    "flow2_control": 1241,
+    "flow4_control": 448,
+    "motion_status": 1200,
+    "motion_flow": 1201,
+    "motion_progress": 1202,
+    "flow1_complete": 1204,
+    "flow2_complete": 1205
+  }
+}

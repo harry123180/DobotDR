@@ -1,0 +1,909 @@
+2025-07-17 18:58:32 [INFO] ProcessMonitor - ProcessMonitor初始化完成
+2025-07-17 18:58:32 [INFO] ProcessMonitor - 開始監控循環
+2025-07-17 18:58:32 [INFO] ProcessMonitor - 監控已啟動，間隔 10 秒
+2025-07-17 18:58:34 [WARNING] ProcessMonitor - 記憶體警告 [python PID:8860]: 1074.4MB
+2025-07-17 18:58:44 [WARNING] ProcessMonitor - 記憶體警告 [python PID:8860]: 1074.4MB
+2025-07-17 18:58:54 [WARNING] ProcessMonitor - 記憶體警告 [python PID:8860]: 1074.4MB
+2025-07-17 18:59:03 [WARNING] ProcessMonitor - 記憶體警告 [python PID:8860]: 1074.4MB
+2025-07-17 19:00:05 [INFO] ProcessMonitor - 已保存第 10 次監控報告
+2025-07-17 19:01:44 [INFO] ProcessMonitor - 已保存第 20 次監控報告
+2025-07-17 19:03:32 [INFO] ProcessMonitor - ProcessMonitor初始化完成
+2025-07-17 19:03:32 [INFO] ProcessMonitor - 開始監控循環
+2025-07-17 19:03:32 [INFO] ProcessMonitor - 監控已啟動，間隔 10 秒
+2025-07-17 19:05:05 [INFO] ProcessMonitor - 已保存第 10 次監控報告
+2025-07-17 19:06:34 [WARNING] ProcessMonitor - 無法獲取進程資訊 PID 8528: process no longer exists (pid=8528, name='python.exe')
+2025-07-17 19:06:34 [WARNING] ProcessMonitor - 無法獲取進程資訊 PID 12896: process no longer exists (pid=12896, name='python.exe')
+2025-07-17 19:12:29 [INFO] ProcessMonitor - ProcessMonitor初始化完成
+2025-07-17 19:12:29 [INFO] ProcessMonitor - 開始監控循環
+2025-07-17 19:12:29 [INFO] ProcessMonitor - 監控已啟動，間隔 10 秒
+2025-07-17 19:14:02 [INFO] ProcessMonitor - 已保存第 10 次監控報告
+2025-07-17 19:15:42 [INFO] ProcessMonitor - 已保存第 20 次監控報告
+2025-07-17 19:17:22 [INFO] ProcessMonitor - 已保存第 30 次監控報告
+2025-07-17 19:18:12 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前456.1MB, 增長率17.15MB/次, 預估每小時增長6174.8MB
+2025-07-17 19:18:12 [WARNING] ProcessMonitor - 執行緒數量波動 [CCD1-Vision_16068]: 當前44個, 最近5次檢查範圍26-44
+2025-07-17 19:18:22 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前459.0MB, 增長率17.44MB/次, 預估每小時增長6277.6MB
+2025-07-17 19:18:22 [WARNING] ProcessMonitor - 執行緒數量波動 [CCD1-Vision_16068]: 當前45個, 最近5次檢查範圍26-45
+2025-07-17 19:18:32 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前473.6MB, 增長率18.90MB/次, 預估每小時增長6803.6MB
+2025-07-17 19:18:32 [WARNING] ProcessMonitor - 執行緒數量波動 [CCD1-Vision_16068]: 當前45個, 最近5次檢查範圍26-45
+2025-07-17 19:18:42 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前459.1MB, 增長率17.45MB/次, 預估每小時增長6281.3MB
+2025-07-17 19:18:42 [WARNING] ProcessMonitor - 執行緒數量波動 [CCD1-Vision_16068]: 當前44個, 最近5次檢查範圍26-45
+2025-07-17 19:18:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.8%
+2025-07-17 19:18:52 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前430.5MB, 增長率14.59MB/次, 預估每小時增長5254.2MB
+2025-07-17 19:19:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:19:02 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前430.9MB, 增長率14.63MB/次, 預估每小時增長5266.8MB
+2025-07-17 19:19:02 [INFO] ProcessMonitor - 已保存第 40 次監控報告
+2025-07-17 19:19:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 19:19:12 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前462.5MB, 增長率17.79MB/次, 預估每小時增長6406.2MB
+2025-07-17 19:19:22 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前460.9MB, 增長率17.63MB/次, 預估每小時增長6348.1MB
+2025-07-17 19:19:32 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前470.8MB, 增長率18.62MB/次, 預估每小時增長6701.6MB
+2025-07-17 19:19:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.8%
+2025-07-17 19:19:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 19:20:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 19:20:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:20:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:20:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.8%
+2025-07-17 19:20:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:20:42 [INFO] ProcessMonitor - 已保存第 50 次監控報告
+2025-07-17 19:21:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-17 19:21:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 19:21:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:21:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:21:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.8%
+2025-07-17 19:21:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.2%
+2025-07-17 19:22:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 19:22:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.2%
+2025-07-17 19:22:22 [INFO] ProcessMonitor - 已保存第 60 次監控報告
+2025-07-17 19:22:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:22:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:22:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.2%
+2025-07-17 19:23:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.8%
+2025-07-17 19:23:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:23:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.2%
+2025-07-17 19:23:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 80.2%
+2025-07-17 19:23:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.0%
+2025-07-17 19:24:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:24:02 [INFO] ProcessMonitor - 已保存第 70 次監控報告
+2025-07-17 19:24:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:24:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 19:24:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.0%
+2025-07-17 19:24:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.5%
+2025-07-17 19:25:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.2%
+2025-07-17 19:25:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:25:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:25:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-17 19:25:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.6%
+2025-07-17 19:25:42 [INFO] ProcessMonitor - 已保存第 80 次監控報告
+2025-07-17 19:25:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.6%
+2025-07-17 19:26:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:26:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:26:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:26:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 19:26:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.8%
+2025-07-17 19:27:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.2%
+2025-07-17 19:27:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:27:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:27:22 [INFO] ProcessMonitor - 已保存第 90 次監控報告
+2025-07-17 19:27:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 83.9%
+2025-07-17 19:27:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 19:28:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:28:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-17 19:28:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 19:28:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 19:28:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:28:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 19:29:02 [INFO] ProcessMonitor - 已保存第 100 次監控報告
+2025-07-17 19:29:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 80.6%
+2025-07-17 19:29:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-17 19:29:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 19:29:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 19:29:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.9%
+2025-07-17 19:30:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-17 19:30:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.2%
+2025-07-17 19:30:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 19:30:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-17 19:30:42 [INFO] ProcessMonitor - 已保存第 110 次監控報告
+2025-07-17 19:30:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 19:31:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.4%
+2025-07-17 19:31:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 19:31:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:31:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:31:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.8%
+2025-07-17 19:31:52 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前506.1MB, 增長率5.12MB/次, 預估每小時增長1842.2MB
+2025-07-17 19:32:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.0%
+2025-07-17 19:32:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.8%
+2025-07-17 19:32:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:32:22 [INFO] ProcessMonitor - 已保存第 120 次監控報告
+2025-07-17 19:32:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:32:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:32:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.8%
+2025-07-17 19:33:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.8%
+2025-07-17 19:33:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 19:33:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 19:33:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.3%
+2025-07-17 19:34:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 19:34:02 [INFO] ProcessMonitor - 已保存第 130 次監控報告
+2025-07-17 19:34:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.9%
+2025-07-17 19:34:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.0%
+2025-07-17 19:34:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:34:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.0%
+2025-07-17 19:35:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 80.2%
+2025-07-17 19:35:11 [WARNING] ProcessMonitor - 記憶體洩漏警告 [LED-Main_11844]: 當前313.4MB, 增長率5.30MB/次, 預估每小時增長1906.9MB
+2025-07-17 19:35:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-17 19:35:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:35:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 19:35:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 19:35:42 [INFO] ProcessMonitor - 已保存第 140 次監控報告
+2025-07-17 19:35:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:36:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:36:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 19:36:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 19:36:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:37:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:37:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:37:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-17 19:37:22 [INFO] ProcessMonitor - 已保存第 150 次監控報告
+2025-07-17 19:37:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:37:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:38:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:38:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:38:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 19:38:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 19:38:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 19:39:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.2%
+2025-07-17 19:39:02 [INFO] ProcessMonitor - 已保存第 160 次監控報告
+2025-07-17 19:39:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.0%
+2025-07-17 19:39:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 19:39:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.8%
+2025-07-17 19:39:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.1%
+2025-07-17 19:39:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.5%
+2025-07-17 19:40:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 19:40:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 19:40:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 19:40:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 19:40:42 [INFO] ProcessMonitor - 已保存第 170 次監控報告
+2025-07-17 19:40:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 19:41:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 19:41:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 19:41:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.5%
+2025-07-17 19:41:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:41:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:42:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-17 19:42:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.7%
+2025-07-17 19:42:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:42:22 [INFO] ProcessMonitor - 已保存第 180 次監控報告
+2025-07-17 19:42:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:42:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.1%
+2025-07-17 19:42:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:43:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 19:43:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:43:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:43:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.2%
+2025-07-17 19:43:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:44:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 19:44:02 [INFO] ProcessMonitor - 已保存第 190 次監控報告
+2025-07-17 19:44:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:44:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 19:44:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:44:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 81.1%
+2025-07-17 19:45:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.8%
+2025-07-17 19:45:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 19:45:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:45:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 19:45:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 19:45:42 [INFO] ProcessMonitor - 已保存第 200 次監控報告
+2025-07-17 19:45:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 19:46:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.2%
+2025-07-17 19:46:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 19:46:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:46:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:47:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:47:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 19:47:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 19:47:22 [INFO] ProcessMonitor - 已保存第 210 次監控報告
+2025-07-17 19:47:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.5%
+2025-07-17 19:47:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:48:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:48:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:48:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:48:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 19:48:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:48:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:49:02 [INFO] ProcessMonitor - 已保存第 220 次監控報告
+2025-07-17 19:49:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:49:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:49:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-17 19:49:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.6%
+2025-07-17 19:50:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:50:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.2%
+2025-07-17 19:50:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.8%
+2025-07-17 19:50:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:50:42 [INFO] ProcessMonitor - 已保存第 230 次監控報告
+2025-07-17 19:50:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.1%
+2025-07-17 19:51:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 19:51:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.4%
+2025-07-17 19:51:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 19:51:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:51:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 91.4%
+2025-07-17 19:52:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 19:52:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:52:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-17 19:52:22 [INFO] ProcessMonitor - 已保存第 240 次監控報告
+2025-07-17 19:52:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 19:52:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 19:52:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 19:53:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 19:53:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:53:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.1%
+2025-07-17 19:53:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.8%
+2025-07-17 19:54:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 19:54:02 [INFO] ProcessMonitor - 已保存第 250 次監控報告
+2025-07-17 19:54:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.5%
+2025-07-17 19:54:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-17 19:54:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 19:54:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:55:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:55:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 19:55:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 19:55:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.4%
+2025-07-17 19:55:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 19:55:42 [INFO] ProcessMonitor - 已保存第 260 次監控報告
+2025-07-17 19:56:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.3%
+2025-07-17 19:56:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.6%
+2025-07-17 19:56:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.8%
+2025-07-17 19:56:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 19:56:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 19:56:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 19:57:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.0%
+2025-07-17 19:57:22 [INFO] ProcessMonitor - 已保存第 270 次監控報告
+2025-07-17 19:57:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 19:57:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 19:57:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 19:58:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.8%
+2025-07-17 19:58:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-17 19:58:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.6%
+2025-07-17 19:58:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 83.9%
+2025-07-17 19:58:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 19:59:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 19:59:02 [INFO] ProcessMonitor - 已保存第 280 次監控報告
+2025-07-17 19:59:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 19:59:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 19:59:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 19:59:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 19:59:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 20:00:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.0%
+2025-07-17 20:00:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 20:00:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.2%
+2025-07-17 20:00:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 20:00:42 [INFO] ProcessMonitor - 已保存第 290 次監控報告
+2025-07-17 20:00:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 20:01:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.5%
+2025-07-17 20:01:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 20:01:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.9%
+2025-07-17 20:01:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 20:01:42 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前578.3MB, 增長率5.15MB/次, 預估每小時增長1854.3MB
+2025-07-17 20:01:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.0%
+2025-07-17 20:02:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.5%
+2025-07-17 20:02:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 20:02:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 20:02:22 [INFO] ProcessMonitor - 已保存第 300 次監控報告
+2025-07-17 20:02:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-17 20:02:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.2%
+2025-07-17 20:02:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 20:03:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 80.2%
+2025-07-17 20:03:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 20:03:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-17 20:03:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 20:03:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.8%
+2025-07-17 20:04:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 20:04:02 [INFO] ProcessMonitor - 已保存第 310 次監控報告
+2025-07-17 20:04:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-17 20:04:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.5%
+2025-07-17 20:04:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.9%
+2025-07-17 20:04:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 20:05:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 20:05:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 20:05:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 20:05:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 20:05:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.5%
+2025-07-17 20:05:42 [INFO] ProcessMonitor - 已保存第 320 次監控報告
+2025-07-17 20:05:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 20:06:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.2%
+2025-07-17 20:06:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.8%
+2025-07-17 20:06:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-17 20:06:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-17 20:06:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-17 20:07:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 20:07:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-17 20:07:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.8%
+2025-07-17 20:07:22 [INFO] ProcessMonitor - 已保存第 330 次監控報告
+2025-07-17 20:07:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 80.7%
+2025-07-17 20:07:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.0%
+2025-07-17 20:08:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 20:08:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 20:08:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 20:08:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.8%
+2025-07-17 20:08:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 20:08:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 81.9%
+2025-07-17 20:09:02 [INFO] ProcessMonitor - 已保存第 340 次監控報告
+2025-07-17 20:09:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 20:09:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-17 20:09:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 20:09:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 20:09:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 20:10:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 91.4%
+2025-07-17 20:10:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 20:10:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.9%
+2025-07-17 20:10:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 20:10:42 [INFO] ProcessMonitor - 已保存第 350 次監控報告
+2025-07-17 20:10:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.2%
+2025-07-17 20:11:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 20:11:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.5%
+2025-07-17 20:11:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-17 20:11:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 20:11:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 20:12:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.0%
+2025-07-17 20:12:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 20:12:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 20:12:22 [INFO] ProcessMonitor - 已保存第 360 次監控報告
+2025-07-17 20:12:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.6%
+2025-07-17 20:12:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.5%
+2025-07-17 20:12:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 20:13:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.4%
+2025-07-17 20:13:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 20:13:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 20:13:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 20:13:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.5%
+2025-07-17 20:14:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 20:14:02 [INFO] ProcessMonitor - 已保存第 370 次監控報告
+2025-07-17 20:14:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 20:14:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 20:14:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 20:14:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 20:15:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 20:15:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 91.5%
+2025-07-17 20:15:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.6%
+2025-07-17 20:15:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.2%
+2025-07-17 20:15:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.5%
+2025-07-17 20:15:42 [INFO] ProcessMonitor - 已保存第 380 次監控報告
+2025-07-17 20:15:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 20:16:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.5%
+2025-07-17 20:16:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.2%
+2025-07-17 20:16:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.1%
+2025-07-17 20:16:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.0%
+2025-07-17 20:16:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.5%
+2025-07-17 20:17:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-17 20:17:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 20:17:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.5%
+2025-07-17 20:17:22 [INFO] ProcessMonitor - 已保存第 390 次監控報告
+2025-07-17 20:17:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 20:17:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.6%
+2025-07-17 20:18:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 20:18:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 20:18:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 20:18:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.8%
+2025-07-17 20:18:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 20:19:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 81.9%
+2025-07-17 20:19:02 [INFO] ProcessMonitor - 已保存第 400 次監控報告
+2025-07-17 20:19:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.3%
+2025-07-17 20:19:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 20:19:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 20:19:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 20:19:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.6%
+2025-07-17 20:20:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-17 20:20:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 20:20:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 83.9%
+2025-07-17 20:20:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 20:20:42 [INFO] ProcessMonitor - 已保存第 410 次監控報告
+2025-07-17 20:20:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.4%
+2025-07-17 20:21:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 20:21:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 20:21:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-17 20:21:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.9%
+2025-07-17 20:21:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 80.8%
+2025-07-17 20:22:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 20:22:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 20:22:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.4%
+2025-07-17 20:22:22 [INFO] ProcessMonitor - 已保存第 420 次監控報告
+2025-07-17 20:22:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 20:22:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 91.6%
+2025-07-17 20:22:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.9%
+2025-07-17 20:23:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 20:23:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.3%
+2025-07-17 20:23:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.2%
+2025-07-17 20:23:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 20:23:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 20:24:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.3%
+2025-07-17 20:24:02 [INFO] ProcessMonitor - 已保存第 430 次監控報告
+2025-07-17 20:24:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.9%
+2025-07-17 20:24:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 20:24:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 20:24:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.0%
+2025-07-17 20:25:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 20:25:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 20:25:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-17 20:25:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.0%
+2025-07-17 20:25:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 20:25:42 [INFO] ProcessMonitor - 已保存第 440 次監控報告
+2025-07-17 20:25:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-17 20:26:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 81.0%
+2025-07-17 20:26:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 20:26:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-17 20:26:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-17 20:26:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 20:27:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 20:27:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.8%
+2025-07-17 20:27:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.8%
+2025-07-17 20:27:22 [INFO] ProcessMonitor - 已保存第 450 次監控報告
+2025-07-17 20:27:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-17 20:27:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 20:28:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 20:28:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.3%
+2025-07-17 20:28:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-17 20:28:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-17 20:28:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-17 20:29:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 83.1%
+2025-07-17 20:29:02 [INFO] ProcessMonitor - 已保存第 460 次監控報告
+2025-07-17 20:29:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.6%
+2025-07-17 20:29:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-17 20:29:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-17 20:29:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 20:29:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.5%
+2025-07-17 20:30:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-17 20:30:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.8%
+2025-07-17 20:30:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 80.1%
+2025-07-17 20:30:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.9%
+2025-07-17 20:30:42 [INFO] ProcessMonitor - 已保存第 470 次監控報告
+2025-07-17 20:30:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-17 20:31:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 20:31:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 20:31:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-17 20:31:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.1%
+2025-07-17 20:31:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.0%
+2025-07-17 20:32:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-17 20:32:12 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-17 20:32:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.4%
+2025-07-17 20:32:22 [INFO] ProcessMonitor - 已保存第 480 次監控報告
+2025-07-17 20:32:32 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.0%
+2025-07-17 20:32:42 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 91.3%
+2025-07-17 20:32:52 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.0%
+2025-07-17 20:33:02 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.8%
+2025-07-17 20:33:22 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.1%
+2025-07-18 01:05:48 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前864.7MB, 增長率26.77MB/次, 預估每小時增長9637.3MB
+2025-07-18 01:05:58 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-18 01:05:58 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前865.1MB, 增長率26.78MB/次, 預估每小時增長9639.6MB
+2025-07-18 01:06:08 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前832.2MB, 增長率23.45MB/次, 預估每小時增長8440.7MB
+2025-07-18 01:06:18 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前832.5MB, 增長率23.43MB/次, 預估每小時增長8434.7MB
+2025-07-18 01:06:18 [INFO] ProcessMonitor - 已保存第 490 次監控報告
+2025-07-18 01:06:28 [WARNING] ProcessMonitor - 記憶體洩漏警告 [LED-Main_11844]: 當前335.2MB, 增長率6.73MB/次, 預估每小時增長2423.1MB
+2025-07-18 01:06:28 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.7%
+2025-07-18 01:06:28 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前866.0MB, 增長率23.41MB/次, 預估每小時增長8426.2MB
+2025-07-18 01:06:37 [WARNING] ProcessMonitor - 記憶體洩漏警告 [LED-Main_11844]: 當前332.7MB, 增長率6.48MB/次, 預估每小時增長2331.7MB
+2025-07-18 01:06:38 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.3%
+2025-07-18 01:06:38 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前866.4MB, 增長率23.40MB/次, 預估每小時增長8423.6MB
+2025-07-18 01:06:48 [WARNING] ProcessMonitor - 記憶體洩漏警告 [LED-Main_11844]: 當前359.5MB, 增長率9.15MB/次, 預估每小時增長3295.0MB
+2025-07-18 01:06:48 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前833.5MB, 增長率20.07MB/次, 預估每小時增長7225.2MB
+2025-07-18 01:06:57 [WARNING] ProcessMonitor - 記憶體洩漏警告 [LED-Main_11844]: 當前322.3MB, 增長率5.43MB/次, 預估每小時增長1953.8MB
+2025-07-18 01:06:58 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前871.1MB, 增長率23.79MB/次, 預估每小時增長8562.9MB
+2025-07-18 01:07:07 [WARNING] ProcessMonitor - 記憶體洩漏警告 [LED-Main_11844]: 當前318.9MB, 增長率5.08MB/次, 預估每小時增長1829.4MB
+2025-07-18 01:07:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 82.8%
+2025-07-18 01:07:08 [WARNING] ProcessMonitor - 記憶體洩漏警告 [CCD1-Vision_16068]: 當前867.3MB, 增長率26.71MB/次, 預估每小時增長9616.4MB
+2025-07-18 01:07:27 [WARNING] ProcessMonitor - 記憶體洩漏警告 [LED-Main_11844]: 當前324.1MB, 增長率5.27MB/次, 預估每小時增長1895.8MB
+2025-07-18 01:07:37 [WARNING] ProcessMonitor - 記憶體洩漏警告 [LED-Main_11844]: 當前322.2MB, 增長率5.06MB/次, 預估每小時增長1822.9MB
+2025-07-18 01:07:38 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.2%
+2025-07-18 01:07:48 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.4%
+2025-07-18 01:07:58 [INFO] ProcessMonitor - 已保存第 500 次監控報告
+2025-07-18 01:08:48 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.6%
+2025-07-18 01:09:18 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-18 01:09:38 [INFO] ProcessMonitor - 已保存第 510 次監控報告
+2025-07-18 01:09:48 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.4%
+2025-07-18 01:10:18 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-18 01:10:48 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.4%
+2025-07-18 01:10:58 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-18 01:11:18 [INFO] ProcessMonitor - 已保存第 520 次監控報告
+2025-07-18 01:11:28 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-18 01:11:48 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.9%
+2025-07-18 01:11:58 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 81.2%
+2025-07-18 01:12:58 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.2%
+2025-07-18 01:12:58 [INFO] ProcessMonitor - 已保存第 530 次監控報告
+2025-07-18 01:13:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 90.0%
+2025-07-18 01:13:38 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 85.8%
+2025-07-18 01:14:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.0%
+2025-07-18 01:14:28 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.8%
+2025-07-18 01:14:38 [INFO] ProcessMonitor - 已保存第 540 次監控報告
+2025-07-18 01:15:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-18 01:15:38 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 81.6%
+2025-07-18 01:16:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.2%
+2025-07-18 01:16:18 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.5%
+2025-07-18 01:16:18 [INFO] ProcessMonitor - 已保存第 550 次監控報告
+2025-07-18 01:16:48 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.4%
+2025-07-18 01:17:18 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.1%
+2025-07-18 01:17:48 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-18 01:17:58 [INFO] ProcessMonitor - 已保存第 560 次監控報告
+2025-07-18 01:18:18 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-18 01:18:28 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-18 01:18:58 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.9%
+2025-07-18 01:19:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.3%
+2025-07-18 01:19:38 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.2%
+2025-07-18 01:19:38 [INFO] ProcessMonitor - 已保存第 570 次監控報告
+2025-07-18 01:19:57 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前150.7MB, 增長率5.06MB/次, 預估每小時增長1822.8MB
+2025-07-18 01:20:07 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前150.7MB, 增長率5.06MB/次, 預估每小時增長1822.8MB
+2025-07-18 01:20:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 82.2%
+2025-07-18 01:20:17 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前150.7MB, 增長率5.06MB/次, 預估每小時增長1822.8MB
+2025-07-18 01:20:48 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-18 01:21:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 80.9%
+2025-07-18 01:21:18 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.0%
+2025-07-18 01:21:18 [INFO] ProcessMonitor - 已保存第 580 次監控報告
+2025-07-18 01:21:28 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.5%
+2025-07-18 01:21:38 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.2%
+2025-07-18 01:21:58 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.5%
+2025-07-18 01:22:28 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 87.7%
+2025-07-18 01:22:38 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-18 01:22:58 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 84.4%
+2025-07-18 01:22:58 [INFO] ProcessMonitor - 已保存第 590 次監控報告
+2025-07-18 01:23:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 86.3%
+2025-07-18 01:23:28 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.2%
+2025-07-18 01:23:38 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.6%
+2025-07-18 01:23:58 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 88.6%
+2025-07-18 01:24:08 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.0%
+2025-07-18 01:24:28 [WARNING] ProcessMonitor - CPU使用率警告 [CCD1-Vision PID:16068]: 89.9%
+2025-07-18 01:24:38 [INFO] ProcessMonitor - 已保存第 600 次監控報告
+2025-07-18 01:26:18 [INFO] ProcessMonitor - 已保存第 610 次監控報告
+2025-07-18 01:27:58 [INFO] ProcessMonitor - 已保存第 620 次監控報告
+2025-07-18 01:29:38 [INFO] ProcessMonitor - 已保存第 630 次監控報告
+2025-07-18 01:31:18 [INFO] ProcessMonitor - 已保存第 640 次監控報告
+2025-07-18 01:32:58 [INFO] ProcessMonitor - 已保存第 650 次監控報告
+2025-07-18 01:34:38 [INFO] ProcessMonitor - 已保存第 660 次監控報告
+2025-07-18 01:36:18 [INFO] ProcessMonitor - 已保存第 670 次監控報告
+2025-07-18 01:37:58 [INFO] ProcessMonitor - 已保存第 680 次監控報告
+2025-07-18 01:39:38 [INFO] ProcessMonitor - 已保存第 690 次監控報告
+2025-07-18 01:41:18 [INFO] ProcessMonitor - 已保存第 700 次監控報告
+2025-07-18 01:42:58 [INFO] ProcessMonitor - 已保存第 710 次監控報告
+2025-07-18 01:44:38 [INFO] ProcessMonitor - 已保存第 720 次監控報告
+2025-07-18 01:46:18 [INFO] ProcessMonitor - 已保存第 730 次監控報告
+2025-07-18 01:47:58 [INFO] ProcessMonitor - 已保存第 740 次監控報告
+2025-07-18 01:49:38 [INFO] ProcessMonitor - 已保存第 750 次監控報告
+2025-07-18 01:51:18 [INFO] ProcessMonitor - 已保存第 760 次監控報告
+2025-07-18 01:52:58 [INFO] ProcessMonitor - 已保存第 770 次監控報告
+2025-07-18 01:54:38 [INFO] ProcessMonitor - 已保存第 780 次監控報告
+2025-07-18 01:56:18 [INFO] ProcessMonitor - 已保存第 790 次監控報告
+2025-07-18 01:57:58 [INFO] ProcessMonitor - 已保存第 800 次監控報告
+2025-07-18 01:59:38 [INFO] ProcessMonitor - 已保存第 810 次監控報告
+2025-07-18 02:01:18 [INFO] ProcessMonitor - 已保存第 820 次監控報告
+2025-07-18 02:02:58 [INFO] ProcessMonitor - 已保存第 830 次監控報告
+2025-07-18 02:04:38 [INFO] ProcessMonitor - 已保存第 840 次監控報告
+2025-07-18 02:06:18 [INFO] ProcessMonitor - 已保存第 850 次監控報告
+2025-07-18 02:07:58 [INFO] ProcessMonitor - 已保存第 860 次監控報告
+2025-07-18 02:09:38 [INFO] ProcessMonitor - 已保存第 870 次監控報告
+2025-07-18 02:11:18 [INFO] ProcessMonitor - 已保存第 880 次監控報告
+2025-07-18 02:12:58 [INFO] ProcessMonitor - 已保存第 890 次監控報告
+2025-07-18 02:14:38 [INFO] ProcessMonitor - 已保存第 900 次監控報告
+2025-07-18 02:16:18 [INFO] ProcessMonitor - 已保存第 910 次監控報告
+2025-07-18 02:17:58 [INFO] ProcessMonitor - 已保存第 920 次監控報告
+2025-07-18 02:19:38 [INFO] ProcessMonitor - 已保存第 930 次監控報告
+2025-07-18 02:21:18 [INFO] ProcessMonitor - 已保存第 940 次監控報告
+2025-07-18 02:22:58 [INFO] ProcessMonitor - 已保存第 950 次監控報告
+2025-07-18 02:24:38 [INFO] ProcessMonitor - 已保存第 960 次監控報告
+2025-07-18 02:26:18 [INFO] ProcessMonitor - 已保存第 970 次監控報告
+2025-07-18 02:27:58 [INFO] ProcessMonitor - 已保存第 980 次監控報告
+2025-07-18 02:29:38 [INFO] ProcessMonitor - 已保存第 990 次監控報告
+2025-07-18 02:31:18 [INFO] ProcessMonitor - 已保存第 1000 次監控報告
+2025-07-18 02:32:58 [INFO] ProcessMonitor - 已保存第 1010 次監控報告
+2025-07-18 02:34:38 [INFO] ProcessMonitor - 已保存第 1020 次監控報告
+2025-07-18 02:36:18 [INFO] ProcessMonitor - 已保存第 1030 次監控報告
+2025-07-18 02:37:58 [INFO] ProcessMonitor - 已保存第 1040 次監控報告
+2025-07-18 02:39:38 [INFO] ProcessMonitor - 已保存第 1050 次監控報告
+2025-07-18 02:41:18 [INFO] ProcessMonitor - 已保存第 1060 次監控報告
+2025-07-18 02:42:58 [INFO] ProcessMonitor - 已保存第 1070 次監控報告
+2025-07-18 02:44:38 [INFO] ProcessMonitor - 已保存第 1080 次監控報告
+2025-07-18 02:46:18 [INFO] ProcessMonitor - 已保存第 1090 次監控報告
+2025-07-18 02:47:58 [INFO] ProcessMonitor - 已保存第 1100 次監控報告
+2025-07-18 02:49:39 [INFO] ProcessMonitor - 已保存第 1110 次監控報告
+2025-07-18 02:51:19 [INFO] ProcessMonitor - 已保存第 1120 次監控報告
+2025-07-18 02:52:59 [INFO] ProcessMonitor - 已保存第 1130 次監控報告
+2025-07-18 02:54:39 [INFO] ProcessMonitor - 已保存第 1140 次監控報告
+2025-07-18 02:56:19 [INFO] ProcessMonitor - 已保存第 1150 次監控報告
+2025-07-18 02:57:59 [INFO] ProcessMonitor - 已保存第 1160 次監控報告
+2025-07-18 02:59:39 [INFO] ProcessMonitor - 已保存第 1170 次監控報告
+2025-07-18 03:01:19 [INFO] ProcessMonitor - 已保存第 1180 次監控報告
+2025-07-18 03:02:59 [INFO] ProcessMonitor - 已保存第 1190 次監控報告
+2025-07-18 03:04:39 [INFO] ProcessMonitor - 已保存第 1200 次監控報告
+2025-07-18 03:06:19 [INFO] ProcessMonitor - 已保存第 1210 次監控報告
+2025-07-18 03:07:59 [INFO] ProcessMonitor - 已保存第 1220 次監控報告
+2025-07-18 03:09:39 [INFO] ProcessMonitor - 已保存第 1230 次監控報告
+2025-07-18 03:11:19 [INFO] ProcessMonitor - 已保存第 1240 次監控報告
+2025-07-18 03:12:59 [INFO] ProcessMonitor - 已保存第 1250 次監控報告
+2025-07-18 03:14:39 [INFO] ProcessMonitor - 已保存第 1260 次監控報告
+2025-07-18 03:16:19 [INFO] ProcessMonitor - 已保存第 1270 次監控報告
+2025-07-18 03:17:59 [INFO] ProcessMonitor - 已保存第 1280 次監控報告
+2025-07-18 03:19:39 [INFO] ProcessMonitor - 已保存第 1290 次監控報告
+2025-07-18 03:21:19 [INFO] ProcessMonitor - 已保存第 1300 次監控報告
+2025-07-18 03:22:59 [INFO] ProcessMonitor - 已保存第 1310 次監控報告
+2025-07-18 03:24:39 [INFO] ProcessMonitor - 已保存第 1320 次監控報告
+2025-07-18 03:26:19 [INFO] ProcessMonitor - 已保存第 1330 次監控報告
+2025-07-18 03:27:59 [INFO] ProcessMonitor - 已保存第 1340 次監控報告
+2025-07-18 03:29:39 [INFO] ProcessMonitor - 已保存第 1350 次監控報告
+2025-07-18 03:31:19 [INFO] ProcessMonitor - 已保存第 1360 次監控報告
+2025-07-18 03:32:59 [INFO] ProcessMonitor - 已保存第 1370 次監控報告
+2025-07-18 03:33:28 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前33個, 最近5次檢查範圍22-33
+2025-07-18 03:33:28 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前220.4MB, 增長率7.91MB/次, 預估每小時增長2847.2MB
+2025-07-18 03:33:38 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前33個, 最近5次檢查範圍22-33
+2025-07-18 03:33:38 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前214.1MB, 增長率7.27MB/次, 預估每小時增長2618.3MB
+2025-07-18 03:33:48 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前33個, 最近5次檢查範圍22-33
+2025-07-18 03:33:48 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前214.1MB, 增長率7.27MB/次, 預估每小時增長2618.3MB
+2025-07-18 03:33:58 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前33個, 最近5次檢查範圍22-33
+2025-07-18 03:33:58 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前214.1MB, 增長率7.27MB/次, 預估每小時增長2618.3MB
+2025-07-18 03:34:08 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前214.1MB, 增長率7.27MB/次, 預估每小時增長2618.3MB
+2025-07-18 03:34:18 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前214.1MB, 增長率7.27MB/次, 預估每小時增長2618.3MB
+2025-07-18 03:34:28 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前214.1MB, 增長率7.27MB/次, 預估每小時增長2618.3MB
+2025-07-18 03:34:38 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前214.1MB, 增長率7.27MB/次, 預估每小時增長2618.3MB
+2025-07-18 03:34:39 [INFO] ProcessMonitor - 已保存第 1380 次監控報告
+2025-07-18 03:34:48 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前214.1MB, 增長率7.27MB/次, 預估每小時增長2618.3MB
+2025-07-18 03:36:19 [INFO] ProcessMonitor - 已保存第 1390 次監控報告
+2025-07-18 03:37:59 [INFO] ProcessMonitor - 已保存第 1400 次監控報告
+2025-07-18 03:39:39 [INFO] ProcessMonitor - 已保存第 1410 次監控報告
+2025-07-18 03:41:19 [INFO] ProcessMonitor - 已保存第 1420 次監控報告
+2025-07-18 03:42:59 [INFO] ProcessMonitor - 已保存第 1430 次監控報告
+2025-07-18 03:44:39 [INFO] ProcessMonitor - 已保存第 1440 次監控報告
+2025-07-18 03:46:19 [INFO] ProcessMonitor - 已保存第 1450 次監控報告
+2025-07-18 03:47:59 [INFO] ProcessMonitor - 已保存第 1460 次監控報告
+2025-07-18 03:49:39 [INFO] ProcessMonitor - 已保存第 1470 次監控報告
+2025-07-18 03:51:19 [INFO] ProcessMonitor - 已保存第 1480 次監控報告
+2025-07-18 03:52:59 [INFO] ProcessMonitor - 已保存第 1490 次監控報告
+2025-07-18 03:54:39 [INFO] ProcessMonitor - 已保存第 1500 次監控報告
+2025-07-18 03:56:19 [INFO] ProcessMonitor - 已保存第 1510 次監控報告
+2025-07-18 03:57:59 [INFO] ProcessMonitor - 已保存第 1520 次監控報告
+2025-07-18 03:59:39 [INFO] ProcessMonitor - 已保存第 1530 次監控報告
+2025-07-18 04:01:19 [INFO] ProcessMonitor - 已保存第 1540 次監控報告
+2025-07-18 04:02:59 [INFO] ProcessMonitor - 已保存第 1550 次監控報告
+2025-07-18 04:04:39 [INFO] ProcessMonitor - 已保存第 1560 次監控報告
+2025-07-18 04:06:19 [INFO] ProcessMonitor - 已保存第 1570 次監控報告
+2025-07-18 04:07:59 [INFO] ProcessMonitor - 已保存第 1580 次監控報告
+2025-07-18 04:09:39 [INFO] ProcessMonitor - 已保存第 1590 次監控報告
+2025-07-18 04:11:19 [INFO] ProcessMonitor - 已保存第 1600 次監控報告
+2025-07-18 04:12:59 [INFO] ProcessMonitor - 已保存第 1610 次監控報告
+2025-07-18 04:14:39 [INFO] ProcessMonitor - 已保存第 1620 次監控報告
+2025-07-18 04:16:19 [INFO] ProcessMonitor - 已保存第 1630 次監控報告
+2025-07-18 04:17:59 [INFO] ProcessMonitor - 已保存第 1640 次監控報告
+2025-07-18 04:18:58 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:19:08 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:19:18 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:19:28 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:19:38 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:19:39 [INFO] ProcessMonitor - 已保存第 1650 次監控報告
+2025-07-18 04:19:48 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:19:58 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:20:08 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:20:18 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前180.3MB, 增長率5.38MB/次, 預估每小時增長1936.7MB
+2025-07-18 04:21:19 [INFO] ProcessMonitor - 已保存第 1660 次監控報告
+2025-07-18 04:22:59 [INFO] ProcessMonitor - 已保存第 1670 次監控報告
+2025-07-18 04:24:39 [INFO] ProcessMonitor - 已保存第 1680 次監控報告
+2025-07-18 04:26:19 [INFO] ProcessMonitor - 已保存第 1690 次監控報告
+2025-07-18 04:27:59 [INFO] ProcessMonitor - 已保存第 1700 次監控報告
+2025-07-18 04:29:39 [INFO] ProcessMonitor - 已保存第 1710 次監控報告
+2025-07-18 04:31:19 [INFO] ProcessMonitor - 已保存第 1720 次監控報告
+2025-07-18 04:32:59 [INFO] ProcessMonitor - 已保存第 1730 次監控報告
+2025-07-18 04:34:39 [INFO] ProcessMonitor - 已保存第 1740 次監控報告
+2025-07-18 04:36:19 [INFO] ProcessMonitor - 已保存第 1750 次監控報告
+2025-07-18 04:37:59 [INFO] ProcessMonitor - 已保存第 1760 次監控報告
+2025-07-18 04:39:39 [INFO] ProcessMonitor - 已保存第 1770 次監控報告
+2025-07-18 04:41:19 [INFO] ProcessMonitor - 已保存第 1780 次監控報告
+2025-07-18 04:42:59 [INFO] ProcessMonitor - 已保存第 1790 次監控報告
+2025-07-18 04:44:39 [INFO] ProcessMonitor - 已保存第 1800 次監控報告
+2025-07-18 04:46:19 [INFO] ProcessMonitor - 已保存第 1810 次監控報告
+2025-07-18 04:47:59 [INFO] ProcessMonitor - 已保存第 1820 次監控報告
+2025-07-18 04:49:39 [INFO] ProcessMonitor - 已保存第 1830 次監控報告
+2025-07-18 04:51:19 [INFO] ProcessMonitor - 已保存第 1840 次監控報告
+2025-07-18 04:52:59 [INFO] ProcessMonitor - 已保存第 1850 次監控報告
+2025-07-18 04:54:39 [INFO] ProcessMonitor - 已保存第 1860 次監控報告
+2025-07-18 04:56:19 [INFO] ProcessMonitor - 已保存第 1870 次監控報告
+2025-07-18 04:57:59 [INFO] ProcessMonitor - 已保存第 1880 次監控報告
+2025-07-18 04:59:39 [INFO] ProcessMonitor - 已保存第 1890 次監控報告
+2025-07-18 05:01:19 [INFO] ProcessMonitor - 已保存第 1900 次監控報告
+2025-07-18 05:02:59 [INFO] ProcessMonitor - 已保存第 1910 次監控報告
+2025-07-18 05:04:39 [INFO] ProcessMonitor - 已保存第 1920 次監控報告
+2025-07-18 05:06:19 [INFO] ProcessMonitor - 已保存第 1930 次監控報告
+2025-07-18 05:07:59 [INFO] ProcessMonitor - 已保存第 1940 次監控報告
+2025-07-18 05:09:39 [INFO] ProcessMonitor - 已保存第 1950 次監控報告
+2025-07-18 05:11:19 [INFO] ProcessMonitor - 已保存第 1960 次監控報告
+2025-07-18 05:12:59 [INFO] ProcessMonitor - 已保存第 1970 次監控報告
+2025-07-18 05:14:39 [INFO] ProcessMonitor - 已保存第 1980 次監控報告
+2025-07-18 05:16:19 [INFO] ProcessMonitor - 已保存第 1990 次監控報告
+2025-07-18 05:16:58 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:17:08 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:17:18 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:17:28 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:17:38 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:17:48 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:17:58 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:17:59 [INFO] ProcessMonitor - 已保存第 2000 次監控報告
+2025-07-18 05:18:08 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:18:18 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_11096]: 當前198.0MB, 增長率6.63MB/次, 預估每小時增長2385.7MB
+2025-07-18 05:19:39 [INFO] ProcessMonitor - 已保存第 2010 次監控報告
+2025-07-18 05:21:19 [INFO] ProcessMonitor - 已保存第 2020 次監控報告
+2025-07-18 05:22:59 [INFO] ProcessMonitor - 已保存第 2030 次監控報告
+2025-07-18 05:24:39 [INFO] ProcessMonitor - 已保存第 2040 次監控報告
+2025-07-18 05:26:19 [INFO] ProcessMonitor - 已保存第 2050 次監控報告
+2025-07-18 05:27:59 [INFO] ProcessMonitor - 已保存第 2060 次監控報告
+2025-07-18 05:29:39 [INFO] ProcessMonitor - 已保存第 2070 次監控報告
+2025-07-18 05:31:19 [INFO] ProcessMonitor - 已保存第 2080 次監控報告
+2025-07-18 05:32:59 [INFO] ProcessMonitor - 已保存第 2090 次監控報告
+2025-07-18 05:34:39 [INFO] ProcessMonitor - 已保存第 2100 次監控報告
+2025-07-18 05:36:19 [INFO] ProcessMonitor - 已保存第 2110 次監控報告
+2025-07-18 05:37:59 [INFO] ProcessMonitor - 已保存第 2120 次監控報告
+2025-07-18 05:39:39 [INFO] ProcessMonitor - 已保存第 2130 次監控報告
+2025-07-18 05:41:19 [INFO] ProcessMonitor - 已保存第 2140 次監控報告
+2025-07-18 05:42:59 [INFO] ProcessMonitor - 已保存第 2150 次監控報告
+2025-07-18 05:44:39 [INFO] ProcessMonitor - 已保存第 2160 次監控報告
+2025-07-18 05:46:19 [INFO] ProcessMonitor - 已保存第 2170 次監控報告
+2025-07-18 05:47:59 [INFO] ProcessMonitor - 已保存第 2180 次監控報告
+2025-07-18 05:49:39 [INFO] ProcessMonitor - 已保存第 2190 次監控報告
+2025-07-18 05:51:19 [INFO] ProcessMonitor - 已保存第 2200 次監控報告
+2025-07-18 05:52:59 [INFO] ProcessMonitor - 已保存第 2210 次監控報告
+2025-07-18 05:54:40 [INFO] ProcessMonitor - 已保存第 2220 次監控報告
+2025-07-18 05:56:20 [INFO] ProcessMonitor - 已保存第 2230 次監控報告
+2025-07-18 05:57:59 [INFO] ProcessMonitor - 已保存第 2240 次監控報告
+2025-07-18 05:59:40 [INFO] ProcessMonitor - 已保存第 2250 次監控報告
+2025-07-18 06:01:20 [INFO] ProcessMonitor - 已保存第 2260 次監控報告
+2025-07-18 06:03:00 [INFO] ProcessMonitor - 已保存第 2270 次監控報告
+2025-07-18 06:04:40 [INFO] ProcessMonitor - 已保存第 2280 次監控報告
+2025-07-18 06:06:20 [INFO] ProcessMonitor - 已保存第 2290 次監控報告
+2025-07-18 06:08:00 [INFO] ProcessMonitor - 已保存第 2300 次監控報告
+2025-07-18 06:09:40 [INFO] ProcessMonitor - 已保存第 2310 次監控報告
+2025-07-18 06:11:20 [INFO] ProcessMonitor - 已保存第 2320 次監控報告
+2025-07-18 06:13:00 [INFO] ProcessMonitor - 已保存第 2330 次監控報告
+2025-07-18 06:14:40 [INFO] ProcessMonitor - 已保存第 2340 次監控報告
+2025-07-18 06:16:20 [INFO] ProcessMonitor - 已保存第 2350 次監控報告
+2025-07-18 06:18:00 [INFO] ProcessMonitor - 已保存第 2360 次監控報告
+2025-07-18 06:19:40 [INFO] ProcessMonitor - 已保存第 2370 次監控報告
+2025-07-18 06:21:20 [INFO] ProcessMonitor - 已保存第 2380 次監控報告
+2025-07-18 06:23:00 [INFO] ProcessMonitor - 已保存第 2390 次監控報告
+2025-07-18 06:24:40 [INFO] ProcessMonitor - 已保存第 2400 次監控報告
+2025-07-18 06:25:29 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前168.3MB, 增長率5.20MB/次, 預估每小時增長1871.3MB
+2025-07-18 06:26:20 [INFO] ProcessMonitor - 已保存第 2410 次監控報告
+2025-07-18 06:28:00 [INFO] ProcessMonitor - 已保存第 2420 次監控報告
+2025-07-18 06:29:40 [INFO] ProcessMonitor - 已保存第 2430 次監控報告
+2025-07-18 06:31:20 [INFO] ProcessMonitor - 已保存第 2440 次監控報告
+2025-07-18 06:33:00 [INFO] ProcessMonitor - 已保存第 2450 次監控報告
+2025-07-18 06:34:40 [INFO] ProcessMonitor - 已保存第 2460 次監控報告
+2025-07-18 06:36:20 [INFO] ProcessMonitor - 已保存第 2470 次監控報告
+2025-07-18 06:38:00 [INFO] ProcessMonitor - 已保存第 2480 次監控報告
+2025-07-18 06:39:40 [INFO] ProcessMonitor - 已保存第 2490 次監控報告
+2025-07-18 06:41:20 [INFO] ProcessMonitor - 已保存第 2500 次監控報告
+2025-07-18 06:43:00 [INFO] ProcessMonitor - 已保存第 2510 次監控報告
+2025-07-18 06:44:40 [INFO] ProcessMonitor - 已保存第 2520 次監控報告
+2025-07-18 06:46:20 [INFO] ProcessMonitor - 已保存第 2530 次監控報告
+2025-07-18 06:48:00 [INFO] ProcessMonitor - 已保存第 2540 次監控報告
+2025-07-18 06:49:40 [INFO] ProcessMonitor - 已保存第 2550 次監控報告
+2025-07-18 06:51:20 [INFO] ProcessMonitor - 已保存第 2560 次監控報告
+2025-07-18 06:53:00 [INFO] ProcessMonitor - 已保存第 2570 次監控報告
+2025-07-18 06:54:40 [INFO] ProcessMonitor - 已保存第 2580 次監控報告
+2025-07-18 06:56:20 [INFO] ProcessMonitor - 已保存第 2590 次監控報告
+2025-07-18 06:58:00 [INFO] ProcessMonitor - 已保存第 2600 次監控報告
+2025-07-18 06:59:40 [INFO] ProcessMonitor - 已保存第 2610 次監控報告
+2025-07-18 07:01:20 [INFO] ProcessMonitor - 已保存第 2620 次監控報告
+2025-07-18 07:03:00 [INFO] ProcessMonitor - 已保存第 2630 次監控報告
+2025-07-18 07:04:40 [INFO] ProcessMonitor - 已保存第 2640 次監控報告
+2025-07-18 07:06:20 [INFO] ProcessMonitor - 已保存第 2650 次監控報告
+2025-07-18 07:08:00 [INFO] ProcessMonitor - 已保存第 2660 次監控報告
+2025-07-18 07:09:40 [INFO] ProcessMonitor - 已保存第 2670 次監控報告
+2025-07-18 07:11:20 [INFO] ProcessMonitor - 已保存第 2680 次監控報告
+2025-07-18 07:13:00 [INFO] ProcessMonitor - 已保存第 2690 次監控報告
+2025-07-18 07:14:40 [INFO] ProcessMonitor - 已保存第 2700 次監控報告
+2025-07-18 07:16:20 [INFO] ProcessMonitor - 已保存第 2710 次監控報告
+2025-07-18 07:18:00 [INFO] ProcessMonitor - 已保存第 2720 次監控報告
+2025-07-18 07:19:40 [INFO] ProcessMonitor - 已保存第 2730 次監控報告
+2025-07-18 07:21:20 [INFO] ProcessMonitor - 已保存第 2740 次監控報告
+2025-07-18 07:23:00 [INFO] ProcessMonitor - 已保存第 2750 次監控報告
+2025-07-18 07:24:40 [INFO] ProcessMonitor - 已保存第 2760 次監控報告
+2025-07-18 07:26:20 [INFO] ProcessMonitor - 已保存第 2770 次監控報告
+2025-07-18 07:28:00 [INFO] ProcessMonitor - 已保存第 2780 次監控報告
+2025-07-18 07:29:40 [INFO] ProcessMonitor - 已保存第 2790 次監控報告
+2025-07-18 07:31:20 [INFO] ProcessMonitor - 已保存第 2800 次監控報告
+2025-07-18 07:33:00 [INFO] ProcessMonitor - 已保存第 2810 次監控報告
+2025-07-18 07:34:40 [INFO] ProcessMonitor - 已保存第 2820 次監控報告
+2025-07-18 07:36:20 [INFO] ProcessMonitor - 已保存第 2830 次監控報告
+2025-07-18 07:36:59 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:37:09 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:37:19 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:37:29 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:37:39 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:37:49 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:37:59 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:38:00 [INFO] ProcessMonitor - 已保存第 2840 次監控報告
+2025-07-18 07:38:09 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:38:19 [WARNING] ProcessMonitor - 記憶體洩漏警告 [VP-Main_10748]: 當前166.8MB, 增長率5.05MB/次, 預估每小時增長1819.5MB
+2025-07-18 07:39:40 [INFO] ProcessMonitor - 已保存第 2850 次監控報告
+2025-07-18 07:41:20 [INFO] ProcessMonitor - 已保存第 2860 次監控報告
+2025-07-18 07:43:00 [INFO] ProcessMonitor - 已保存第 2870 次監控報告
+2025-07-18 07:44:40 [INFO] ProcessMonitor - 已保存第 2880 次監控報告
+2025-07-18 07:46:20 [INFO] ProcessMonitor - 已保存第 2890 次監控報告
+2025-07-18 07:48:00 [INFO] ProcessMonitor - 已保存第 2900 次監控報告
+2025-07-18 07:49:40 [INFO] ProcessMonitor - 已保存第 2910 次監控報告
+2025-07-18 07:51:20 [INFO] ProcessMonitor - 已保存第 2920 次監控報告
+2025-07-18 07:53:00 [INFO] ProcessMonitor - 已保存第 2930 次監控報告
+2025-07-18 07:54:40 [INFO] ProcessMonitor - 已保存第 2940 次監控報告
+2025-07-18 07:56:20 [INFO] ProcessMonitor - 已保存第 2950 次監控報告
+2025-07-18 07:58:00 [INFO] ProcessMonitor - 已保存第 2960 次監控報告
+2025-07-18 07:59:40 [INFO] ProcessMonitor - 已保存第 2970 次監控報告
+2025-07-18 08:01:20 [INFO] ProcessMonitor - 已保存第 2980 次監控報告
+2025-07-18 08:03:00 [INFO] ProcessMonitor - 已保存第 2990 次監控報告
+2025-07-18 08:03:59 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前33個, 最近5次檢查範圍22-33
+2025-07-18 08:04:09 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前33個, 最近5次檢查範圍22-33
+2025-07-18 08:04:19 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前33個, 最近5次檢查範圍22-33
+2025-07-18 08:04:29 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前33個, 最近5次檢查範圍22-33
+2025-07-18 08:04:40 [INFO] ProcessMonitor - 已保存第 3000 次監控報告
+2025-07-18 08:06:20 [INFO] ProcessMonitor - 已保存第 3010 次監控報告
+2025-07-18 08:08:00 [INFO] ProcessMonitor - 已保存第 3020 次監控報告
+2025-07-18 08:09:40 [INFO] ProcessMonitor - 已保存第 3030 次監控報告
+2025-07-18 08:11:20 [INFO] ProcessMonitor - 已保存第 3040 次監控報告
+2025-07-18 08:13:00 [INFO] ProcessMonitor - 已保存第 3050 次監控報告
+2025-07-18 08:14:40 [INFO] ProcessMonitor - 已保存第 3060 次監控報告
+2025-07-18 08:16:20 [INFO] ProcessMonitor - 已保存第 3070 次監控報告
+2025-07-18 08:18:00 [INFO] ProcessMonitor - 已保存第 3080 次監控報告
+2025-07-18 08:18:59 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前22個, 最近5次檢查範圍22-33
+2025-07-18 08:19:09 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前22個, 最近5次檢查範圍22-33
+2025-07-18 08:19:19 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前22個, 最近5次檢查範圍22-33
+2025-07-18 08:19:29 [WARNING] ProcessMonitor - 執行緒數量波動 [VP-Main_10748]: 當前22個, 最近5次檢查範圍22-33
+2025-07-18 08:19:40 [INFO] ProcessMonitor - 已保存第 3090 次監控報告
+2025-07-18 08:21:20 [INFO] ProcessMonitor - 已保存第 3100 次監控報告
+2025-07-18 08:23:00 [INFO] ProcessMonitor - 已保存第 3110 次監控報告
+2025-07-18 08:24:40 [INFO] ProcessMonitor - 已保存第 3120 次監控報告
+2025-07-18 08:26:20 [INFO] ProcessMonitor - 已保存第 3130 次監控報告
+2025-07-18 08:28:00 [INFO] ProcessMonitor - 已保存第 3140 次監控報告
+2025-07-18 08:29:40 [INFO] ProcessMonitor - 已保存第 3150 次監控報告
+2025-07-18 08:31:20 [INFO] ProcessMonitor - 已保存第 3160 次監控報告
+2025-07-18 08:33:00 [INFO] ProcessMonitor - 已保存第 3170 次監控報告
+2025-07-18 08:34:40 [INFO] ProcessMonitor - 已保存第 3180 次監控報告
+2025-07-18 08:36:20 [INFO] ProcessMonitor - 已保存第 3190 次監控報告
+2025-07-18 08:38:00 [INFO] ProcessMonitor - 已保存第 3200 次監控報告
+2025-07-18 08:39:40 [INFO] ProcessMonitor - 已保存第 3210 次監控報告
+2025-07-18 08:41:20 [INFO] ProcessMonitor - 已保存第 3220 次監控報告
+2025-07-18 08:43:00 [INFO] ProcessMonitor - 已保存第 3230 次監控報告
+2025-07-18 08:44:40 [INFO] ProcessMonitor - 已保存第 3240 次監控報告
+2025-07-18 08:46:20 [INFO] ProcessMonitor - 已保存第 3250 次監控報告
+2025-07-18 08:48:00 [INFO] ProcessMonitor - 已保存第 3260 次監控報告
+2025-07-18 08:49:41 [INFO] ProcessMonitor - 已保存第 3270 次監控報告
+2025-07-18 08:51:20 [INFO] ProcessMonitor - 已保存第 3280 次監控報告
+2025-07-18 08:53:00 [INFO] ProcessMonitor - 已保存第 3290 次監控報告
+2025-07-18 08:54:40 [INFO] ProcessMonitor - 已保存第 3300 次監控報告
+2025-07-18 08:56:20 [INFO] ProcessMonitor - 已保存第 3310 次監控報告
+2025-07-18 08:58:00 [INFO] ProcessMonitor - 已保存第 3320 次監控報告
+2025-07-18 08:59:40 [INFO] ProcessMonitor - 已保存第 3330 次監控報告
+2025-07-18 09:01:20 [INFO] ProcessMonitor - 已保存第 3340 次監控報告
+2025-07-18 09:03:00 [INFO] ProcessMonitor - 已保存第 3350 次監控報告
+2025-07-18 09:04:40 [INFO] ProcessMonitor - 已保存第 3360 次監控報告
+2025-07-18 09:06:20 [INFO] ProcessMonitor - 已保存第 3370 次監控報告
+2025-07-18 09:08:00 [INFO] ProcessMonitor - 已保存第 3380 次監控報告
+2025-07-18 09:09:41 [INFO] ProcessMonitor - 已保存第 3390 次監控報告
+2025-07-18 09:11:21 [INFO] ProcessMonitor - 已保存第 3400 次監控報告
+2025-07-18 09:13:01 [INFO] ProcessMonitor - 已保存第 3410 次監控報告
+2025-07-18 09:14:41 [INFO] ProcessMonitor - 已保存第 3420 次監控報告
+2025-07-18 09:16:21 [INFO] ProcessMonitor - 已保存第 3430 次監控報告
+2025-07-18 09:18:01 [INFO] ProcessMonitor - 已保存第 3440 次監控報告
+2025-07-18 09:19:41 [INFO] ProcessMonitor - 已保存第 3450 次監控報告
+2025-07-18 09:21:21 [INFO] ProcessMonitor - 已保存第 3460 次監控報告
+2025-07-18 09:23:01 [INFO] ProcessMonitor - 已保存第 3470 次監控報告
+2025-07-18 09:24:41 [INFO] ProcessMonitor - 已保存第 3480 次監控報告
+2025-07-18 09:26:21 [INFO] ProcessMonitor - 已保存第 3490 次監控報告
+2025-07-18 09:28:01 [INFO] ProcessMonitor - 已保存第 3500 次監控報告
+2025-07-18 09:29:41 [INFO] ProcessMonitor - 已保存第 3510 次監控報告
+2025-07-18 09:31:21 [INFO] ProcessMonitor - 已保存第 3520 次監控報告
+2025-07-18 09:33:01 [INFO] ProcessMonitor - 已保存第 3530 次監控報告
+2025-07-18 09:34:41 [INFO] ProcessMonitor - 已保存第 3540 次監控報告
+2025-07-18 09:36:21 [INFO] ProcessMonitor - 已保存第 3550 次監控報告
+2025-07-18 09:38:01 [INFO] ProcessMonitor - 已保存第 3560 次監控報告
+2025-07-18 09:39:41 [INFO] ProcessMonitor - 已保存第 3570 次監控報告
+2025-07-18 09:41:21 [INFO] ProcessMonitor - 已保存第 3580 次監控報告
+2025-07-18 09:43:01 [INFO] ProcessMonitor - 已保存第 3590 次監控報告
+2025-07-18 09:44:41 [INFO] ProcessMonitor - 已保存第 3600 次監控報告
+2025-07-18 09:46:21 [INFO] ProcessMonitor - 已保存第 3610 次監控報告
+2025-07-18 09:48:01 [INFO] ProcessMonitor - 已保存第 3620 次監控報告
+2025-07-18 09:49:41 [INFO] ProcessMonitor - 已保存第 3630 次監控報告
+2025-07-18 09:51:21 [INFO] ProcessMonitor - 已保存第 3640 次監控報告
+2025-07-18 09:53:01 [INFO] ProcessMonitor - 已保存第 3650 次監控報告
+2025-07-18 09:54:41 [INFO] ProcessMonitor - 已保存第 3660 次監控報告
+2025-07-18 09:56:21 [INFO] ProcessMonitor - 已保存第 3670 次監控報告
+2025-07-18 09:58:01 [INFO] ProcessMonitor - 已保存第 3680 次監控報告
+2025-07-18 09:59:41 [INFO] ProcessMonitor - 已保存第 3690 次監控報告
+2025-07-18 10:00:39 [WARNING] ProcessMonitor - 無法獲取進程資訊 PID 14236: process no longer exists (pid=14236, name='cmd.exe')
+2025-07-18 10:00:39 [WARNING] ProcessMonitor - 無法獲取進程資訊 PID 16068: process no longer exists (pid=16068, name='python.exe')

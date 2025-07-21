@@ -1,0 +1,1323 @@
+{
+  "timestamp": "2025-07-17 19:00:02",
+  "system_info": {
+    "cpu_percent": 8.9,
+    "memory_percent": 51.5,
+    "disk_percent": 11.9,
+    "boot_time": "2025-07-16 10:18:41"
+  },
+  "modules": {
+    "VP_main": {
+      "process_count": 2,
+      "processes": [
+        {
+          "pid": 2188,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.90170563770665,
+          "memory_rss_mb": 4.14453125,
+          "memory_vms_mb": 2.3984375,
+          "memory_percent": 0.025740550294633468,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 14340,
+              "user_time": 0.015625,
+              "system_time": 0.015625
+            }
+          ],
+          "open_files_count": 0,
+          "connections_count": 0
+        },
+        {
+          "pid": 6492,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.901110166708628,
+          "memory_rss_mb": 12.6953125,
+          "memory_vms_mb": 17.51171875,
+          "memory_percent": 0.07884711447460771,
+          "cpu_percent": 4.4,
+          "thread_count": 2,
+          "threads": [
+            {
+              "id": 16376,
+              "user_time": 0.15625,
+              "system_time": 0.046875
+            },
+            {
+              "id": 12464,
+              "user_time": 1030.234375,
+              "system_time": 378.09375
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 2
+        }
+      ],
+      "total_memory_mb": 16.83984375,
+      "total_cpu_percent": 4.4,
+      "total_threads": 3
+    },
+    "python": {
+      "process_count": 22,
+      "processes": [
+        {
+          "pid": 2416,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.90117814819018,
+          "memory_rss_mb": 21.9375,
+          "memory_vms_mb": 36.703125,
+          "memory_percent": 0.13624781381212214,
+          "cpu_percent": 0.0,
+          "thread_count": 3,
+          "threads": [
+            {
+              "id": 15972,
+              "user_time": 0.40625,
+              "system_time": 0.359375
+            },
+            {
+              "id": 4236,
+              "user_time": 25.734375,
+              "system_time": 10.265625
+            },
+            {
+              "id": 6600,
+              "user_time": 0.015625,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 2
+        },
+        {
+          "pid": 3820,
+          "name": "pet.exe",
+          "status": "running",
+          "create_time": "2025-07-17 17:37:20",
+          "running_time_hours": 1.37871869219674,
+          "memory_rss_mb": 7.37109375,
+          "memory_vms_mb": 3.24609375,
+          "memory_percent": 0.045779847696487616,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 16060,
+              "user_time": 0.0,
+              "system_time": 0.03125
+            }
+          ],
+          "open_files_count": 3,
+          "connections_count": 0
+        },
+        {
+          "pid": 4824,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.901751373079088,
+          "memory_rss_mb": 4.16015625,
+          "memory_vms_mb": 2.359375,
+          "memory_percent": 0.02583759289706376,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 16084,
+              "user_time": 0.015625,
+              "system_time": 0.03125
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 7320,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 16:09:49",
+          "running_time_hours": 2.837311633825302,
+          "memory_rss_mb": 23.55859375,
+          "memory_vms_mb": 383.84375,
+          "memory_percent": 0.14631598381426436,
+          "cpu_percent": 0.8,
+          "thread_count": 16,
+          "threads": [
+            {
+              "id": 1324,
+              "user_time": 0.3125,
+              "system_time": 0.234375
+            },
+            {
+              "id": 3148,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 13472,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 10852,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 13144,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 15092,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 3520,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 15624,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 16192,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 16304,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 11440,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 5016,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 14216,
+              "user_time": 3.734375,
+              "system_time": 1.953125
+            },
+            {
+              "id": 5564,
+              "user_time": 0.203125,
+              "system_time": 0.03125
+            },
+            {
+              "id": 14980,
+              "user_time": 0.140625,
+              "system_time": 0.078125
+            },
+            {
+              "id": 2004,
+              "user_time": 59.3125,
+              "system_time": 20.375
+            }
+          ],
+          "open_files_count": 2,
+          "connections_count": 7
+        },
+        {
+          "pid": 8172,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.901174050569534,
+          "memory_rss_mb": 21.82421875,
+          "memory_vms_mb": 35.3046875,
+          "memory_percent": 0.13554425494450253,
+          "cpu_percent": 0.0,
+          "thread_count": 3,
+          "threads": [
+            {
+              "id": 14820,
+              "user_time": 0.359375,
+              "system_time": 0.53125
+            },
+            {
+              "id": 2040,
+              "user_time": 2.03125,
+              "system_time": 0.515625
+            },
+            {
+              "id": 1668,
+              "user_time": 0.0,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 2
+        },
+        {
+          "pid": 8744,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.901190912657313,
+          "memory_rss_mb": 12.7890625,
+          "memory_vms_mb": 18.01953125,
+          "memory_percent": 0.07942937008918943,
+          "cpu_percent": 0.8,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 13980,
+              "user_time": 147.40625,
+              "system_time": 62.3125
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 1
+        },
+        {
+          "pid": 8860,
+          "name": "Code.exe",
+          "status": "running",
+          "create_time": "2025-07-17 17:37:22",
+          "running_time_hours": 1.378184117211236,
+          "memory_rss_mb": 934.3359375,
+          "memory_vms_mb": 954.95703125,
+          "memory_percent": 5.802905018825052,
+          "cpu_percent": 0.0,
+          "thread_count": 15,
+          "threads": [
+            {
+              "id": 8828,
+              "user_time": 6.25,
+              "system_time": 1.0625
+            },
+            {
+              "id": 2184,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 9724,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 12964,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 6060,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 8508,
+              "user_time": 7.9375,
+              "system_time": 0.546875
+            },
+            {
+              "id": 4588,
+              "user_time": 8.25,
+              "system_time": 0.71875
+            },
+            {
+              "id": 4776,
+              "user_time": 7.96875,
+              "system_time": 0.578125
+            },
+            {
+              "id": 4852,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 14944,
+              "user_time": 18.03125,
+              "system_time": 1.171875
+            },
+            {
+              "id": 8944,
+              "user_time": 0.84375,
+              "system_time": 0.171875
+            },
+            {
+              "id": 7460,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 2072,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 14276,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 9572,
+              "user_time": 0.0,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 11,
+          "connections_count": 0
+        },
+        {
+          "pid": 9476,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.9018504330847,
+          "memory_rss_mb": 4.16015625,
+          "memory_vms_mb": 2.69921875,
+          "memory_percent": 0.02583759289706376,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 14684,
+              "user_time": 0.0,
+              "system_time": 0.03125
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 12088,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.901856657332845,
+          "memory_rss_mb": 4.16015625,
+          "memory_vms_mb": 2.48828125,
+          "memory_percent": 0.02583759289706376,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 8972,
+              "user_time": 0.03125,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 12368,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.901873724129464,
+          "memory_rss_mb": 4.16796875,
+          "memory_vms_mb": 2.37109375,
+          "memory_percent": 0.025886114198278902,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 13748,
+              "user_time": 0.03125,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 12492,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 16:09:23",
+          "running_time_hours": 2.844567853079902,
+          "memory_rss_mb": 44.109375,
+          "memory_vms_mb": 397.828125,
+          "memory_percent": 0.2739512666606985,
+          "cpu_percent": 0.0,
+          "thread_count": 13,
+          "threads": [
+            {
+              "id": 10164,
+              "user_time": 2.65625,
+              "system_time": 4.5625
+            },
+            {
+              "id": 16120,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 13636,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 2372,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 16208,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 4144,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 2404,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 8368,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 16212,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 4468,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 12896,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 6224,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 3064,
+              "user_time": 0.0,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 2,
+          "connections_count": 0
+        },
+        {
+          "pid": 12540,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:50",
+          "running_time_hours": 8.903665207889345,
+          "memory_rss_mb": 19.22265625,
+          "memory_vms_mb": 31.3984375,
+          "memory_percent": 0.11938666163985986,
+          "cpu_percent": 12.0,
+          "thread_count": 3,
+          "threads": [
+            {
+              "id": 6048,
+              "user_time": 4596.75,
+              "system_time": 980.6875
+            },
+            {
+              "id": 2708,
+              "user_time": 0.15625,
+              "system_time": 0.234375
+            },
+            {
+              "id": 9600,
+              "user_time": 0.078125,
+              "system_time": 0.0625
+            }
+          ],
+          "open_files_count": 2,
+          "connections_count": 21
+        },
+        {
+          "pid": 12560,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.901927113930384,
+          "memory_rss_mb": 4.16015625,
+          "memory_vms_mb": 2.6953125,
+          "memory_percent": 0.02583759289706376,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 3688,
+              "user_time": 0.03125,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 12796,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.901325063705444,
+          "memory_rss_mb": 15.84765625,
+          "memory_vms_mb": 35.71484375,
+          "memory_percent": 0.09842545951491799,
+          "cpu_percent": 0.0,
+          "thread_count": 3,
+          "threads": [
+            {
+              "id": 876,
+              "user_time": 0.515625,
+              "system_time": 0.6875
+            },
+            {
+              "id": 14208,
+              "user_time": 0.796875,
+              "system_time": 0.0625
+            },
+            {
+              "id": 6384,
+              "user_time": 0.0,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 2
+        },
+        {
+          "pid": 13196,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.901951380835639,
+          "memory_rss_mb": 4.23046875,
+          "memory_vms_mb": 2.265625,
+          "memory_percent": 0.026274284608000045,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 12048,
+              "user_time": 0.015625,
+              "system_time": 0.03125
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 13300,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.901373847855462,
+          "memory_rss_mb": 12.890625,
+          "memory_vms_mb": 17.78515625,
+          "memory_percent": 0.08006014700498629,
+          "cpu_percent": 0.8,
+          "thread_count": 3,
+          "threads": [
+            {
+              "id": 4800,
+              "user_time": 0.15625,
+              "system_time": 0.0625
+            },
+            {
+              "id": 10708,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 7088,
+              "user_time": 391.5625,
+              "system_time": 178.015625
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 1
+        },
+        {
+          "pid": 13476,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.901380053493712,
+          "memory_rss_mb": 61.37890625,
+          "memory_vms_mb": 455.6171875,
+          "memory_percent": 0.3812076029967726,
+          "cpu_percent": 0.2,
+          "thread_count": 22,
+          "threads": [
+            {
+              "id": 780,
+              "user_time": 0.90625,
+              "system_time": 0.453125
+            },
+            {
+              "id": 16144,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 8292,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 16292,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 15700,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 7112,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 14640,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 5936,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 7356,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 1596,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 14896,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 13020,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 2196,
+              "user_time": 0.0625,
+              "system_time": 0.234375
+            },
+            {
+              "id": 860,
+              "user_time": 0.078125,
+              "system_time": 0.28125
+            },
+            {
+              "id": 2808,
+              "user_time": 0.109375,
+              "system_time": 0.28125
+            },
+            {
+              "id": 16316,
+              "user_time": 0.078125,
+              "system_time": 0.15625
+            },
+            {
+              "id": 12456,
+              "user_time": 0.0625,
+              "system_time": 0.359375
+            },
+            {
+              "id": 15408,
+              "user_time": 0.203125,
+              "system_time": 0.40625
+            },
+            {
+              "id": 13112,
+              "user_time": 0.015625,
+              "system_time": 0.015625
+            },
+            {
+              "id": 14204,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 15068,
+              "user_time": 88.453125,
+              "system_time": 26.890625
+            },
+            {
+              "id": 14016,
+              "user_time": 0.015625,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 10
+        },
+        {
+          "pid": 13540,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.902019303441048,
+          "memory_rss_mb": 4.16015625,
+          "memory_vms_mb": 2.6875,
+          "memory_percent": 0.02583759289706376,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 14808,
+              "user_time": 0.0,
+              "system_time": 0.03125
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 14256,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 18:58:31",
+          "running_time_hours": 0.02571740362379286,
+          "memory_rss_mb": 21.80078125,
+          "memory_vms_mb": 14.44921875,
+          "memory_percent": 0.1353986910408571,
+          "cpu_percent": 20.7,
+          "thread_count": 4,
+          "threads": [
+            {
+              "id": 1376,
+              "user_time": 0.0625,
+              "system_time": 0.015625
+            },
+            {
+              "id": 2392,
+              "user_time": 0.6875,
+              "system_time": 20.96875
+            },
+            {
+              "id": 6068,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 15828,
+              "user_time": 0.0,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 2,
+          "connections_count": 0
+        },
+        {
+          "pid": 14668,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.901444612277878,
+          "memory_rss_mb": 13.1171875,
+          "memory_vms_mb": 17.47265625,
+          "memory_percent": 0.08146726474022545,
+          "cpu_percent": 0.3,
+          "thread_count": 2,
+          "threads": [
+            {
+              "id": 13136,
+              "user_time": 0.125,
+              "system_time": 0.046875
+            },
+            {
+              "id": 10796,
+              "user_time": 44.453125,
+              "system_time": 18.640625
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 1
+        },
+        {
+          "pid": 15764,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:50",
+          "running_time_hours": 8.904050573640399,
+          "memory_rss_mb": 4.14453125,
+          "memory_vms_mb": 2.49609375,
+          "memory_percent": 0.025740550294633468,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 4748,
+              "user_time": 0.0,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 0,
+          "connections_count": 0
+        },
+        {
+          "pid": 15960,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.90208388335175,
+          "memory_rss_mb": 4.16015625,
+          "memory_vms_mb": 2.36328125,
+          "memory_percent": 0.02583759289706376,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 3968,
+              "user_time": 0.015625,
+              "system_time": 0.015625
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        }
+      ],
+      "total_memory_mb": 1247.6875,
+      "total_cpu_percent": 35.599999999999994,
+      "total_threads": 98
+    },
+    "AutoProgram": {
+      "process_count": 4,
+      "processes": [
+        {
+          "pid": 4128,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.902093090878592,
+          "memory_rss_mb": 4.16015625,
+          "memory_vms_mb": 2.359375,
+          "memory_percent": 0.02583759289706376,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 6444,
+              "user_time": 0.015625,
+              "system_time": 0.03125
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 4668,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.90211058722602,
+          "memory_rss_mb": 4.2265625,
+          "memory_vms_mb": 2.6796875,
+          "memory_percent": 0.026250023957392475,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 10248,
+              "user_time": 0.015625,
+              "system_time": 0.046875
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        },
+        {
+          "pid": 6976,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:59",
+          "running_time_hours": 8.901536353958978,
+          "memory_rss_mb": 19.29296875,
+          "memory_vms_mb": 37.65625,
+          "memory_percent": 0.11982335335079615,
+          "cpu_percent": 0.5,
+          "thread_count": 7,
+          "threads": [
+            {
+              "id": 6760,
+              "user_time": 0.40625,
+              "system_time": 0.578125
+            },
+            {
+              "id": 8532,
+              "user_time": 0.015625,
+              "system_time": 0.0
+            },
+            {
+              "id": 3936,
+              "user_time": 62.21875,
+              "system_time": 16.203125
+            },
+            {
+              "id": 9272,
+              "user_time": 0.0625,
+              "system_time": 0.0625
+            },
+            {
+              "id": 12900,
+              "user_time": 0.125,
+              "system_time": 0.0
+            },
+            {
+              "id": 1104,
+              "user_time": 0.578125,
+              "system_time": 0.0625
+            },
+            {
+              "id": 9020,
+              "user_time": 0.0,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 2,
+          "connections_count": 3
+        },
+        {
+          "pid": 12208,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 16:10:37",
+          "running_time_hours": 2.824232188463211,
+          "memory_rss_mb": 13.109375,
+          "memory_vms_mb": 18.484375,
+          "memory_percent": 0.0814187434390103,
+          "cpu_percent": 0.6,
+          "thread_count": 4,
+          "threads": [
+            {
+              "id": 11200,
+              "user_time": 0.0625,
+              "system_time": 0.0625
+            },
+            {
+              "id": 5868,
+              "user_time": 22.84375,
+              "system_time": 12.546875
+            },
+            {
+              "id": 8876,
+              "user_time": 6.421875,
+              "system_time": 2.484375
+            },
+            {
+              "id": 3396,
+              "user_time": 25.734375,
+              "system_time": 11.75
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 1
+        }
+      ],
+      "total_memory_mb": 40.7890625,
+      "total_cpu_percent": 1.1,
+      "total_threads": 13
+    },
+    "CCD1VisionCodeYOLO": {
+      "process_count": 2,
+      "processes": [
+        {
+          "pid": 14044,
+          "name": "python.exe",
+          "status": "running",
+          "create_time": "2025-07-17 18:58:05",
+          "running_time_hours": 0.03322896665996975,
+          "memory_rss_mb": 453.66796875,
+          "memory_vms_mb": 920.1875,
+          "memory_percent": 2.8176077009127587,
+          "cpu_percent": 0.3,
+          "thread_count": 44,
+          "threads": [
+            {
+              "id": 15384,
+              "user_time": 1.46875,
+              "system_time": 0.640625
+            },
+            {
+              "id": 14616,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 14196,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 2076,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 2088,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 14932,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 7612,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 8908,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 2376,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 6120,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 10680,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 3128,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 10200,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 11056,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 13992,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 12712,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 8668,
+              "user_time": 0.875,
+              "system_time": 0.484375
+            },
+            {
+              "id": 16364,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 12984,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 13192,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 15496,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 5904,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 11008,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 13404,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 16112,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 12732,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 11848,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 5492,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 10212,
+              "user_time": 0.0,
+              "system_time": 0.0
+            },
+            {
+              "id": 10848,
+              "user_time": 0.046875,
+              "system_time": 0.0
+            },
+            {
+              "id": 14248,
+              "user_time": 0.03125,
+              "system_time": 0.0
+            },
+            {
+              "id": 14772,
+              "user_time": 0.046875,
+              "system_time": 0.0
+            },
+            {
+              "id": 1280,
+              "user_time": 0.046875,
+              "system_time": 0.0
+            },
+            {
+              "id": 15632,
+              "user_time": 0.046875,
+              "system_time": 0.0
+            },
+            {
+              "id": 13916,
+              "user_time": 0.046875,
+              "system_time": 0.0
+            },
+            {
+              "id": 13624,
+              "user_time": 0.046875,
+              "system_time": 0.0
+            },
+            {
+              "id": 14188,
+              "user_time": 0.421875,
+              "system_time": 0.046875
+            },
+            {
+              "id": 16228,
+              "user_time": 0.484375,
+              "system_time": 0.0
+            },
+            {
+              "id": 16152,
+              "user_time": 0.4375,
+              "system_time": 0.046875
+            },
+            {
+              "id": 10916,
+              "user_time": 0.421875,
+              "system_time": 0.046875
+            },
+            {
+              "id": 8420,
+              "user_time": 0.421875,
+              "system_time": 0.078125
+            },
+            {
+              "id": 14972,
+              "user_time": 0.453125,
+              "system_time": 0.015625
+            },
+            {
+              "id": 3660,
+              "user_time": 0.453125,
+              "system_time": 0.03125
+            },
+            {
+              "id": 304,
+              "user_time": 0.0,
+              "system_time": 0.0
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 11
+        },
+        {
+          "pid": 14236,
+          "name": "cmd.exe",
+          "status": "running",
+          "create_time": "2025-07-17 10:05:57",
+          "running_time_hours": 8.90218738913536,
+          "memory_rss_mb": 5.84375,
+          "memory_vms_mb": 3.0,
+          "memory_percent": 0.03629393330892712,
+          "cpu_percent": 0.0,
+          "thread_count": 1,
+          "threads": [
+            {
+              "id": 15896,
+              "user_time": 0.0,
+              "system_time": 0.109375
+            }
+          ],
+          "open_files_count": 1,
+          "connections_count": 0
+        }
+      ],
+      "total_memory_mb": 459.51171875,
+      "total_cpu_percent": 0.3,
+      "total_threads": 45
+    }
+  },
+  "totals": {
+    "total_memory_mb": 1764.828125,
+    "total_cpu_percent": 41.39999999999999,
+    "total_threads": 159
+  }
+}

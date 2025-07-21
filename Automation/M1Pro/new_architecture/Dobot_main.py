@@ -187,7 +187,21 @@ class MotionStateMachine:
         self.flow5_complete = 0
         
         print(f"✓ MotionStateMachine初始化完成 - 新基地址: {MotionRegisters.MOTION_STATUS}")
-        
+    def _update_status_register_only(self):
+        """只更新狀態寄存器，不影響Flow完成狀態 - 新增方法"""
+        try:
+            print(f"[MotionStateMachine] 只更新狀態寄存器:")
+            print(f"[MotionStateMachine]   狀態寄存器: 地址{MotionRegisters.MOTION_STATUS} = {self.status_register} ({self.status_register:04b})")
+            
+            # 只寫入狀態寄存器
+            status_result = self.modbus_client.write_register(address=MotionRegisters.MOTION_STATUS, value=self.status_register)
+            if hasattr(status_result, 'isError') and status_result.isError():
+                print(f"[MotionStateMachine] ✗ 狀態寄存器寫入失敗: {status_result}")
+            else:
+                print(f"[MotionStateMachine] ✓ 狀態寄存器寫入成功 (保持Flow完成狀態不變)")
+                
+        except Exception as e:
+            print(f"[MotionStateMachine] 只更新狀態寄存器失敗: {e}")     
     def set_ready(self, ready: bool = True):
         """設置Ready狀態 - 使用新地址1200"""
         try:
@@ -200,7 +214,7 @@ class MotionStateMachine:
                     self.status_register &= ~0x01  # 清除Ready位
                     
             print(f"[MotionStateMachine] set_ready({ready}): {old_register:04b} -> {self.status_register:04b}")
-            self._update_status_to_plc()
+            self._update_status_register_only()
         except Exception as e:
             print(f"[MotionStateMachine] 設置運動Ready狀態失敗: {e}")
             
@@ -284,76 +298,253 @@ class MotionStateMachine:
             print(f"[MotionStateMachine] 設置運動進度失敗: {e}")
             
     def set_flow_complete(self, flow_id: int, complete: bool = True):
-        """設置Flow完成狀態 - 使用新地址1204-1206"""
+        """設置Flow完成狀態 - 修正版：確保Flow1(1204)寫入成功"""
         try:
             value = 1 if complete else 0
             address = None
             
-            if flow_id == 1:
-                self.flow1_complete = value
-                address = MotionRegisters.FLOW1_COMPLETE
-            elif flow_id == 2:
-                self.flow2_complete = value
-                address = MotionRegisters.FLOW2_COMPLETE
-            elif flow_id == 5:
-                self.flow5_complete = value
-                address = MotionRegisters.FLOW5_COMPLETE
-            else:
-                print(f"[MotionStateMachine] ✗ 未知Flow ID: {flow_id}")
-                return
-                
-            print(f"[MotionStateMachine] set_flow_complete(Flow{flow_id}, {complete}): 值={value}")
-            print(f"[MotionStateMachine] 寫入寄存器 {address} = {value}")
+            # 更新內部狀態
+            with self._lock:
+                if flow_id == 1:
+                    old_value = self.flow1_complete
+                    self.flow1_complete = value
+                    address = MotionRegisters.FLOW1_COMPLETE  # 1204
+                    print(f"[MotionStateMachine] Flow1內部狀態: {old_value} → {value}")
+                elif flow_id == 2:
+                    old_value = self.flow2_complete
+                    self.flow2_complete = value
+                    address = MotionRegisters.FLOW2_COMPLETE  # 1205
+                    print(f"[MotionStateMachine] Flow2內部狀態: {old_value} → {value}")
+                elif flow_id == 5:
+                    old_value = self.flow5_complete
+                    self.flow5_complete = value
+                    address = MotionRegisters.FLOW5_COMPLETE  # 1206
+                    print(f"[MotionStateMachine] Flow5內部狀態: {old_value} → {value}")
+                else:
+                    print(f"[MotionStateMachine] ✗ 未知Flow ID: {flow_id}")
+                    return False
+                    
+            print(f"[MotionStateMachine] === 設置Flow{flow_id}完成狀態 (地址{address}) ===")
+            print(f"[MotionStateMachine] 目標地址: {address}")
+            print(f"[MotionStateMachine] 設置值: {value} ({'完成' if complete else '清除'})")
             
-            result = self.modbus_client.write_register(address=address, value=value)
-            if hasattr(result, 'isError') and result.isError():
-                print(f"[MotionStateMachine] ✗ 寫入失敗: {result}")
-            else:
-                print(f"[MotionStateMachine] ✓ 寫入成功: 地址{address} = {value}")
+            # 🔥 關鍵修正：立即寫入到Modbus，重試機制確保成功
+            max_retries = 3
+            write_success = False
+            
+            for retry in range(max_retries):
+                try:
+                    print(f"[MotionStateMachine] 寫入嘗試 {retry + 1}/{max_retries}")
+                    
+                    result = self.modbus_client.write_register(address=address, value=value)
+                    if hasattr(result, 'isError') and result.isError():
+                        print(f"[MotionStateMachine] ✗ 寫入失敗 (嘗試{retry + 1}): {result}")
+                        if retry < max_retries - 1:
+                            time.sleep(0.1)  # 短暫等待後重試
+                            continue
+                        else:
+                            break
+                    else:
+                        print(f"[MotionStateMachine] ✓ 寫入成功 (嘗試{retry + 1}): 地址{address} = {value}")
+                        write_success = True
+                        break
+                        
+                except Exception as e:
+                    print(f"[MotionStateMachine] 寫入異常 (嘗試{retry + 1}): {e}")
+                    if retry < max_retries - 1:
+                        time.sleep(0.1)
+                        continue
+                    else:
+                        break
+            
+            if not write_success:
+                print(f"[MotionStateMachine] ✗ Flow{flow_id}完成狀態寫入失敗 (所有重試都失敗)")
+                return False
+            
+            # 🔥 關鍵修正：立即驗證寫入結果，多次驗證確保可靠性
+            verification_success = False
+            for verify_attempt in range(3):
+                try:
+                    time.sleep(0.05)  # 短暫延遲確保寫入完成
+                    verify_result = self.modbus_client.read_holding_registers(address=address, count=1)
+                    
+                    if hasattr(verify_result, 'registers') and len(verify_result.registers) > 0:
+                        actual_value = verify_result.registers[0]
+                        print(f"[MotionStateMachine] 驗證結果 (嘗試{verify_attempt + 1}): 地址{address} = {actual_value}")
+                        
+                        if actual_value == value:
+                            print(f"[MotionStateMachine] ✓ Flow{flow_id}完成狀態驗證成功")
+                            verification_success = True
+                            break
+                        else:
+                            print(f"[MotionStateMachine] ✗ Flow{flow_id}完成狀態驗證失敗！期望{value}，實際{actual_value}")
+                            if verify_attempt < 2:
+                                # 如果驗證失敗，嘗試重新寫入
+                                print(f"[MotionStateMachine] 重新寫入以修正驗證失敗...")
+                                self.modbus_client.write_register(address=address, value=value)
+                            continue
+                    else:
+                        print(f"[MotionStateMachine] ✗ 無法驗證Flow{flow_id}完成狀態寫入 (嘗試{verify_attempt + 1})")
+                        continue
+                        
+                except Exception as e:
+                    print(f"[MotionStateMachine] 驗證異常 (嘗試{verify_attempt + 1}): {e}")
+                    continue
+            
+            if not verification_success:
+                print(f"[MotionStateMachine] ⚠️ Flow{flow_id}完成狀態驗證失敗，可能有其他程序覆蓋寄存器")
+                return False
                 
+            # 更新操作計數
             if complete:
                 self.operation_count += 1
                 print(f"[MotionStateMachine] 更新操作計數: {self.operation_count}")
-                print(f"[MotionStateMachine] 寫入寄存器 {MotionRegisters.MOTION_OP_COUNT} = {self.operation_count}")
                 
-                op_result = self.modbus_client.write_register(address=MotionRegisters.MOTION_OP_COUNT, value=self.operation_count)
-                if hasattr(op_result, 'isError') and op_result.isError():
-                    print(f"[MotionStateMachine] ✗ 操作計數寫入失敗: {op_result}")
-                else:
-                    print(f"[MotionStateMachine] ✓ 操作計數寫入成功: 地址{MotionRegisters.MOTION_OP_COUNT} = {self.operation_count}")
+                try:
+                    op_result = self.modbus_client.write_register(address=MotionRegisters.MOTION_OP_COUNT, value=self.operation_count)
+                    if hasattr(op_result, 'isError') and op_result.isError():
+                        print(f"[MotionStateMachine] ✗ 操作計數寫入失敗: {op_result}")
+                    else:
+                        print(f"[MotionStateMachine] ✓ 操作計數寫入成功: 地址{MotionRegisters.MOTION_OP_COUNT} = {self.operation_count}")
+                except Exception as e:
+                    print(f"[MotionStateMachine] 操作計數寫入異常: {e}")
+            
+            print(f"[MotionStateMachine] === Flow{flow_id}完成狀態設置完成 ===")
+            return True
                 
         except Exception as e:
             print(f"[MotionStateMachine] 設置Flow{flow_id}完成狀態失敗: {e}")
+            import traceback
+            traceback.print_exc()
+            return False
             
     def is_ready_for_command(self) -> bool:
         """檢查是否可接受新的運動指令"""
         ready = (self.status_register & 0x01) != 0
         print(f"[MotionStateMachine] is_ready_for_command(): 狀態寄存器={self.status_register:04b}, Ready位={ready}")
         return ready
-        
-    def _update_status_to_plc(self):
-        """更新狀態到PLC - 使用新地址1200"""
+    def _verify_critical_registers_only(self):
+        """只驗證關鍵寄存器，不讀取Flow完成狀態避免混淆"""
         try:
-            print(f"[MotionStateMachine] 更新狀態到PLC:")
+            print(f"[MotionStateMachine] 驗證關鍵寄存器寫入結果:")
+            
+            # 只讀取和驗證狀態相關寄存器 (1200-1203)
+            status_result = self.modbus_client.read_holding_registers(address=MotionRegisters.MOTION_STATUS, count=4)
+            if hasattr(status_result, 'registers') and len(status_result.registers) >= 4:
+                registers = status_result.registers
+                print(f"[MotionStateMachine] 關鍵狀態寄存器驗證:")
+                print(f"[MotionStateMachine]   1200: {registers[0]} ({registers[0]:04b}) - 運動狀態")
+                print(f"[MotionStateMachine]   1201: {registers[1]} - 當前Flow")
+                print(f"[MotionStateMachine]   1202: {registers[2]} - 進度%")
+                print(f"[MotionStateMachine]   1203: {registers[3]} - 錯誤碼")
+                print(f"[MotionStateMachine] Flow完成狀態(1204-1206)未讀取，避免干擾")
+            else:
+                print(f"[MotionStateMachine] ✗ 關鍵寄存器驗證失敗: {status_result}")
+                
+        except Exception as e:
+            print(f"[MotionStateMachine] 驗證關鍵寄存器失敗: {e}")
+    
+    def set_flow_complete(self, flow_id: int, complete: bool = True):
+        """設置Flow完成狀態 - 加強版：確保持久化"""
+        try:
+            value = 1 if complete else 0
+            address = None
+            
+            # 更新內部狀態
+            with self._lock:
+                if flow_id == 1:
+                    old_value = self.flow1_complete
+                    self.flow1_complete = value
+                    address = MotionRegisters.FLOW1_COMPLETE
+                    print(f"[MotionStateMachine] Flow1內部狀態: {old_value} → {value}")
+                elif flow_id == 2:
+                    old_value = self.flow2_complete
+                    self.flow2_complete = value
+                    address = MotionRegisters.FLOW2_COMPLETE
+                    print(f"[MotionStateMachine] Flow2內部狀態: {old_value} → {value}")
+                elif flow_id == 5:
+                    old_value = self.flow5_complete
+                    self.flow5_complete = value
+                    address = MotionRegisters.FLOW5_COMPLETE
+                    print(f"[MotionStateMachine] Flow5內部狀態: {old_value} → {value}")
+                else:
+                    print(f"[MotionStateMachine] ✗ 未知Flow ID: {flow_id}")
+                    return
+                    
+            print(f"[MotionStateMachine] === 設置Flow{flow_id}完成狀態 ===")
+            print(f"[MotionStateMachine] 目標地址: {address}")
+            print(f"[MotionStateMachine] 設置值: {value} ({'完成' if complete else '清除'})")
+            
+            # 重要：立即寫入到Modbus，不依賴其他方法
+            result = self.modbus_client.write_register(address=address, value=value)
+            if hasattr(result, 'isError') and result.isError():
+                print(f"[MotionStateMachine] ✗ Flow{flow_id}完成狀態寫入失敗: {result}")
+                return False
+            else:
+                print(f"[MotionStateMachine] ✓ Flow{flow_id}完成狀態寫入成功: 地址{address} = {value}")
+                
+            # 立即驗證寫入結果
+            time.sleep(0.05)  # 短暫延遲確保寫入完成
+            verify_result = self.modbus_client.read_holding_registers(address=address, count=1)
+            if hasattr(verify_result, 'registers') and len(verify_result.registers) > 0:
+                actual_value = verify_result.registers[0]
+                print(f"[MotionStateMachine] 驗證結果: 地址{address} = {actual_value}")
+                if actual_value == value:
+                    print(f"[MotionStateMachine] ✓ Flow{flow_id}完成狀態驗證成功")
+                else:
+                    print(f"[MotionStateMachine] ✗ Flow{flow_id}完成狀態驗證失敗！期望{value}，實際{actual_value}")
+                    print(f"[MotionStateMachine] ⚠️ 可能有其他程序在覆蓋此寄存器")
+                    return False
+            else:
+                print(f"[MotionStateMachine] ✗ 無法驗證Flow{flow_id}完成狀態寫入")
+                return False
+                
+            # 更新操作計數
+            if complete:
+                self.operation_count += 1
+                print(f"[MotionStateMachine] 更新操作計數: {self.operation_count}")
+                
+                op_result = self.modbus_client.write_register(address=MotionRegisters.MOTION_OP_COUNT, value=self.operation_count)
+                if hasattr(op_result, 'isError') and op_result.isError():
+                    print(f"[MotionStateMachine] ✗ 操作計數寫入失敗: {op_result}")
+                else:
+                    print(f"[MotionStateMachine] ✓ 操作計數寫入成功: 地址{MotionRegisters.MOTION_OP_COUNT} = {self.operation_count}")
+            
+            print(f"[MotionStateMachine] === Flow{flow_id}完成狀態設置完成 ===")
+            return True
+                
+        except Exception as e:
+            print(f"[MotionStateMachine] 設置Flow{flow_id}完成狀態失敗: {e}")
+            return False    
+    def _update_status_to_plc(self):
+        """更新狀態到PLC - 修正版：絕對不覆蓋Flow完成狀態"""
+        try:
+            print(f"[MotionStateMachine] 更新狀態到PLC (保護Flow完成狀態):")
             print(f"[MotionStateMachine]   狀態寄存器: 地址{MotionRegisters.MOTION_STATUS} = {self.status_register} ({self.status_register:04b})")
             print(f"[MotionStateMachine]   錯誤計數: 地址{MotionRegisters.MOTION_ERR_COUNT} = {self.error_count}")
+            print(f"[MotionStateMachine]   Flow完成狀態保護: F1={self.flow1_complete}, F2={self.flow2_complete}, F5={self.flow5_complete}")
             
-            # 寫入狀態寄存器
+            # 1. 只寫入狀態寄存器
             status_result = self.modbus_client.write_register(address=MotionRegisters.MOTION_STATUS, value=self.status_register)
             if hasattr(status_result, 'isError') and status_result.isError():
                 print(f"[MotionStateMachine] ✗ 狀態寄存器寫入失敗: {status_result}")
             else:
                 print(f"[MotionStateMachine] ✓ 狀態寄存器寫入成功")
                 
-            # 寫入錯誤計數
+            # 2. 只寫入錯誤計數
             err_result = self.modbus_client.write_register(address=MotionRegisters.MOTION_ERR_COUNT, value=self.error_count)
             if hasattr(err_result, 'isError') and err_result.isError():
                 print(f"[MotionStateMachine] ✗ 錯誤計數寫入失敗: {err_result}")
             else:
                 print(f"[MotionStateMachine] ✓ 錯誤計數寫入成功")
                 
-            # 驗證寫入結果
-            self._verify_register_writes()
+            # 3. 關鍵修正：保護Flow完成狀態，不進行無意義的重寫
+            # 只有在明確設置時才寫入Flow完成狀態，避免意外覆蓋
+            print(f"[MotionStateMachine] Flow完成狀態保護中 - 不進行自動重寫")
+            print(f"[MotionStateMachine] 當前內部狀態: F1={self.flow1_complete}, F2={self.flow2_complete}, F5={self.flow5_complete}")
+                
+            # 4. 驗證寫入結果 - 修正版：不打印Flow完成狀態值（避免誤導）
+            self._verify_critical_registers_only()
             
         except Exception as e:
             print(f"[MotionStateMachine] 更新運動狀態到PLC失敗: {e}")
@@ -749,7 +940,7 @@ class MotionFlowThread(BaseFlowThread):
             
             # Flow2: CV出料流程 - DR專案版本
             flow2 = DrFlow2UnloadExecutor()
-            flow2.initialize(self.robot, self.motion_state_machine, self.external_modules)
+            flow2.initialize(self.robot, self.motion_state_machine, self.external_modules, flow1_executor_ref=flow1)
             self.flow_executors[2] = flow2
             
             # 註：DR專案通常不需要Flow5，如需要可加入
@@ -803,12 +994,16 @@ class MotionFlowThread(BaseFlowThread):
             print(f"[Motion] {self.last_error}")
     
     def _execute_flow1(self):
-        """執行Flow1 - VP視覺抓取 - DR專案版本"""
+        """執行Flow1 - VP視覺抓取 - DR專案版本 (修正完成狀態寫入)"""
         try:
             print("[Motion] 開始執行Flow1 - VP視覺抓取 (DR專案)")
             self.motion_state_machine.set_running(True)
             self.motion_state_machine.set_current_flow(1)
             self.motion_state_machine.set_progress(0)
+            
+            # 🔥 關鍵修正：Flow1開始時先清除之前的完成狀態
+            print("[Motion] 清除Flow1之前的完成狀態...")
+            self.motion_state_machine.set_flow_complete(1, False)
             
             flow1 = self.flow_executors.get(1)
             if flow1:
@@ -816,22 +1011,75 @@ class MotionFlowThread(BaseFlowThread):
                 
                 if result.success:
                     print("[Motion] ✓ Flow1執行成功")
-                    self.motion_state_machine.set_flow_complete(1, True)
+                    
+                    # 🔥 關鍵修正：Flow1成功完成後確保設置完成狀態
+                    print("[Motion] === 設置Flow1完成狀態 ===")
+                    
+                    # 方法1：直接調用motion_state_machine（主要方法）
+                    try:
+                        self.motion_state_machine.set_flow_complete(1, True)
+                        print("[Motion] ✓ 透過MotionStateMachine設置Flow1完成狀態")
+                        
+                        # 額外驗證：確保寫入成功
+                        time.sleep(0.1)
+                        if hasattr(self.motion_state_machine, 'modbus_client'):
+                            verify_result = self.motion_state_machine.modbus_client.read_holding_registers(
+                                address=1204, count=1  # Flow1完成狀態寄存器
+                            )
+                            if hasattr(verify_result, 'registers') and len(verify_result.registers) > 0:
+                                actual_value = verify_result.registers[0]
+                                print(f"[Motion] 驗證Flow1完成狀態寄存器1204: {actual_value}")
+                                if actual_value == 1:
+                                    print("[Motion] ✓ Flow1完成狀態寫入驗證成功")
+                                else:
+                                    print(f"[Motion] ✗ Flow1完成狀態寫入驗證失敗，實際值: {actual_value}")
+                                    # 如果驗證失敗，嘗試重新寫入
+                                    print("[Motion] 嘗試重新寫入Flow1完成狀態...")
+                                    self.motion_state_machine.modbus_client.write_register(address=1204, value=1)
+                            else:
+                                print("[Motion] ✗ 無法驗證Flow1完成狀態寫入")
+                        else:
+                            print("[Motion] ⚠️ 無法訪問modbus_client進行驗證")
+                            
+                    except Exception as e:
+                        print(f"[Motion] Flow1完成狀態設置異常: {e}")
+                    
+                    # 方法2：如果Flow1執行器有自己的設置方法，也調用一次
+                    if hasattr(flow1, '_safe_set_flow1_complete_status'):
+                        try:
+                            flow1._safe_set_flow1_complete_status(True)
+                            print("[Motion] ✓ 透過Flow1執行器自有方法設置完成狀態")
+                        except Exception as e:
+                            print(f"[Motion] Flow1執行器自有方法設置失敗: {e}")
+                    
+                    # 設置系統狀態
                     self.motion_state_machine.set_progress(100)
                     self.motion_state_machine.set_running(False)
                     self.motion_state_machine.set_current_flow(0)
                     self.motion_state_machine.set_ready(True)
+                    
+                    print("[Motion] === Flow1完成狀態設置完成 ===")
+                    
                 else:
                     print(f"[Motion] ✗ Flow1執行失敗: {result.error_message}")
+                    
+                    # 失敗時清除完成狀態
+                    self.motion_state_machine.set_flow_complete(1, False)
                     self.motion_state_machine.set_alarm(True)
                     self.motion_state_machine.set_running(False)
                     self.motion_state_machine.set_current_flow(0)
             else:
                 print("[Motion] ✗ Flow1執行器未初始化")
+                
+                # 執行器未初始化時清除完成狀態
+                self.motion_state_machine.set_flow_complete(1, False)
                 self.motion_state_machine.set_alarm(True)
                 
         except Exception as e:
             print(f"[Motion] Flow1執行異常: {e}")
+            
+            # 異常時清除完成狀態
+            self.motion_state_machine.set_flow_complete(1, False)
             self.motion_state_machine.set_alarm(True)
             self.motion_state_machine.set_running(False)
             self.motion_state_machine.set_current_flow(0)
@@ -1313,20 +1561,39 @@ class DobotNewArchController:
             
             if self.config["gripper"]["enabled"]:
                 try:
-                    gripper_type = GripperType.PGE if self.config["gripper"]["type"] == "PGE" else GripperType.PGC
+                    # 檢查配置中的夾爪類型，但只支援PGC
+                    config_gripper_type = self.config["gripper"]["type"]
                     
-                    gripper_api = GripperHighLevelAPI(
-                        gripper_type=gripper_type,
-                        modbus_host=self.config["modbus"]["server_ip"],
-                        modbus_port=self.config["modbus"]["server_port"]
-                    )
-                    if gripper_api.connected:
-                        self.external_modules['gripper'] = gripper_api
-                        print("✓ 夾爪高階API連接成功")
+                    if config_gripper_type not in ["PGC"]:
+                        print(f"⚠️ 不支援的夾爪類型: {config_gripper_type}，僅支援PGC夾爪")
+                        print("⚠️ 跳過夾爪初始化")
                     else:
-                        print("⚠️ 夾爪高階API連接失敗")
+                        # 只支援PGC夾爪，移除PGE相關邏輯
+                        gripper_api = GripperHighLevelAPI(
+                            gripper_type=GripperType.PGC,
+                            modbus_host=self.config["modbus"]["server_ip"],
+                            modbus_port=self.config["modbus"]["server_port"],
+                            auto_initialize=False  # 關鍵：避免初始化卡住
+                        )
+                        
+                        if gripper_api.connected:
+                            self.external_modules['gripper'] = gripper_api
+                            print("✓ PGC夾爪高階API連接成功")
+                            
+                            # 可選：異步初始化夾爪，避免阻塞主流程
+                            try:
+                                if gripper_api.initialize(wait_completion=False):
+                                    print("✓ PGC夾爪初始化指令已發送")
+                                else:
+                                    print("⚠️ PGC夾爪初始化指令發送失敗，但連接正常")
+                            except Exception as init_e:
+                                print(f"⚠️ PGC夾爪初始化異常: {init_e}")
+                        else:
+                            print("⚠️ PGC夾爪高階API連接失敗")
+                            
                 except Exception as e:
                     print(f"⚠️ 夾爪高階API初始化失敗: {e}")
+                    print("⚠️ 系統將在無夾爪模式下運行")
             
             try:
                 angle_api = AngleHighLevel(

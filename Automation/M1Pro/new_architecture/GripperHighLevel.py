@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-GripperHighLevel.py - PGC夾爪高層API模組 (PyModbus 3.9.2)
-保持完全向後相容，移除PGE支援，專注PGC夾爪
-實現完整logging系統和狀態監控
+GripperHighLevel_Optimized.py - PGC夾爪高層API優化版
+專門配合Gripper_Optimized.py實現最佳性能
+重點優化quick_close和smart_release的執行速度
 """
 
 import time
@@ -46,38 +46,37 @@ class GripperStatus(IntEnum):
     DROPPED = 3        # 掉落
 
 
-# ==================== 夾爪類型枚舉 (保持相容) ====================
+# ==================== 夾爪類型枚舉 ====================
 class GripperType(IntEnum):
-    """夾爪類型枚舉 - 向後相容，僅支援PGC"""
+    """夾爪類型枚舉 - 僅支援PGC"""
     PGC = 1           # PGC夾爪
 
 
-# ==================== 夾爪高層API類 (保持原類名) ====================
+# ==================== 優化版夾爪高層API類 ====================
 class GripperHighLevelAPI:
     """
-    夾爪高層API - 向後相容版本，專注PGC夾爪支援
+    夾爪高層API優化版 - 專注PGC夾爪高性能控制
     
-    主要功能:
-    1. 智能夾取 - 自動判斷夾取成功
-    2. 快速指令 - 發了就走不等確認  
-    3. 確認指令 - 等待動作完成
-    4. 位置控制 - 精確位置移動
-    5. 完整狀態監控和日誌記錄
+    主要優化:
+    1. 批量寄存器操作減少Modbus通訊次數
+    2. 適應性輪詢降低CPU負載
+    3. 優化的超時設定提升響應速度
+    4. 智能快取減少重複讀取
+    5. 配合Gripper_Optimized.py的20ms循環
     """
     
     def __init__(self, gripper_type: GripperType = GripperType.PGC, 
                  modbus_host: str = "127.0.0.1", modbus_port: int = 502,
                  auto_initialize: bool = True):
         """
-        初始化夾爪高層API - 保持向後相容
+        初始化優化版夾爪高層API
         
         Args:
-            gripper_type: 夾爪類型 (僅支援PGC，其他類型會拋出異常)
+            gripper_type: 夾爪類型 (僅支援PGC)
             modbus_host: Modbus TCP服務器IP
             modbus_port: Modbus TCP服務器端口
             auto_initialize: 是否自動初始化夾爪
         """
-        # 向後相容檢查
         if gripper_type != GripperType.PGC:
             raise ValueError(f"此版本僅支援PGC夾爪，不支援類型: {gripper_type}")
         
@@ -88,8 +87,8 @@ class GripperHighLevelAPI:
         self.connected = False
         self.auto_initialize = auto_initialize
         
-        # 線程鎖保護
-        self.modbus_lock = threading.Lock()
+        # 高性能線程鎖
+        self.modbus_lock = threading.RLock()
         
         # PGC寄存器映射
         self._setup_pgc_registers()
@@ -97,9 +96,14 @@ class GripperHighLevelAPI:
         # 指令ID計數器
         self.command_id_counter = 1
         
-        # 操作超時設定
-        self.operation_timeout = 10.0  # 動作超時時間(秒)
-        self.quick_timeout = 0.5       # 快速指令超時時間(秒)
+        # 優化的超時設定
+        self.operation_timeout = 5.0    # 一般操作超時
+        self.quick_timeout = 2.0        # 快速操作超時
+        self.ultra_quick_timeout = 1.0  # 超快速操作超時
+        
+        # 狀態快取
+        self.status_cache = {}
+        self.cache_timeout = 0.05  # 50ms快取有效期
         
         # 設置日誌
         self.logger = self._setup_logging()
@@ -107,44 +111,47 @@ class GripperHighLevelAPI:
         # 初始化狀態
         self.initialized = False
         
+        # 性能統計
+        self.performance_stats = {
+            'command_count': 0,
+            'avg_response_time': 0,
+            'max_response_time': 0,
+            'success_rate': 0
+        }
+        
         # 自動連接
         self.connect()
         
     def _setup_logging(self):
-        """設置logging配置"""
-        # 日誌目錄：執行檔同層目錄下的logs資料夾
+        """設置高性能logging配置"""
         log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
         os.makedirs(log_dir, exist_ok=True)
         
-        # 格式化器
         formatter = logging.Formatter(
             '%(asctime)s [%(levelname)s] %(name)s:%(funcName)s:%(lineno)d - %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S'
         )
         
-        # 文件處理器 (輪替日誌，保存一週)
         file_handler = RotatingFileHandler(
-            os.path.join(log_dir, 'GripperHighLevel.log'),
-            maxBytes=10*1024*1024,  # 10MB
-            backupCount=7,          # 保留7個檔案
+            os.path.join(log_dir, 'GripperHighLevel_Optimized.log'),
+            maxBytes=10*1024*1024,
+            backupCount=7,
             encoding='utf-8'
         )
         file_handler.setFormatter(formatter)
         
-        # 控制台處理器
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(formatter)
         
-        # 配置logger
-        logger = logging.getLogger("GripperHighLevel")
-        logger.setLevel(logging.DEBUG)
+        logger = logging.getLogger("GripperHighLevelOptimized")
+        logger.setLevel(logging.INFO)  # 優化：減少debug輸出
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
         
         return logger
         
     def _setup_pgc_registers(self):
-        """設定PGC夾爪寄存器映射 (基於專案技術文檔)"""
+        """設定PGC夾爪寄存器映射"""
         self.REGISTERS = {
             # 狀態寄存器 (500-519)
             'MODULE_STATUS': 500,      # 模組狀態: 0=離線, 1=在線
@@ -162,12 +169,7 @@ class GripperHighLevelAPI:
         }
         
     def connect(self) -> bool:
-        """
-        連接到Modbus TCP服務器 - PyModbus 3.9.2修正版
-        
-        Returns:
-            bool: 連接是否成功
-        """
+        """連接到Modbus TCP服務器 - 優化版"""
         if not MODBUS_AVAILABLE:
             self.logger.error("Modbus Client不可用")
             return False
@@ -182,23 +184,20 @@ class GripperHighLevelAPI:
                 self.modbus_client = ModbusTcpClient(
                     host=self.modbus_host,
                     port=self.modbus_port,
-                    timeout=3.0
+                    timeout=1.0  # 優化：減少連接超時
                 )
                 
                 if self.modbus_client.connect():
                     self.connected = True
                     self.logger.info("PGC夾爪Modbus連接成功")
                     
-                    # 可選的自動初始化
                     if self.auto_initialize:
                         self.logger.info("開始自動初始化PGC夾爪")
-                        if self.initialize():
+                        if self.initialize(timeout=3.0):  # 優化：減少初始化超時
                             self.initialized = True
                             self.logger.info("PGC夾爪初始化成功")
                         else:
                             self.logger.warning("PGC夾爪初始化失敗，但連接正常")
-                    else:
-                        self.logger.info("跳過自動初始化，需手動調用initialize()")
                     
                     return True
                 else:
@@ -225,7 +224,7 @@ class GripperHighLevelAPI:
             self.modbus_client = None
     
     def _write_register(self, register_name: str, value: int) -> bool:
-        """寫入寄存器 - PyModbus 3.9.2修正版"""
+        """寫入單個寄存器"""
         if not self.connected or not self.modbus_client:
             self.logger.error("Modbus未連接")
             return False
@@ -236,21 +235,48 @@ class GripperHighLevelAPI:
                 result = self.modbus_client.write_register(address=address, value=value)
                 
                 if not (hasattr(result, 'isError') and result.isError()):
-                    self.logger.debug(f"寫入寄存器 {register_name}[{address}] = {value}")
                     return True
                 else:
-                    self.logger.error(f"寫入寄存器失敗: {register_name}[{address}] = {value}, 錯誤: {result}")
+                    self.logger.error(f"寫入寄存器失敗: {register_name}[{address}] = {value}")
                     return False
                     
             except Exception as e:
                 self.logger.error(f"寫入寄存器異常: {register_name} = {value}, 錯誤: {e}", exc_info=True)
                 return False
     
-    def _read_register(self, register_name: str) -> Optional[int]:
-        """讀取寄存器 - PyModbus 3.9.2修正版"""
+    def _write_registers_batch(self, start_address: int, values: list) -> bool:
+        """批量寫入寄存器 - 核心優化"""
+        if not self.connected or not self.modbus_client:
+            self.logger.error("Modbus未連接")
+            return False
+        
+        with self.modbus_lock:
+            try:
+                result = self.modbus_client.write_registers(address=start_address, values=values)
+                
+                if not (hasattr(result, 'isError') and result.isError()):
+                    return True
+                else:
+                    self.logger.error(f"批量寫入寄存器失敗: 地址{start_address}, 數值{values}")
+                    return False
+                    
+            except Exception as e:
+                self.logger.error(f"批量寫入寄存器異常: 地址{start_address}, 錯誤: {e}", exc_info=True)
+                return False
+    
+    def _read_register(self, register_name: str, use_cache: bool = True) -> Optional[int]:
+        """讀取寄存器 - 帶快取優化"""
         if not self.connected or not self.modbus_client:
             self.logger.error("Modbus未連接")
             return None
+        
+        current_time = time.time()
+        
+        # 檢查快取
+        if use_cache and register_name in self.status_cache:
+            cached_data = self.status_cache[register_name]
+            if current_time - cached_data['timestamp'] < self.cache_timeout:
+                return cached_data['value']
         
         with self.modbus_lock:
             try:
@@ -259,10 +285,17 @@ class GripperHighLevelAPI:
                 
                 if not (hasattr(result, 'isError') and result.isError()) and len(result.registers) > 0:
                     value = result.registers[0]
-                    self.logger.debug(f"讀取寄存器 {register_name}[{address}] = {value}")
+                    
+                    # 更新快取
+                    if use_cache:
+                        self.status_cache[register_name] = {
+                            'value': value,
+                            'timestamp': current_time
+                        }
+                    
                     return value
                 else:
-                    self.logger.error(f"讀取寄存器失敗: {register_name}[{address}], 錯誤: {result}")
+                    self.logger.error(f"讀取寄存器失敗: {register_name}[{address}]")
                     return None
                     
             except Exception as e:
@@ -270,311 +303,72 @@ class GripperHighLevelAPI:
                 return None
     
     def _log_gripper_status(self, operation: str, success: bool):
-        """記錄夾爪狀態 - 用於失敗時的詳細狀態記錄"""
+        """記錄夾爪狀態"""
         try:
-            position = self.get_current_position()
-            grip_status = self._read_register('GRIP_STATUS')
-            device_status = self._read_register('DEVICE_STATUS')
-            error_count = self._read_register('ERROR_COUNT')
-            
-            status_msg = (
-                f"{operation} {'成功' if success else '失敗'} - "
-                f"位置: {position}, 夾持狀態: {grip_status}, "
-                f"初始化狀態: {device_status}, 錯誤計數: {error_count}"
-            )
-            
-            if success:
-                self.logger.info(status_msg)
+            if not success:  # 只在失敗時記錄詳細狀態
+                position = self.get_current_position()
+                grip_status = self._read_register('GRIP_STATUS', use_cache=False)
+                self.logger.error(f"{operation}失敗 - 位置: {position}, 夾持狀態: {grip_status}")
             else:
-                self.logger.error(status_msg)
+                self.logger.info(f"{operation}成功")
                 
         except Exception as e:
             self.logger.error(f"記錄夾爪狀態時發生異常: {e}", exc_info=True)
     
-    # ==================== 初始化API (保持相容) ====================
-    
-    def initialize(self, wait_completion: bool = True, timeout: float = None) -> bool:
-        """
-        初始化夾爪
-        
-        Args:
-            wait_completion: 是否等待初始化完成
-            timeout: 超時時間(秒)，None使用預設值
-            
-        Returns:
-            bool: 初始化是否成功
-        """
-        self.logger.info("開始初始化PGC夾爪")
-        
-        # 使用自定義超時時間或預設值
-        actual_timeout = timeout if timeout is not None else self.operation_timeout
-        
-        try:
-            if not self._send_command(GripperCommand.INITIALIZE):
-                self._log_gripper_status("初始化指令發送", False)
-                return False
-                
-            if wait_completion:
-                success = self._wait_for_completion(actual_timeout)
-                self._log_gripper_status("初始化", success)
-                if success:
-                    self.initialized = True
-                return success
-            
-            self.logger.info("初始化指令已發送，不等待完成")
-            return True
-                
-        except Exception as e:
-            self.logger.error(f"初始化失敗: {e}", exc_info=True)
-            self._log_gripper_status("初始化", False)
-            return False
-    
-    # ==================== 智能夾取API (保持相容) ====================
-    
-    def smart_grip(self, target_position: int = 420, max_attempts: int = 3) -> bool:
-        """
-        智能夾取 - 自動判斷夾取成功
-        
-        Args:
-            target_position: 目標位置 (0-1000)
-            max_attempts: 最大嘗試次數
-            
-        Returns:
-            bool: 夾取是否成功
-        """
-        self.logger.info(f"PGC智能夾取到位置: {target_position}, 最大嘗試次數: {max_attempts}")
-        
-        for attempt in range(max_attempts):
-            try:
-                # 記錄初始位置
-                initial_pos = self.get_current_position()
-                if initial_pos is None:
-                    self.logger.warning("無法讀取初始位置")
-                    initial_pos = 0
-                else:
-                    self.logger.debug(f"初始位置: {initial_pos}")
-                
-                # 移動到目標位置
-                if not self._send_command(GripperCommand.MOVE_ABS, target_position):
-                    self.logger.warning(f"第{attempt + 1}次嘗試：移動指令發送失敗")
-                    continue
-                
-                # 等待運動完成
-                if not self._wait_for_completion(self.operation_timeout):
-                    self.logger.warning(f"第{attempt + 1}次嘗試：等待運動完成超時")
-                    continue
-                
-                # 檢查是否夾到物體
-                final_pos = self.get_current_position()
-                if final_pos is None:
-                    self.logger.warning(f"第{attempt + 1}次嘗試：無法讀取最終位置")
-                    continue
-                
-                # 如果位置差異大於閾值，表示夾到物體
-                position_diff = abs(target_position - final_pos)
-                self.logger.debug(f"目標位置: {target_position}, 最終位置: {final_pos}, 位置差異: {position_diff}")
-                
-                if position_diff > 20:  # 閾值可調整
-                    self.logger.info(f"PGC智能夾取成功 (嘗試{attempt + 1}/{max_attempts}, 位置差異: {position_diff})")
-                    self._log_gripper_status("智能夾取", True)
-                    return True
-                else:
-                    self.logger.warning(f"第{attempt + 1}次嘗試：未夾到物體 (位置差異: {position_diff})")
-                    
-            except Exception as e:
-                self.logger.error(f"第{attempt + 1}次嘗試：智能夾取異常: {e}", exc_info=True)
-                
-        self.logger.error(f"PGC智能夾取失敗，已用完{max_attempts}次嘗試")
-        self._log_gripper_status("智能夾取", False)
-        return False
-    
-    # ==================== 快速指令API (保持相容) ====================
-    
-    def quick_open(self, position: int = None) -> bool:
-        """
-        快速開啟 - 發了就走不等確認
-        
-        Args:
-            position: 開啟位置，None使用預設
-            
-        Returns:
-            bool: 指令發送是否成功
-        """
-        if position is None:
-            self.logger.info("PGC快速開啟 (預設位置)")
-            success = self._send_command(GripperCommand.QUICK_OPEN)
-        else:
-            self.logger.info(f"PGC快速開啟到位置: {position}")
-            success = self._send_command(GripperCommand.MOVE_ABS, position)
-        
-        if success:
-            self.logger.info("快速開啟指令發送成功")
-        else:
-            self._log_gripper_status("快速開啟", False)
-            
-        return success
+    # ==================== 核心優化方法 ====================
     
     def quick_close(self) -> bool:
-        """快速關閉 - 檢測位置變化確認動作"""
-        self.logger.info("PGC快速關閉")
+        """優化的快速關閉 - 狀態確認版"""
+        target_position = 100
+
+        self.logger.info(f"PGC快速關閉: {target_position}")
         
-        # 記錄發送指令前的夾爪位置
-        position_before = self.get_current_position()
-        if position_before is None:
-            self.logger.warning("無法讀取快速關閉前的位置")
-            position_before = 0
-        else:
-            self.logger.debug(f"快速關閉前位置: {position_before}")
+        start_time = time.time()
         
-        # 發送快速關閉指令
-        command_success = self._send_command(GripperCommand.QUICK_CLOSE)
+        # 使用優化的移動並等待方法
+        success = self._move_to_and_wait_optimized(target_position, timeout=self.quick_timeout)
         
-        if not command_success:
-            self.logger.error("快速關閉指令發送失敗")
-            self._log_gripper_status("快速關閉", False)
-            return True
+        # 性能統計
+        response_time = time.time() - start_time
+        self._update_performance_stats(response_time, success)
         
-        # 等待0.1秒讓夾爪開始動作
-        time.sleep(0.1)
-        return True
-        # # 記錄發送指令後的位置
-        # position_after = self.get_current_position()
-        # if position_after is None:
-        #     self.logger.warning("無法讀取快速關閉後的位置")
-        #     position_after = position_before
-        # else:
-        #     self.logger.debug(f"快速關閉後位置: {position_after}")
+        self._log_gripper_status("快速關閉", success)
+        return success
         
-        # # 計算位置變化：前位置 - 後位置
-        # position_change = position_before - position_after
-        # self.logger.debug(f"位置變化: {position_before} - {position_after} = {position_change}")
-        
-        # # 判斷夾爪是否有在關閉動作
-        # if position_change > 0:
-        #     self.logger.info(f"快速關閉成功，位置變化: {position_change}")
-        #     return True
-        # else:
-        #     self.logger.error(f"快速關閉失敗，位置無變化或反向移動: {position_change}")
-        #     self._log_gripper_status("快速關閉", False)
-        #     return False
-    
-    def smart_release(self, release_position: int = 50) -> bool:
-        """智能釋放 - 移動到指定位置並等待完成"""
+    def smart_release(self, release_position: int = 470) -> bool:
+        """優化的智能釋放 - 狀態確認版"""
         self.logger.info(f"PGC智能釋放到位置: {release_position}")
-        success = self.move_to_and_wait(release_position)
+        
+        start_time = time.time()
+        
+        # 使用優化的移動並等待方法
+        success = self._move_to_and_wait_optimized(release_position, timeout=self.quick_timeout)
+        
+        # 性能統計
+        response_time = time.time() - start_time
+        self._update_performance_stats(response_time, success)
+        
         self._log_gripper_status("智能釋放", success)
         return success
     
-    # ==================== 位置控制API (保持相容) ====================
-    
-    def move_to_and_wait(self, position: int) -> bool:
+    def _move_to_and_wait_optimized(self, position: int, timeout: float = 5.0) -> bool:
         """
-        移動到指定位置並等待完成
+        優化的移動到位置並等待完成 - 配合高速Gripper.py
         
-        Args:
-            position: 目標位置 (0-1000)
-            
-        Returns:
-            bool: 移動是否成功
+        關鍵優化:
+        1. 批量寫入減少Modbus通訊次數
+        2. 適應性輪詢減少CPU負載
+        3. 智能快取減少重複讀取
         """
-        self.logger.info(f"PGC移動到位置: {position}")
-        
-        if not self._send_command(GripperCommand.MOVE_ABS, position):
-            self._log_gripper_status("移動指令發送", False)
+        if not self._send_command_optimized(GripperCommand.MOVE_ABS, position):
+            self.logger.error("移動指令發送失敗")
             return False
         
-        success = self._wait_for_completion(self.operation_timeout)
-        self._log_gripper_status("位置移動", success)
-        return success
-    
-    def set_force(self, force_percent: int) -> bool:
-        """
-        設定PGC夾爪力道
+        # 使用優化的等待完成
+        return self._wait_for_completion_optimized(timeout)
         
-        Args:
-            force_percent: 力道百分比 (20-100)
-            
-        Returns:
-            bool: 設定是否成功
-        """
-        if not 20 <= force_percent <= 100:
-            self.logger.error(f"PGC力道超出範圍: {force_percent} (應為20-100)")
-            return False
-        
-        self.logger.info(f"設定PGC夾爪力道: {force_percent}%")
-        success = self._send_command(GripperCommand.SET_FORCE, force_percent)
-        
-        if not success:
-            self._log_gripper_status("設定力道", False)
-            
-        return success
-    
-    def set_speed(self, speed_percent: int) -> bool:
-        """
-        設定PGC夾爪速度
-        
-        Args:
-            speed_percent: 速度百分比 (1-100)
-            
-        Returns:
-            bool: 設定是否成功
-        """
-        if not 1 <= speed_percent <= 100:
-            self.logger.error(f"PGC速度超出範圍: {speed_percent} (應為1-100)")
-            return False
-        
-        self.logger.info(f"設定PGC夾爪速度: {speed_percent}%")
-        success = self._send_command(GripperCommand.SET_SPEED, speed_percent)
-        
-        if not success:
-            self._log_gripper_status("設定速度", False)
-            
-        return success
-    
-    # ==================== 狀態查詢API (保持相容) ====================
-    
-    def get_current_position(self) -> Optional[int]:
-        """取得當前位置"""
-        return self._read_register('CURRENT_POSITION')
-    
-    def get_grip_status(self) -> Optional[int]:
-        """取得夾持狀態"""
-        return self._read_register('GRIP_STATUS')
-    
-    def get_device_status(self) -> Optional[int]:
-        """取得設備狀態(初始化狀態)"""
-        return self._read_register('DEVICE_STATUS')
-    
-    def get_error_count(self) -> Optional[int]:
-        """取得錯誤計數"""
-        return self._read_register('ERROR_COUNT')
-    
-    def get_status(self) -> Dict[str, Any]:
-        """取得夾爪狀態資訊 - 保持原格式相容"""
-        status_info = {
-            'gripper_type': self.gripper_type.name,
-            'connected': self.connected,
-            'initialized': self.initialized,
-            'current_position': self.get_current_position(),
-            'device_status': self.get_device_status(),
-            'grip_status': self.get_grip_status(),
-            'error_count': self.get_error_count(),
-            'module_status': self._read_register('MODULE_STATUS'),
-            'connect_status': self._read_register('CONNECT_STATUS')
-        }
-        
-        return status_info
-    
-    # ==================== 向後相容方法 ====================
-    
-    def is_initialized(self) -> bool:
-        """檢查是否已初始化 - 向後相容方法"""
-        return self.initialized
-    
-    # ==================== 內部方法 ====================
-    
-    def _send_command(self, command: GripperCommand, param1: int = 0, param2: int = 0) -> bool:
-        """發送PGC夾爪指令"""
+    def _send_command_optimized(self, command: GripperCommand, param1: int = 0, param2: int = 0) -> bool:
+        """優化的指令發送 - 批量寫入核心優化"""
         try:
             # 獲取指令ID
             cmd_id = self.command_id_counter
@@ -582,85 +376,199 @@ class GripperHighLevelAPI:
             if self.command_id_counter > 65535:
                 self.command_id_counter = 1
             
-            # 寫入指令參數
-            if not self._write_register('PARAM1', param1):
-                return False
-            if not self._write_register('PARAM2', param2):
-                return False
-            if not self._write_register('COMMAND_ID', cmd_id):
-                return False
+            # 批量寫入所有指令參數 - 關鍵優化：一次Modbus通訊完成4個寄存器寫入
+            register_values = [
+                int(command),  # COMMAND寄存器
+                param1,        # PARAM1寄存器
+                param2,        # PARAM2寄存器
+                cmd_id         # COMMAND_ID寄存器
+            ]
             
-            # 發送指令
-            if not self._write_register('COMMAND', int(command)):
-                return False
+            # 一次性寫入4個連續寄存器
+            success = self._write_registers_batch(self.REGISTERS['COMMAND'], register_values)
             
-            self.logger.debug(f"發送PGC指令: {command.name}({param1}, {param2}) ID={cmd_id}")
-            return True
+            if success:
+                self.performance_stats['command_count'] += 1
+            
+            return success
             
         except Exception as e:
-            self.logger.error(f"發送PGC指令失敗: {command.name}({param1}, {param2}), 錯誤: {e}", exc_info=True)
+            self.logger.error(f"優化指令發送失敗: {command.name}({param1}, {param2}), 錯誤: {e}", exc_info=True)
             return False
     
-    def _wait_for_completion(self, timeout: float) -> bool:
-        """等待PGC夾爪動作完成"""
+    def _wait_for_completion_optimized(self, timeout: float) -> bool:
+        """
+        優化的等待完成 - 適應性輪詢策略
+        
+        關鍵優化:
+        1. 首次立即檢查可能已完成
+        2. 適應性輪詢間隔：10ms -> 20ms -> 50ms -> 100ms
+        3. 配合Gripper.py的20ms循環
+        """
         start_time = time.time()
-        self.logger.debug(f"開始等待動作完成，超時時間: {timeout}秒")
+        
+        # 首次檢查 - 可能已經完成
+        status = self._read_register('GRIP_STATUS', use_cache=False)
+        if status in [GripperStatus.REACHED, GripperStatus.GRIPPED]:
+            elapsed_time = time.time() - start_time
+            self.logger.debug(f"動作立即完成，耗時: {elapsed_time:.3f}秒")
+            return True
+        
+        # 適應性輪詢策略 - 配合20ms Gripper循環
+        poll_intervals = [0.01, 0.02, 0.05, 0.1]  # 10ms -> 20ms -> 50ms -> 100ms
+        poll_index = 0
         
         while time.time() - start_time < timeout:
-            # 檢查夾爪狀態
-            status = self._read_register('GRIP_STATUS')
+            # 根據已等待時間動態調整輪詢間隔
+            elapsed = time.time() - start_time
+            if elapsed > 0.3 and poll_index == 0:  # 300ms後降低頻率
+                poll_index = 1
+            elif elapsed > 0.8 and poll_index == 1:  # 800ms後進一步降低
+                poll_index = 2
+            elif elapsed > 2.0 and poll_index == 2:  # 2秒後最低頻率
+                poll_index = 3
+            
+            time.sleep(poll_intervals[poll_index])
+            
+            # 檢查夾爪狀態 - 不使用快取確保準確性
+            status = self._read_register('GRIP_STATUS', use_cache=False)
             if status in [GripperStatus.REACHED, GripperStatus.GRIPPED]:
                 elapsed_time = time.time() - start_time
-                self.logger.debug(f"動作完成，耗時: {elapsed_time:.2f}秒，狀態: {status}")
+                self.logger.debug(f"動作完成，耗時: {elapsed_time:.3f}秒，狀態: {status}")
                 return True
             elif status == GripperStatus.DROPPED:
                 elapsed_time = time.time() - start_time
-                self.logger.warning(f"動作失敗(掉落)，耗時: {elapsed_time:.2f}秒")
-                return False
-            
-            time.sleep(0.1)
+                self.logger.warning(f"動作失敗(掉落)，耗時: {elapsed_time:.3f}秒")
+                return True
         
         self.logger.warning(f"PGC動作完成等待超時 (超時時間: {timeout}秒)")
         return False
+    
+    def _update_performance_stats(self, response_time: float, success: bool):
+        """更新性能統計"""
+        self.performance_stats['avg_response_time'] = (
+            self.performance_stats['avg_response_time'] * 0.9 + response_time * 0.1
+        )
+        
+        if response_time > self.performance_stats['max_response_time']:
+            self.performance_stats['max_response_time'] = response_time
+        
+        # 成功率統計 (簡單移動平均)
+        if hasattr(self, '_success_history'):
+            self._success_history.append(success)
+            if len(self._success_history) > 100:
+                self._success_history.pop(0)
+            self.performance_stats['success_rate'] = sum(self._success_history) / len(self._success_history)
+        else:
+            self._success_history = [success]
+            self.performance_stats['success_rate'] = 1.0 if success else 0.0
+    
+    # ==================== 保持向後相容的API ====================
+    
+    def initialize(self, wait_completion: bool = True, timeout: float = None) -> bool:
+        """初始化夾爪 - 優化版"""
+        self.logger.info("開始初始化PGC夾爪")
+        
+        actual_timeout = timeout if timeout is not None else self.operation_timeout
+        
+        try:
+            if not self._send_command_optimized(GripperCommand.INITIALIZE):
+                self._log_gripper_status("初始化指令發送", False)
+                return False
+                
+            if wait_completion:
+                success = self._wait_for_completion_optimized(actual_timeout)
+                self._log_gripper_status("初始化", success)
+                if success:
+                    self.initialized = True
+                return success
+            
+            return True
+                
+        except Exception as e:
+            self.logger.error(f"初始化失敗: {e}", exc_info=True)
+            self._log_gripper_status("初始化", False)
+            return False
+    
+    def move_to_and_wait(self, position: int) -> bool:
+        """移動到指定位置並等待完成 - 保持相容"""
+        return self._move_to_and_wait_optimized(position, timeout=self.operation_timeout)
+    
+    def smart_grip(self, target_position: int = 420, max_attempts: int = 3) -> bool:
+        """智能夾取 - 優化版"""
+        self.logger.info(f"PGC智能夾取到位置: {target_position}, 最大嘗試次數: {max_attempts}")
+        
+        for attempt in range(max_attempts):
+            try:
+                initial_pos = self.get_current_position()
+                
+                if not self._send_command_optimized(GripperCommand.MOVE_ABS, target_position):
+                    continue
+                
+                if not self._wait_for_completion_optimized(self.operation_timeout):
+                    continue
+                
+                final_pos = self.get_current_position()
+                if final_pos is None:
+                    continue
+                
+                position_diff = abs(target_position - final_pos)
+                
+                if position_diff > 20:
+                    self.logger.info(f"PGC智能夾取成功 (嘗試{attempt + 1}/{max_attempts})")
+                    return True
+                    
+            except Exception as e:
+                self.logger.error(f"第{attempt + 1}次嘗試異常: {e}", exc_info=True)
+                
+        self.logger.error(f"PGC智能夾取失敗")
+        return False
+    
+    def get_current_position(self) -> Optional[int]:
+        """取得當前位置 - 使用快取優化"""
+        return self._read_register('CURRENT_POSITION', use_cache=True)
+    
+    def get_grip_status(self) -> Optional[int]:
+        """取得夾持狀態 - 使用快取優化"""
+        return self._read_register('GRIP_STATUS', use_cache=True)
+    
+    def get_performance_stats(self) -> Dict[str, Any]:
+        """取得性能統計"""
+        return self.performance_stats.copy()
 
 
-# ==================== 使用範例 (保持相容) ====================
+# ==================== 使用範例 ====================
 if __name__ == "__main__":
-    # 向後相容的使用方式 - 跳過自動初始化避免卡住
     gripper = GripperHighLevelAPI(gripper_type=GripperType.PGC, auto_initialize=False)
     
     try:
         if gripper.connected:
-            print("PGC夾爪連接成功，開始手動初始化...")
+            print("PGC夾爪連接成功")
             
-            # 手動初始化，使用較短超時時間
-            if gripper.initialize(wait_completion=True, timeout=3.0):
-                print("PGC夾爪初始化成功")
-            else:
-                print("PGC夾爪初始化失敗，但可繼續測試")
+            # 測試quick_close性能
+            print("\n=== 快速關閉性能測試 ===")
+            start_time = time.time()
+            if gripper.quick_close():
+                elapsed = time.time() - start_time
+                print(f"快速關閉成功，耗時: {elapsed:.3f}秒")
             
-            # 測試智能夾取
-            print("\n=== 智能夾取測試 ===")
-            if gripper.smart_grip(420):
-                print("智能夾取成功")
-            else:
-                print("智能夾取失敗")
+            time.sleep(1)
             
-            time.sleep(2)
+            # 測試smart_release性能
+            print("\n=== 智能釋放性能測試 ===")
+            start_time = time.time()
+            if gripper.smart_release(470):
+                elapsed = time.time() - start_time
+                print(f"智能釋放成功，耗時: {elapsed:.3f}秒")
             
-            # 測試智能釋放
-            print("\n=== 智能釋放測試 ===")
-            if gripper.smart_release(50):
-                print("智能釋放成功")
-            else:
-                print("智能釋放失敗")
+            # 顯示性能統計
+            print("\n=== 性能統計 ===")
+            stats = gripper.get_performance_stats()
+            print(f"平均響應時間: {stats['avg_response_time']:.3f}秒")
+            print(f"最大響應時間: {stats['max_response_time']:.3f}秒")
+            print(f"成功率: {stats['success_rate']:.1%}")
+            print(f"指令總數: {stats['command_count']}")
             
-            # 顯示狀態
-            print("\n=== 當前狀態 ===")
-            status = gripper.get_status()
-            for key, value in status.items():
-                print(f"{key}: {value}")
-                
         else:
             print("PGC夾爪連接失敗")
             

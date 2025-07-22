@@ -22,7 +22,7 @@ from flask_socketio import SocketIO, emit
 
 # Import camera manager
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'API'))
-from camera_manager import OptimizedCamera, CameraConfig
+from camera_manager import OptimizedCamera, CameraConfig, CameraMode, PixelFormat
 
 # 設置logger
 logging.basicConfig(level=logging.INFO)
@@ -614,15 +614,16 @@ class CCD3AngleDetectionService:
             return False
     
     def initialize_camera(self, ip_address: str = "192.168.1.10") -> bool:
-        """初始化相機"""
+        """初始化相機 - 軟體觸發模式"""
         try:
-            print(f"正在初始化相機，IP地址: {ip_address}")
+            print(f"正在初始化相機，IP地址: {ip_address} (軟體觸發模式)")
             
             if self.camera:
                 print("關閉現有相機連接...")
                 self.camera.disconnect()
                 self.camera = None
             
+            # 修正：使用軟體觸發模式配置
             config = CameraConfig(
                 name="ccd3_camera",
                 ip=ip_address,
@@ -630,10 +631,11 @@ class CCD3AngleDetectionService:
                 gain=200.0,
                 frame_rate=30.0,
                 width=2592,
-                height=1600
+                height=1944,
+                trigger_mode=CameraMode.SOFTWARE_TRIGGER  # 修正：軟體觸發模式
             )
             
-            print(f"相機配置: 曝光時間={config.exposure_time}, 增益={config.gain}, 分辨率={config.width}x{config.height}")
+            print(f"相機配置: 曝光時間={config.exposure_time}, 增益={config.gain}, 分辨率={config.width}x{config.height}, 觸發模式=軟體觸發")
             
             self.camera = OptimizedCamera(config, logger)
             
@@ -641,25 +643,35 @@ class CCD3AngleDetectionService:
             if self.camera.connect():
                 print(f"CCD3相機已成功連接: {ip_address}")
                 
+                # 修正：軟體觸發模式也需要啟動串流
                 print("啟動相機串流...")
                 if self.camera.start_streaming():
                     print("相機串流啟動成功")
                     
-                    print("測試相機圖像捕獲能力...")
+                    print("測試軟體觸發能力...")
                     try:
-                        test_image = self.camera.capture_latest_frame(timeout=3000)
-                        if test_image is not None:
-                            print(f"相機測試成功，可以捕獲圖像，測試圖像尺寸: {test_image.data.shape}")
-                            self.state_machine.set_initialized(True)
-                            self.state_machine.set_alarm(False)
-                            return True
+                        # 測試軟體觸發
+                        trigger_success = self.camera.trigger_software()
+                        if trigger_success:
+                            # 觸發後嘗試獲取圖像
+                            test_image = self.camera.capture_latest_frame(timeout=3000)
+                            if test_image is not None:
+                                print(f"軟體觸發測試成功，可以捕獲圖像，測試圖像尺寸: {test_image.data.shape}")
+                                self.state_machine.set_initialized(True)
+                                self.state_machine.set_alarm(False)
+                                return True
+                            else:
+                                print("軟體觸發後無法捕獲圖像")
+                                self.state_machine.set_alarm(True)
+                                self.state_machine.set_initialized(False)
+                                return False
                         else:
-                            print("相機測試失敗: 無法捕獲圖像")
+                            print("軟體觸發失敗")
                             self.state_machine.set_alarm(True)
                             self.state_machine.set_initialized(False)
                             return False
                     except Exception as e:
-                        print(f"相機測試異常: {e}")
+                        print(f"軟體觸發測試異常: {e}")
                         self.state_machine.set_alarm(True)
                         self.state_machine.set_initialized(False)
                         return False
@@ -765,7 +777,7 @@ class CCD3AngleDetectionService:
             return False
     
     def capture_and_detect_angle(self, mode: int = 1) -> AngleResult:
-        """優化版拍照並檢測角度 - 默認DR模式1"""
+        """軟體觸發拍照並檢測角度"""
         if not self.camera:
             return AngleResult(
                 success=False, center=None, angle=None,
@@ -773,6 +785,7 @@ class CCD3AngleDetectionService:
                 contour_area=None, processing_time=0, capture_time=0, total_time=0,
                 error_message="相機未初始化"
             )
+        
         if not getattr(self.camera, 'is_streaming', False):
             print("錯誤: 相機串流未啟動")
             return AngleResult(
@@ -780,20 +793,32 @@ class CCD3AngleDetectionService:
                 major_axis=None, minor_axis=None, rect_width=None, rect_height=None,
                 contour_area=None, processing_time=0, capture_time=0, total_time=0,
                 error_message="相機串流未啟動"
-        )
-        capture_start = time.perf_counter()  # 高精度計時
+            )
+        
+        capture_start = time.perf_counter()
         
         try:
-            # 優化13：移除不必要的日誌輸出，只保留關鍵訊息
+            print("📸 執行軟體觸發拍照...")
+            
+            # 步驟1：執行軟體觸發
+            trigger_success = self.camera.trigger_software()
+            if not trigger_success:
+                raise Exception("軟體觸發失敗")
+            
+            print("✅ 軟體觸發成功")
+            
+            # 步驟2：獲取觸發後的圖像
             frame_data = self.camera.capture_latest_frame(timeout=3000)
             
             if frame_data is None:
-                raise Exception("圖像捕獲失敗")
+                raise Exception("觸發後圖像捕獲失敗")
             
             image = frame_data.data
             capture_time = (time.perf_counter() - capture_start) * 1000
             
-            # 優化14：參數快取機制
+            print(f"✅ 軟體觸發拍照成功，耗時: {capture_time:.2f}ms")
+            
+            # 讀取檢測參數
             detection_params = self.read_detection_parameters_cached()
             if detection_params and self._params_changed:
                 self.angle_detector.update_params(**detection_params)
@@ -804,20 +829,15 @@ class CCD3AngleDetectionService:
             binary_image = None
             result_image = None
             
-            # 優化15：使用優化版檢測算法，並獲取調試圖像
+            # 角度檢測
             class DebugAngleDetector(AngleDetector):
                 def __init__(self, parent_detector):
-                    # 複製父檢測器的所有屬性
                     self.__dict__.update(parent_detector.__dict__)
                     self.debug_images = {}
                 
                 def get_pre_treatment_image_optimized(self, image):
                     result = super().get_pre_treatment_image_optimized(image)
                     self.debug_images['binary'] = result.copy()
-                    return result
-                
-                def detect_angle(self, image, mode=1):  # 默認DR模式1
-                    result = super().detect_angle(image, mode)
                     return result
             
             # 創建調試版檢測器
@@ -830,24 +850,16 @@ class CCD3AngleDetectionService:
             # 創建結果圖像
             result_image = image.copy()
             if result.success and result.center:
-                # 成功情況：畫出檢測結果
                 cv2.circle(result_image, result.center, 5, (255, 0, 0), -1)
                 cv2.putText(result_image, f"Angle: {result.angle:.2f} deg", 
-                           (result.center[0] - 70, result.center[1] - 10),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
-                cv2.putText(result_image, f"Area: {result.contour_area:.0f}", 
-                           (result.center[0] - 50, result.center[1] + 20),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+                        (result.center[0] - 70, result.center[1] - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
                 cv2.putText(result_image, f"Mode: {'CASE' if mode == 0 else 'DR'}", 
-                           (50, result_image.shape[0] - 30),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+                        (50, result_image.shape[0] - 30),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
             else:
-                # 失敗情況：標註錯誤訊息
                 cv2.putText(result_image, f"FAILED: {result.error_message}", (50, 50),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
-                cv2.putText(result_image, f"Mode: {'CASE' if mode == 0 else 'DR'}", 
-                           (50, result_image.shape[0] - 30),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
             
             # 保存調試圖像
             if binary_image is not None:
@@ -861,13 +873,10 @@ class CCD3AngleDetectionService:
             
             if result.success:
                 self.operation_count += 1
-                # 每50次成功後輸出性能統計
-                if self.operation_count % 50 == 0:
-                    stats = self.perf_monitor.get_stats()
-                    print(f"性能統計(最近{stats.get('sample_count', 0)}次): 平均總時間={stats.get('avg_total_time', 0):.1f}ms, 平均處理時間={stats.get('avg_process_time', 0):.1f}ms")
+                print(f"🎉 角度檢測成功: 中心{result.center}, 角度{result.angle:.2f}度, 總耗時{result.total_time:.1f}ms")
             else:
                 self.error_count += 1
-                print(f"檢測失敗: {result.error_message}")
+                print(f"💥 角度檢測失敗: {result.error_message}")
             
             return result
             
@@ -882,18 +891,7 @@ class CCD3AngleDetectionService:
                 error_message=str(e)
             )
             
-            # 錯誤情況也嘗試保存調試圖像
-            if 'image' in locals():
-                error_image = image.copy()
-                cv2.putText(error_image, f"ERROR: {str(e)[:50]}", (50, 50),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-                try:
-                    self.save_debug_images(image, 
-                                         np.zeros((image.shape[0], image.shape[1]), dtype=np.uint8),
-                                         error_image, False)
-                except:
-                    pass
-            
+            print(f"❌ 軟體觸發拍照檢測失敗: {e}")
             return error_result
     
     def read_detection_parameters_cached(self) -> Dict[str, Any]:

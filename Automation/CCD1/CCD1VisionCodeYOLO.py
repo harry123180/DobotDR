@@ -239,7 +239,7 @@ class YOLOv11Detector:
         print(f"🎯 置信度閾值更新為: {self.confidence_threshold}")
     
     def detect(self, image: np.ndarray) -> YOLODetectionResult:
-        """執行YOLOv11檢測 - 支援三種分類"""
+        """執行YOLOv11檢測 - 記憶體優化版"""
         start_time = time.time()
         result = YOLODetectionResult()
         result.confidence_threshold = self.confidence_threshold
@@ -254,10 +254,10 @@ class YOLOv11Detector:
                     result.error_message = f"模型{self.model_manager.current_model_id}未載入"
                 return result
             
-            # 執行推論
+            # 🔥 修正：執行推論並立即處理結果
             results = current_model(image, conf=self.confidence_threshold, verbose=False)
             
-            # 處理檢測結果
+            # 🔥 修正：立即提取必要數據
             if results and len(results) > 0:
                 detections = results[0]
                 
@@ -265,17 +265,14 @@ class YOLOv11Detector:
                     boxes = detections.boxes.cpu().numpy()
                     
                     for box in boxes:
-                        # 獲取類別ID和置信度
                         class_id = int(box.cls[0])
                         confidence = float(box.conf[0])
                         
                         if confidence >= self.confidence_threshold:
-                            # 計算中心點座標
                             x1, y1, x2, y2 = box.xyxy[0]
                             center_x = float((x1 + x2) / 2)
                             center_y = float((y1 + y2) / 2)
                             
-                            # 根據類別分類
                             if class_id == 0:  # DR_F
                                 result.dr_f_coords.append((center_x, center_y))
                                 result.dr_f_count += 1
@@ -285,10 +282,30 @@ class YOLOv11Detector:
                     
                     result.total_detections = result.dr_f_count + result.stack_count
                     result.success = True
-                else:
-                    result.success = True  # 檢測成功但無目標
+                    
+                    # 🔥 修正：立即清理boxes和detections
+                    del boxes
+                    if hasattr(detections, 'boxes') and detections.boxes is not None:
+                        del detections.boxes
+                
+            # 🔥 修正：強制清理模型輸出
+            if results:
+                for res in results:
+                    for attr in ['boxes', 'masks', 'keypoints', 'probs']:
+                        if hasattr(res, attr):
+                            delattr(res, attr)
+                results.clear()
+                del results
+            
+            # 🔥 修正：定期強制垃圾回收
+            if hasattr(self, '_detection_count'):
+                self._detection_count += 1
             else:
-                result.success = True  # 檢測成功但無結果
+                self._detection_count = 1
+                
+            if self._detection_count % 10 == 0:  # 每10次檢測清理一次
+                collected = gc.collect()
+                print(f"🧹 YOLO記憶體清理: 回收{collected}個物件")
                 
         except Exception as e:
             result.error_message = f"YOLOv11檢測失敗: {e}"
@@ -867,8 +884,9 @@ class EnhancedModbusTcpClientService:
         # 同步控制
         self.sync_thread = None
         self.sync_running = False
-        self.sync_interval = 0.05  # 50ms輪詢
-        
+        self.sync_interval = 0.1  # 50ms輪詢
+        self._sync_counter = 0
+        self._cleanup_frequency = 100  # 每100次循環清理一次
         # CCD1 Modbus寄存器映射 (基地址200) - YOLOv11版本
         self.REGISTERS = {
             # 控制寄存器 (200-201)
@@ -1090,7 +1108,12 @@ class EnhancedModbusTcpClientService:
                 
                 # 4. 更新統計資訊
                 self._update_statistics()
-                
+                # 🔥 修正：定期記憶體清理
+                self._sync_counter += 1
+                if self._sync_counter >= self._cleanup_frequency:
+                    collected = gc.collect()
+                    print(f"🧹 同步線程記憶體清理: 回收{collected}個物件")
+                    self._sync_counter = 0
                 # 短暫休眠
                 time.sleep(self.sync_interval)
                 
@@ -1864,7 +1887,10 @@ class CCD1VisionController:
         
         # 檢查和初始化各組件
         component_status = self._check_and_initialize_components()
-        
+        self._memory_cleanup_counter = 0
+        self._memory_cleanup_frequency = 50  # 每50次操作清理一次
+        self._last_comprehensive_cleanup = time.time()
+        self._comprehensive_cleanup_interval = 300  # 5分鐘綜合清理一次
         # 根據組件狀態執行相應的後續操作
         if component_status['modbus_connected'] and component_status['calibration_loaded']:
             # 嘗試自動初始化相機
@@ -1977,6 +2003,55 @@ class CCD1VisionController:
             'modbus_connected': modbus_connected,
             'calibration_loaded': calibration_loaded
         }
+    def _periodic_memory_cleanup(self):
+        """定期記憶體清理"""
+        try:
+            self._memory_cleanup_counter += 1
+            current_time = time.time()
+            
+            # 常規清理
+            if self._memory_cleanup_counter >= self._memory_cleanup_frequency:
+                collected = gc.collect()
+                print(f"🧹 控制器記憶體清理: 回收{collected}個物件")
+                self._memory_cleanup_counter = 0
+            
+            # 綜合清理
+            if current_time - self._last_comprehensive_cleanup > self._comprehensive_cleanup_interval:
+                self._comprehensive_memory_cleanup()
+                self._last_comprehensive_cleanup = current_time
+                
+        except Exception as e:
+            print(f"❌ 定期記憶體清理失敗: {e}")
+
+    def _comprehensive_memory_cleanup(self):
+        """綜合記憶體清理"""
+        try:
+            print("🧹 執行綜合記憶體清理...")
+            
+            # 清理圖像緩存
+            if hasattr(self, 'last_image') and self.last_image is not None:
+                del self.last_image
+                self.last_image = None
+            
+            # 清理檢測結果
+            if hasattr(self, 'last_result') and self.last_result is not None:
+                del self.last_result
+                self.last_result = None
+            
+            # 強制垃圾回收
+            collected = gc.collect()
+            
+            # 記憶體使用量統計
+            try:
+                import psutil
+                process = psutil.Process()
+                memory_mb = process.memory_info().rss / 1024 / 1024
+                print(f"🧹 綜合清理完成: 回收{collected}個物件, 當前記憶體: {memory_mb:.1f}MB")
+            except:
+                print(f"🧹 綜合清理完成: 回收{collected}個物件")
+                
+        except Exception as e:
+            print(f"❌ 綜合記憶體清理失敗: {e}")
     def _add_world_coordinates_yolo(self, result: YOLODetectionResult):
         """為YOLOv11結果添加世界座標 - 修正版"""
         try:
@@ -2069,7 +2144,7 @@ class CCD1VisionController:
             }
     
     def initialize_camera(self, ip_address: str = None) -> bool:
-        """初始化相機連接"""
+        """初始化相機連接 - 軟體觸發模式"""
         try:
             if ip_address:
                 self.camera_ip = ip_address
@@ -2083,25 +2158,25 @@ class CCD1VisionController:
                 finally:
                     self.camera_manager = None
             
-            # 創建相機配置 - 使用新版本的配置參數
+            # 創建相機配置 - 修正：使用軟體觸發模式
             camera_config = CameraConfig(
                 name="ccd1_camera",
                 ip=self.camera_ip,
-                exposure_time=5000.0,  # 增加曝光時間配合5FPS
+                exposure_time=20000.0,  # 增加曝光時間配合軟體觸發
                 gain=200.0,
-                frame_rate=5.0,  # 修改為5FPS
+                frame_rate=5.0,
                 pixel_format=PixelFormat.BAYER_GR8,
                 width=2592,
                 height=1944,
-                trigger_mode=CameraMode.CONTINUOUS,
+                trigger_mode=CameraMode.SOFTWARE_TRIGGER,  # 修正：軟體觸發模式
                 auto_reconnect=True,
-                # 新增頻寬控制參數
-                bandwidth_limit_mbps=200,  # 200Mbps頻寬限制
-                use_latest_frame_only=True,  # 啟用最新幀模式
-                buffer_count=1  # 最小緩存
+                # 頻寬控制參數
+                bandwidth_limit_mbps=200,
+                use_latest_frame_only=True,
+                buffer_count=1
             )
             
-            print(f"🔄 初始化相機: {self.camera_ip} (5FPS, 200Mbps)")
+            print(f"🔄 初始化相機: {self.camera_ip} (軟體觸發模式)")
             self.camera_manager = OptimizedCameraManager()
             
             # 添加相機
@@ -2114,7 +2189,7 @@ class CCD1VisionController:
             if not connect_result:
                 raise Exception("相機連接失敗")
             
-            # 開始串流
+            # 修正：軟體觸發模式也需要啟動串流才能接收觸發後的圖像
             stream_result = self.camera_manager.start_streaming(["ccd1_camera"])
             if not stream_result.get("ccd1_camera", False):
                 raise Exception("開始串流失敗")
@@ -2125,7 +2200,7 @@ class CCD1VisionController:
             self.state_machine.set_initialized(True)
             self.state_machine.set_alarm(False)
             self.state_machine.set_ready(True)
-            print(f"✅ 相機初始化成功: {self.camera_ip} (頻寬控制: 200Mbps, 5FPS)")
+            print(f"✅ 相機初始化成功: {self.camera_ip} (軟體觸發模式)")
             return True
                 
         except Exception as e:
@@ -2136,75 +2211,53 @@ class CCD1VisionController:
             return False
     
     def capture_image(self) -> Tuple[Optional[np.ndarray], float]:
-        """拍照"""
-        print(f"📸 開始拍照程序...")
+        """軟體觸發拍照 - 記憶體優化版"""
+        print(f"📸 開始軟體觸發拍照程序...")
         
         if not self.camera_manager:
             print(f"❌ 相機管理器不存在")
             return None, 0.0
-        # 檢查串流狀態
-        try:
-            if "ccd1_camera" not in self.camera_manager.cameras:
-                print(f"❌ 相機 ccd1_camera 不在管理器中")
-                return None, 0.0
-            
-            camera = self.camera_manager.cameras["ccd1_camera"]
-            if not camera.is_streaming:
-                print(f"❌ 相機未在串流中，嘗試重新啟動串流...")
-                restart_result = self.camera_manager.start_streaming(["ccd1_camera"])
-                if not restart_result.get("ccd1_camera", False):
-                    print(f"❌ 重新啟動串流失敗")
-                    return None, 0.0
-                else:
-                    print(f"✅ 重新啟動串流成功")
-                    time.sleep(0.5)  # 等待串流穩定
-            
-        except Exception as stream_check_error:
-            print(f"❌ 檢查串流狀態失敗: {stream_check_error}")
-            return None, 0.0
-        # 檢查相機連接狀態
-        try:
-            camera_status = self.camera_manager.get_camera_status("ccd1_camera")
-            print(f"📊 相機狀態檢查: {camera_status}")
-        except Exception as status_error:
-            print(f"⚠️ 無法獲取相機狀態: {status_error}")
         
         capture_start = time.time()
         
         try:
-            print(f"🔄 調用 capture_new_frame，超時時間: 100ms")
-            frame_data = self.camera_manager.capture_new_frame("ccd1_camera", timeout=1000)
+            # 觸發拍照
+            trigger_result = self.camera_manager.trigger_software(["ccd1_camera"])
+            
+            if not trigger_result.get("ccd1_camera", False):
+                print(f"❌ 軟體觸發失敗")
+                return None, 0.0
+            
+            # 獲取圖像
+            frame_data = self.camera_manager.capture_new_frame("ccd1_camera", timeout=2000)
             
             if frame_data is None:
-                print(f"❌ capture_new_frame 返回 None")
-                print(f"💡 可能原因:")
-                print(f"   - 相機串流未啟動")
-                print(f"   - 網路連接問題")
-                print(f"   - 超時時間過短 (100ms)")
-                print(f"   - 相機幀率問題 (設置5FPS，實際4.13FPS)")
+                print(f"❌ 觸發後無法獲取圖像")
                 return None, 0.0
             
             capture_time = time.time() - capture_start
-            print(f"✅ 成功捕獲幀，耗時: {capture_time*1000:.2f}ms")
             
-            image_array = frame_data.data
-            print(f"📊 圖像數據: 形狀={image_array.shape}, 類型={image_array.dtype}")
+            # 🔥 修正：立即複製圖像數據並清理原始frame_data
+            image_array = np.copy(frame_data.data)
             
+            # 🔥 修正：清理frame_data引用
+            if hasattr(frame_data, 'data'):
+                del frame_data.data
+            del frame_data
+            
+            # 格式轉換
             if len(image_array.shape) == 2:
                 display_image = cv2.cvtColor(image_array, cv2.COLOR_GRAY2BGR)
-                print(f"🔄 轉換灰度圖像為BGR格式")
+                del image_array  # 🔥 修正：清理原始圖像
             else:
                 display_image = image_array
-                print(f"📊 使用原始BGR圖像")
             
+            print(f"✅ 軟體觸發拍照成功，耗時: {capture_time*1000:.2f}ms")
             return display_image, capture_time
             
         except Exception as e:
             capture_time = time.time() - capture_start
-            print(f"❌ 拍照異常: {e}")
-            print(f"❌ 異常類型: {type(e).__name__}")
-            import traceback
-            print(f"詳細錯誤堆疊: {traceback.format_exc()}")
+            print(f"❌ 軟體觸發拍照異常: {e}")
             return None, capture_time
     
     def capture_and_detect(self) -> YOLODetectionResult:
@@ -2217,6 +2270,7 @@ class CCD1VisionController:
                 result = YOLODetectionResult()
                 result.error_message = "YOLOv11檢測器未載入"
                 result.total_time = (time.time() - total_start) * 1000
+                
                 return result
             
             # 拍照
@@ -2244,23 +2298,26 @@ class CCD1VisionController:
                 self._create_yolo_visualization(image, result)
             
             self.last_result = result
+            self._periodic_memory_cleanup()
             return result
             
         except Exception as e:
             result = YOLODetectionResult()
             result.error_message = f"檢測失敗: {str(e)}"
             result.total_time = (time.time() - total_start) * 1000
+            self._periodic_memory_cleanup()
             return result
     
     def _create_yolo_visualization(self, image: np.ndarray, result: YOLODetectionResult):
-        """創建YOLOv11檢測結果可視化 - 支援三種分類"""
+        """創建YOLOv11檢測結果可視化 - 記憶體優化版"""
         try:
-            vis_image = image.copy()
+            # 🔥 修正：使用原地操作減少記憶體複製
+            vis_image = np.copy(image)  # 明確使用np.copy
             
-            # 定義顏色 (BGR格式)
+            # 定義顏色
             colors = {
-                'DR_F': (255, 0, 0),    # 藍色
-                'STACK': (0, 0, 255),     # 紅色
+                'DR_F': (255, 0, 0),
+                'STACK': (0, 0, 255),
             }
             
             # 繪製DR_F檢測結果
@@ -2269,36 +2326,46 @@ class CCD1VisionController:
                 cv2.circle(vis_image, (int(x), int(y)), 20, (255, 255, 255), 3)
                 
                 label = f"DR_F {i+1}"
-                label_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 1.0, 2)[0]
-                cv2.rectangle(vis_image, (int(x-label_size[0]//2-5), int(y-40)), 
-                             (int(x+label_size[0]//2+5), int(y-10)), colors['DR_F'], -1)
-                cv2.putText(vis_image, label, (int(x-label_size[0]//2), int(y-20)), 
-                           cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2)
+                cv2.putText(vis_image, label, (int(x-35), int(y-25)), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2)
             
-            # 繪製STACK檢測結果 (新增)
+            # 繪製STACK檢測結果
             for i, (x, y) in enumerate(result.stack_coords):
                 cv2.circle(vis_image, (int(x), int(y)), 12, colors['STACK'], -1)
                 cv2.circle(vis_image, (int(x), int(y)), 17, (255, 255, 255), 2)
                 
                 label = f"STACK {i+1}"
                 cv2.putText(vis_image, label, (int(x-35), int(y-25)), 
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.8, colors['STACK'], 2)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, colors['STACK'], 2)
             
             # 添加檢測統計信息
             stats_text = f"YOLOv11 (Model{result.model_id_used}): F={result.dr_f_count}, S={result.stack_count}"
             cv2.putText(vis_image, stats_text, (20, 40), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 255), 3)
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 255), 3)
             
-            # 添加置信度閾值信息
-            conf_text = f"Confidence >= {result.confidence_threshold:.1f}"
-            cv2.putText(vis_image, conf_text, (20, 80), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 0), 2)
+            # 🔥 修正：清理輸入圖像引用
+            del image
             
-            # 保存可視化圖像
+            # 🔥 修正：限制圖像大小以減少記憶體佔用
+            height, width = vis_image.shape[:2]
+            if width > 1024:  # 限制最大寬度
+                scale = 1024 / width
+                new_size = (1024, int(height * scale))
+                vis_image_resized = cv2.resize(vis_image, new_size)
+                del vis_image  # 清理原始大圖
+                vis_image = vis_image_resized
+            
+            # 🔥 修正：如果之前有圖像，先清理
+            if hasattr(self, 'last_image') and self.last_image is not None:
+                del self.last_image
+            
             self.last_image = vis_image
             
         except Exception as e:
             print(f"❌ 創建可視化失敗: {e}")
+            # 🔥 修正：發生錯誤時也要清理
+            if 'image' in locals():
+                del image
     
     def get_image_base64(self) -> Optional[str]:
         """獲取當前圖像的base64編碼"""

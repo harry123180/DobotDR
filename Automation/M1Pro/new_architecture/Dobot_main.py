@@ -700,29 +700,19 @@ class RealRobotController:
             return False
     
     def move_j(self, x: float, y: float, z: float, r: float) -> bool:
-        """關節運動 - 修正版，加入Sync()調用"""
+        """關節運動 - 修正版：僅發送指令，不自動sync"""
         try:
             print(f"開始MovJ: ({x:.1f}, {y:.1f}, {z:.1f}, {r:.1f})")
             
-            # 發送運動指令到隊列
+            # 🔥 修正：僅發送運動指令，不調用Sync()
             result = self.move_api.MovJ(x, y, z, r)
             success = self._parse_api_response(result)
             
-            if not success:
-                print(f"✗ MovJ指令發送失敗: {result}")
-                return False
-            
-            print(f"MovJ指令發送成功，調用Sync()執行...")
-            
-            # 關鍵修正：調用Sync()執行隊列中的指令
-            sync_result = self.move_api.Sync()
-            sync_success = self._parse_api_response(sync_result)
-            
-            if sync_success:
-                print(f"✓ MovJ完成: ({x:.1f}, {y:.1f}, {z:.1f}, {r:.1f})")
+            if success:
+                print(f"✓ MovJ指令發送成功: ({x:.1f}, {y:.1f}, {z:.1f}, {r:.1f})")
                 return True
             else:
-                print(f"✗ MovJ同步執行失敗: {sync_result}")
+                print(f"✗ MovJ指令發送失敗: {result}")
                 return False
                 
         except Exception as e:
@@ -730,67 +720,288 @@ class RealRobotController:
             return False
     
     def move_l(self, x: float, y: float, z: float, r: float) -> bool:
-        """直線運動 - 修正版，加入Sync()調用"""
+        """直線運動 - 修正版：僅發送指令，不自動sync"""
         try:
             print(f"開始MovL: ({x:.1f}, {y:.1f}, {z:.1f}, {r:.1f})")
             
-            # 發送運動指令到隊列
+            # 🔥 修正：僅發送運動指令，不調用Sync()
             result = self.move_api.MovL(x, y, z, r)
             success = self._parse_api_response(result)
             
-            if not success:
-                print(f"✗ MovL指令發送失敗: {result}")
-                return False
-            
-            print(f"MovL指令發送成功，調用Sync()執行...")
-            
-            # 關鍵修正：調用Sync()執行隊列中的指令
-            sync_result = self.move_api.Sync()
-            sync_success = self._parse_api_response(sync_result)
-            
-            if sync_success:
-                print(f"✓ MovL完成: ({x:.1f}, {y:.1f}, {z:.1f}, {r:.1f})")
+            if success:
+                print(f"✓ MovL指令發送成功: ({x:.1f}, {y:.1f}, {z:.1f}, {r:.1f})")
                 return True
             else:
-                print(f"✗ MovL同步執行失敗: {sync_result}")
+                print(f"✗ MovL指令發送失敗: {result}")
                 return False
+                
+        except Exception as e:
+            print(f"MovL執行異常: {e}")
+            return False
                 
         except Exception as e:
             print(f"MovL執行異常: {e}")
             return False
     
     def joint_move_j(self, j1: float, j2: float, j3: float, j4: float) -> bool:
-        """關節角度運動 - 修正版，加入Sync()調用"""
+        """關節角度運動 - 修正版：僅發送指令，不自動sync"""
         try:
             print(f"開始JointMovJ: (j1:{j1:.1f}, j2:{j2:.1f}, j3:{j3:.1f}, j4:{j4:.1f})")
             
-            # 發送關節運動指令到隊列
+            # 🔥 修正：僅發送運動指令，不調用Sync()
             result = self.move_api.JointMovJ(j1, j2, j3, j4)
             success = self._parse_api_response(result)
             
-            if not success:
-                print(f"✗ JointMovJ指令發送失敗: {result}")
-                return False
-            
-            print(f"JointMovJ指令發送成功，調用Sync()執行...")
-            
-            # 關鍵修正：調用Sync()執行隊列中的指令
-            sync_result = self.move_api.Sync()
-            sync_success = self._parse_api_response(sync_result)
-            
-            if sync_success:
-                print(f"✓ JointMovJ完成: (j1:{j1:.1f}, j2:{j2:.1f}, j3:{j3:.1f}, j4:{j4:.1f})")
+            if success:
+                print(f"✓ JointMovJ指令發送成功: (j1:{j1:.1f}, j2:{j2:.1f}, j3:{j3:.1f}, j4:{j4:.1f})")
                 return True
             else:
-                print(f"✗ JointMovJ同步執行失敗: {sync_result}")
+                print(f"✗ JointMovJ指令發送失敗: {result}")
                 return False
                 
         except Exception as e:
             print(f"JointMovJ執行異常: {e}")
             return False
+    def set_speed_j(self, speed: int) -> bool:
+        """設置關節運動速度比例"""
+        try:
+            if not 1 <= speed <= 100:
+                print(f"關節速度超出範圍: {speed}")
+                return False
+                
+            result = self.dashboard_api.SpeedJ(speed)
+            success = self._parse_api_response(result)
+            if success:
+                print(f"✓ 關節運動速度設定成功: {speed}%")
+            else:
+                print(f"關節運動速度設定失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"設定關節運動速度異常: {e}")
+            return False
     
+    def set_acc_j(self, acc: int) -> bool:
+        """設置關節運動加速度比例"""
+        try:
+            if not 1 <= acc <= 100:
+                print(f"關節加速度超出範圍: {acc}")
+                return False
+                
+            result = self.dashboard_api.AccJ(acc)
+            success = self._parse_api_response(result)
+            if success:
+                print(f"✓ 關節運動加速度設定成功: {acc}%")
+            else:
+                print(f"關節運動加速度設定失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"設定關節運動加速度異常: {e}")
+            return False
+    
+    def set_speed_l(self, speed: int) -> bool:
+        """設置直線運動速度比例"""
+        try:
+            if not 1 <= speed <= 100:
+                print(f"直線速度超出範圍: {speed}")
+                return False
+                
+            result = self.dashboard_api.SpeedL(speed)
+            success = self._parse_api_response(result)
+            if success:
+                print(f"✓ 直線運動速度設定成功: {speed}%")
+            else:
+                print(f"直線運動速度設定失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"設定直線運動速度異常: {e}")
+            return False
+    
+    def set_acc_l(self, acc: int) -> bool:
+        """設置直線運動加速度比例"""
+        try:
+            if not 1 <= acc <= 100:
+                print(f"直線加速度超出範圍: {acc}")
+                return False
+                
+            result = self.dashboard_api.AccL(acc)
+            success = self._parse_api_response(result)
+            if success:
+                print(f"✓ 直線運動加速度設定成功: {acc}%")
+            else:
+                print(f"直線運動加速度設定失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"設定直線運動加速度異常: {e}")
+            return False
+    
+    def set_tool(self, tool_index: int) -> bool:
+        """設置工具座標系"""
+        try:
+            if not 0 <= tool_index <= 9:
+                print(f"工具座標系索引超出範圍: {tool_index}")
+                return False
+                
+            result = self.dashboard_api.Tool(tool_index)
+            success = self._parse_api_response(result)
+            if success:
+                print(f"✓ 工具座標系設定成功: Tool{tool_index}")
+            else:
+                print(f"工具座標系設定失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"設定工具座標系異常: {e}")
+            return False
+    
+    def set_user(self, user_index: int) -> bool:
+        """設置使用者座標系"""
+        try:
+            if not 0 <= user_index <= 9:
+                print(f"使用者座標系索引超出範圍: {user_index}")
+                return False
+                
+            result = self.dashboard_api.User(user_index)
+            success = self._parse_api_response(result)
+            if success:
+                print(f"✓ 使用者座標系設定成功: User{user_index}")
+            else:
+                print(f"使用者座標系設定失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"設定使用者座標系異常: {e}")
+            return False
+    
+    def set_arm_orientation(self, orientation: int) -> bool:
+        """設置機械臂手勢 (SetArmOrientation)"""
+        try:
+            if orientation not in [0, 1]:
+                print(f"機械臂手勢參數錯誤: {orientation} (只能是0或1)")
+                return False
+            
+            # 手勢定義
+            orientation_names = {
+                0: "右手手勢 (Right)",
+                1: "左手手勢 (Left)"
+            }
+            
+            orientation_name = orientation_names[orientation]
+            print(f"切換機械臂手勢到: {orientation_name}")
+            
+            # 檢查API是否支援SetArmOrientation方法
+            if hasattr(self.dashboard_api, 'SetArmOrientation'):
+                result = self.dashboard_api.SetArmOrientation(orientation)
+                success = self._parse_api_response(result)
+                if success:
+                    print(f"✓ 機械臂手勢切換成功: {orientation_name}")
+                else:
+                    print(f"機械臂手勢切換失敗: {result}")
+                return success
+            else:
+                print("⚠️ 當前API版本不支援SetArmOrientation方法")
+                return False
+                
+        except Exception as e:
+            print(f"設定機械臂手勢異常: {e}")
+            return False
+    
+    def set_payload(self, weight: float, inertia: float) -> bool:
+        """設置機械臂負載"""
+        try:
+            result = self.dashboard_api.PayLoad(weight, inertia)
+            success = self._parse_api_response(result)
+            if success:
+                print(f"✓ 機械臂負載設定成功: 重量{weight}kg, 慣量{inertia}")
+            else:
+                print(f"機械臂負載設定失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"設定機械臂負載異常: {e}")
+            return False
+    
+    def get_robot_mode(self) -> Optional[int]:
+        """獲取機械臂模式"""
+        try:
+            result = self.dashboard_api.RobotMode()
+            if self._parse_api_response(result):
+                mode = self._extract_mode_from_response(result)
+                if mode is not None:
+                    mode_names = {
+                        1: "ROBOT_MODE_INIT",
+                        2: "ROBOT_MODE_BRAKE_OPEN", 
+                        3: "ROBOT_MODE_POWEROFF",
+                        4: "ROBOT_MODE_DISABLED",
+                        5: "ROBOT_MODE_ENABLED",
+                        6: "ROBOT_MODE_BACKDRIVE",
+                        7: "ROBOT_MODE_RUNNING",
+                        8: "ROBOT_MODE_RECORDING",
+                        9: "ROBOT_MODE_ERROR",
+                        10: "ROBOT_MODE_PAUSE",
+                        11: "ROBOT_MODE_JOG"
+                    }
+                    mode_name = mode_names.get(mode, f"UNKNOWN_{mode}")
+                    print(f"機械臂模式: {mode} ({mode_name})")
+                return mode
+            return None
+        except Exception as e:
+            print(f"獲取機械臂模式失敗: {e}")
+            return None
+    
+    def clear_error(self) -> bool:
+        """清除機械臂錯誤"""
+        try:
+            result = self.dashboard_api.ClearError()
+            success = self._parse_api_response(result)
+            if success:
+                print("✓ 機械臂錯誤清除成功")
+            else:
+                print(f"機械臂錯誤清除失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"清除機械臂錯誤異常: {e}")
+            return False
+    
+    def reset_robot(self) -> bool:
+        """重置機械臂"""
+        try:
+            result = self.dashboard_api.ResetRobot()
+            success = self._parse_api_response(result)
+            if success:
+                print("✓ 機械臂重置成功")
+            else:
+                print(f"機械臂重置失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"重置機械臂異常: {e}")
+            return False
+    
+    def enable_robot(self) -> bool:
+        """啟用機械臂"""
+        try:
+            result = self.dashboard_api.EnableRobot()
+            success = self._parse_api_response(result)
+            if success:
+                print("✓ 機械臂啟用成功")
+            else:
+                print(f"機械臂啟用失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"啟用機械臂異常: {e}")
+            return False
+    
+    def disable_robot(self) -> bool:
+        """停用機械臂"""
+        try:
+            result = self.dashboard_api.DisableRobot()
+            success = self._parse_api_response(result)
+            if success:
+                print("✓ 機械臂停用成功")
+            else:
+                print(f"機械臂停用失敗: {result}")
+            return success
+        except Exception as e:
+            print(f"停用機械臂異常: {e}")
+            return False
     def sync(self) -> bool:
-        """同步等待所有運動完成 - 修正版"""
+        """同步等待所有運動完成 - 獨立調用"""
         try:
             print("執行Sync()同步等待...")
             result = self.move_api.Sync()

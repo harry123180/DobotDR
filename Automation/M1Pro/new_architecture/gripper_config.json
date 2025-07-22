@@ -1,0 +1,27 @@
+{
+  "module_id": "PGC夾爪直接串口模式",
+  "rtu_connection": {
+    "port": "COM3",
+    "baudrate": 115200,
+    "parity": "N",
+    "stopbits": 1,
+    "timeout": 0.5
+  },
+  "grippers": {
+    "PGC": {
+      "unit_id": 6,
+      "enabled": true
+    }
+  },
+  "timing": {
+    "command_delay": 0.01,
+    "status_cache_timeout": 0.05,
+    "operation_timeout": 5.0,
+    "quick_timeout": 2.0
+  },
+  "performance": {
+    "enable_cache": true,
+    "max_retries": 3,
+    "retry_delay": 0.1
+  }
+}

@@ -1,0 +1,262 @@
+2025-07-22 20:22:59 [INFO] Robot:_log_info:743 - Robot類別初始化開始
+2025-07-22 20:22:59 [INFO] Robot:_log_info:743 - 開始初始化所有子系統
+2025-07-22 20:22:59 [INFO] Robot:_log_info:743 - 正在初始化CCD1視覺系統...
+2025-07-22 20:23:01 [INFO] Robot:_log_info:743 - CCD1視覺系統初始化成功
+2025-07-22 20:23:01 [INFO] Robot:_log_info:743 - 正在初始化CCD3角度檢測系統...
+2025-07-22 20:23:02 [INFO] Robot:_log_info:743 - CCD3角度檢測系統初始化成功
+2025-07-22 20:23:02 [INFO] Robot:_log_info:743 - 正在初始化震動盤系統...
+2025-07-22 20:23:02 [INFO] Robot:_log_info:743 - 震動盤系統初始化成功
+2025-07-22 20:23:02 [INFO] Robot:_log_info:743 - 正在初始化夾爪系統...
+2025-07-22 20:23:02 [WARNING] Robot:_log_warning:750 - 夾爪系統初始化失敗
+2025-07-22 20:23:02 [INFO] Robot:_log_info:743 - 正在初始化Dobot機械臂...
+2025-07-22 20:23:02 [INFO] Robot:_log_info:1202 - Dobot連接成功: 192.168.1.6
+2025-07-22 20:23:03 [INFO] Robot:_log_info:1202 - 機械臂使能成功
+2025-07-22 20:23:03 [INFO] Robot:_log_info:1202 - 機械臂自動使能成功
+2025-07-22 20:23:03 [INFO] Robot:_log_info:743 - Dobot機械臂初始化成功
+2025-07-22 20:23:03 [INFO] Robot:_log_info:1202 - 碰撞檢測等級設定為: 3
+2025-07-22 20:23:03 [INFO] Robot:_log_info:743 - 碰撞檢測等級設置為: 3
+2025-07-22 20:23:03 [INFO] Robot:_log_info:743 - 系統初始化完成: 4/5 個子系統成功
+2025-07-22 20:23:07 [INFO] Robot:_log_info:743 - CCD1檢測成功: {0: 19, 1: 8}
+2025-07-22 20:23:07 [ERROR] Robot:_log_error:758 - CCD1座標獲取失敗: YOLO檢測器未載入
+2025-07-22 20:23:08 [INFO] Robot:_log_info:743 - CCD3角度檢測成功: 20.06°
+2025-07-22 20:23:08 [INFO] Robot:_log_info:743 - CCD3中心點檢測成功: (1170, 995)
+2025-07-22 20:23:08 [INFO] Robot:_log_info:743 - 震動盤背光設定成功: 開啟, 亮度80
+2025-07-22 20:23:08 [INFO] Robot:_log_info:743 - 震動盤啟動成功: horizontal, 強度70, 頻率120Hz
+2025-07-22 20:23:12 [INFO] Robot:_log_info:743 - 震動盤停止成功
+2025-07-22 20:23:12 [ERROR] Robot:_log_error:758 - 夾爪快速開啟失敗
+2025-07-22 20:23:13 [ERROR] Robot:_log_error:758 - 夾爪智能夾取失敗: 420
+2025-07-22 20:23:14 [ERROR] Robot:_log_error:758 - 夾爪智能釋放失敗: 470
+2025-07-22 20:23:14 [INFO] Robot:_log_info:1202 - 關節速度設定為: 100
+2025-07-22 20:23:14 [INFO] Robot:_log_info:1202 - 關節運動到點位 standby: {'x': 223.14, 'y': 189.28, 'z': 238.86, 'r': 83.37}
+2025-07-22 20:23:15 [INFO] Robot:_log_info:1202 - 運動同步完成
+2025-07-22 20:23:15 [INFO] Robot:_log_info:743 - 開始斷開所有系統連接
+2025-07-22 20:23:17 [INFO] Robot:_log_info:1202 - 機械臂下使能成功
+2025-07-22 20:23:17 [INFO] Robot:_log_info:1202 - Dobot連接已斷開
+2025-07-22 20:23:17 [INFO] Robot:_log_info:743 - 所有系統連接已斷開
+2025-07-22 20:23:17 [INFO] Robot:_log_info:743 - 開始斷開所有系統連接
+2025-07-22 20:23:17 [INFO] Robot:_log_info:1202 - Dobot連接已斷開
+2025-07-22 20:23:17 [INFO] Robot:_log_info:743 - 所有系統連接已斷開
+2025-07-22 20:24:34 [INFO] Robot:_log_info:743 - Robot類別初始化開始
+2025-07-22 20:24:34 [INFO] Robot:_log_info:743 - 開始初始化所有子系統
+2025-07-22 20:24:34 [INFO] Robot:_log_info:743 - 正在初始化CCD1視覺系統...
+2025-07-22 20:24:36 [INFO] Robot:_log_info:743 - CCD1視覺系統初始化成功
+2025-07-22 20:24:36 [INFO] Robot:_log_info:743 - 正在初始化CCD3角度檢測系統...
+2025-07-22 20:24:37 [INFO] Robot:_log_info:743 - CCD3角度檢測系統初始化成功
+2025-07-22 20:24:37 [INFO] Robot:_log_info:743 - 正在初始化震動盤系統...
+2025-07-22 20:24:37 [INFO] Robot:_log_info:743 - 震動盤系統初始化成功
+2025-07-22 20:24:37 [INFO] Robot:_log_info:743 - 正在初始化夾爪系統...
+2025-07-22 20:24:41 [INFO] Robot:_log_info:743 - 夾爪系統初始化成功
+2025-07-22 20:24:41 [INFO] Robot:_log_info:743 - 正在初始化Dobot機械臂...
+2025-07-22 20:24:41 [INFO] Robot:_log_info:1202 - Dobot連接成功: 192.168.1.6
+2025-07-22 20:24:42 [INFO] Robot:_log_info:1202 - 機械臂使能成功
+2025-07-22 20:24:42 [INFO] Robot:_log_info:1202 - 機械臂自動使能成功
+2025-07-22 20:24:42 [INFO] Robot:_log_info:743 - Dobot機械臂初始化成功
+2025-07-22 20:24:42 [INFO] Robot:_log_info:1202 - 碰撞檢測等級設定為: 3
+2025-07-22 20:24:42 [INFO] Robot:_log_info:743 - 碰撞檢測等級設置為: 3
+2025-07-22 20:24:42 [INFO] Robot:_log_info:743 - 系統初始化完成: 5/5 個子系統成功
+2025-07-22 20:24:46 [INFO] Robot:_log_info:743 - CCD1檢測成功: {0: 19, 1: 8}
+2025-07-22 20:24:46 [ERROR] Robot:_log_error:758 - CCD1座標獲取失敗: YOLO檢測器未載入
+2025-07-22 20:24:46 [INFO] Robot:_log_info:743 - CCD3角度檢測成功: 20.06°
+2025-07-22 20:24:46 [INFO] Robot:_log_info:743 - CCD3中心點檢測成功: (1170, 995)
+2025-07-22 20:24:47 [INFO] Robot:_log_info:743 - 震動盤背光設定成功: 開啟, 亮度80
+2025-07-22 20:24:47 [INFO] Robot:_log_info:743 - 震動盤啟動成功: horizontal, 強度70, 頻率120Hz
+2025-07-22 20:24:51 [INFO] Robot:_log_info:743 - 震動盤停止成功
+2025-07-22 20:24:51 [INFO] Robot:_log_info:743 - 夾爪快速開啟成功
+2025-07-22 20:24:53 [ERROR] Robot:_log_error:758 - 夾爪智能夾取失敗: 420
+2025-07-22 20:24:54 [INFO] Robot:_log_info:743 - 夾爪智能釋放成功: 470
+2025-07-22 20:24:54 [INFO] Robot:_log_info:1202 - 關節速度設定為: 100
+2025-07-22 20:24:54 [INFO] Robot:_log_info:1202 - 關節運動到點位 standby: {'x': 223.14, 'y': 189.28, 'z': 238.86, 'r': 83.37}
+2025-07-22 20:24:54 [INFO] Robot:_log_info:1202 - 運動同步完成
+2025-07-22 20:24:54 [INFO] Robot:_log_info:743 - 開始斷開所有系統連接
+2025-07-22 20:24:56 [INFO] Robot:_log_info:1202 - 機械臂下使能成功
+2025-07-22 20:24:56 [INFO] Robot:_log_info:1202 - Dobot連接已斷開
+2025-07-22 20:24:56 [INFO] Robot:_log_info:743 - 所有系統連接已斷開
+2025-07-22 20:24:56 [INFO] Robot:_log_info:743 - 開始斷開所有系統連接
+2025-07-22 20:24:56 [INFO] Robot:_log_info:1202 - Dobot連接已斷開
+2025-07-22 20:24:56 [INFO] Robot:_log_info:743 - 所有系統連接已斷開
+2025-07-22 20:39:30 [INFO] Robot:_log_info:929 - Robot類別初始化開始
+2025-07-22 20:39:30 [INFO] Robot:_log_info:929 - 開始初始化所有子系統
+2025-07-22 20:39:30 [INFO] Robot:_log_info:929 - 正在初始化CCD1視覺系統...
+2025-07-22 20:39:32 [INFO] Robot:_log_info:929 - CCD1視覺系統初始化成功
+2025-07-22 20:39:32 [INFO] Robot:_log_info:929 - 正在初始化CCD3角度檢測系統...
+2025-07-22 20:39:33 [INFO] Robot:_log_info:929 - CCD3角度檢測系統初始化成功
+2025-07-22 20:39:33 [INFO] Robot:_log_info:929 - 正在初始化震動盤系統...
+2025-07-22 20:39:33 [INFO] Robot:_log_info:929 - 震動盤系統初始化成功
+2025-07-22 20:39:33 [INFO] Robot:_log_info:929 - 正在初始化夾爪系統...
+2025-07-22 20:39:35 [INFO] Robot:_log_info:929 - 夾爪系統初始化成功
+2025-07-22 20:39:35 [INFO] Robot:_log_info:929 - 正在初始化Dobot機械臂...
+2025-07-22 20:39:35 [INFO] Robot:_log_info:1389 - Dobot連接成功: 192.168.1.6
+2025-07-22 20:39:36 [INFO] Robot:_log_info:1389 - 機械臂使能成功
+2025-07-22 20:39:36 [INFO] Robot:_log_info:1389 - 機械臂自動使能成功
+2025-07-22 20:39:36 [INFO] Robot:_log_info:929 - Dobot機械臂初始化成功
+2025-07-22 20:39:36 [INFO] Robot:_log_info:1389 - 碰撞檢測等級設定為: 3
+2025-07-22 20:39:36 [INFO] Robot:_log_info:929 - 碰撞檢測等級設置為: 3
+2025-07-22 20:39:36 [INFO] Robot:_log_info:929 - 系統初始化完成: 5/5 個子系統成功
+2025-07-22 20:39:40 [INFO] Robot:_log_info:929 - CCD1檢測成功: {0: 18, 1: 6}
+2025-07-22 20:39:40 [INFO] Robot:_log_info:929 - 使用上次CCD1檢測結果獲取座標
+2025-07-22 20:39:40 [INFO] Robot:_log_info:929 - CCD1座標獲取成功: 像素座標2類
+2025-07-22 20:39:40 [INFO] Robot:_log_info:929 - CCD1模型切換成功: 1
+2025-07-22 20:39:40 [INFO] Robot:_log_info:929 - CCD3角度檢測成功: 20.06°
+2025-07-22 20:39:40 [INFO] Robot:_log_info:929 - CCD3中心點檢測成功: (1170, 995)
+2025-07-22 20:39:40 [INFO] Robot:_log_info:929 - 震動盤背光設定成功: 開啟, 亮度50
+2025-07-22 20:39:41 [INFO] Robot:_log_info:929 - 震動盤啟動成功: vertical, 強度60, 頻率100Hz
+2025-07-22 20:39:44 [INFO] Robot:_log_info:929 - 震動盤停止成功
+2025-07-22 20:39:44 [INFO] Robot:_log_info:929 - 夾爪快速開啟成功
+2025-07-22 20:39:46 [ERROR] Robot:_log_error:944 - 夾爪智能夾取失敗: 420
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 - 夾爪智能釋放成功: 470
+2025-07-22 20:39:47 [INFO] Robot:_log_info:1389 - 關節速度設定為: 50
+2025-07-22 20:39:47 [INFO] Robot:_log_info:1389 - 關節運動到點位 standby: {'x': 223.14, 'y': 189.28, 'z': 238.86, 'r': 83.37}
+2025-07-22 20:39:47 [INFO] Robot:_log_info:1389 - 運動同步完成
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 - 開始震動進料控制
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 - 震動進料參數:
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 -   DO4持續時間: 2.0秒
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 -   DO1延遲百分比: 30%
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 -   DO1實際延遲: 0.60秒
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 -   DO1脈衝次數: 1次
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 - 啟動DO4投料使能
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 - DO4將持續2.0秒
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 - DO1等待延遲0.60秒
+2025-07-22 20:39:47 [INFO] Robot:_log_info:929 - 等待震動進料完成 (預計2.5秒)
+2025-07-22 20:39:48 [INFO] Robot:_log_info:929 - DO1開始執行1次脈衝
+2025-07-22 20:39:48 [INFO] Robot:_log_info:929 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-22 20:39:48 [INFO] Robot:_log_info:929 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-22 20:39:48 [INFO] Robot:_log_info:929 - DO1脈衝控制完成
+2025-07-22 20:39:49 [INFO] Robot:_log_info:929 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-22 20:39:49 [INFO] Robot:_log_info:929 - 確保所有DO輸出關閉
+2025-07-22 20:39:49 [INFO] Robot:_log_info:929 - 震動進料完成，實際耗時: 2.53秒
+2025-07-22 20:39:49 [ERROR] Robot:_log_error:1403 - 找不到點位: vp_topside
+2025-07-22 20:39:49 [INFO] Robot:_log_info:1389 - 運動同步完成
+2025-07-22 20:39:49 [INFO] Robot:_log_info:1389 - 關節運動到點位 standby: {'x': 223.14, 'y': 189.28, 'z': 238.86, 'r': 83.37}
+2025-07-22 20:39:50 [INFO] Robot:_log_info:1389 - 運動同步完成
+2025-07-22 20:39:50 [INFO] Robot:_log_info:929 - 開始斷開所有系統連接
+2025-07-22 20:39:52 [INFO] Robot:_log_info:1389 - 機械臂下使能成功
+2025-07-22 20:39:52 [INFO] Robot:_log_info:1389 - Dobot連接已斷開
+2025-07-22 20:39:52 [INFO] Robot:_log_info:929 - 所有系統連接已斷開
+2025-07-22 20:40:35 [INFO] Robot:_log_info:929 - Robot類別初始化開始
+2025-07-22 20:40:35 [INFO] Robot:_log_info:929 - 開始初始化所有子系統
+2025-07-22 20:40:35 [INFO] Robot:_log_info:929 - 正在初始化CCD1視覺系統...
+2025-07-22 20:40:37 [INFO] Robot:_log_info:929 - CCD1視覺系統初始化成功
+2025-07-22 20:40:37 [INFO] Robot:_log_info:929 - 正在初始化CCD3角度檢測系統...
+2025-07-22 20:40:38 [INFO] Robot:_log_info:929 - CCD3角度檢測系統初始化成功
+2025-07-22 20:40:38 [INFO] Robot:_log_info:929 - 正在初始化震動盤系統...
+2025-07-22 20:40:38 [INFO] Robot:_log_info:929 - 震動盤系統初始化成功
+2025-07-22 20:40:38 [INFO] Robot:_log_info:929 - 正在初始化夾爪系統...
+2025-07-22 20:40:40 [INFO] Robot:_log_info:929 - 夾爪系統初始化成功
+2025-07-22 20:40:40 [INFO] Robot:_log_info:929 - 正在初始化Dobot機械臂...
+2025-07-22 20:40:40 [INFO] Robot:_log_info:1389 - Dobot連接成功: 192.168.1.6
+2025-07-22 20:40:41 [INFO] Robot:_log_info:1389 - 機械臂使能成功
+2025-07-22 20:40:41 [INFO] Robot:_log_info:1389 - 機械臂自動使能成功
+2025-07-22 20:40:41 [INFO] Robot:_log_info:929 - Dobot機械臂初始化成功
+2025-07-22 20:40:41 [INFO] Robot:_log_info:1389 - 碰撞檢測等級設定為: 3
+2025-07-22 20:40:41 [INFO] Robot:_log_info:929 - 碰撞檢測等級設置為: 3
+2025-07-22 20:40:41 [INFO] Robot:_log_info:929 - 系統初始化完成: 5/5 個子系統成功
+2025-07-22 20:40:46 [INFO] Robot:_log_info:929 - CCD1檢測成功: {0: 13, 1: 22}
+2025-07-22 20:40:46 [INFO] Robot:_log_info:929 - 使用上次CCD1檢測結果獲取座標
+2025-07-22 20:40:46 [INFO] Robot:_log_info:929 - CCD1座標獲取成功: 像素座標2類
+2025-07-22 20:40:46 [INFO] Robot:_log_info:929 - CCD1模型切換成功: 1
+2025-07-22 20:40:46 [INFO] Robot:_log_info:929 - CCD3角度檢測成功: 20.06°
+2025-07-22 20:40:46 [INFO] Robot:_log_info:929 - CCD3中心點檢測成功: (1168, 993)
+2025-07-22 20:40:46 [INFO] Robot:_log_info:929 - 震動盤背光設定成功: 開啟, 亮度50
+2025-07-22 20:40:47 [INFO] Robot:_log_info:929 - 震動盤啟動成功: vertical, 強度60, 頻率100Hz
+2025-07-22 20:40:50 [INFO] Robot:_log_info:929 - 震動盤停止成功
+2025-07-22 20:40:50 [INFO] Robot:_log_info:929 - 夾爪快速開啟成功
+2025-07-22 20:40:51 [ERROR] Robot:_log_error:944 - 夾爪智能夾取失敗: 420
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - 夾爪智能釋放成功: 470
+2025-07-22 20:40:53 [INFO] Robot:_log_info:1389 - 關節速度設定為: 50
+2025-07-22 20:40:53 [INFO] Robot:_log_info:1389 - 關節運動到點位 standby: {'x': 223.14, 'y': 189.28, 'z': 238.86, 'r': 83.37}
+2025-07-22 20:40:53 [INFO] Robot:_log_info:1389 - 運動同步完成
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - 開始震動進料控制
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - 震動進料參數:
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 -   DO4持續時間: 2.0秒
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 -   DO1延遲百分比: 30%
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 -   DO1實際延遲: 0.60秒
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 -   DO1脈衝次數: 1次
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - 啟動DO4投料使能
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - DO4將持續2.0秒
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - DO1等待延遲0.60秒
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - 等待震動進料完成 (預計2.5秒)
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - DO1開始執行1次脈衝
+2025-07-22 20:40:53 [INFO] Robot:_log_info:929 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-22 20:40:54 [INFO] Robot:_log_info:929 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-22 20:40:54 [INFO] Robot:_log_info:929 - DO1脈衝控制完成
+2025-07-22 20:40:55 [INFO] Robot:_log_info:929 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-22 20:40:55 [INFO] Robot:_log_info:929 - 確保所有DO輸出關閉
+2025-07-22 20:40:55 [INFO] Robot:_log_info:929 - 震動進料完成，實際耗時: 2.53秒
+2025-07-22 20:40:55 [INFO] Robot:_log_info:1389 - 關節運動到點位 VP_TOPSIDE: {'x': -25.23, 'y': 291.51, 'z': 238.86, 'r': 137.11}
+2025-07-22 20:40:57 [INFO] Robot:_log_info:1389 - 運動同步完成
+2025-07-22 20:40:57 [INFO] Robot:_log_info:1389 - 關節運動到點位 standby: {'x': 223.14, 'y': 189.28, 'z': 238.86, 'r': 83.37}
+2025-07-22 20:40:58 [INFO] Robot:_log_info:1389 - 運動同步完成
+2025-07-22 20:40:58 [INFO] Robot:_log_info:929 - 開始斷開所有系統連接
+2025-07-22 20:41:00 [INFO] Robot:_log_info:1389 - 機械臂下使能成功
+2025-07-22 20:41:00 [INFO] Robot:_log_info:1389 - Dobot連接已斷開
+2025-07-22 20:41:00 [INFO] Robot:_log_info:929 - 所有系統連接已斷開
+2025-07-22 20:46:41 [INFO] Robot:_log_info:929 - Robot類別初始化開始
+2025-07-22 20:46:41 [INFO] Robot:_log_info:929 - 開始初始化所有子系統
+2025-07-22 20:46:41 [INFO] Robot:_log_info:929 - 正在初始化CCD1視覺系統...
+2025-07-22 20:46:43 [INFO] Robot:_log_info:929 - CCD1視覺系統初始化成功
+2025-07-22 20:46:43 [INFO] Robot:_log_info:929 - 正在初始化CCD3角度檢測系統...
+2025-07-22 20:46:44 [INFO] Robot:_log_info:929 - CCD3角度檢測系統初始化成功
+2025-07-22 20:46:44 [INFO] Robot:_log_info:929 - 正在初始化震動盤系統...
+2025-07-22 20:46:44 [INFO] Robot:_log_info:929 - 震動盤系統初始化成功
+2025-07-22 20:46:44 [INFO] Robot:_log_info:929 - 正在初始化夾爪系統...
+2025-07-22 20:46:46 [INFO] Robot:_log_info:929 - 夾爪系統初始化成功
+2025-07-22 20:46:46 [INFO] Robot:_log_info:929 - 正在初始化Dobot機械臂...
+2025-07-22 20:46:46 [INFO] Robot:_log_info:1389 - Dobot連接成功: 192.168.1.6
+2025-07-22 20:46:47 [INFO] Robot:_log_info:1389 - 機械臂使能成功
+2025-07-22 20:46:47 [INFO] Robot:_log_info:1389 - 機械臂自動使能成功
+2025-07-22 20:46:47 [INFO] Robot:_log_info:929 - Dobot機械臂初始化成功
+2025-07-22 20:46:47 [INFO] Robot:_log_info:1389 - 碰撞檢測等級設定為: 3
+2025-07-22 20:46:47 [INFO] Robot:_log_info:929 - 碰撞檢測等級設置為: 3
+2025-07-22 20:46:47 [INFO] Robot:_log_info:929 - 系統初始化完成: 5/5 個子系統成功
+2025-07-22 20:46:51 [INFO] Robot:_log_info:929 - CCD1檢測成功: {0: 19, 1: 6}
+2025-07-22 20:46:51 [INFO] Robot:_log_info:929 - 使用上次CCD1檢測結果獲取座標
+2025-07-22 20:46:51 [INFO] Robot:_log_info:929 - CCD1座標獲取成功: 像素座標2類
+2025-07-22 20:46:51 [INFO] Robot:_log_info:929 - 開始斷開所有系統連接
+2025-07-22 20:46:53 [INFO] Robot:_log_info:1389 - 機械臂下使能成功
+2025-07-22 20:46:53 [INFO] Robot:_log_info:1389 - Dobot連接已斷開
+2025-07-22 20:46:53 [INFO] Robot:_log_info:929 - 所有系統連接已斷開
+2025-07-22 20:58:49 [INFO] Robot:_log_info:1404 - Robot類別初始化開始
+2025-07-22 20:58:49 [INFO] Robot:_log_info:1404 - 正在初始化CCD1視覺系統...
+2025-07-22 20:58:51 [INFO] Robot:_log_info:1404 - CCD1視覺系統初始化成功
+2025-07-22 20:58:55 [INFO] Robot:_log_info:1404 - CCD1檢測成功: {0: 19, 1: 5}
+2025-07-22 20:58:55 [INFO] Robot:_log_info:1404 - 使用上次CCD1檢測結果獲取座標
+2025-07-22 20:58:55 [INFO] Robot:_log_info:1404 - CCD1座標獲取成功: 像素座標2類
+2025-07-22 20:58:56 [INFO] Robot:_log_info:1404 - CCD1視覺系統已關閉
+2025-07-22 20:58:56 [INFO] Robot:_log_info:1404 - 開始斷開所有系統連接
+2025-07-22 20:58:56 [INFO] Robot:_log_info:1404 - 所有系統連接已斷開
+2025-07-22 21:00:15 [INFO] Robot:_log_info:1404 - Robot類別初始化開始
+2025-07-22 21:00:15 [INFO] Robot:_log_info:1404 - 正在初始化CCD1視覺系統...
+2025-07-22 21:00:17 [INFO] Robot:_log_info:1404 - CCD1視覺系統初始化成功
+2025-07-22 21:00:21 [INFO] Robot:_log_info:1404 - CCD1檢測成功: {0: 19, 1: 6}
+2025-07-22 21:00:21 [INFO] Robot:_log_info:1404 - 使用上次CCD1檢測結果獲取座標
+2025-07-22 21:00:21 [INFO] Robot:_log_info:1404 - CCD1座標獲取成功: 像素座標2類
+2025-07-22 21:00:22 [INFO] Robot:_log_info:1404 - CCD1視覺系統已關閉
+2025-07-22 21:00:22 [INFO] Robot:_log_info:1404 - 開始斷開所有系統連接
+2025-07-22 21:00:22 [INFO] Robot:_log_info:1404 - 所有系統連接已斷開
+2025-07-22 21:36:36 [INFO] Robot:_log_info:1404 - Robot類別初始化開始
+2025-07-22 21:36:36 [INFO] Robot:_log_info:1404 - 正在初始化CCD1視覺系統...
+2025-07-22 21:36:38 [INFO] Robot:_log_info:1404 - CCD1視覺系統初始化成功
+2025-07-22 21:36:38 [INFO] Robot:_log_info:1404 - 開始斷開所有系統連接
+2025-07-22 21:36:39 [INFO] Robot:_log_info:1404 - 所有系統連接已斷開
+2025-07-22 21:37:26 [INFO] Robot:_log_info:1404 - Robot類別初始化開始
+2025-07-22 21:37:26 [INFO] Robot:_log_info:1404 - 正在初始化CCD1視覺系統...
+2025-07-22 21:37:28 [INFO] Robot:_log_info:1404 - CCD1視覺系統初始化成功
+2025-07-22 21:37:32 [ERROR] Robot:_log_error:1419 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-22 21:37:32 [INFO] Robot:_log_info:1404 - 使用上次CCD1檢測結果獲取座標
+2025-07-22 21:37:32 [INFO] Robot:_log_info:1404 - CCD1座標獲取成功: 像素座標2類
+2025-07-22 21:37:33 [INFO] Robot:_log_info:1404 - CCD1視覺系統已關閉
+2025-07-22 21:37:33 [INFO] Robot:_log_info:1404 - 開始斷開所有系統連接
+2025-07-22 21:37:33 [INFO] Robot:_log_info:1404 - 所有系統連接已斷開
+2025-07-22 21:38:41 [INFO] Robot:_log_info:1404 - Robot類別初始化開始
+2025-07-22 21:38:41 [INFO] Robot:_log_info:1404 - 正在初始化CCD1視覺系統...
+2025-07-22 21:38:43 [INFO] Robot:_log_info:1404 - CCD1視覺系統初始化成功
+2025-07-22 21:38:47 [ERROR] Robot:_log_error:1419 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-22 21:38:47 [INFO] Robot:_log_info:1404 - 使用上次CCD1檢測結果獲取座標
+2025-07-22 21:38:47 [INFO] Robot:_log_info:1404 - CCD1座標獲取成功: 像素座標2類
+2025-07-22 21:38:48 [INFO] Robot:_log_info:1404 - CCD1視覺系統已關閉
+2025-07-22 21:38:48 [INFO] Robot:_log_info:1404 - 開始斷開所有系統連接
+2025-07-22 21:38:48 [INFO] Robot:_log_info:1404 - 所有系統連接已斷開

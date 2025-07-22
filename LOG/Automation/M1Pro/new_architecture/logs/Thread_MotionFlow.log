@@ -1,9 +1,0 @@
-2025-07-17 01:04:00 [INFO] Thread_MotionFlow:initialize_flows:927 - 運動Flow執行器初始化完成 (Flow1, Flow2) - DR專案版本
-2025-07-17 01:04:00 [INFO] Thread_MotionFlow:run:936 - 執行緒啟動 - 處理運動類Flow
-2025-07-17 01:04:00 [INFO] Thread_MotionFlow:start_thread:883 - 執行緒已啟動
-2025-07-17 01:04:00 [INFO] Thread_MotionFlow:run:943 - 收到運動指令，ID: 1
-2025-07-17 01:04:00 [INFO] Thread_MotionFlow:_execute_flow1:977 - 開始執行Flow1 - VP視覺抓取 (DR專案)
-2025-07-17 01:04:00 [INFO] Thread_MotionFlow:_execute_flow1:983 - 清除Flow1之前的完成狀態...
-2025-07-17 01:04:11 [ERROR] Thread_MotionFlow:_execute_flow1:1042 - Flow1執行失敗: 步驟 autoprogram_coordinates_read 執行失敗
-2025-07-17 01:05:18 [INFO] Thread_MotionFlow:stop_thread:887 - 執行緒停止信號已發送
-2025-07-17 01:05:18 [INFO] Thread_MotionFlow:run:951 - 執行緒結束

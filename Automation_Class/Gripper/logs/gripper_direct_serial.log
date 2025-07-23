@@ -131,3 +131,15 @@
 2025-07-22 22:02:22 [INFO] GripperDirect:smart_release:431 - PGC智能釋放到位置: 470
 2025-07-22 22:02:22 [INFO] GripperDirect:smart_release:445 - PGC智能釋放成功，耗時: 0.024秒
 2025-07-22 22:02:24 [INFO] GripperDirect:disconnect:254 - PGC夾爪串口連接已斷開
+2025-07-23 17:08:16 [INFO] GripperDirect:__init__:106 - PGC夾爪API初始化 - 直接串口通信模式
+2025-07-23 17:08:16 [INFO] GripperDirect:connect:213 - 正在連接PGC夾爪串口: COM3
+2025-07-23 17:08:16 [INFO] GripperDirect:connect:232 - PGC夾爪串口連接成功: COM3
+2025-07-23 17:08:16 [INFO] GripperDirect:__init__:110 - PGC夾爪連接成功
+2025-07-23 17:08:16 [INFO] GripperDirect:__init__:112 - 開始自動初始化PGC夾爪
+2025-07-23 17:08:16 [INFO] GripperDirect:initialize:343 - 開始初始化PGC夾爪
+2025-07-23 17:08:19 [INFO] GripperDirect:initialize:361 - PGC夾爪初始化成功，耗時: 3.053秒
+2025-07-23 17:08:19 [INFO] GripperDirect:__init__:115 - PGC夾爪初始化成功
+2025-07-23 17:08:22 [INFO] GripperDirect:quick_close:375 - PGC夾爪快速關閉
+2025-07-23 17:08:23 [INFO] GripperDirect:quick_close:391 - PGC快速關閉成功，耗時: 0.822秒
+2025-07-23 17:08:23 [INFO] GripperDirect:smart_release:431 - PGC智能釋放到位置: 360
+2025-07-23 17:08:23 [INFO] GripperDirect:smart_release:445 - PGC智能釋放成功，耗時: 0.363秒

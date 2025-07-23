@@ -68,317 +68,10 @@ class RobotConfig:
     vp_ip: str = "192.168.1.7"
     
     # 系統配置
-    auto_initialize: bool = True
+    auto_initialize: bool = False
     enable_logging: bool = True
     log_level: str = "INFO"
-    
-    # 錯誤處理配置
-    auto_retry_on_error: bool = True
-    max_retry_count: int = 3
-    retry_delay: float = 1.0
-    
-    # 安全配置
-    enable_collision_detection: bool = True
-    collision_level: int = 3
-    emergency_stop_timeout: float = 5.0
-
-
-class RobotPointManager:
-    """機器人點位管理器"""
-    
-    def __init__(self, points_file: str = "saved_points/robot_points.json"):
-        self.current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.points_file = os.path.join(self.current_dir, points_file)
-        self.points = {}
-        self.load_points()
-    
-    def load_points(self):
-        """載入點位數據"""
-        try:
-            if os.path.exists(self.points_file):
-                with open(self.points_file, 'r', encoding='utf-8') as f:
-                    points_data = json.load(f)
-                    
-                # 轉換為以名稱為鍵的字典
-                for point in points_data:
-                    self.points[point['name']] = point
-                    
-                print(f"已載入 {len(self.points)} 個點位")
-            else:
-                print(f"點位檔案不存在: {self.points_file}")
-                
-        except Exception as e:
-            print(f"載入點位失敗: {e}")
-    
-    def get_point(self, name: str) -> Optional[Dict[str, Any]]:
-        """根據名稱獲取點位"""
-        return self.points.get(name)
-    
-    def get_all_points(self) -> Dict[str, Dict[str, Any]]:
-        """獲取所有點位"""
-        return self.points.copy()
-    
-    def get_point_names(self) -> List[str]:
-        """獲取所有點位名稱"""
-        return list(self.points.keys())
-
-
-class Robot:
-    """生產線機器人整合控制類別"""
-    
-    def __init__(self, config: Optional[RobotConfig] = None):
-        """
-        初始化機器人控制系統
-        
-        Args:
-            config: 機器人配置，None使用預設配置
-        """
-        # 配置管理
-        self.config = config or RobotConfig()
-        
-        # 設置日誌
-        self.logger = self._setup_logging() if self.config.enable_logging else None
-        
-        # 點位管理器
-        self.point_manager = RobotPointManager()
-        
-        # 子系統實例
-        self.CCD1: Optional[CCD1VisionSystem] = None
-        self.CCD3: Optional[CCD3HeadlessDetector] = None
-        self.VP: Optional[ProductionVibrationPlate] = None
-        self.Gripper: Optional[GripperHighLevelAPI] = None
-        self.Dobot: Optional[DobotController] = None
-        
-        # 系統狀態
-        self.initialized = False
-        self.emergency_stopped = False
-        self._operation_lock = threading.RLock()
-        self._disconnected = False  # 防止重複斷開連接
-        
-        # 統計資訊
-        self.stats = {
-            'start_time': time.time(),
-            'operation_count': 0,
-            'error_count': 0,
-            'emergency_stops': 0,
-            'successful_operations': 0
-        }
-        
-        # 震動進料控制狀態
-        self._vibration_feed_active = False
-        self._vibration_feed_error = False
-        
-        self._log_info("Robot類別初始化開始")
-        
-        # 自動初始化
-        if self.config.auto_initialize:
-            self.initialize_all_systems()
-    
-    def _setup_logging(self) -> logging.Logger:
-        """設置日誌系統"""
-        log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
-        os.makedirs(log_dir, exist_ok=True)
-        
-        formatter = logging.Formatter(
-            '%(asctime)s [%(levelname)s] Robot:%(funcName)s:%(lineno)d - %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S'
-        )
-        
-        file_handler = RotatingFileHandler(
-            os.path.join(log_dir, 'robot_system.log'),
-            maxBytes=10*1024*1024,
-            backupCount=5,
-            encoding='utf-8'
-        )
-        file_handler.setFormatter(formatter)
-        
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
-        
-        logger = logging.getLogger("RobotSystem")
-        logger.setLevel(getattr(logging, self.config.log_level.upper()))
-        logger.addHandler(file_handler)
-        logger.addHandler(console_handler)
-        
-        return logger
-    
-    def initialize_all_systems(self) -> bool:
-        """初始化所有子系統"""
-        self._log_info("開始初始化所有子系統")
-        
-        success_count = 0
-        total_systems = 5
-        
-        try:
-            # 初始化CCD1視覺系統
-            if CCD1_AVAILABLE:
-                try:
-                    self._log_info("正在初始化CCD1視覺系統...")
-                    ccd1_config = CCD1VisionConfig(
-                        camera_ip=self.config.ccd1_ip,
-                        auto_retry_on_error=self.config.auto_retry_on_error,
-                        max_retry_count=self.config.max_retry_count
-                    )
-                    self.CCD1 = CCD1VisionSystem(ccd1_config)
-                    if self.CCD1.initialized:
-                        success_count += 1
-                        self._log_info("CCD1視覺系統初始化成功")
-                    else:
-                        self._log_warning("CCD1視覺系統初始化失敗")
-                except Exception as e:
-                    self._log_error(f"CCD1初始化異常: {e}")
-            else:
-                self._log_warning("CCD1模組不可用")
-            
-            # 初始化CCD3角度檢測系統
-            if CCD3_AVAILABLE:
-                try:
-                    self._log_info("正在初始化CCD3角度檢測系統...")
-                    self.CCD3 = CCD3HeadlessDetector(camera_ip=self.config.ccd3_ip)
-                    if self.CCD3.initialize_camera():
-                        success_count += 1
-                        self._log_info("CCD3角度檢測系統初始化成功")
-                    else:
-                        self._log_warning("CCD3角度檢測系統初始化失敗")
-                except Exception as e:
-                    self._log_error(f"CCD3初始化異常: {e}")
-            else:
-                self._log_warning("CCD3模組不可用")
-            
-            # 初始化震動盤系統
-            if VP_AVAILABLE:
-                try:
-                    self._log_info("正在初始化震動盤系統...")
-                    self.VP = ProductionVibrationPlate()
-                    if self.VP.connect():
-                        success_count += 1
-                        self._log_info("震動盤系統初始化成功")
-                    else:
-                        self._log_warning("震動盤系統初始化失敗")
-                except Exception as e:
-                    self._log_error(f"震動盤初始化異常: {e}")
-            else:
-                self._log_warning("VP模組不可用")
-            
-            # 初始化夾爪系統
-            if GRIPPER_AVAILABLE:
-                try:
-                    self._log_info("正在初始化夾爪系統...")
-                    self.Gripper = GripperHighLevelAPI(auto_initialize=True)
-                    if self.Gripper.is_connected():
-                        success_count += 1
-                        self._log_info("夾爪系統初始化成功")
-                    else:
-                        self._log_warning("夾爪系統初始化失敗")
-                except Exception as e:
-                    self._log_error(f"夾爪初始化異常: {e}")
-            else:
-                self._log_warning("Gripper模組不可用")
-            
-            # 初始化Dobot機械臂
-            if DOBOT_AVAILABLE:
-                try:
-                    self._log_info("正在初始化Dobot機械臂...")
-                    self.Dobot = DobotController(self.config.dobot_ip, self.point_manager, self.logger)
-                    if self.Dobot.connect():
-                        success_count += 1
-                        self._log_info("Dobot機械臂初始化成功")
-                    else:
-                        self._log_warning("Dobot機械臂初始化失敗")
-                except Exception as e:
-                    self._log_error(f"Dobot初始化異常: {e}")
-            else:
-                self._log_warning("Dobot API模組不可用")
-            
-            # 系統安全設置
-            if self.config.enable_collision_detection and self.Dobot and self.Dobot.is_connected():
-                try:
-                    self.Dobot.設定碰撞檢測等級(self.config.collision_level)
-                    self._log_info(f"碰撞檢測等級設置為: {self.config.collision_level}")
-                except Exception as e:
-                    self._log_error(f"設置碰撞檢測失敗: {e}")
-            
-            self.initialized = (success_count >= 3)  # 至少3個系統成功才算初始化成功
-            
-            self._log_info(f"系統初始化完成: {success_count}/{total_systems} 個子系統成功")
-            return self.initialized
-            
-        except Exception as e:
-            self._log_error(f"系統初始化失敗: {e}")
-            return False
-    import os
-import sys
-import time
-import threading
-import json
-import logging
-from typing import Dict, Any, Optional, Tuple, List, Union
-from dataclasses import dataclass
-from datetime import datetime
-from logging.handlers import RotatingFileHandler
-
-# 設定路徑
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
-
-# 添加各模組路徑
-sys.path.append(os.path.join(project_root, 'API'))
-sys.path.append(os.path.join(project_root, 'CCD1'))
-sys.path.append(os.path.join(project_root, 'CCD3'))
-sys.path.append(os.path.join(project_root, 'VP'))
-sys.path.append(os.path.join(project_root, 'Gripper'))
-sys.path.append(current_dir)
-
-# 導入各子系統
-try:
-    from CCD1_Headless_Vision_System import CCD1VisionSystem, CCD1VisionConfig
-    CCD1_AVAILABLE = True
-except ImportError as e:
-    print(f"CCD1模組導入失敗: {e}")
-    CCD1_AVAILABLE = False
-
-try:
-    from CCD3_Headless_Vision_System import CCD3HeadlessDetector, DetectionMethod
-    CCD3_AVAILABLE = True
-except ImportError as e:
-    print(f"CCD3模組導入失敗: {e}")
-    CCD3_AVAILABLE = False
-
-try:
-    from vibration_plate_controller import ProductionVibrationPlate
-    VP_AVAILABLE = True
-except ImportError as e:
-    print(f"VP模組導入失敗: {e}")
-    VP_AVAILABLE = False
-
-try:
-    from GripperHighLevel_DirectSerial import GripperHighLevelAPI
-    GRIPPER_AVAILABLE = True
-except ImportError as e:
-    print(f"Gripper模組導入失敗: {e}")
-    GRIPPER_AVAILABLE = False
-
-try:
-    from dobot_api import DobotApiDashboard, DobotApiMove
-    DOBOT_AVAILABLE = True
-except ImportError as e:
-    print(f"Dobot API模組導入失敗: {e}")
-    DOBOT_AVAILABLE = False
-
-
-@dataclass
-class RobotConfig:
-    """機器人配置結構"""
-    # 網路配置
-    dobot_ip: str = "192.168.1.6"
-    ccd1_ip: str = "192.168.1.8"
-    ccd3_ip: str = "192.168.1.10"
-    vp_ip: str = "192.168.1.7"
-    
-    # 系統配置 - 修改為手動初始化
-    auto_initialize: bool = False  # 改為False
-    enable_logging: bool = True
-    log_level: str = "INFO"
+    silent_mode: bool = False  # 新增靜默模式選項
     
     # 錯誤處理配置
     auto_retry_on_error: bool = True
@@ -436,17 +129,12 @@ class RobotPointManager:
     def _log_warning(self, message: str):
         print(f"[PointManager WARNING] {message}")
     
-    def _log_error(self, message: str, exc_info: bool = False):
-        """記錄錯誤"""
-        self.stats['error_count'] += 1
-        if self.logger:
-            self.logger.error(message, exc_info=exc_info)
-        else:
-            print(f"[Robot ERROR] {message}")
+    def _log_error(self, message: str):
+        print(f"[PointManager ERROR] {message}")
 
 
 class Robot:
-    """生產線機器人整合控制類別 - 支持個別子系統控制"""
+    """生產線機器人整合控制類別"""
     
     def __init__(self, config: Optional[RobotConfig] = None):
         """
@@ -457,6 +145,10 @@ class Robot:
         """
         # 配置管理
         self.config = config or RobotConfig()
+        
+        # 靜默模式處理
+        if self.config.silent_mode:
+            self._setup_silent_logging()
         
         # 設置日誌
         self.logger = self._setup_logging() if self.config.enable_logging else None
@@ -503,10 +195,38 @@ class Robot:
         
         # 自動初始化（如果啟用）
         if self.config.auto_initialize:
-            self.initialize_all_systems()
+            if self.config.silent_mode:
+                self.silent_initialize_all()
+            else:
+                self.initialize_all_systems()
+    
+    def _setup_silent_logging(self):
+        """設置完全靜默日誌模式"""
+        # 關閉根日誌記錄器
+        logging.getLogger().setLevel(logging.CRITICAL)
+        
+        # 關閉所有可能的日誌記錄器
+        silent_loggers = [
+            'CameraManager', 'CCD1VisionSystem', 'RobotSystem', 'ultralytics',
+            'PIL', 'camera_manager', 'OptimizedCameraManager', 'CCD3HeadlessDetector',
+            'ProductionVibrationPlate', 'GripperHighLevelAPI', 'DobotController',
+            'DoBot', 'ModbusClient', 'pymodbus'
+        ]
+        
+        for logger_name in silent_loggers:
+            logger = logging.getLogger(logger_name)
+            logger.setLevel(logging.CRITICAL)
+            logger.disabled = True
+        
+        # 禁用所有處理器
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
     
     def _setup_logging(self) -> logging.Logger:
         """設置日誌系統"""
+        if self.config.silent_mode:
+            return None
+            
         log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
         os.makedirs(log_dir, exist_ok=True)
         
@@ -656,7 +376,7 @@ class Robot:
                 # 設置碰撞檢測
                 if self.config.enable_collision_detection:
                     try:
-                        self.Dobot.設定碰撞檢測等級(self.config.collision_level)
+                        self.Dobot.set_collision_level(self.config.collision_level)
                         self._log_info(f"碰撞檢測等級設置為: {self.config.collision_level}")
                     except Exception as e:
                         self._log_error(f"設置碰撞檢測失敗: {e}")
@@ -750,7 +470,99 @@ class Robot:
         self._log_info(f"系統初始化完成: {success_count}/{total_systems} 個子系統成功")
         return self.initialized
     
-    def 斷開連接(self):
+    def silent_initialize_all(self) -> bool:
+        """靜默初始化所有子系統"""
+        with open(os.devnull, 'w') as devnull:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = devnull
+            sys.stderr = devnull
+            
+            try:
+                success_count = 0
+                
+                # 初始化CCD1視覺系統
+                if self._silent_init_ccd1():
+                    success_count += 1
+                
+                # 初始化CCD3角度檢測系統
+                if self._silent_init_ccd3():
+                    success_count += 1
+                
+                # 初始化震動盤系統
+                if self._silent_init_vp():
+                    success_count += 1
+                
+                # 初始化夾爪系統
+                if self._silent_init_gripper():
+                    success_count += 1
+                
+                # 初始化Dobot機械臂
+                if self._silent_init_dobot():
+                    success_count += 1
+                
+                self.initialized = (success_count >= 3)
+                return self.initialized
+                
+            finally:
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+    
+    def _silent_init_ccd1(self) -> bool:
+        """靜默初始化CCD1視覺系統"""
+        try:
+            success = self.init_ccd1()
+            if success and self.CCD1:
+                # 調整記憶體閾值防止模型被清理
+                if hasattr(self.CCD1, 'config'):
+                    self.CCD1.config.memory_warning_threshold = 300.0
+                    self.CCD1.config.force_gc_frequency = 20
+                    self.CCD1.config.memory_cleanup_frequency = 50
+                
+                if (hasattr(self.CCD1, 'yolo_detector') and 
+                    self.CCD1.yolo_detector and 
+                    hasattr(self.CCD1.yolo_detector, 'config')):
+                    self.CCD1.yolo_detector.config.memory_warning_threshold = 300.0
+                
+                # 首次檢測完成模型加載
+                first_result = self.CCD1.detect_objects()
+                if first_result.success:
+                    # 重置記憶體基準
+                    self.CCD1.reset_memory_baseline()
+                    return True
+            return False
+        except Exception:
+            return False
+    
+    def _silent_init_ccd3(self) -> bool:
+        """靜默初始化CCD3角度檢測系統"""
+        try:
+            return self.init_ccd3()
+        except Exception:
+            return False
+    
+    def _silent_init_vp(self) -> bool:
+        """靜默初始化震動盤系統"""
+        try:
+            return self.init_vp()
+        except Exception:
+            return False
+    
+    def _silent_init_gripper(self) -> bool:
+        """靜默初始化夾爪系統"""
+        try:
+            return self.init_gripper()
+        except Exception:
+            return False
+    
+    def _silent_init_dobot(self) -> bool:
+        """靜默初始化Dobot機械臂"""
+        try:
+            return self.init_dobot()
+        except Exception:
+            return False
+    
+    def disconnect_all(self):
         """斷開所有連接並清理資源"""
         if self._disconnected:
             return
@@ -770,9 +582,82 @@ class Robot:
             
         except Exception as e:
             self._log_error(f"斷開連接失敗: {e}")
-    # ==================== CCD1視覺系統方法 ====================
     
-    def CCD1_獲得可用數量(self) -> Dict[int, int]:
+    # ==================== CCD1視覺檢測接口 (英文方法) ====================
+    
+    def get_detections(self) -> Dict[str, Any]:
+        """獲取DR_F和STACK的數量與座標"""
+        if not self.subsystem_status['CCD1']:
+            return {
+                'dr_f_count': 0,
+                'stack_count': 0,
+                'dr_f_coords': [],
+                'stack_coords': []
+            }
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        # 檢查模型是否被清理，如果是則重新載入
+                        if (hasattr(self.CCD1, 'yolo_detector') and
+                            hasattr(self.CCD1.yolo_detector, 'model_manager') and 
+                            not self.CCD1.yolo_detector.model_manager.is_model_loaded()):
+                            self.CCD1.yolo_detector.model_manager.load_model(1)
+                        
+                        result = self.CCD1.detect_objects()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                result = self.CCD1.detect_objects()
+            
+            if result.success:
+                detections = result.detections_by_class
+                coords = result.coordinates_by_class if hasattr(result, 'coordinates_by_class') else {}
+                
+                return {
+                    'dr_f_count': detections.get(0, 0),
+                    'stack_count': detections.get(1, 0), 
+                    'dr_f_coords': coords.get(0, []),
+                    'stack_coords': coords.get(1, [])
+                }
+            else:
+                return {
+                    'dr_f_count': 0,
+                    'stack_count': 0,
+                    'dr_f_coords': [],
+                    'stack_coords': []
+                }
+        except Exception:
+            return {
+                'dr_f_count': 0,
+                'stack_count': 0,
+                'dr_f_coords': [],
+                'stack_coords': []
+            }
+    
+    def switch_ccd1_model(self, model_id: int) -> bool:
+        """切換CCD1檢測模型"""
+        if not self.subsystem_status['CCD1']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.CCD1.switch_yolo_model(model_id)
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.CCD1.switch_yolo_model(model_id)
+        except Exception:
+            return False
+    
+    def get_ccd1_counts(self) -> Dict[int, int]:
         """獲取CCD1檢測到的物件數量"""
         try:
             if not self.CCD1:
@@ -791,7 +676,7 @@ class Robot:
             self._log_error(f"CCD1獲得數量失敗: {e}")
             return {}
     
-    def CCD1_獲得可用物件座標(self, use_last_result: bool = True) -> Dict[int, List[Tuple[float, float]]]:
+    def get_ccd1_coordinates(self, use_last_result: bool = True) -> Dict[str, Dict[int, List[Tuple[float, float]]]]:
         """
         獲取CCD1檢測到的物件座標
         
@@ -830,66 +715,51 @@ class Robot:
             self._log_error(f"CCD1獲得座標失敗: {e}")
             return {}
     
-    def CCD1_切換模型(self, model_id: int) -> bool:
-        """切換CCD1檢測模型"""
-        try:
-            if not self.CCD1:
-                self._log_error("CCD1系統未初始化")
-                return False
-            
-            success = self.CCD1.switch_yolo_model(model_id)
-            if success:
-                self._log_info(f"CCD1模型切換成功: {model_id}")
-            else:
-                self._log_error(f"CCD1模型切換失敗: {model_id}")
-            
-            return success
-            
-        except Exception as e:
-            self._log_error(f"CCD1切換模型失敗: {e}")
-            return False
+    # ==================== CCD3角度檢測接口 (英文方法) ====================
     
-    # ==================== CCD3角度檢測方法 ====================
-    
-    def CCD3_獲得角度(self) -> Optional[float]:
+    def get_angle(self) -> float:
         """獲取CCD3檢測到的角度"""
+        if not self.subsystem_status['CCD3']:
+            return 0.0
+        
         try:
-            if not self.CCD3:
-                self._log_error("CCD3系統未初始化")
-                return None
-            
-            result = self.CCD3.capture_and_detect()
-            if result.success:
-                self._log_info(f"CCD3角度檢測成功: {result.angle:.2f}°")
-                return result.angle
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        result = self.CCD3.capture_and_detect()
+                        return result.angle if result.success else 0.0
+                    finally:
+                        sys.stdout = old_stdout
             else:
-                self._log_error(f"CCD3角度檢測失敗: {result.error_message}")
-                return None
-                
-        except Exception as e:
-            self._log_error(f"CCD3獲得角度失敗: {e}")
-            return None
+                result = self.CCD3.capture_and_detect()
+                return result.angle if result.success else 0.0
+        except Exception:
+            return 0.0
     
-    def CCD3_獲得中心點(self) -> Optional[Tuple[int, int]]:
+    def get_center_point(self) -> tuple:
         """獲取CCD3檢測到的中心點座標"""
+        if not self.subsystem_status['CCD3']:
+            return (0, 0)
+        
         try:
-            if not self.CCD3:
-                self._log_error("CCD3系統未初始化")
-                return None
-            
-            result = self.CCD3.capture_and_detect()
-            if result.success:
-                self._log_info(f"CCD3中心點檢測成功: {result.center}")
-                return result.center
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        result = self.CCD3.capture_and_detect()
+                        return result.center if result.success else (0, 0)
+                    finally:
+                        sys.stdout = old_stdout
             else:
-                self._log_error(f"CCD3中心點檢測失敗: {result.error_message}")
-                return None
-                
-        except Exception as e:
-            self._log_error(f"CCD3獲得中心點失敗: {e}")
-            return None
+                result = self.CCD3.capture_and_detect()
+                return result.center if result.success else (0, 0)
+        except Exception:
+            return (0, 0)
     
-    def CCD3_設定檢測方法(self, method: DetectionMethod) -> bool:
+    def set_ccd3_detection_method(self, method: DetectionMethod) -> bool:
         """設定CCD3檢測方法"""
         try:
             if not self.CCD3:
@@ -908,170 +778,295 @@ class Robot:
             self._log_error(f"CCD3設定檢測方法失敗: {e}")
             return False
     
-    # ==================== 震動盤控制方法 ====================
+    # ==================== 震動盤控制接口 (英文方法) ====================
     
-    def VP_開始震動(self, mode: str, intensity: int, frequency: int = 100, duration: float = 0) -> bool:
+    def vp_start_vibration(self, mode: str, intensity: int, frequency: int = 100, duration: float = 0) -> bool:
         """開始震動盤震動"""
-        try:
-            if not self.VP:
-                self._log_error("VP系統未初始化")
-                return False
-            
-            success = self.VP.vibrate(mode, intensity, frequency, duration)
-            if success:
-                self._log_info(f"震動盤啟動成功: {mode}, 強度{intensity}, 頻率{frequency}Hz")
-            else:
-                self._log_error(f"震動盤啟動失敗")
-            
-            return success
-            
-        except Exception as e:
-            self._log_error(f"VP開始震動失敗: {e}")
+        if not self.subsystem_status['VP']:
             return False
-    
-    def VP_停止震動(self) -> bool:
-        """停止震動盤震動"""
-        try:
-            if not self.VP:
-                self._log_error("VP系統未初始化")
-                return False
-            
-            success = self.VP.stop()
-            if success:
-                self._log_info("震動盤停止成功")
-            else:
-                self._log_error("震動盤停止失敗")
-            
-            return success
-            
-        except Exception as e:
-            self._log_error(f"VP停止震動失敗: {e}")
-            return False
-    
-    def VP_設定背光(self, enabled: bool, brightness: int = 50) -> bool:
-        """設定震動盤背光"""
-        try:
-            if not self.VP:
-                self._log_error("VP系統未初始化")
-                return False
-            
-            success = True
-            if brightness != 50:  # 只有亮度不是預設值才設定
-                success = self.VP.set_backlight_brightness(brightness)
-            
-            if success:
-                success = self.VP.set_backlight(enabled)
-            
-            if success:
-                self._log_info(f"震動盤背光設定成功: {'開啟' if enabled else '關閉'}, 亮度{brightness}")
-            else:
-                self._log_error("震動盤背光設定失敗")
-            
-            return success
-            
-        except Exception as e:
-            self._log_error(f"VP設定背光失敗: {e}")
-            return False
-    
-    # ==================== 夾爪控制方法 ====================
-    
-    def Gripper_快速關閉(self) -> bool:
-        """夾爪快速關閉"""
-        try:
-            if not self.Gripper:
-                self._log_error("Gripper系統未初始化")
-                return False
-            
-            success = self.Gripper.quick_close()
-            if success:
-                self._log_info("夾爪快速關閉成功")
-            else:
-                self._log_error("夾爪快速關閉失敗")
-            
-            return success
-            
-        except Exception as e:
-            self._log_error(f"Gripper快速關閉失敗: {e}")
-            return False
-    
-    def Gripper_快速開啟(self) -> bool:
-        """夾爪快速開啟"""
-        try:
-            if not self.Gripper:
-                self._log_error("Gripper系統未初始化")
-                return False
-            
-            success = self.Gripper.quick_open()
-            if success:
-                self._log_info("夾爪快速開啟成功")
-            else:
-                self._log_error("夾爪快速開啟失敗")
-            
-            return success
-            
-        except Exception as e:
-            self._log_error(f"Gripper快速開啟失敗: {e}")
-            return False
-    
-    def Gripper_智能夾取(self, target_position: int = 420) -> bool:
-        """夾爪智能夾取"""
-        try:
-            if not self.Gripper:
-                self._log_error("Gripper系統未初始化")
-                return False
-            
-            success = self.Gripper.smart_grip(target_position)
-            if success:
-                self._log_info(f"夾爪智能夾取成功: {target_position}")
-            else:
-                self._log_error(f"夾爪智能夾取失敗: {target_position}")
-            
-            return success
-            
-        except Exception as e:
-            self._log_error(f"Gripper智能夾取失敗: {e}")
-            return False
-    
-    def Gripper_智能釋放(self, release_position: int = 470) -> bool:
-        """夾爪智能釋放"""
-        try:
-            if not self.Gripper:
-                self._log_error("Gripper系統未初始化")
-                return False
-            
-            success = self.Gripper.smart_release(release_position)
-            if success:
-                self._log_info(f"夾爪智能釋放成功: {release_position}")
-            else:
-                self._log_error(f"夾爪智能釋放失敗: {release_position}")
-            
-            return success
-            
-        except Exception as e:
-            self._log_error(f"Gripper智能釋放失敗: {e}")
-            return False
-    
-    # ==================== 震動進料控制方法 ====================
-    
-    def 震動進料(self, 
-                feed_duration: float = 2.0,
-                pulse_delay_percent: int = 30, 
-                pulse_high_time: float = 0.3,
-                pulse_low_time: float = 0.3,
-                pulse_count: int = 1) -> bool:
-        """
-        DO4+DO1震動進料控制
         
-        Args:
-            feed_duration: DO4持續時間 (秒)
-            pulse_delay_percent: DO1延遲百分比 (0-100)
-            pulse_high_time: DO1 HIGH持續時間 (秒)
-            pulse_low_time: DO1 LOW持續時間 (秒)
-            pulse_count: DO1脈衝次數
-            
-        Returns:
-            bool: 執行是否成功
-        """
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.VP.vibrate(mode, intensity, frequency, duration)
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.VP.vibrate(mode, intensity, frequency, duration)
+        except Exception:
+            return False
+    
+    def vp_stop_vibration(self) -> bool:
+        """停止震動盤震動"""
+        if not self.subsystem_status['VP']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.VP.stop()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.VP.stop()
+        except Exception:
+            return False
+    
+    def vp_set_backlight(self, enabled: bool, brightness: int = 50) -> bool:
+        """設定震動盤背光"""
+        if not self.subsystem_status['VP']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        success = True
+                        if brightness != 50:
+                            success = self.VP.set_backlight_brightness(brightness)
+                        if success:
+                            success = self.VP.set_backlight(enabled)
+                        return success
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                success = True
+                if brightness != 50:
+                    success = self.VP.set_backlight_brightness(brightness)
+                if success:
+                    success = self.VP.set_backlight(enabled)
+                return success
+        except Exception:
+            return False
+    
+    # ==================== 夾爪控制接口 (英文方法) ====================
+    
+    def gripper_quick_close(self) -> bool:
+        """夾爪快速關閉"""
+        if not self.subsystem_status['Gripper']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Gripper.quick_close()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Gripper.quick_close()
+        except Exception:
+            return False
+    
+    def gripper_quick_open(self) -> bool:
+        """夾爪快速開啟"""
+        if not self.subsystem_status['Gripper']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Gripper.quick_open()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Gripper.quick_open()
+        except Exception:
+            return False
+    
+    def gripper_smart_grip(self, target_position: int = 420) -> bool:
+        """夾爪智能夾取"""
+        if not self.subsystem_status['Gripper']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Gripper.smart_grip(target_position)
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Gripper.smart_grip(target_position)
+        except Exception:
+            return False
+    
+    def gripper_smart_release(self, release_position: int = 470) -> bool:
+        """夾爪智能釋放"""
+        if not self.subsystem_status['Gripper']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Gripper.smart_release(release_position)
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Gripper.smart_release(release_position)
+        except Exception:
+            return False
+    
+    # ==================== Dobot機械臂控制接口 (英文方法) ====================
+    
+    def dobot_enable(self) -> bool:
+        """使能機械臂"""
+        if not self.subsystem_status['Dobot']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Dobot.enable_robot()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Dobot.enable_robot()
+        except Exception:
+            return False
+    
+    def dobot_disable(self) -> bool:
+        """下使能機械臂"""
+        if not self.subsystem_status['Dobot']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Dobot.disable_robot()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Dobot.disable_robot()
+        except Exception:
+            return False
+    
+    def dobot_movj_point(self, point_name: str) -> bool:
+        """關節運動到指定點位"""
+        if not self.subsystem_status['Dobot']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Dobot.joint_movj(point_name)
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Dobot.joint_movj(point_name)
+        except Exception:
+            return False
+    
+    def dobot_movl_point(self, point_name: str) -> bool:
+        """直線運動到指定點位"""
+        if not self.subsystem_status['Dobot']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Dobot.movl_point(point_name)
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Dobot.movl_point(point_name)
+        except Exception:
+            return False
+    
+    def dobot_movj_coord(self, x: float, y: float, z: float, r: float) -> bool:
+        """關節運動到指定座標"""
+        if not self.subsystem_status['Dobot']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Dobot.movj_coord(x, y, z, r)
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Dobot.movj_coord(x, y, z, r)
+        except Exception:
+            return False
+    
+    def dobot_sync(self) -> bool:
+        """等待運動完成"""
+        if not self.subsystem_status['Dobot']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self.Dobot.sync()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self.Dobot.sync()
+        except Exception:
+            return False
+    
+    def vibration_feed(self, feed_duration: float = 2.0, pulse_delay_percent: int = 30,
+                      pulse_high_time: float = 0.3, pulse_low_time: float = 0.3, 
+                      pulse_count: int = 1) -> bool:
+        """震動進料控制"""
+        if not self.subsystem_status['Dobot']:
+            return False
+        
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self._vibration_feed_control(feed_duration, pulse_delay_percent, 
+                                                         pulse_high_time, pulse_low_time, pulse_count)
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self._vibration_feed_control(feed_duration, pulse_delay_percent, 
+                                                 pulse_high_time, pulse_low_time, pulse_count)
+        except Exception:
+            return False
+    
+    def _vibration_feed_control(self, feed_duration: float, pulse_delay_percent: int, 
+                               pulse_high_time: float, pulse_low_time: float, pulse_count: int) -> bool:
+        """震動進料控制實現"""
         try:
             self._log_info(f"開始震動進料控制")
             
@@ -1204,28 +1199,39 @@ class Robot:
             self._log_error(f"DO1延遲脈衝控制失敗: {e}")
             self._vibration_feed_error = True
     
-    def 停止震動進料(self) -> bool:
-        """緊急停止震動進料"""
-        try:
-            self._log_warning("緊急停止震動進料")
-            self._vibration_feed_active = False
-            
-            if self.Dobot and self.Dobot.is_connected():
-                self.Dobot.dashboard.DOExecute(4, 0)  # 關閉DO4
-                self.Dobot.dashboard.DOExecute(1, 0)  # 關閉DO1
-                self._log_info("震動進料已緊急停止")
-                return True
-            else:
-                self._log_error("機械臂未連接，無法停止震動進料")
-                return False
-                
-        except Exception as e:
-            self._log_error(f"停止震動進料失敗: {e}")
-            return False
-
-    # ==================== 系統狀態和控制方法 ====================
+    # ==================== 系統狀態和控制接口 (英文方法) ====================
     
-    def 緊急停止(self) -> bool:
+    def get_system_status(self) -> dict:
+        """獲取系統狀態"""
+        return {
+            'initialized_systems': self.subsystem_status.copy(),
+            'total_initialized': sum(self.subsystem_status.values()),
+            'available_systems': {
+                'CCD1': self.CCD1 is not None,
+                'CCD3': self.CCD3 is not None,
+                'VP': self.VP is not None,
+                'Gripper': self.Gripper is not None,
+                'Dobot': self.Dobot is not None
+            }
+        }
+    
+    def emergency_stop(self) -> bool:
+        """緊急停止所有系統"""
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self._emergency_stop_all()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self._emergency_stop_all()
+        except Exception:
+            return False
+    
+    def _emergency_stop_all(self) -> bool:
         """執行緊急停止"""
         try:
             self._log_warning("執行緊急停止")
@@ -1237,7 +1243,7 @@ class Robot:
             # 停止機械臂
             if self.Dobot:
                 try:
-                    if self.Dobot.緊急停止():
+                    if self.Dobot.emergency_stop():
                         success_count += 1
                 except Exception as e:
                     self._log_error(f"機械臂緊急停止失敗: {e}")
@@ -1265,7 +1271,23 @@ class Robot:
             self._log_error(f"緊急停止失敗: {e}")
             return False
     
-    def 清除緊急停止(self) -> bool:
+    def clear_emergency_stop(self) -> bool:
+        """清除緊急停止狀態"""
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        return self._clear_emergency_stop()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                return self._clear_emergency_stop()
+        except Exception:
+            return False
+    
+    def _clear_emergency_stop(self) -> bool:
         """清除緊急停止狀態"""
         try:
             if not self.emergency_stopped:
@@ -1274,7 +1296,7 @@ class Robot:
             
             # 清除機械臂錯誤
             if self.Dobot:
-                self.Dobot.清除錯誤()
+                self.Dobot.clear_error()
             
             self.emergency_stopped = False
             self._log_info("緊急停止狀態已清除")
@@ -1283,6 +1305,27 @@ class Robot:
         except Exception as e:
             self._log_error(f"清除緊急停止失敗: {e}")
             return False
+    
+    def close(self):
+        """關閉系統所有子模組"""
+        try:
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = devnull
+                    sys.stderr = devnull
+                    
+                    try:
+                        self.disconnect_all()
+                    finally:
+                        sys.stdout = old_stdout
+                        sys.stderr = old_stderr
+            else:
+                self.disconnect_all()
+        except:
+            pass
+    
     def get_subsystem_status(self) -> Dict[str, bool]:
         """獲取子系統初始化狀態"""
         return self.subsystem_status.copy()
@@ -1294,14 +1337,15 @@ class Robot:
     def get_initialized_count(self) -> int:
         """獲取已初始化的子系統數量"""
         return sum(self.subsystem_status.values())
-    def 獲得系統狀態(self) -> Dict[str, Any]:
+    
+    def get_complete_system_status(self) -> Dict[str, Any]:
         """獲取系統整體狀態"""
         try:
             status = {
                 'initialized': self.initialized,
                 'emergency_stopped': self.emergency_stopped,
-                'subsystem_status': self.subsystem_status.copy(),  # 新增
-                'initialized_count': self.get_initialized_count(),  # 新增
+                'subsystem_status': self.subsystem_status.copy(),
+                'initialized_count': self.get_initialized_count(),
                 'statistics': self.stats.copy(),
                 'subsystems': {}
             }
@@ -1337,7 +1381,7 @@ class Robot:
             # Dobot狀態
             if self.Dobot:
                 try:
-                    status['subsystems']['Dobot'] = self.Dobot.獲得狀態()
+                    status['subsystems']['Dobot'] = self.Dobot.get_status()
                 except Exception as e:
                     status['subsystems']['Dobot'] = {'error': str(e)}
             
@@ -1347,89 +1391,38 @@ class Robot:
             self._log_error(f"獲取系統狀態失敗: {e}")
             return {'error': str(e)}
     
-    def 重新連接所有系統(self) -> bool:
-        """重新連接所有子系統"""
-        self._log_info("開始重新連接所有系統")
-        return self.initialize_all_systems()
-    
-    def 斷開連接(self):
-        """斷開所有連接並清理資源"""
-        if self._disconnected:
-            return
-            
-        try:
-            self._log_info("開始斷開所有系統連接")
-            self._disconnected = True
-            
-            # 斷開各子系統
-            if self.CCD1:
-                try:
-                    self.CCD1.disconnect()
-                except Exception as e:
-                    self._log_error(f"CCD1斷開失敗: {e}")
-            
-            if self.CCD3:
-                try:
-                    self.CCD3.disconnect()
-                except Exception as e:
-                    self._log_error(f"CCD3斷開失敗: {e}")
-            
-            if self.VP:
-                try:
-                    self.VP.disconnect()
-                except Exception as e:
-                    self._log_error(f"VP斷開失敗: {e}")
-            
-            if self.Gripper:
-                try:
-                    self.Gripper.disconnect()
-                except Exception as e:
-                    self._log_error(f"Gripper斷開失敗: {e}")
-            
-            if self.Dobot:
-                try:
-                    self.Dobot.disconnect()
-                except Exception as e:
-                    self._log_error(f"Dobot斷開失敗: {e}")
-            
-            self.initialized = False
-            self._log_info("所有系統連接已斷開")
-            
-        except Exception as e:
-            self._log_error(f"斷開連接失敗: {e}")
-    
     def _log_info(self, message: str):
         """記錄資訊"""
         if self.logger:
             self.logger.info(message)
-        else:
+        elif not self.config.silent_mode:
             print(f"[Robot INFO] {message}")
     
     def _log_warning(self, message: str):
         """記錄警告"""
         if self.logger:
             self.logger.warning(message)
-        else:
+        elif not self.config.silent_mode:
             print(f"[Robot WARNING] {message}")
     
-    def _log_error(self, message: str):
+    def _log_error(self, message: str, exc_info: bool = False):
         """記錄錯誤"""
         self.stats['error_count'] += 1
         if self.logger:
-            self.logger.error(message)
-        else:
+            self.logger.error(message, exc_info=exc_info)
+        elif not self.config.silent_mode:
             print(f"[Robot ERROR] {message}")
     
     def __del__(self):
         """析構函數"""
         try:
             if not self._disconnected:
-                self.斷開連接()
+                self.disconnect_all()
         except:
             pass
 
 
-# ==================== Dobot控制器包裝類 ====================
+# ==================== Dobot控制器包裝類 (英文方法版本) ====================
 
 class DobotController:
     """Dobot機械臂控制器包裝類"""
@@ -1469,7 +1462,7 @@ class DobotController:
                 self._log_info(f"Dobot連接成功: {self.ip}")
                 
                 # 自動使能
-                if self.使能機械臂():
+                if self.enable_robot():
                     self._log_info("機械臂自動使能成功")
                 
                 return True
@@ -1485,7 +1478,7 @@ class DobotController:
         """斷開Dobot連接"""
         try:
             if self.enabled:
-                self.下使能機械臂()
+                self.disable_robot()
             
             if self.dashboard:
                 self.dashboard.close()
@@ -1505,9 +1498,9 @@ class DobotController:
         """檢查連接狀態"""
         return self.connected
     
-    # ==================== 基本控制方法 ====================
+    # ==================== 基本控制方法 (英文版本) ====================
     
-    def 使能機械臂(self) -> bool:
+    def enable_robot(self) -> bool:
         """使能機械臂"""
         try:
             if not self.dashboard:
@@ -1526,7 +1519,7 @@ class DobotController:
             self._log_error(f"使能機械臂異常: {e}")
             return False
     
-    def 下使能機械臂(self) -> bool:
+    def disable_robot(self) -> bool:
         """下使能機械臂"""
         try:
             if not self.dashboard:
@@ -1545,7 +1538,7 @@ class DobotController:
             self._log_error(f"下使能機械臂異常: {e}")
             return False
     
-    def 清除錯誤(self) -> bool:
+    def clear_error(self) -> bool:
         """清除機械臂錯誤"""
         try:
             if not self.dashboard:
@@ -1559,7 +1552,7 @@ class DobotController:
             self._log_error(f"清除錯誤異常: {e}")
             return False
     
-    def 緊急停止(self) -> bool:
+    def emergency_stop(self) -> bool:
         """緊急停止機械臂"""
         try:
             if not self.dashboard:
@@ -1573,7 +1566,7 @@ class DobotController:
             self._log_error(f"緊急停止異常: {e}")
             return False
     
-    def 復位機械臂(self) -> bool:
+    def reset_robot(self) -> bool:
         """復位機械臂"""
         try:
             if not self.dashboard:
@@ -1587,9 +1580,9 @@ class DobotController:
             self._log_error(f"復位機械臂異常: {e}")
             return False
     
-    # ==================== 參數設定方法 ====================
+    # ==================== 參數設定方法 (英文版本) ====================
     
-    def 設定關節速度(self, speed: int) -> bool:
+    def set_joint_speed(self, speed: int) -> bool:
         """設定關節速度 (1-100)"""
         try:
             if not self.dashboard:
@@ -1605,7 +1598,7 @@ class DobotController:
             self._log_error(f"設定關節速度異常: {e}")
             return False
     
-    def 設定直線速度(self, speed: int) -> bool:
+    def set_linear_speed(self, speed: int) -> bool:
         """設定直線速度 (1-100)"""
         try:
             if not self.dashboard:
@@ -1621,7 +1614,7 @@ class DobotController:
             self._log_error(f"設定直線速度異常: {e}")
             return False
     
-    def 設定關節加速度(self, acc: int) -> bool:
+    def set_joint_acceleration(self, acc: int) -> bool:
         """設定關節加速度 (1-100)"""
         try:
             if not self.dashboard:
@@ -1637,7 +1630,7 @@ class DobotController:
             self._log_error(f"設定關節加速度異常: {e}")
             return False
     
-    def 設定直線加速度(self, acc: int) -> bool:
+    def set_linear_acceleration(self, acc: int) -> bool:
         """設定直線加速度 (1-100)"""
         try:
             if not self.dashboard:
@@ -1653,7 +1646,7 @@ class DobotController:
             self._log_error(f"設定直線加速度異常: {e}")
             return False
     
-    def 設定碰撞檢測等級(self, level: int) -> bool:
+    def set_collision_level(self, level: int) -> bool:
         """設定碰撞檢測等級 (0-5)"""
         try:
             if not self.dashboard:
@@ -1668,9 +1661,9 @@ class DobotController:
             self._log_error(f"設定碰撞檢測等級異常: {e}")
             return False
     
-    # ==================== 運動控制方法 ====================
+    # ==================== 運動控制方法 (英文版本) ====================
     
-    def JointMovJ(self, point_name: str) -> bool:
+    def joint_movj(self, point_name: str) -> bool:
         """關節運動到指定點位"""
         try:
             if not self.move:
@@ -1694,7 +1687,7 @@ class DobotController:
             self._log_error(f"關節運動異常: {e}")
             return False
     
-    def MovL(self, point_name: str) -> bool:
+    def movl_point(self, point_name: str) -> bool:
         """直線運動到指定點位"""
         try:
             if not self.move:
@@ -1718,7 +1711,7 @@ class DobotController:
             self._log_error(f"直線運動異常: {e}")
             return False
     
-    def MovJ_座標(self, x: float, y: float, z: float, r: float) -> bool:
+    def movj_coord(self, x: float, y: float, z: float, r: float) -> bool:
         """關節運動到指定座標"""
         try:
             if not self.move:
@@ -1732,7 +1725,7 @@ class DobotController:
             self._log_error(f"關節運動到座標異常: {e}")
             return False
     
-    def MovL_座標(self, x: float, y: float, z: float, r: float) -> bool:
+    def movl_coord(self, x: float, y: float, z: float, r: float) -> bool:
         """直線運動到指定座標"""
         try:
             if not self.move:
@@ -1746,7 +1739,7 @@ class DobotController:
             self._log_error(f"直線運動到座標異常: {e}")
             return False
     
-    def RelMovJ(self, offset_x: float, offset_y: float, offset_z: float, offset_r: float) -> bool:
+    def rel_movj(self, offset_x: float, offset_y: float, offset_z: float, offset_r: float) -> bool:
         """相對關節運動"""
         try:
             if not self.move:
@@ -1760,7 +1753,7 @@ class DobotController:
             self._log_error(f"相對關節運動異常: {e}")
             return False
     
-    def RelMovL(self, offset_x: float, offset_y: float, offset_z: float, offset_r: float) -> bool:
+    def rel_movl(self, offset_x: float, offset_y: float, offset_z: float, offset_r: float) -> bool:
         """相對直線運動"""
         try:
             if not self.move:
@@ -1774,7 +1767,7 @@ class DobotController:
             self._log_error(f"相對直線運動異常: {e}")
             return False
     
-    def Sync(self) -> bool:
+    def sync(self) -> bool:
         """等待運動完成"""
         try:
             if not self.move:
@@ -1788,9 +1781,9 @@ class DobotController:
             self._log_error(f"運動同步異常: {e}")
             return False
     
-    # ==================== 狀態查詢方法 ====================
+    # ==================== 狀態查詢方法 (英文版本) ====================
     
-    def 獲得當前位置(self) -> Optional[Dict[str, float]]:
+    def get_current_position(self) -> Optional[Dict[str, float]]:
         """獲得當前位置"""
         try:
             if not self.dashboard:
@@ -1808,7 +1801,7 @@ class DobotController:
             self._log_error(f"獲得當前位置異常: {e}")
             return None
     
-    def 獲得機械臂模式(self) -> Optional[str]:
+    def get_robot_mode(self) -> Optional[str]:
         """獲得機械臂模式"""
         try:
             if not self.dashboard:
@@ -1821,7 +1814,7 @@ class DobotController:
             self._log_error(f"獲得機械臂模式異常: {e}")
             return None
     
-    def 獲得錯誤ID(self) -> Optional[str]:
+    def get_error_id(self) -> Optional[str]:
         """獲得錯誤ID"""
         try:
             if not self.dashboard:
@@ -1834,15 +1827,15 @@ class DobotController:
             self._log_error(f"獲得錯誤ID異常: {e}")
             return None
     
-    def 獲得狀態(self) -> Dict[str, Any]:
+    def get_status(self) -> Dict[str, Any]:
         """獲得機械臂完整狀態"""
         try:
             status = {
                 'connected': self.connected,
                 'enabled': self.enabled,
-                'current_position': self.獲得當前位置(),
-                'robot_mode': self.獲得機械臂模式(),
-                'error_id': self.獲得錯誤ID(),
+                'current_position': self.get_current_position(),
+                'robot_mode': self.get_robot_mode(),
+                'error_id': self.get_error_id(),
                 'parameters': {
                     'speed_j': self.current_speed_j,
                     'speed_l': self.current_speed_l,
@@ -1882,120 +1875,113 @@ class DobotController:
 
 # ==================== 使用範例 ====================
 
-def optimized_example_usage():
-    """優化的使用範例 - 解決檢測到的問題"""
+def example_usage():
+    """Robot類別使用範例 - 英文版本"""
     
-    # 創建機器人實例 - 修正夾爪端口配置
+    # 建立配置 - 靜默模式
     config = RobotConfig(
         dobot_ip="192.168.1.6",
         ccd1_ip="192.168.1.8", 
         ccd3_ip="192.168.1.10",
         vp_ip="192.168.1.7",
-        auto_initialize=True
+        auto_initialize=True,
+        silent_mode=True  # 啟用靜默模式
     )
     
     robot = Robot(config)
     
     try:
-        if robot.initialized:
-            print("機器人系統初始化成功")
+        # 顯示系統狀態
+        status = robot.get_system_status()
+        print("=== System Initialization Status ===")
+        for name, initialized in status['initialized_systems'].items():
+            print(f"{name}: {'✓ Success' if initialized else '✗ Failed'}")
+        print(f"Total: {status['total_initialized']}/5 systems initialized successfully")
+        
+        # CCD1檢測範例
+        if status['initialized_systems']['CCD1']:
+            print("\n=== CCD1 Vision Detection ===")
+            result = robot.get_detections()
+            print(f"DR_F: {result['dr_f_count']} objects")
+            print(f"STACK: {result['stack_count']} objects")
+            print(f"DR_F coordinates: {len(result['dr_f_coords'])} points")
+            print(f"STACK coordinates: {len(result['stack_coords'])} points")
             
-            # 使用範例 - 優化版本
-            print("\n=== CCD1視覺檢測 (優化版本) ===")
-            
-            # 先檢測數量
-            detections = robot.CCD1_獲得可用數量()
-            print(f"檢測數量: {detections}")
-            
-            # 使用上次檢測結果獲取座標，避免重複檢測導致模型被清理
-            coordinates = robot.CCD1_獲得可用物件座標(use_last_result=True)
-            print(f"物件座標類別數: {len(coordinates)}")
-            
-            # 如果需要重新載入模型
-            if not robot.CCD1.yolo_detector.model_manager.is_model_loaded():
-                print("重新載入YOLO模型...")
-                robot.CCD1_切換模型(1)
-            
-            print("\n=== CCD3角度檢測 ===")
-            angle = robot.CCD3_獲得角度()
-            print(f"檢測角度: {angle}")
-            
-            center = robot.CCD3_獲得中心點()
-            print(f"中心點: {center}")
-            
-            print("\n=== 震動盤控制 ===")
-            robot.VP_設定背光(True, 50)
-            robot.VP_開始震動("vertical", 60, 100, 2)
-            time.sleep(3)
-            robot.VP_停止震動()
-            
-            print("\n=== 夾爪控制 (跳過COM端口問題) ===")
-            if robot.Gripper and robot.Gripper.is_connected():
-                robot.Gripper_快速開啟()
-                time.sleep(1)
-                robot.Gripper_智能夾取(420)
-                time.sleep(1)
-                robot.Gripper_智能釋放(470)
-            else:
-                print("夾爪未連接，跳過夾爪測試")
-            
-            print("\n=== 機械臂控制 ===")
-            robot.Dobot.設定關節速度(50)  # 降低速度以確保安全
-            robot.Dobot.JointMovJ("standby")
-            robot.Dobot.Sync()
-            robot.震動進料()
-            robot.Dobot.JointMovJ("VP_TOPSIDE")
-            robot.Dobot.Sync()
-            robot.Dobot.JointMovJ("standby")
-            robot.Dobot.Sync()
-            # 簡化的系統狀態檢查
-            print("\n=== 系統狀態摘要 ===")
-            status = robot.獲得系統狀態()
-            print(f"系統初始化: {status['initialized']}")
-            print(f"緊急停止狀態: {status['emergency_stopped']}")
-            print(f"錯誤計數: {status['statistics']['error_count']}")
-            
-            # 各子系統狀態
-            for name, subsystem in status['subsystems'].items():
-                if 'error' not in subsystem:
-                    if name == 'CCD1':
-                        print(f"CCD1: 相機連接={subsystem.get('camera_connected', False)}, "
-                              f"模型載入={subsystem.get('yolo_model_loaded', False)}")
-                    elif name == 'CCD3':
-                        print(f"CCD3: 初始化={subsystem.get('is_initialized', False)}, "
-                              f"成功率={subsystem.get('success_rate', 0):.1f}%")
-                    elif name == 'VP':
-                        print(f"VP: 連接={subsystem.get('connected', False)}, "
-                              f"震動中={subsystem.get('vibration_state', {}).get('is_vibrating', False)}")
-                    elif name == 'Gripper':
-                        print(f"Gripper: 連接={subsystem.get('connected', False)}")
-                    elif name == 'Dobot':
-                        print(f"Dobot: 連接={subsystem.get('connected', False)}, "
-                              f"使能={subsystem.get('enabled', False)}")
-                else:
-                    print(f"{name}: 錯誤 - {subsystem['error']}")
-            
-        else:
-            print("機器人系統初始化失敗")
+            # 顯示前3個座標
+            for i, (x, y) in enumerate(result['dr_f_coords'][:3]):
+                print(f"DR_F {i+1}: ({x:.1f}, {y:.1f})")
+        
+        # CCD3角度檢測範例
+        if status['initialized_systems']['CCD3']:
+            print("\n=== CCD3 Angle Detection ===")
+            angle = robot.get_angle()
+            center = robot.get_center_point()
+            print(f"Detected angle: {angle:.2f}°")
+            print(f"Center point: {center}")
+        
+        # 震動盤控制範例
+        if status['initialized_systems']['VP']:
+            print("\n=== Vibration Plate Control ===")
+            robot.vp_set_backlight(True, 50)
+            robot.vp_start_vibration("vertical", 60, 100, 1)
+            robot.vp_stop_vibration()
+            print("Vibration plate test completed")
+        
+        # 夾爪控制範例
+        if status['initialized_systems']['Gripper']:
+            print("\n=== Gripper Control ===")
+            robot.gripper_quick_open()
+            robot.gripper_smart_grip(420)
+            robot.gripper_smart_release(470)
+            print("Gripper test completed")
+        
+        # 機械臂控制範例
+        if status['initialized_systems']['Dobot']:
+            print("\n=== Robot Arm Control ===")
+            robot.dobot_enable()
+            print("Robot arm enabled")
             
     except KeyboardInterrupt:
-        print("\n收到中斷信號，正在安全關閉系統...")
-        robot.緊急停止()
-        
+        print("\nReceived interrupt signal, shutting down system...")
     except Exception as e:
-        print(f"執行異常: {e}")
-        # 緊急停止
-        try:
-            robot.緊急停止()
-        except:
-            pass
+        print(f"Execution error: {e}")
+    finally:
+        robot.close()
+        print("System safely shut down")
+
+
+def silent_usage_example():
+    """靜默模式使用範例"""
+    
+    # 建立靜默配置
+    config = RobotConfig(
+        ccd1_ip="192.168.1.8",
+        ccd3_ip="192.168.1.10",
+        vp_ip="192.168.1.7",
+        dobot_ip="192.168.1.6",
+        auto_initialize=True,
+        silent_mode=True,
+        enable_logging=False
+    )
+    
+    # 初始化機器人 (完全靜默)
+    robot = Robot(config)
+    
+    try:
+        # 簡潔的功能測試
+        detections = robot.get_detections()
+        angle = robot.get_angle()
+        center = robot.get_center_point()
+        
+        # 控制操作
+        robot.vp_set_backlight(True, 50)
+        robot.gripper_quick_open()
+        robot.dobot_enable()
+        
+        # 狀態檢查
+        status = robot.get_system_status()
+        print(f"Initialized systems: {status['total_initialized']}/5")
         
     finally:
-        # 清理資源
-        print("\n正在安全關閉系統...")
-        robot.斷開連接()
-        print("程序結束")
+        robot.close()
 
-
-if __name__ == "__main__":
-    optimized_example_usage()

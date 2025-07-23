@@ -260,3 +260,242 @@
 2025-07-22 21:38:48 [INFO] Robot:_log_info:1404 - CCD1視覺系統已關閉
 2025-07-22 21:38:48 [INFO] Robot:_log_info:1404 - 開始斷開所有系統連接
 2025-07-22 21:38:48 [INFO] Robot:_log_info:1404 - 所有系統連接已斷開
+2025-07-23 17:08:13 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:08:13 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:08:13 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:08:15 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:08:15 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:08:16 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:08:16 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:08:16 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:08:16 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:08:19 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:08:19 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:08:19 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:08:21 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:08:21 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:08:21 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:08:21 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:08:21 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:08:21 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:08:21 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:08:21 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:08:21 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:08:21 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:08:21 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:08:21 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:08:21 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:08:22 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:29 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:30 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:30 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:31 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:31 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:31 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.53秒
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:32 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:33 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:33 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:33 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:33 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:34 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.53秒
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:35 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:36 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:36 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:36 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:37 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:37 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:38 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:38 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.54秒
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:39 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:40 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:40 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:41 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:41 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:41 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.53秒
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:42 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:43 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:43 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:43 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:43 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:44 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.54秒
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:45 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:46 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:46 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:46 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:47 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:47 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:48 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:48 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.53秒
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:49 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:50 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:50 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:51 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:51 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:51 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.54秒
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:52 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:53 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:53 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:53 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:53 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:54 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:54 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:54 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.54秒
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:55 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:56 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:56 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:56 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:08:56 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:08:57 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:08:58 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:08:58 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.54秒
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - 開始震動進料控制
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - 震動進料參數:
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 -   DO4持續時間: 2.0秒
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 -   DO1延遲百分比: 30%
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 -   DO1實際延遲: 0.60秒
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 -   DO1脈衝次數: 1次
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 -   DO1脈衝週期: HIGH=0.3s, LOW=0.3s
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - 啟動DO4投料使能
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - DO4啟動結果: 0,{},DOExecute(4,1);
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - DO4將持續2.0秒
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - DO1等待延遲0.60秒
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - 等待震動進料完成 (預計2.5秒)
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - DO1開始執行1次脈衝
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - DO1脈衝1 HIGH: 0,{},DOExecute(1,1);
+2025-07-23 17:08:59 [INFO] Robot:_log_info:1397 - DO1脈衝1 LOW: 0,{},DOExecute(1,0);
+2025-07-23 17:09:00 [INFO] Robot:_log_info:1397 - DO1脈衝控制完成
+2025-07-23 17:09:01 [INFO] Robot:_log_info:1397 - DO4自動關閉結果: 0,{},DOExecute(4,0);
+2025-07-23 17:09:01 [INFO] Robot:_log_info:1397 - 確保所有DO輸出關閉
+2025-07-23 17:09:01 [INFO] Robot:_log_info:1397 - 震動進料完成，實際耗時: 2.54秒
+2025-07-23 17:09:02 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 17:09:02 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 17:09:02 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接

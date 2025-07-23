@@ -78,3 +78,75 @@
 2025-07-21 22:04:28 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
 2025-07-21 22:04:28 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
 2025-07-21 22:04:28 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 09:35:24 [INFO] PointsManager:load_points:267 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 09:35:24 [INFO] PointsManager:load_points:318 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 09:35:24 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 09:35:24 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 09:35:24 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 09:35:24 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 10:15:58 [INFO] PointsManager:load_points:267 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 10:15:58 [INFO] PointsManager:load_points:318 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 10:15:58 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 10:15:58 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 10:15:58 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 10:15:58 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:21:17 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:21:17 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:21:17 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:21:17 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:21:17 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:21:17 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:43:39 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:43:39 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:43:39 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:43:39 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:43:39 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:43:39 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:46:30 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:46:30 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:46:30 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:46:30 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:46:30 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:46:30 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:54:52 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:54:52 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:54:52 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:54:52 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:54:52 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:54:52 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:56:29 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:56:29 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:56:29 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:56:29 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 11:56:29 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 11:56:29 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:03:24 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:03:24 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:03:24 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:03:24 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:03:24 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:03:24 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:09:04 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:09:04 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:09:04 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:09:04 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:09:04 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:09:04 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:12:48 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:12:48 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:12:48 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:12:48 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:12:48 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:12:48 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:19:49 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:19:49 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:19:49 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:19:49 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:19:49 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:19:49 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:29:04 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:29:04 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:29:04 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:29:04 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: c:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-23 12:29:04 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-23 12:29:04 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']

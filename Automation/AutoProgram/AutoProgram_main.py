@@ -78,11 +78,11 @@ class AutoProgramController:
         self.DOBOT_CURRENT_MOTION_FLOW = 1201 # 當前運動Flow (0=無, 1=Flow1, 2=Flow2, 5=Flow5)
         
         # AutoProgram座標存儲地址 (新增 1350-1354)
-        self.AP_COORDS_AVAILABLE = 1350      # AutoProgram座標可用標誌
-        self.AP_TARGET_X_HIGH = 1351         # AutoProgram座標X高位
-        self.AP_TARGET_X_LOW = 1352          # AutoProgram座標X低位
-        self.AP_TARGET_Y_HIGH = 1353         # AutoProgram座標Y高位
-        self.AP_TARGET_Y_LOW = 1354          # AutoProgram座標Y低位
+        self.AP_COORDS_AVAILABLE = 1340      # AutoProgram座標可用標誌
+        self.AP_TARGET_X_HIGH = 1341         # AutoProgram座標X高位
+        self.AP_TARGET_X_LOW = 1342          # AutoProgram座標X低位
+        self.AP_TARGET_Y_HIGH = 1343         # AutoProgram座標Y高位
+        self.AP_TARGET_Y_LOW = 1344          # AutoProgram座標Y低位
         
         # 保護區域判斷
         self.protection_zone = ProtectionZone()
@@ -198,7 +198,7 @@ class AutoProgramController:
             return False
     
     def init_system_registers(self):
-        """初始化系統寄存器"""
+        """初始化系統寄存器 - 修正版"""
         try:
             # AutoProgram狀態寄存器 (1300-1319)
             self.write_register(1300, SystemStatus.STOPPED.value)
@@ -219,15 +219,16 @@ class AutoProgramController:
             self.write_register(1322, 0)  # 錯誤清除
             self.write_register(1323, 0)  # 強制重置
             
-            # AutoProgram座標寄存器 (1350-1354) - 新增
-            self.write_register(1350, 0)  # 座標可用標誌
-            self.write_register(1351, 0)  # X高位
-            self.write_register(1352, 0)  # X低位
-            self.write_register(1353, 0)  # Y高位
-            self.write_register(1354, 0)  # Y低位
+            # 🔥 修正：AutoProgram座標寄存器 (1340-1344) - 地址統一
+            self.write_register(self.AP_COORDS_AVAILABLE, 0)  # 1340
+            self.write_register(self.AP_TARGET_X_HIGH, 0)     # 1341
+            self.write_register(self.AP_TARGET_X_LOW, 0)      # 1342
+            self.write_register(self.AP_TARGET_Y_HIGH, 0)     # 1343
+            self.write_register(self.AP_TARGET_Y_LOW, 0)      # 1344
             
             print("DR專案AutoProgram系統寄存器初始化完成")
-            print(f"座標存儲寄存器: {self.AP_COORDS_AVAILABLE}-{self.AP_TARGET_Y_LOW}")
+            print(f"修正後座標存儲寄存器: {self.AP_COORDS_AVAILABLE}-{self.AP_TARGET_Y_LOW}")
+            print(f"與Flow1讀取地址1340-1343完全一致")
         except Exception as e:
             print(f"系統寄存器初始化失敗: {e}")
     
@@ -435,11 +436,13 @@ class AutoProgramController:
             return False
     
     def clear_autoprogram_coordinates(self):
-        """清除AutoProgram座標狀態"""
-        self.write_register(self.AP_COORDS_AVAILABLE, 0)
-        for addr in [self.AP_TARGET_X_HIGH, self.AP_TARGET_X_LOW, 
-                     self.AP_TARGET_Y_HIGH, self.AP_TARGET_Y_LOW]:
-            self.write_register(addr, 0)
+        """清除AutoProgram座標狀態 - 修正版"""
+        # 🔥 修正：使用正確的寄存器地址
+        self.write_register(self.AP_COORDS_AVAILABLE, 0)  # 1340
+        self.write_register(self.AP_TARGET_X_HIGH, 0)     # 1341
+        self.write_register(self.AP_TARGET_X_LOW, 0)      # 1342
+        self.write_register(self.AP_TARGET_Y_HIGH, 0)     # 1343
+        self.write_register(self.AP_TARGET_Y_LOW, 0)      # 1344
         
         # 更新內部狀態
         self.last_coords = self.current_coords
@@ -447,11 +450,18 @@ class AutoProgramController:
         self.coords_ready = False
         
         print("[AutoProgram] ✓ AutoProgram座標狀態已清除")
+        print(f"[AutoProgram] 清除地址: {self.AP_COORDS_AVAILABLE}-{self.AP_TARGET_Y_LOW}")
     
     def trigger_flow1(self) -> bool:
-        """觸發Flow1取料作業"""
+        """觸發Flow1取料作業 - 修正版：加強檢查"""
+        # 🔥 修正：觸發前再次確認條件
         if not self.coords_ready:
             print("[AutoProgram] ✗ 座標未準備就緒，無法觸發Flow1")
+            return False
+        
+        # 🔥 修正：觸發前確認Flow1未運行
+        if self.check_flow1_running():
+            print("[AutoProgram] ✗ Flow1正在運行中，無法重複觸發")
             return False
         
         print("[AutoProgram] 觸發Flow1取料作業")
@@ -472,6 +482,10 @@ class AutoProgramController:
         
         print(f"[AutoProgram] ✓ Flow1已觸發 (第{self.flow1_trigger_count}次)")
         print(f"[AutoProgram] Flow1將從AutoProgram寄存器讀取座標")
+        
+        # 🔥 修正：觸發成功後給Flow1一些時間開始執行
+        time.sleep(0.2)
+        
         return True
     
     def check_flow1_running(self) -> bool:
@@ -525,7 +539,7 @@ class AutoProgramController:
     
     
     def coordination_cycle(self):
-        """機械臂協調控制週期 - 修正版：不清空Flow1完成狀態，讓自動交握檢查"""
+        """機械臂協調控制週期 - 修正版：Flow1完成後持續檢查Flow2"""
         try:
             self.coordination_cycle_count += 1
             
@@ -533,28 +547,16 @@ class AutoProgramController:
             if self.coordination_cycle_count % 50 == 0:
                 af_status = self.get_autofeeding_status()
                 flow1_running = self.check_flow1_running()
+                flow2_complete = self.read_register(self.DOBOT_FLOW2_COMPLETE)  # 直接讀取1205
                 print(f"[AutoProgram] DEBUG - 週期{self.coordination_cycle_count}: "
                     f"prepare_done={self.prepare_done}, "
                     f"coords_ready={self.coords_ready}, "
                     f"Flow1運行中={flow1_running}, "
+                    f"Flow2完成(1205)={flow2_complete}, "
                     f"DR_F可用={af_status['dr_f_available']}, "
                     f"自動程序啟用={self.auto_program_enabled}")
             
-            # === 修正關鍵邏輯：檢測到Flow1完成但不清空！！！ ===
-            if self.check_flow1_complete():
-                print("[AutoProgram] 檢測到Flow1完成")
-                # 🔥 關鍵修正：不再清空Flow1完成狀態！讓自動交握系統檢查
-                # self.clear_flow1_complete()  # ← 註解掉這行！！！
-                print("[AutoProgram] ⚠️ 不清空Flow1完成狀態(1204)，讓自動交握檢查")
-                
-                self.clear_autoprogram_coordinates()  # 只清除座標狀態
-                self.prepare_done = True
-                print("[AutoProgram] ✓ Flow1完成 → prepare_done=True")
-                print("[AutoProgram] 機台準備就緒，等待Flow2完成")
-                print("[AutoProgram] Flow1完成狀態(1204=1)保持不變，供自動交握檢查")
-                return  # 立即返回，避免在同一週期內觸發新操作
-            
-            # === 第二階段：檢查Flow2完成狀態 ===
+            # 🔥 修正：第一優先級 - 檢查Flow2完成狀態（最高優先級，始終檢查）
             if self.check_flow2_complete():
                 print("[AutoProgram] 檢測到Flow2完成，料件已送至組立區")
                 self.clear_flow2_complete()
@@ -563,16 +565,38 @@ class AutoProgramController:
                 print("[AutoProgram] 開始新週期，準備檢查AutoFeeding新座標")
                 return  # 立即返回，下一週期才開始新的座標檢查
             
-            # === 第三階段：主要協調邏輯 - 只在prepare_done=False時執行 ===
-            if not self.prepare_done:
-                print(f"[AutoProgram] prepare_done=False，開始處理新週期")
+            # 🔥 修正：第二優先級 - 檢查Flow1是否正在運行
+            flow1_running = self.check_flow1_running()
+            if flow1_running:
+                # Flow1正在運行，完全不做任何操作，等待完成
+                if self.coordination_cycle_count % 50 == 0:
+                    print(f"[AutoProgram] Flow1正在運行中(1201=1)，等待完成...")
+                    print(f"[AutoProgram] 當前狀態: prepare_done={self.prepare_done}, coords_ready={self.coords_ready}")
+                return  # 🔥 關鍵：Flow1運行時不做任何操作，防止重複觸發
+            
+            # 🔥 修正：第三優先級 - 檢測到Flow1完成
+            if self.check_flow1_complete() and not self.prepare_done:
+                print("[AutoProgram] 檢測到Flow1完成")
+                # 🔥 關鍵修正：不清空Flow1完成狀態！讓自動交握檢查
+                print("[AutoProgram] ⚠️ 不清空Flow1完成狀態(1204)，讓自動交握檢查")
                 
-                # 首先檢查Flow1是否正在運行
-                flow1_running = self.check_flow1_running()
-                if flow1_running:
-                    # Flow1正在運行，等待完成
+                # 清除座標狀態，防止重複觸發
+                self.clear_autoprogram_coordinates()
+                self.prepare_done = True
+                
+                print("[AutoProgram] ✓ Flow1完成 → prepare_done=True, coords_ready=False")
+                print("[AutoProgram] 機台準備就緒，等待Flow2完成")
+                print("[AutoProgram] Flow1完成狀態(1204=1)保持不變，供自動交握檢查")
+                return  # Flow1完成處理後返回，下一週期檢查Flow2
+            
+            # 🔥 修正：第四優先級 - 主要協調邏輯（只在prepare_done=False時執行）
+            if not self.prepare_done:
+                # === prepare_done=False：執行Flow1觸發邏輯 ===
+                
+                # 再次確認Flow1未運行（雙重檢查）
+                if self.check_flow1_running():
                     if self.coordination_cycle_count % 50 == 0:
-                        print(f"[AutoProgram] Flow1正在運行中(1201=1)，等待完成...")
+                        print(f"[AutoProgram] 雙重檢查：Flow1仍在運行(1201=1)，等待完成...")
                     return
                 
                 if not self.coords_ready:
@@ -599,11 +623,12 @@ class AutoProgramController:
                             print(f"[AutoProgram] ✓ 座標已存儲到AutoProgram寄存器")
                             print(f"[AutoProgram] 準備觸發Flow1...")
                             
-                            # 再次確認Flow1未運行才觸發
+                            # 三重檢查Flow1未運行才觸發
                             if not self.check_flow1_running():
                                 if self.trigger_flow1():
                                     print(f"[AutoProgram] ✓ Flow1已觸發，進入執行階段")
                                     print(f"[AutoProgram] 等待Flow1完成，完成後不會清空1204狀態")
+                                    return  # 觸發成功後立即返回，避免重複檢查
                                 else:
                                     print(f"[AutoProgram] ✗ Flow1觸發失敗")
                             else:
@@ -617,21 +642,30 @@ class AutoProgramController:
                             print(f"[AutoProgram] 等待AutoFeeding新座標... (940={af_status.get('dr_f_available', 'N/A')})")
                             print(f"[AutoProgram] 當前狀態: prepare_done=False, coords_ready=False")
                 else:
-                    # 座標已準備，檢查Flow1是否需要觸發
-                    print(f"[AutoProgram] 座標已準備，檢查Flow1觸發狀態...")
-                    if not flow1_running:
-                        # Flow1未運行，可以觸發
+                    # 座標已準備但prepare_done=False的異常狀態
+                    print(f"[AutoProgram] ⚠️ 異常狀態：coords_ready=True但prepare_done=False")
+                    print(f"[AutoProgram] 檢查Flow1是否需要觸發...")
+                    
+                    # 最後一次檢查Flow1狀態
+                    if not self.check_flow1_running():
+                        print(f"[AutoProgram] Flow1未運行，嘗試觸發...")
                         if self.trigger_flow1():
                             print(f"[AutoProgram] ✓ Flow1已觸發 (座標已準備)")
+                            return  # 觸發成功後立即返回
                         else:
                             print(f"[AutoProgram] ✗ Flow1觸發失敗")
-                    # 如果Flow1正在運行，等待完成
+                            # 觸發失敗時清除座標，重新開始
+                            self.clear_autoprogram_coordinates()
+                    else:
+                        print(f"[AutoProgram] Flow1正在運行，等待完成...")
             else:
                 # === prepare_done=True：等待Flow2完成，完全不檢查AutoFeeding ===
                 if self.coordination_cycle_count % 100 == 0:
+                    flow2_status = self.read_register(self.DOBOT_FLOW2_COMPLETE)
                     print(f"[AutoProgram] prepare_done=True，等待Flow2完成...")
                     print(f"[AutoProgram] 期間不檢查AutoFeeding，避免重複座標問題")
                     print(f"[AutoProgram] Flow1完成狀態(1204)保持不變，供自動交握檢查")
+                    print(f"[AutoProgram] 目前Flow2完成狀態(1205): {flow2_status}")
             
         except Exception as e:
             print(f"[AutoProgram] 協調週期異常: {e}")
@@ -676,7 +710,7 @@ class AutoProgramController:
             self.write_register(1310, self.coords_duplicate_count)
             
             # 更新座標可用狀態
-            self.write_register(1350, 1 if self.coords_ready else 0)
+            self.write_register(self.AP_COORDS_AVAILABLE, 1 if self.coords_ready else 0)
             
         except Exception as e:
             print(f"系統寄存器更新失敗: {e}")
@@ -923,13 +957,15 @@ def main():
                     af_status = controller.get_autofeeding_status()
                     print(f"AutoFeeding狀態: {af_status}")
                 elif cmd == 'check_ap_coords':
-                    coords_available = controller.read_register(1350)
+                    coords_available = controller.read_register(controller.AP_COORDS_AVAILABLE)  # 使用正確變數
                     if coords_available == 1:
-                        x = controller.read_32bit_coordinate(1351, 1352)
-                        y = controller.read_32bit_coordinate(1353, 1354)
+                        x = controller.read_32bit_coordinate(controller.AP_TARGET_X_HIGH, controller.AP_TARGET_X_LOW)
+                        y = controller.read_32bit_coordinate(controller.AP_TARGET_Y_HIGH, controller.AP_TARGET_Y_LOW)
                         print(f"AutoProgram座標: ({x:.2f}, {y:.2f})")
+                        print(f"寄存器地址: {controller.AP_COORDS_AVAILABLE}-{controller.AP_TARGET_Y_LOW}")
                     else:
                         print("AutoProgram座標不可用")
+                        print(f"檢查地址: {controller.AP_COORDS_AVAILABLE}")
                 else:
                     print("無效指令")
                     

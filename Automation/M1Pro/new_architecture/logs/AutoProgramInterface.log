@@ -1,0 +1,324 @@
+2025-07-23 09:35:24 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:26 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:26 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:26 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:26 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:26 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:37:26 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:26 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:26 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:26 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:26 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:26 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:26 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:26 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:26 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=63747, Y_HIGH=0, Y_LOW=31052
+2025-07-23 09:37:26 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-17.89, Y=310.52
+2025-07-23 09:37:39 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:39 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:39 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:39 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:39 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:37:39 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:39 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:39 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:39 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:39 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:39 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:39 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:39 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:39 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=59663, Y_HIGH=0, Y_LOW=30699
+2025-07-23 09:37:39 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-58.73, Y=306.99
+2025-07-23 09:37:52 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:52 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:52 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:52 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:52 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:37:52 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:52 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:52 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:52 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:52 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:52 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:52 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:37:52 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:37:52 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=61350, Y_HIGH=0, Y_LOW=28086
+2025-07-23 09:37:52 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-41.86, Y=280.86
+2025-07-23 09:38:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:38:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:38:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:38:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:38:03 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:38:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:38:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:38:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:38:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:38:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:38:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:38:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:38:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:38:03 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=61336, Y_HIGH=0, Y_LOW=26893
+2025-07-23 09:38:03 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-42.00, Y=268.93
+2025-07-23 09:43:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:43:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:43:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:43:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:43:56 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:43:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:43:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:43:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:43:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:43:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:43:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:43:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:43:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:43:56 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=55812, Y_HIGH=0, Y_LOW=25494
+2025-07-23 09:43:56 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-97.24, Y=254.94
+2025-07-23 09:44:04 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:04 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:04 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:04 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:04 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:44:04 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:04 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:04 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:04 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:04 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:04 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:04 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:04 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:04 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=58663, Y_HIGH=0, Y_LOW=27175
+2025-07-23 09:44:04 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-68.73, Y=271.75
+2025-07-23 09:44:12 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:12 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:12 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:12 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:12 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:44:12 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:12 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:12 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:12 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:12 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:12 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:12 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:44:13 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:44:13 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=64719, Y_HIGH=0, Y_LOW=24609
+2025-07-23 09:44:13 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-8.17, Y=246.09
+2025-07-23 09:47:38 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:38 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:38 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:38 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:38 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:47:38 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:38 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:38 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:38 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:38 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:38 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:38 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:38 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:38 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=60816, Y_HIGH=0, Y_LOW=29501
+2025-07-23 09:47:38 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-47.20, Y=295.01
+2025-07-23 09:47:47 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:47 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:47 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:47 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:47 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:47:47 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:47 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:47 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:47 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:47 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:47 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:47 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:47 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:47 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=63731, Y_HIGH=0, Y_LOW=24300
+2025-07-23 09:47:47 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-18.05, Y=243.00
+2025-07-23 09:47:55 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:55 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:55 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:55 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:55 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:47:55 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:55 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:55 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:55 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:55 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:55 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:55 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:47:55 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:47:55 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=60515, Y_HIGH=0, Y_LOW=24549
+2025-07-23 09:47:55 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-50.21, Y=245.49
+2025-07-23 09:48:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:03 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:48:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:03 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:03 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:03 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=63741, Y_HIGH=0, Y_LOW=29477
+2025-07-23 09:48:03 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-17.95, Y=294.77
+2025-07-23 09:48:20 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:20 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:20 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:20 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:20 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 09:48:20 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:20 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:20 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:20 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:20 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:20 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:20 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 09:48:20 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 09:48:20 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=57621, Y_HIGH=0, Y_LOW=24544
+2025-07-23 09:48:20 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-79.15, Y=245.44
+2025-07-23 10:05:40 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:40 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:40 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:40 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:40 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 10:05:40 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:40 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:40 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:40 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:40 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:40 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:40 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:40 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:40 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=61120, Y_HIGH=0, Y_LOW=30869
+2025-07-23 10:05:40 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-44.16, Y=308.69
+2025-07-23 10:05:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:56 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 10:05:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:56 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:05:56 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:05:56 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=60803, Y_HIGH=0, Y_LOW=30157
+2025-07-23 10:05:56 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-47.33, Y=301.57
+2025-07-23 10:06:21 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:06:21 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:06:21 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:06:21 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:06:21 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 10:06:21 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:06:21 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:06:21 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:06:21 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:06:21 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:06:21 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:06:21 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:06:21 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:06:21 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=62046, Y_HIGH=0, Y_LOW=28820
+2025-07-23 10:06:21 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-34.90, Y=288.20
+2025-07-23 10:11:42 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:42 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:42 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:42 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:42 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:42 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:43 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:43 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:43 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:43 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:43 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:43 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:43 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:43 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:44 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:44 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:44 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:44 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:44 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:44 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:44 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:44 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:45 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:45 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:45 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:45 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:45 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:45 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:45 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:45 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:46 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:46 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:46 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:46 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:46 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:46 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:46 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:46 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:47 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:47 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:47 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:47 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:47 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:47 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:47 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:47 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:48 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:48 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:48 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:48 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:48 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:48 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:48 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:48 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:49 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:49 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:49 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:49 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:49 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:49 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:49 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:49 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:50 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:50 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:50 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:50 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:50 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:50 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:50 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:50 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:51 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:51 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:51 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:51 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:51 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:51 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:51 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:51 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:11:52 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:11:52 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:11:52 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=0
+2025-07-23 10:11:52 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:202 - AutoProgram: 座標不可用
+2025-07-23 10:15:58 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:16:32 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:16:32 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:16:32 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:16:32 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:16:32 [DEBUG] AutoProgramInterface:check_autoprogram_coords_available:195 - AutoProgram座標可用檢查: 寄存器1350=1
+2025-07-23 10:16:32 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:16:32 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:16:32 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:16:32 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:16:32 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:16:32 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:16:32 [DEBUG] AutoProgramInterface:ensure_connection:130 - 連接測試失敗: ModbusClientMixin.read_holding_registers() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
+2025-07-23 10:16:32 [INFO] AutoProgramInterface:_establish_connection:151 - AutoProgram連接已建立
+2025-07-23 10:16:32 [DEBUG] AutoProgramInterface:read_autoprogram_coordinates:211 - AutoProgram原始寄存器讀取: X_HIGH=65535, X_LOW=64011, Y_HIGH=0, Y_LOW=27179
+2025-07-23 10:16:32 [INFO] AutoProgramInterface:read_autoprogram_coordinates:235 - AutoProgram座標讀取成功: X=-15.25, Y=271.79

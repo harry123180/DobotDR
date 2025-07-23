@@ -1,0 +1,749 @@
+2025-07-23 09:35:24 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 09:35:24 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 09:35:24 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 09:37:26 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:37:26 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:37:27 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:37:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:37:29 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:37:29 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:37:31 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:37:31 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:37:39 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:37:39 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:37:40 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:37:40 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:37:41 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:37:41 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:37:43 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:37:43 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:37:45 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:37:45 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:37:51 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:37:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:37:52 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:37:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:37:53 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:37:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:37:56 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:37:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:37:58 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:37:58 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:38:02 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:38:02 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:38:03 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:38:03 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:38:04 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:38:04 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:38:06 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:38:06 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:38:08 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:38:08 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:43:55 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:43:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:43:56 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:43:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:43:57 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:43:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:44:00 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:44:00 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:44:02 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:44:02 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:44:04 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:44:04 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:44:04 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:44:04 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:44:06 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:44:06 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:44:08 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:44:08 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:44:10 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:44:10 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:44:12 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:44:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:44:13 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:44:13 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:44:14 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:44:14 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:44:16 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:44:16 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:44:19 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:44:19 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:47:38 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:38 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:47:39 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:39 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:47:40 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:47:40 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:47:42 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:42 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:47:44 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:47:44 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:47:46 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:46 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:47:47 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:47 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:47:48 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:47:48 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:47:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:47:53 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:47:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:47:54 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:54 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:47:55 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:47:57 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:47:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:47:59 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:47:59 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:48:01 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:48:01 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:48:03 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:48:03 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:48:04 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:48:04 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:48:05 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:48:05 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:48:07 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:48:07 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:48:09 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:48:09 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:48:19 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:48:19 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:48:20 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:48:20 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:48:21 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:48:21 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 09:48:24 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 09:48:24 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 09:48:26 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 09:48:26 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 10:05:39 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:05:39 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:05:40 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:05:40 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:05:41 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 10:05:41 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 10:05:43 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:05:43 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:05:46 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 10:05:46 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 10:05:47 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:05:47 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:05:55 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:05:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:05:56 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:05:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:05:57 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 10:05:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 10:06:00 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:06:00 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:06:02 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 10:06:02 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 10:06:20 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:06:20 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:06:21 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:06:21 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:06:23 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 10:06:23 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 10:06:25 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:06:25 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:06:27 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 10:06:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 10:06:42 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:06:42 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:13:07 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 10:15:58 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 10:15:58 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 10:15:58 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 10:16:32 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:16:32 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:16:33 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 10:16:33 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 10:16:35 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 10:16:35 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 10:16:37 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 10:16:37 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 11:16:16 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 11:16:31 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 11:16:31 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 11:16:31 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 11:17:09 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 11:21:17 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 11:21:17 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 11:21:17 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 11:21:18 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 11:21:18 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 11:22:12 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 11:43:39 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 11:43:39 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 11:43:39 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 11:43:41 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 11:43:42 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 11:45:31 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 11:46:30 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 11:46:30 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 11:46:30 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 11:46:31 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 11:46:31 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 11:46:40 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 11:54:52 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 11:54:52 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 11:54:52 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 11:54:53 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 11:54:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 11:54:55 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 11:56:29 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 11:56:29 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 11:56:29 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 12:03:20 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 12:03:24 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 12:03:24 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 12:03:24 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 12:03:38 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:03:38 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:04:01 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 12:09:04 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 12:09:04 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 12:09:04 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 12:09:05 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:09:06 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:10:17 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 12:12:48 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 12:12:48 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 12:12:48 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 12:12:49 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:12:49 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:13:02 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 12:19:49 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 12:19:49 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 12:19:49 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 12:19:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:19:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:20:01 [INFO] GripperHighLevelOptimized:disconnect:219 - Modbus TCP連接已斷開
+2025-07-23 12:29:04 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-23 12:29:04 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-23 12:29:04 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-23 12:29:06 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:29:06 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:29:12 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:29:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:29:13 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:29:13 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:29:15 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:29:15 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:29:17 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:29:17 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:29:56 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:29:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:29:57 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:29:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:29:59 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:29:59 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:30:01 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:30:01 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:30:03 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:30:03 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:30:11 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:30:11 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:30:12 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:30:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:30:14 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:30:14 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:30:16 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:30:16 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:30:18 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:30:18 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:45:59 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:45:59 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:46:00 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:46:00 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:46:01 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:46:01 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:46:03 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:46:03 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:46:05 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:46:05 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:47:11 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:47:11 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:47:13 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:47:13 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:47:14 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:47:14 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:47:16 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:47:16 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:47:18 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:47:18 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:47:20 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:47:20 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:47:22 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:47:22 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:47:24 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:47:24 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:47:26 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:47:26 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:47:28 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:47:28 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:47:36 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:47:36 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:49:06 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:49:06 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:49:07 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:49:07 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:49:09 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:49:09 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:49:11 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:49:11 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:49:22 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:49:22 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:49:24 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:49:24 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:49:25 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:49:25 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:49:27 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:49:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:49:29 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:49:29 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:49:44 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:49:44 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:50:49 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:50:49 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:50:50 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:50:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:50:52 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:50:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:50:54 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:50:54 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:53:36 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:53:36 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:53:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:53:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:53:51 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:53:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:53:53 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:53:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 12:53:56 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 12:53:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 12:54:08 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 12:54:08 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:00:38 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:00:38 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:00:39 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:00:39 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:00:41 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:00:41 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:00:43 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:00:43 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:00:46 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:00:46 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:00:47 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:00:47 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:00:49 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:00:49 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:00:51 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:00:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:00:53 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:00:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:00:57 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:00:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:00:58 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:00:58 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:01:00 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:01:00 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:01:02 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:01:02 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:01:04 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:01:04 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:01:07 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:01:07 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:01:08 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:01:08 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:01:10 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:01:10 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:01:12 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:01:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:01:14 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:01:14 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:01:43 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:01:43 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:01:44 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:01:44 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:01:46 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:01:46 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:01:48 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:01:48 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:01:50 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:01:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:01:52 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:01:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:02:00 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:02:00 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:02:57 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:02:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:02:58 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:02:58 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:03:00 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:03:00 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:03:02 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:03:02 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:03:04 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:03:04 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:03:30 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:03:30 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:03:31 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:03:31 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:03:33 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:03:33 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:03:35 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:03:35 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:04:12 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:14 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:14 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:15 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:04:15 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:04:17 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:17 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:19 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:04:19 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:04:21 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:21 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:22 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:22 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:23 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:04:23 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:04:25 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:25 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:27 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:04:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:04:30 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:30 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:31 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:31 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:32 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:04:32 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:04:34 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:04:34 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:04:36 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:04:36 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:07:13 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:13 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:14 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:14 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:15 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:07:15 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:07:17 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:17 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:20 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:07:20 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:07:25 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:25 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:26 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:26 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:27 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:07:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:07:29 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:29 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:32 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:07:32 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:07:39 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:39 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:40 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:40 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:41 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:07:41 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:07:43 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:43 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:46 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:07:46 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:07:47 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:47 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:51 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:07:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:07:54 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:07:54 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:07:56 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:07:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:08:11 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:08:11 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:08:12 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:08:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:08:13 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:08:13 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:08:15 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:08:15 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:08:18 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:08:18 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:08:45 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:08:45 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:08:46 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:08:46 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:08:48 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:08:48 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:08:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:08:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:08:52 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:08:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:09:21 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:09:21 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:09:22 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:09:22 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:09:24 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:09:24 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:09:26 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:09:26 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:09:28 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:09:28 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:09:52 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:09:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:09:53 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:09:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:09:55 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:09:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:09:57 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:09:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:09:59 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:09:59 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:10:27 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:10:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:10:27 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:10:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:10:29 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:10:29 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:10:31 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:10:31 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:10:33 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:10:33 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:10:55 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:10:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:10:56 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:10:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:10:57 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:10:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:10:59 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:10:59 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:11:01 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:11:01 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:25:49 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:25:49 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:25:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:25:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:25:51 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:25:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:25:53 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:25:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:25:55 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:25:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:25:57 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:25:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:25:58 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:25:58 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:25:59 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:25:59 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:26:01 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:01 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:04 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:26:04 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:26:05 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:05 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:07 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:26:07 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:26:09 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:09 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:12 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:26:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:26:13 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:13 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:22 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:22 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:24 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:24 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:25 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:26:25 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:26:27 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:29 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:26:29 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:26:49 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:49 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:51 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:26:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:26:53 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:26:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:26:55 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:26:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:27:24 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:27:24 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:27:25 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:27:25 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:27:26 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:27:26 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:27:28 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:27:28 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:27:30 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:27:30 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:27:49 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:27:49 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:27:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:27:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:27:51 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:27:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:27:53 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:27:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:27:56 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:27:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:28:08 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:28:08 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:28:09 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:28:09 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:28:10 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:28:10 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:28:12 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:28:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:28:15 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:28:15 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:28:43 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:28:43 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:28:44 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:28:44 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:28:45 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:28:45 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:28:48 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:28:48 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:28:50 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:28:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:29:15 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:29:15 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:29:16 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:29:16 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:29:17 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:29:17 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:29:19 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:29:19 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:29:22 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:29:22 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:29:49 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:29:49 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:29:50 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:29:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:29:51 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:29:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:29:53 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:29:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:29:56 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:29:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:30:17 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:30:17 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:30:18 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:30:18 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:30:19 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:30:19 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:30:21 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:30:21 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:30:24 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:30:24 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:30:51 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:30:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:30:52 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:30:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:30:53 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:30:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:30:56 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:30:56 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:30:58 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:30:58 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:31:09 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:31:09 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:31:10 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:31:10 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:31:12 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:31:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:31:14 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:31:14 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:31:16 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:31:16 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:32:47 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:32:47 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:32:48 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:32:48 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:32:50 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:32:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:32:52 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:32:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:32:54 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:32:54 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:33:00 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:00 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:02 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:02 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:03 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:33:03 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:33:05 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:05 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:07 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:33:07 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:33:09 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:09 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:11 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:11 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:12 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:33:12 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:33:14 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:14 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:16 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:33:16 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:33:25 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:25 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:26 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:26 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:27 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:33:27 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:33:29 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:29 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:31 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:33:31 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:33:47 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:47 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:49 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:49 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:50 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:33:50 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:33:52 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:33:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:33:54 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:33:54 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:34:04 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:04 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:06 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:06 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:07 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:34:07 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:34:09 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:09 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:11 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:34:11 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:34:29 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:29 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:31 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:31 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:32 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:34:32 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:34:34 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:34 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:36 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:34:36 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:34:51 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:51 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:52 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:52 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:53 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:34:53 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功
+2025-07-23 13:34:55 [INFO] GripperHighLevelOptimized:quick_close:324 - PGC快速關閉: 100
+2025-07-23 13:34:55 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 快速關閉成功
+2025-07-23 13:34:57 [INFO] GripperHighLevelOptimized:smart_release:340 - PGC智能釋放到位置: 360
+2025-07-23 13:34:57 [INFO] GripperHighLevelOptimized:_log_gripper_status:313 - 智能釋放成功

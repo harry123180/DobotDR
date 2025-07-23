@@ -1,9 +1,9 @@
 
 """
-Dobot_Flow1.py - Flow1 VP視覺抓取流程執行器 (DR專案版 - 支援CASE參數傳入)
+Dobot_Flow1.py - Flow1 VP視覺抓取流程執行器 (DR專案版 - 支援DR參數傳入)
 - 升級motion_steps支援速度、加速度、運動類型、sync調用、切換手勢等參數
 - 從AutoProgram模組讀取座標 (地址1350-1354)  
-- 支援CASE專案格式的參數傳入：speed_j, acc_j, speed_l, acc_l, tool, sync等
+- 支援DR專案格式的參數傳入：speed_j, acc_j, speed_l, acc_l, tool, sync等
 - 支援MovJ、MovL、JointMovJ運動類型
 - 整合快速角度檢測功能
 """
@@ -99,46 +99,67 @@ def setup_logging(module_name):
 
 
 class AutoProgramInterface:
-    """AutoProgram座標交握接口 - DR專案專用"""
+    """AutoProgram座標接口 - 統一交握版本"""
     
     def __init__(self, modbus_host: str = "127.0.0.1", modbus_port: int = 502):
-        self.logger = setup_logging("AutoProgramInterface")
         self.modbus_host = modbus_host
         self.modbus_port = modbus_port
         self.modbus_client: Optional[ModbusTcpClient] = None
         self.connected = False
+        self._connection_retries = 0
+        self._max_retries = 3
         
-        # AutoProgram座標寄存器映射 (1350-1354)
+        # AutoProgram交握寄存器映射
         self.REGISTERS = {
-            'AP_COORDS_AVAILABLE': 1350,
-            'AP_TARGET_X_HIGH': 1351,
-            'AP_TARGET_X_LOW': 1352,
-            'AP_TARGET_Y_HIGH': 1353,
-            'AP_TARGET_Y_LOW': 1354,
+            # AutoProgram系統狀態寄存器 (1300-1319)
+            'SYSTEM_STATUS': 1300,           # 系統狀態 (0=停止, 1=運行, 2=Flow1觸發, 3=Flow2完成, 4=錯誤)
+            'PREPARE_DONE': 1301,            # prepare_done狀態 (0=需要取料, 1=已完成取料)
+            'AUTO_PROGRAM_ENABLED': 1302,    # 自動程序啟用狀態
+            'AF_DR_F_STATUS': 1303,        # AutoFeeding DR_F狀態
+            'FLOW2_STATUS': 1304,            # Flow2完成狀態
+            
+            # AutoProgram控制寄存器 (1320-1339)  
+            'SYSTEM_CONTROL': 1320,          # 系統控制指令
+            'AUTO_PROGRAM_CONTROL': 1321,    # 自動程序啟用控制
+            
+            # AutoProgram座標寄存器 (1340-1349)
+            'TARGET_X_HIGH': 1341,           # 目標座標X高位
+            'TARGET_X_LOW': 1342,            # 目標座標X低位
+            'TARGET_Y_HIGH': 1343,           # 目標座標Y高位  
+            'TARGET_Y_LOW': 1344,            # 目標座標Y低位
+            
+            # 原始AutoFeeding寄存器 (向下兼容)
+            'AF_DR_F_AVAILABLE': 940,      # DR_F可用標誌
+            'AF_COORDS_TAKEN': 945,          # 座標已讀取標誌確認
         }
         
+        # 預先建立連接
         self.ensure_connection()
     
     def ensure_connection(self) -> bool:
-        """確保連接已建立"""
+        """確保連接已建立，包含重連邏輯"""
         if self.connected and self.modbus_client:
             try:
-                test_result = self.modbus_client.read_holding_registers(self.REGISTERS['AP_COORDS_AVAILABLE'], 1, slave=1)
+                # 快速連接測試
+                test_result = self.modbus_client.read_holding_registers(
+                    self.REGISTERS['SYSTEM_STATUS'], 1, slave=1
+                )
                 if not test_result.isError():
                     return True
-            except Exception as e:
-                self.logger.debug(f"連接測試失敗: {e}")
+            except:
+                pass
         
+        # 需要重新連接
         return self._establish_connection()
     
     def _establish_connection(self) -> bool:
-        """建立連接"""
+        """建立連接的內部方法"""
         try:
             if self.modbus_client:
                 try:
                     self.modbus_client.close()
-                except Exception as e:
-                    self.logger.debug(f"關閉舊連接異常: {e}")
+                except:
+                    pass
             
             self.modbus_client = ModbusTcpClient(
                 host=self.modbus_host,
@@ -148,16 +169,19 @@ class AutoProgramInterface:
             
             if self.modbus_client.connect():
                 self.connected = True
-                self.logger.info("AutoProgram連接已建立")
+                self._connection_retries = 0
+                print("✓ AutoProgram連接已建立")
                 return True
             else:
                 self.connected = False
-                self.logger.warning("AutoProgram連接失敗")
+                self._connection_retries += 1
+                print(f"✗ AutoProgram連接失敗 (嘗試 {self._connection_retries}/{self._max_retries})")
                 return False
                 
         except Exception as e:
             self.connected = False
-            self.logger.error(f"AutoProgram連接異常: {e}", exc_info=True)
+            self._connection_retries += 1
+            print(f"AutoProgram連接異常: {e}")
             return False
     
     def disconnect(self):
@@ -165,13 +189,13 @@ class AutoProgramInterface:
         if self.modbus_client and self.connected:
             try:
                 self.modbus_client.close()
-            except Exception as e:
-                self.logger.debug(f"斷開連接異常: {e}")
+            except:
+                pass
         self.connected = False
         self.modbus_client = None
     
     def read_register(self, register_name: str) -> Optional[int]:
-        """讀取寄存器"""
+        """讀取寄存器 - 包含自動重連"""
         if not self.ensure_connection() or register_name not in self.REGISTERS:
             return None
         
@@ -184,39 +208,75 @@ class AutoProgramInterface:
             else:
                 return None
                 
-        except Exception as e:
-            self.logger.debug(f"讀取寄存器失敗: {e}")
+        except Exception:
+            # 連接可能中斷，標記為未連接
             self.connected = False
             return None
     
-    def check_autoprogram_coords_available(self) -> bool:
-        """檢查AutoProgram座標是否可用"""
-        coords_available = self.read_register('AP_COORDS_AVAILABLE')
-        self.logger.debug(f"AutoProgram座標可用檢查: 寄存器1350={coords_available}")
-        return coords_available == 1
-    
-    def read_autoprogram_coordinates(self) -> Optional[Dict[str, float]]:
-        """讀取AutoProgram座標"""
+    def write_register(self, register_name: str, value: int) -> bool:
+        """寫入寄存器 - 包含自動重連"""
+        if not self.ensure_connection() or register_name not in self.REGISTERS:
+            return False
+        
         try:
-            if not self.check_autoprogram_coords_available():
-                self.logger.debug("AutoProgram: 座標不可用")
-                return None
+            address = self.REGISTERS[register_name]
+            result = self.modbus_client.write_register(address, value, slave=1)
+            return not result.isError()
+        except Exception:
+            self.connected = False
+            return False
+    
+    def check_autoprogram_ready_and_coordinates(self) -> bool:
+        """檢查AutoProgram狀態並確認座標可用 - 修正版接受狀態3"""
+        try:
+            # 1. 檢查AutoProgram系統狀態(1300) 
+            # 接受 1(運行中), 2(Flow1觸發狀態), 3(Flow1等待狀態)
+            system_status = self.read_register('SYSTEM_STATUS')
+            if system_status not in [1, 2, 3]:
+                return False
             
+            # 2. 檢查prepare_done狀態(1301) = 0(需要取料)
+            prepare_done = self.read_register('PREPARE_DONE') 
+            if prepare_done != 0:
+                return False
+                
+            # 3. 檢查座標是否已準備在AutoProgram中
+            # 讀取座標寄存器檢查是否有有效座標
+            x_high = self.read_register('TARGET_X_HIGH') or 0
+            x_low = self.read_register('TARGET_X_LOW') or 0
+            y_high = self.read_register('TARGET_Y_HIGH') or 0
+            y_low = self.read_register('TARGET_Y_LOW') or 0
+            
+            # 檢查座標是否非零(有效)
+            if x_high == 0 and x_low == 0 and y_high == 0 and y_low == 0:
+                return False
+                
+            return True
+            
+        except Exception as e:
+            print(f"檢查AutoProgram狀態異常: {e}")
+            return False
+    
+    def read_target_coordinates_from_autoprogram(self) -> Optional[Dict[str, float]]:
+        """從AutoProgram讀取目標座標"""
+        try:
+            # 批量讀取座標寄存器 (1340-1343)
             try:
-                x_high = self.read_register('AP_TARGET_X_HIGH')
-                x_low = self.read_register('AP_TARGET_X_LOW')
-                y_high = self.read_register('AP_TARGET_Y_HIGH')
-                y_low = self.read_register('AP_TARGET_Y_LOW')
-                
-                self.logger.debug(f"AutoProgram原始寄存器讀取: X_HIGH={x_high}, X_LOW={x_low}, Y_HIGH={y_high}, Y_LOW={y_low}")
-                
-                if any(val is None for val in [x_high, x_low, y_high, y_low]):
-                    self.logger.warning("AutoProgram: 座標寄存器讀取失敗")
+                result = self.modbus_client.read_holding_registers(
+                    self.REGISTERS['TARGET_X_HIGH'], 4, slave=1
+                )
+                if result.isError():
                     return None
                 
-            except Exception as e:
-                self.logger.error(f"AutoProgram座標寄存器讀取異常: {e}", exc_info=True)
-                return None
+                registers = result.registers
+                x_high, x_low, y_high, y_low = registers[0], registers[1], registers[2], registers[3]
+                
+            except Exception:
+                # 批量讀取失敗，回退到單個讀取
+                x_high = self.read_register('TARGET_X_HIGH') or 0
+                x_low = self.read_register('TARGET_X_LOW') or 0
+                y_high = self.read_register('TARGET_Y_HIGH') or 0
+                y_low = self.read_register('TARGET_Y_LOW') or 0
             
             # 32位合併並轉換精度
             world_x_int = (x_high << 16) | x_low
@@ -227,26 +287,40 @@ class AutoProgramInterface:
                 world_x_int -= 2**32
             if world_y_int >= 2**31:
                 world_y_int -= 2**32
-                
+            
             # 恢復精度 (÷100)
             world_x = world_x_int / 100.0
             world_y = world_y_int / 100.0
             
-            self.logger.info(f"AutoProgram座標讀取成功: X={world_x:.2f}, Y={world_y:.2f}")
-            
-            if world_x == 0.0 and world_y == 0.0:
-                self.logger.warning("AutoProgram座標為零，可能是無效數據")
-                return None
-            
             return {
                 'x': world_x,
                 'y': world_y,
-                'source': 'autoprogram'
+                'source': 'autoprogram_interface'
             }
             
         except Exception as e:
-            self.logger.error(f"讀取AutoProgram座標異常: {e}", exc_info=True)
+            print(f"讀取AutoProgram目標座標異常: {e}")
             return None
+    
+    def confirm_coordinate_read(self) -> bool:
+        """確認座標已讀取"""
+        return self.write_register('AF_COORDS_TAKEN', 1)
+    
+    def get_autoprogram_status_info(self) -> Dict[str, Any]:
+        """獲取AutoProgram狀態資訊"""
+        try:
+            return {
+                'system_status': self.read_register('SYSTEM_STATUS'),
+                'prepare_done': self.read_register('PREPARE_DONE'),
+                'auto_program_enabled': self.read_register('AUTO_PROGRAM_ENABLED'),
+                'af_dr_f_status': self.read_register('AF_DR_F_STATUS'),
+                'flow2_status': self.read_register('FLOW2_STATUS'),
+                'af_dr_f_available': self.read_register('AF_DR_F_AVAILABLE'),
+                'connected': self.connected
+            }
+        except Exception as e:
+            print(f"獲取AutoProgram狀態資訊異常: {e}")
+            return {'connected': False, 'error': str(e)}
 
 
 class PointsManager:
@@ -336,7 +410,7 @@ class PointsManager:
 
 
 class DrFlow1VisionPickExecutor:
-    """Flow1: VP視覺抓取流程執行器 - DR專案整合CASE參數傳入版"""
+    """Flow1: VP視覺抓取流程執行器 - DR專案整合DR參數傳入版"""
     
     def __init__(self, sync_enable: bool = False):
         self.logger = setup_logging("DrFlow1VisionPickExecutor")
@@ -348,7 +422,7 @@ class DrFlow1VisionPickExecutor:
         
         # 流程配置
         self.flow_id = 1
-        self.flow_name = "VP視覺抓取流程(支援CASE參數)"
+        self.flow_name = "VP視覺抓取流程(支援DR參數)"
         self.status = FlowStatus.READY
         self.current_step = 0
         self.start_time = 0.0
@@ -402,7 +476,7 @@ class DrFlow1VisionPickExecutor:
         if self.points_loaded:
             self.build_flow_steps()
         
-        self.logger.info(f"DrFlow1VisionPickExecutor初始化完成 (支援CASE參數版)")
+        self.logger.info(f"DrFlow1VisionPickExecutor初始化完成 (支援DR參數版)")
         self.logger.info(f"  sync控制: {'啟用' if sync_enable else '停用'}")
         self.logger.info(f"  座標來源: AutoProgram模組 (地址1350-1354)")
         self.logger.info(f"  角度檢測: 超時{self.angle_detection_timeout}秒")
@@ -441,14 +515,14 @@ class DrFlow1VisionPickExecutor:
         self.points_loaded = True
         
     def build_flow_steps(self):
-        """建構Flow1步驟 - 支援CASE參數版"""
+        """建構Flow1步驟 - 支援DR參數版"""
         if not self.points_loaded:
             self.logger.warning("點位未載入，無法建構流程步驟")
             self.motion_steps = []
             self.total_steps = 0
             return
             
-        # 定義新的流程步驟 - 加入CASE風格參數
+        # 定義新的流程步驟 - 加入DR風格參數
         self.motion_steps = [
             # 1. AutoProgram座標讀取
             {'type': 'autoprogram_coordinates_read', 'params': {}},
@@ -572,11 +646,11 @@ class DrFlow1VisionPickExecutor:
         ]
         
         self.total_steps = len(self.motion_steps)
-        self.logger.info(f"Flow1支援CASE參數流程步驟建構完成，共{self.total_steps}步")
+        self.logger.info(f"Flow1支援DR參數流程步驟建構完成，共{self.total_steps}步")
         self.logger.info("新增功能: 支援速度/加速度控制 + 工具座標系切換")
     
     def execute(self) -> FlowResult:
-        """執行Flow1主邏輯 - 支援CASE參數版"""
+        """執行Flow1主邏輯 - 支援DR參數版"""
         if not self.points_loaded:
             return FlowResult(
                 success=False,
@@ -645,7 +719,7 @@ class DrFlow1VisionPickExecutor:
                 elif step['type'] == 'gripper_smart_release':
                     success = self._execute_gripper_smart_release(step['params'])
                 elif step['type'] == 'autoprogram_coordinates_read':
-                    detected_position = self._execute_autoprogram_coordinates_read()
+                    detected_position = self._execute_read_autoprogram_coordinates()
                     success = detected_position is not None
                 elif step['type'] == 'move_to_detected_position_high':
                     success = self._execute_move_to_detected_position_with_parameters(detected_position, step['params'])
@@ -862,7 +936,7 @@ class DrFlow1VisionPickExecutor:
             return False
     
     def _execute_move_to_point_with_j4(self, params: Dict[str, Any]) -> bool:
-        """執行移動到點位並使用計算的J4角度 - 支援CASE參數版"""
+        """執行移動到點位並使用計算的J4角度 - 支援DR參數版"""
         try:
             point_name = params['point_name']
             move_type = params['move_type']
@@ -1026,17 +1100,28 @@ class DrFlow1VisionPickExecutor:
         self.logger.info(f"[快速角度檢測] 使用預設角度: target={self.target_angle}°, command={self.command_angle}°")
     
     def _execute_move_to_detected_position_with_parameters(self, detected_position: Optional[Dict[str, float]], params: Dict[str, Any]) -> bool:
-        """移動到檢測位置 - 支援CASE參數版本"""
+        """移動到檢測位置 - 支援DR參數版本"""
         try:
             if not detected_position:
                 self.logger.error("檢測位置為空，無法移動")
                 return False
             
             # 取得VP_TOPSIDE點位的Z高度和R值
-            vp_topside_point = self.points_manager.get_point('VP_TOPSIDE')
+            vp_topside_point = self.points_manager.get_point('VP_TOPSIDE')  # 改為大寫
             if not vp_topside_point:
-                self.logger.error("無法獲取VP_TOPSIDE點位")
-                return False
+                print(f"  ✗ VP_TOPSIDE點位不存在")
+                # 嘗試小寫版本作為備用
+                vp_topside_point = self.points_manager.get_point('vp_topside')
+                if vp_topside_point:
+                    print(f"  ✓ 找到小寫版本vp_topside點位")
+                else:
+                    print(f"  ✗ VP_TOPSIDE和vp_topside點位都不存在")
+                    print(f"  可用點位: {self.points_manager.list_points()}")
+                    time.sleep(0.1)
+                    
+            else:
+                print(f"  ✓ VP_TOPSIDE點位存在: Z={vp_topside_point.z}, R={vp_topside_point.r}")
+            
             
             # 提取運動參數
             speed_l = params.get('speed_l', 50)
@@ -1133,57 +1218,201 @@ class DrFlow1VisionPickExecutor:
             self.logger.error(f"夾爪智能撐開異常: {e}", exc_info=True)
             return False
     
-    def _execute_autoprogram_coordinates_read(self) -> Optional[Dict[str, float]]:
-        """執行AutoProgram座標讀取"""
+    
+    def _execute_read_autoprogram_coordinates(self) -> Optional[Dict[str, float]]:
+        """從AutoProgram讀取座標 """
+        max_retries = 20
+        retry_count = 0
+        
+        print("\n" + "="*50)
+        print("開始從AutoProgram讀取座標")
+        print("="*50)
+        
+        while retry_count < max_retries:
+            try:
+                retry_count += 1
+                
+                print(f"\n[重試 {retry_count}/{max_retries}] 檢查AutoProgram狀態...")
+                
+                # Step 1: 檢查連接狀態
+                if not self.autoprogram_interface.ensure_connection():
+                    print(f"  ✗ AutoProgram連接失敗")
+                    if retry_count <= 3:  # 前3次重試時詳細輸出
+                        print(f"    - Modbus服務器: {self.autoprogram_interface.modbus_host}:{self.autoprogram_interface.modbus_port}")
+                        print(f"    - 連接狀態: {self.autoprogram_interface.connected}")
+                    time.sleep(0.2)
+                    continue
+                else:
+                    print(f"  ✓ AutoProgram連接正常")
+                
+                # Step 2: 讀取AutoProgram系統狀態
+                system_status = self.autoprogram_interface.read_register('SYSTEM_STATUS')
+                prepare_done = self.autoprogram_interface.read_register('PREPARE_DONE')
+                auto_enabled = self.autoprogram_interface.read_register('AUTO_PROGRAM_ENABLED')
+                af_dr_f = self.autoprogram_interface.read_register('AF_DR_F_STATUS')
+                
+                print(f"  AutoProgram狀態檢查:")
+                print(f"    - SYSTEM_STATUS(1300): {system_status} (需要1或2)")
+                print(f"    - PREPARE_DONE(1301): {prepare_done} (需要0)")
+                print(f"    - AUTO_PROGRAM_ENABLED(1302): {auto_enabled}")
+                print(f"    - AF_DR_F_STATUS(1303): {af_dr_f}")
+                
+                # Step 3: 檢查系統狀態是否符合要求
+                # 接受狀態: 1=運行中, 2=Flow1觸發, 3=Flow1等待
+                if system_status not in [1, 2, 3]:
+                    print(f"  ✗ 系統狀態不符合要求: {system_status} (需要1=運行中, 2=Flow1觸發, 或 3=Flow1等待)")
+                    time.sleep(0.2)
+                    continue
+                else:
+                    status_name = {1: "運行中", 2: "Flow1觸發", 3: "Flow1等待"}.get(system_status, "未知")
+                    print(f"  ✓ 系統狀態符合要求: {system_status} ({status_name})")
+                
+                # Step 4: 檢查prepare_done狀態
+                if prepare_done != 0:
+                    print(f"  ✗ prepare_done狀態錯誤: {prepare_done} (需要0=需要取料)")
+                    time.sleep(0.2)
+                    continue
+                else:
+                    print(f"  ✓ prepare_done狀態正確: {prepare_done}")
+                
+                # Step 5: 詳細檢查座標寄存器
+                print(f"  座標寄存器檢查:")
+                
+                # 使用批量讀取
+                try:
+                    result = self.autoprogram_interface.modbus_client.read_holding_registers(
+                        address=self.autoprogram_interface.REGISTERS['TARGET_X_HIGH'], 
+                        count=4, 
+                        slave=1
+                    )
+                    if result.isError():
+                        print(f"    ✗ 批量讀取座標失敗: {result}")
+                        x_high = self.autoprogram_interface.read_register('TARGET_X_HIGH') or 0
+                        x_low = self.autoprogram_interface.read_register('TARGET_X_LOW') or 0
+                        y_high = self.autoprogram_interface.read_register('TARGET_Y_HIGH') or 0
+                        y_low = self.autoprogram_interface.read_register('TARGET_Y_LOW') or 0
+                        print(f"    - 改用單個讀取")
+                    else:
+                        registers = result.registers
+                        x_high, x_low, y_high, y_low = registers[0], registers[1], registers[2], registers[3]
+                        print(f"    ✓ 批量讀取座標成功")
+                except Exception as e:
+                    print(f"    ✗ 批量讀取異常: {e}")
+                    x_high = self.autoprogram_interface.read_register('TARGET_X_HIGH') or 0
+                    x_low = self.autoprogram_interface.read_register('TARGET_X_LOW') or 0
+                    y_high = self.autoprogram_interface.read_register('TARGET_Y_HIGH') or 0
+                    y_low = self.autoprogram_interface.read_register('TARGET_Y_LOW') or 0
+                    print(f"    - 改用單個讀取")
+                
+                print(f"    - TARGET_X_HIGH(1340): {x_high}")
+                print(f"    - TARGET_X_LOW(1341): {x_low}")
+                print(f"    - TARGET_Y_HIGH(1342): {y_high}")
+                print(f"    - TARGET_Y_LOW(1343): {y_low}")
+                
+                # Step 6: 檢查座標是否有效（非全零）
+                if x_high == 0 and x_low == 0 and y_high == 0 and y_low == 0:
+                    print(f"  ✗ 座標寄存器全為0，座標未準備好")
+                    time.sleep(0.2)
+                    continue
+                else:
+                    print(f"  ✓ 座標寄存器有有效數據")
+                
+                # Step 7: 座標轉換和驗證
+                print(f"  座標轉換:")
+                
+                # 32位合併
+                world_x_int = (x_high << 16) | x_low
+                world_y_int = (y_high << 16) | y_low
+                print(f"    - 合併後整數值: X={world_x_int}, Y={world_y_int}")
+                
+                # 處理負數 (補碼轉換)
+                if world_x_int >= 2**31:
+                    world_x_int -= 2**32
+                    print(f"    - X負數轉換: {world_x_int}")
+                if world_y_int >= 2**31:
+                    world_y_int -= 2**32
+                    print(f"    - Y負數轉換: {world_y_int}")
+                
+                # 恢復精度 (÷100)
+                world_x = world_x_int / 100.0
+                world_y = world_y_int / 100.0
+                print(f"    - 最終座標: X={world_x:.2f}, Y={world_y:.2f}")
+                
+                # Step 8: 座標合理性檢查
+                if abs(world_x) > 1000 or abs(world_y) > 1000:
+                    print(f"  ⚠ 座標值異常，可能存在轉換錯誤")
+                    print(f"    - 檢查原始寄存器值是否正確")
+                
+                # Step 9: 確認座標已讀取
+                print(f"  確認座標讀取:")
+                coords_taken_success = self.autoprogram_interface.write_register('AF_COORDS_TAKEN', 1)
+                if not coords_taken_success:
+                    print(f"    ✗ 寫入AF_COORDS_TAKEN(945)失敗")
+                    time.sleep(0.1)
+                    continue
+                else:
+                    print(f"    ✓ AF_COORDS_TAKEN(945)寫入成功")
+                
+                # Step 10: 驗證vp_topside點位
+                vp_topside_point = self.points_manager.get_point('VP_TOPSIDE')
+                if not vp_topside_point:
+                    print(f"  ✗ vp_topside點位不存在")
+                    time.sleep(0.1)
+                    continue
+                else:
+                    print(f"  ✓ vp_topside點位存在: Z={vp_topside_point.z}, R={vp_topside_point.r}")
+                
+                # Step 11: 構建最終結果
+                detected_pos = {
+                    'x': world_x,
+                    'y': world_y,
+                    'z': vp_topside_point.z,
+                    'r': vp_topside_point.r,
+                    'source': 'autoprogram_interface',
+                    'retry_count': retry_count,
+                    'raw_registers': {
+                        'x_high': x_high,
+                        'x_low': x_low,
+                        'y_high': y_high,
+                        'y_low': y_low
+                    }
+                }
+                
+                print(f"\n" + "="*50)
+                print(f"✓ AutoProgram座標讀取成功！")
+                print(f"  重試次數: {retry_count}")
+                print(f"  最終座標: ({detected_pos['x']:.2f}, {detected_pos['y']:.2f}, {detected_pos['z']:.2f}, {detected_pos['r']:.2f})")
+                print(f"  原始寄存器: X({x_high},{x_low}) Y({y_high},{y_low})")
+                print(f"  AutoProgram狀態: system_status={system_status}, prepare_done={prepare_done}")
+                print("="*50)
+                
+                return detected_pos
+                
+            except Exception as e:
+                print(f"  ✗ 重試{retry_count} 發生異常: {e}")
+                print(f"    異常類型: {type(e).__name__}")
+                if hasattr(e, '__traceback__'):
+                    import traceback
+                    print(f"    異常詳情: {traceback.format_exc()}")
+                time.sleep(0.1)
+                continue
+        
+        # 所有重試都失敗
+        print(f"\n" + "="*50)
+        print(f"✗ AutoProgram座標讀取失敗！")
+        print(f"  已重試: {max_retries}次")
+        print(f"  最後狀態檢查:")
+        
         try:
-            self.logger.info("開始從AutoProgram讀取預先驗證的座標...")
-            self.logger.debug(f"AutoProgram寄存器地址: {self.autoprogram_interface.REGISTERS}")
-            
-            # 等待AutoProgram提供座標 (最多等待10秒)
-            timeout = 10.0
-            start_time = time.time()
-            
-            coord_data = None
-            while time.time() - start_time < timeout:
-                coord_data = self.autoprogram_interface.read_autoprogram_coordinates()
-                if coord_data:
-                    break
-                self.logger.debug(f"等待AutoProgram座標... ({time.time() - start_time:.1f}s)")
-                time.sleep(0.5)
-            
-            if not coord_data:
-                self.logger.error("等待AutoProgram座標超時或讀取失敗")
-                return None
-            
-            # 獲取VP_TOPSIDE點位的Z高度和R值
-            vp_topside_point = self.points_manager.get_point('VP_TOPSIDE')
-            if not vp_topside_point:
-                self.logger.error("無法獲取VP_TOPSIDE點位")
-                return None
-            
-            detected_pos = {
-                'x': coord_data['x'],
-                'y': coord_data['y'],
-                'z': vp_topside_point.z,
-                'r': vp_topside_point.r,
-                'source': 'autoprogram'
-            }
-            
-            self.logger.info(f"AutoProgram座標讀取成功:")
-            self.logger.info(f"  預先驗證座標: ({detected_pos['x']:.2f}, {detected_pos['y']:.2f})")
-            self.logger.debug(f"  繼承VP_TOPSIDE - Z:{detected_pos['z']:.2f}, R:{detected_pos['r']:.2f}")
-            self.logger.debug("  座標來源: AutoProgram模組 (已通過保護區域和重複檢查)")
-            
-            # 最終驗證座標不為零
-            if detected_pos['x'] == 0.0 and detected_pos['y'] == 0.0:
-                self.logger.error("最終驗證失敗: AutoProgram座標為零")
-                return None
-            
-            return detected_pos
-            
+            # 最後一次狀態檢查
+            final_status = self.autoprogram_interface.get_autoprogram_status_info()
+            for key, value in final_status.items():
+                print(f"    - {key}: {value}")
         except Exception as e:
-            self.logger.error(f"AutoProgram座標讀取異常: {e}", exc_info=True)
-            return None
+            print(f"    - 無法獲取最終狀態: {e}")
+        
+        print("="*50)
+        return None
     
     def _safe_set_flow1_complete_status(self, complete: bool) -> bool:
         """安全設置Flow1完成狀態"""

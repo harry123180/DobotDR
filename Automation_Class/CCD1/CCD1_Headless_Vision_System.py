@@ -1422,18 +1422,232 @@ class CCD1VisionSystem:
         self.memory_monitor.create_checkpoint("detection_complete")
         
         return result
-    
+    def _safe_aggressive_cleanup(self):
+        """安全激進清理 - 保護核心組件並重新載入"""
+        print("執行安全激進記憶體清理...")
+        
+        # 記錄當前狀態
+        current_model_id = 0
+        camera_was_connected = self.camera_connected
+        
+        if self.yolo_detector and self.yolo_detector.model_manager:
+            current_model_id = self.yolo_detector.model_manager.current_model_id
+        
+        try:
+            # 1. 清理非核心資源
+            if self.image_save_manager:
+                self.image_save_manager.cleanup_old_images()
+            
+            # 清理歷史檢測結果
+            if self.last_result:
+                self.last_result.cleanup()
+                self.last_result = None
+            
+            # 2. 清理YOLO檢測器的快取但保留模型管理器
+            if self.yolo_detector:
+                self.yolo_detector._clear_image_cache()
+                
+                # 暫時卸載非當前模型
+                if self.yolo_detector.model_manager:
+                    for model_id in list(self.yolo_detector.model_manager.models.keys()):
+                        if model_id != current_model_id:
+                            if model_id in self.yolo_detector.model_manager.models:
+                                old_model = self.yolo_detector.model_manager.models[model_id]
+                                if hasattr(old_model, 'model'):
+                                    del old_model.model
+                                del self.yolo_detector.model_manager.models[model_id]
+                                del old_model
+            
+            # 3. 清理標定管理器的暫存資源
+            if self.calibration_manager and hasattr(self.calibration_manager, 'transformer'):
+                # 清理轉換過程中的臨時數據，但保留標定參數
+                pass
+            
+            # 4. 資源追蹤器清理
+            active, collected_resources = self.resource_tracker.force_cleanup()
+            
+            # 5. 多次垃圾回收
+            total_collected = 0
+            for _ in range(5):
+                collected = gc.collect()
+                total_collected += collected
+                if collected == 0:
+                    break
+            
+            print(f"安全清理完成: 資源{active}個, 垃圾回收{total_collected}個物件")
+            
+            # 6. 重新載入必要組件
+            self._restore_essential_components(current_model_id, camera_was_connected)
+        
+        except Exception as e:
+            print(f"安全激進清理失敗: {e}")
+            # 確保核心組件可用
+            self._restore_essential_components(current_model_id, camera_was_connected)
+        
+        # 重置記憶體基準
+        self.memory_monitor.reset_baseline()
+        print("記憶體基準已重置")
+    def _restore_essential_components(self, model_id: int, restore_camera: bool):
+        """恢復核心組件"""
+        try:
+            print("正在恢復核心組件...")
+            
+            # 1. 確保YOLO模型載入
+            if (model_id > 0 and self.yolo_detector and 
+                not self.yolo_detector.model_manager.is_model_loaded()):
+                print(f"重新載入YOLO模型{model_id}...")
+                if self.yolo_detector.model_manager.load_model(model_id):
+                    print(f"YOLO模型{model_id}重新載入成功")
+                else:
+                    print(f"YOLO模型{model_id}重新載入失敗，嘗試載入模型1...")
+                    self.yolo_detector.model_manager.load_model(1)
+            
+            # 2. 重新連接相機（如果需要）
+            if restore_camera and not self.camera_connected:
+                print("重新初始化相機連接...")
+                if self.initialize_camera():
+                    print("相機重新連接成功")
+                else:
+                    print("相機重新連接失敗")
+            
+            # 3. 驗證系統狀態
+            if self.yolo_detector and self.yolo_detector.model_manager.is_model_loaded():
+                print("系統核心組件恢復完成")
+            else:
+                print("警告: 部分核心組件恢復失敗")
+                
+        except Exception as e:
+            print(f"恢復核心組件失敗: {e}")
+    def _enhanced_routine_cleanup(self):
+        """增強常規清理 - 更溫和的清理策略"""
+        print("執行增強常規清理...")
+        
+        # 清理檢測器快取
+        if self.yolo_detector:
+            self.yolo_detector._clear_image_cache()
+        
+        # 清理歷史檢測結果
+        if self.last_result:
+            self.last_result.cleanup()
+        
+        # 垃圾回收
+        collected = gc.collect()
+        if collected > 0:
+            print(f"增強清理: 回收{collected}個物件")
+        
+        # 部分重置記憶體監控（不完全重置）
+        if hasattr(self, 'memory_monitor'):
+            # 清理舊的檢查點
+            checkpoints = self.memory_monitor.checkpoints
+            if len(checkpoints) > 10:
+                # 只保留最新的5個檢查點
+                sorted_checkpoints = sorted(
+                    checkpoints.items(), 
+                    key=lambda x: x[1]['timestamp'], 
+                    reverse=True
+                )
+                self.memory_monitor.checkpoints = dict(sorted_checkpoints[:5])
+                print("清理舊記憶體檢查點")
+    def get_memory_management_stats(self) -> Dict[str, Any]:
+        """獲取記憶體管理統計資訊"""
+        current_time = time.time()
+        last_aggressive = getattr(self, '_last_aggressive_cleanup_time', 0)
+        hours_since_aggressive = (current_time - last_aggressive) / 3600 if last_aggressive > 0 else 0
+        
+        return {
+            'memory_stats': self.get_memory_stats(),
+            'last_aggressive_cleanup': {
+                'timestamp': last_aggressive,
+                'hours_ago': hours_since_aggressive,
+                'next_eligible_in_hours': max(0, 3.0 - hours_since_aggressive)
+            },
+            'cleanup_eligibility': {
+                'can_aggressive_cleanup': hours_since_aggressive >= 3.0,
+                'memory_threshold': self.config.memory_warning_threshold,
+                'current_growth': self.memory_monitor.get_memory_report()['total_change']
+            }
+        }
+    def force_safe_cleanup(self):
+        """手動觸發安全清理（忽略時間限制）"""
+        print("手動觸發安全激進清理...")
+        self._safe_aggressive_cleanup()
+        self._last_aggressive_cleanup_time = time.time()
+
+    # 修改原來的 _aggressive_cleanup 為向後兼容
+    def _aggressive_cleanup(self):
+        """激進清理 - 重定向到安全版本"""
+        current_time = time.time()
+        time_since_aggressive = getattr(self, '_last_aggressive_cleanup_time', 0)
+        hours_since_aggressive = (current_time - time_since_aggressive) / 3600
+        
+        if hours_since_aggressive >= 3.0:
+            self._safe_aggressive_cleanup()
+            self._last_aggressive_cleanup_time = current_time
+        else:
+            print(f"跳過激進清理，距離上次清理僅{hours_since_aggressive:.1f}小時 (需3小時)")
+            self._enhanced_routine_cleanup()
+
+    def _emergency_cleanup(self):
+        """緊急清理 - 發生異常時使用"""
+        print("執行緊急記憶體清理...")
+        
+        try:
+            # 記錄當前狀態用於恢復
+            current_model_id = 0
+            if self.yolo_detector and self.yolo_detector.model_manager:
+                current_model_id = self.yolo_detector.model_manager.current_model_id
+            
+            # 清理所有可清理的組件
+            if self.yolo_detector:
+                self.yolo_detector._clear_image_cache()
+            
+            if self.calibration_manager:
+                # 不完全清理，只清理暫存資源
+                pass
+            
+            if self.image_save_manager:
+                self.image_save_manager.cleanup()
+            
+            # 清理檢測結果
+            if self.last_result:
+                self.last_result.cleanup()
+                self.last_result = None
+            
+            # 強制垃圾回收
+            for _ in range(3):
+                collected = gc.collect()
+                if collected == 0:
+                    break
+            
+            print("緊急清理完成")
+            
+            # 嘗試恢復核心功能
+            if current_model_id > 0:
+                self._restore_essential_components(current_model_id, False)
+            
+        except Exception as e:
+            print(f"緊急清理失敗: {e}")
     def _manage_memory(self):
-        """智能記憶體管理"""
+        """智能記憶體管理 - 修改版本"""
         try:
             # 檢查記憶體增長
             memory_report = self.memory_monitor.get_memory_report()
             current_growth = memory_report['total_change']
             
-            # 根據記憶體增長採取不同清理策略
-            if current_growth > self.config.memory_warning_threshold:
+            # 檢查距離上次激進清理的時間
+            current_time = time.time()
+            time_since_aggressive = getattr(self, '_last_aggressive_cleanup_time', 0)
+            hours_since_aggressive = (current_time - time_since_aggressive) / 3600
+            
+            # 根據記憶體增長和時間採取不同清理策略
+            if (current_growth > self.config.memory_warning_threshold * 3 and 
+                hours_since_aggressive >= 3.0):  # 3小時檢查一次激進清理
+                print(f"記憶體嚴重警告: 增長{current_growth:.2f}MB, 距離上次激進清理{hours_since_aggressive:.1f}小時")
+                self._safe_aggressive_cleanup()
+                self._last_aggressive_cleanup_time = current_time
+            elif current_growth > self.config.memory_warning_threshold:
                 print(f"記憶體警告: 增長{current_growth:.2f}MB")
-                self._aggressive_cleanup()
+                self._enhanced_routine_cleanup()
             elif self.operation_count % self.config.force_gc_frequency == 0:
                 self._routine_cleanup()
             elif self.operation_count % self.config.memory_cleanup_frequency == 0:

@@ -16,6 +16,7 @@ import threading
 import logging
 import json
 import signal
+import psutil
 from typing import Dict, Any, Optional, List
 
 # 添加專案路徑
@@ -46,14 +47,16 @@ command_angle = 45.0              # 指令角度(檢測角度+補償值)
 # 全域變數 - 系統參數（參考AutoFeeding配置）
 ccd1_model_id = 1                 # CCD1模型ID
 gripper_opening = 360             # 夾爪開度
-vp_spread_action_code = 5         # VP擴散動作代碼
 vp_spread_strength = 107          # VP擴散強度
 vp_spread_frequency = 87          # VP擴散頻率
 vp_spread_duration = 0.8          # VP擴散持續時間
-vp_stop_command_code = 3          # VP停止指令代碼
 
 # 全域變數 - 點位數據
 robot_points = {}                 # 機械臂點位數據
+
+# 全域變數 - 記憶體監控
+ccd1_memory_critical = False      # CCD1記憶體臨界狀態
+last_memory_check = 0             # 上次記憶體檢查時間
 
 # 全域鎖和事件
 system_lock = threading.Lock()
@@ -66,8 +69,89 @@ robot_assembly_event = threading.Event()
 # 常數
 PICKUP_HEIGHT = 147.52
 ANGLE_OFFSET = 45.0
+MEMORY_CRITICAL_THRESHOLD = 500.0  # 500MB觸發CCD1重新初始化
 
-# 日誌設置
+def get_memory_usage():
+    """獲取當前記憶體使用量 (MB)"""
+    process = psutil.Process()
+    return process.memory_info().rss / 1024 / 1024
+
+def check_memory_status():
+    """檢查記憶體狀態"""
+    global ccd1_memory_critical, last_memory_check
+    
+    current_time = time.time()
+    # 每60秒檢查一次記憶體，避免過度頻繁檢查
+    if current_time - last_memory_check < 60:
+        return
+    
+    last_memory_check = current_time
+    current_memory = get_memory_usage()
+    
+    if current_memory > MEMORY_CRITICAL_THRESHOLD:
+        if not ccd1_memory_critical:
+            logging.warning(f"記憶體使用達到臨界值: {current_memory:.2f}MB > {MEMORY_CRITICAL_THRESHOLD}MB")
+            ccd1_memory_critical = True
+    else:
+        ccd1_memory_critical = False
+
+def reinitialize_ccd1():
+    """重新初始化CCD1系統 - 完全重建"""
+    global robot, ccd1_memory_critical
+    
+    try:
+        logging.info("開始完全重新初始化CCD1系統...")
+        
+        # 完全斷開和清理CCD1
+        if robot and robot.CCD1:
+            logging.info("完全斷開CCD1連接...")
+            # 斷開連接並清理所有資源
+            robot.CCD1.disconnect()
+            robot.CCD1 = None
+            time.sleep(2)
+        
+        # 1次強制垃圾回收
+        import gc
+        collected = gc.collect()
+        logging.info(f"垃圾回收: {collected}個物件")
+        
+        # 等待記憶體穩定
+        time.sleep(2)
+        
+        # 完全重新初始化CCD1 - 這會重新創建所有組件包括YOLO模型
+        if robot:
+            logging.info("完全重新初始化CCD1...")
+            success = robot.init_ccd1()
+            if success:
+                # 驗證YOLO模型是否正確載入
+                if robot.CCD1:
+                    # 重新初始化後重設記憶體基準
+                    if hasattr(robot.CCD1, 'reset_memory_baseline'):
+                        robot.CCD1.reset_memory_baseline()
+                        logging.info("CCD1重新初始化後記憶體基準已重置")
+                    
+                    # 執行一次測試檢測來確保模型載入正常
+                    test_result = robot.get_ccd1_counts()
+                    if test_result is not None:
+                        logging.info("CCD1重新初始化並測試成功")
+                        ccd1_memory_critical = False
+                        current_memory = get_memory_usage()
+                        logging.info(f"重新初始化後記憶體: {current_memory:.2f}MB")
+                        return True
+                    else:
+                        logging.error("CCD1重新初始化後測試失敗")
+                        return False
+                else:
+                    logging.error("CCD1重新初始化後對象為空")
+                    return False
+            else:
+                logging.error("CCD1重新初始化失敗")
+                return False
+        
+    except Exception as e:
+        logging.error(f"CCD1重新初始化異常: {e}")
+        return False
+
 def signal_handler(signum, frame):
     """信號處理器 - 處理Ctrl+C中斷"""
     global system_running, user_interrupt, robot
@@ -199,6 +283,10 @@ def object_manager_thread():
         # CCD1連接確認（已自動載入模型1）
         if robot.CCD1:
             logging.info("CCD1連接成功（已自動載入模型1）")
+            # CCD1初始化完成後重設記憶體基準 - 關鍵修正
+            if hasattr(robot.CCD1, 'reset_memory_baseline'):
+                robot.CCD1.reset_memory_baseline()
+                logging.info("CCD1載入模型後記憶體基準已重置")
         else:
             logging.error("CCD1連接失敗")
             return False
@@ -226,7 +314,7 @@ def object_manager_thread():
 
 def parameter_setup_thread():
     """參數設定事件執行緒"""
-    global robot, ccd1_model_id, gripper_opening, vibration_intensity, vibration_frequency
+    global robot, ccd1_model_id, gripper_opening
     
     try:
         logging.info("參數設定事件啟動")
@@ -283,11 +371,33 @@ def auto_feeding_thread():
             try:
                 system_lock.acquire()
                 
+                # 檢查記憶體狀態並處理
+                check_memory_status()
+                if ccd1_memory_critical:
+                    logging.warning("檢測到記憶體臨界，重新初始化CCD1")
+                    if not reinitialize_ccd1():
+                        logging.error("CCD1重新初始化失敗，中止進料")
+                        break
+                
                 # CCD1拍照檢測
                 detections = robot.get_ccd1_counts()
                 if not detections:
                     logging.error("CCD1檢測失敗")
-                    break  # 直接跳出循環，結束程序
+                    # 如果檢測失敗且處於記憶體臨界狀態，嘗試重新初始化
+                    if ccd1_memory_critical:
+                        logging.warning("檢測失敗可能由記憶體問題引起，嘗試重新初始化CCD1")
+                        if reinitialize_ccd1():
+                            # 重新初始化成功，重新嘗試檢測
+                            detections = robot.get_ccd1_counts()
+                            if not detections:
+                                retry_count += 1
+                                continue
+                        else:
+                            retry_count += 1
+                            continue
+                    else:
+                        retry_count += 1
+                        continue
                 
                 # 從檢測結果中提取數量信息
                 dr_f_count = detections.get(0, 0)     # DR_F是標籤0
@@ -458,7 +568,7 @@ def robot_pickup_thread():
                 # 檢查中斷
                 if user_interrupt: return False
                 
-                # 4. 移動到標籤0的XY座標(VP_TOPSIDE同高) - 修正：使用MovL_座標方法
+                # 4. 移動到標籤0的XY座標(VP_TOPSIDE同高) - 使用MovL
                 vp_point = robot_points["VP_TOPSIDE"]
                 if hasattr(robot.Dobot, 'move') and robot.Dobot.move:
                     robot.Dobot.move.MovL(target_coord[0], target_coord[1], vp_point['z'], vp_point['r'])
@@ -468,7 +578,7 @@ def robot_pickup_thread():
                 # 檢查中斷
                 if user_interrupt: return False
                 
-                # 5. 移動到標籤0的XY座標(PICKUP_HEIGHT高度) - 修正：使用MovL方法
+                # 5. 移動到標籤0的XY座標(PICKUP_HEIGHT高度) - 使用MovL
                 if hasattr(robot.Dobot, 'move') and robot.Dobot.move:
                     robot.Dobot.move.MovL(target_coord[0], target_coord[1], PICKUP_HEIGHT, vp_point['r'])
                     robot.dobot_sync()
@@ -647,7 +757,7 @@ def robot_assembly_thread():
             # 檢查中斷
             if user_interrupt: return False
             
-            # 1. 移動到put_asm_top (帶J4角度) - 修正：使用正確的JointMovJ方法
+            # 1. 移動到put_asm_top (帶J4角度) - 使用JointMovJ
             if "put_asm_top" in robot_points:
                 point = robot_points["put_asm_top"]
                 if hasattr(robot.Dobot, 'move') and robot.Dobot.move:
@@ -658,7 +768,7 @@ def robot_assembly_thread():
             # 檢查中斷
             if user_interrupt: return False
             
-            # 2. 移動到put_asm_down (帶J4角度) - 修正：使用正確的JointMovJ方法
+            # 2. 移動到put_asm_down (帶J4角度) - 使用JointMovJ
             if "put_asm_down" in robot_points:
                 point = robot_points["put_asm_down"]
                 if hasattr(robot.Dobot, 'move') and robot.Dobot.move:
@@ -674,7 +784,7 @@ def robot_assembly_thread():
             # 檢查中斷
             if user_interrupt: return False
             
-            # 4. 返回put_asm_top - 修正：使用正確的JointMovJ方法
+            # 4. 返回put_asm_top - 使用JointMovJ
             put_asm_top_point = robot_points["put_asm_top"]
             if hasattr(robot.Dobot, 'move') and robot.Dobot.move:
                 robot.Dobot.move.JointMovJ(put_asm_top_point['j1'], put_asm_top_point['j2'], put_asm_top_point['j3'], command_angle)

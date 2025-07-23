@@ -1081,3 +1081,294 @@
 2025-07-23 17:40:04 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
 2025-07-23 17:40:04 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
 2025-07-23 17:40:04 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 17:49:00 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:49:00 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:49:00 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:49:03 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:49:03 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:49:04 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:49:04 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:49:04 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:49:04 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:49:06 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:49:06 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:49:06 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:49:07 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:49:07 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:49:07 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:49:07 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:49:07 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:49:07 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:49:07 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:49:07 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:49:07 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:49:07 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:49:07 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:49:07 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:49:07 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:49:08 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:49:13 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {1: 19}
+2025-07-23 17:49:13 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:49:13 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標1類
+2025-07-23 17:49:14 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:16 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:17 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:18 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:19 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:21 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:22 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:23 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:25 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:26 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:27 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:27 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:28 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:28 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:28 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:28 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:29 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:29 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:29 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:49:29 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:49:30 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 17:49:30 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 17:49:30 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 17:49:30 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 17:49:30 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 17:49:32 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 17:49:32 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 17:49:32 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 17:49:32 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 17:49:32 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 17:49:32 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 17:49:32 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 17:51:36 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:51:36 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:51:36 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:51:38 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:51:38 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:51:39 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:51:39 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:51:39 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:51:39 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:51:41 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:51:41 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:51:41 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:51:42 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:51:42 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:51:42 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:51:42 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:51:42 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:51:42 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:51:42 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:51:42 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:51:42 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:51:42 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:51:42 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:51:42 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:51:42 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:51:44 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:51:48 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {1: 19}
+2025-07-23 17:51:48 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:51:48 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標1類
+2025-07-23 17:51:50 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:51:51 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:51:52 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:51:54 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:51:55 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:51:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:51:57 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:51:59 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:00 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:01 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:02 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:03 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:03 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:03 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:04 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:04 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:04 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:04 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:05 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:52:05 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:52:06 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 17:52:06 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 17:52:06 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 17:52:06 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 17:52:06 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 17:52:07 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 17:52:07 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 17:52:07 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 17:52:07 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 17:52:07 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 17:52:07 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 17:52:07 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 17:53:19 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:53:19 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:53:19 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:53:21 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:53:21 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:53:22 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:53:22 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:53:22 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:53:22 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:53:24 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:53:24 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:53:24 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:53:24 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:53:24 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:53:24 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:53:29 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {1: 19}
+2025-07-23 17:53:29 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:53:29 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標1類
+2025-07-23 17:53:30 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:31 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:33 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:34 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:35 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:37 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:38 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:39 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:40 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:42 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:43 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:43 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:43 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:44 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:44 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:44 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:45 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:45 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:45 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:53:45 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 17:53:45 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 17:53:45 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 17:53:45 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 17:53:46 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 17:53:46 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 17:53:46 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 17:53:46 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 17:53:46 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 17:53:46 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 17:53:46 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 17:53:46 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 17:57:41 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:57:41 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:57:41 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:57:43 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:57:43 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:57:44 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:57:44 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:57:44 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:57:44 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:57:46 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:57:46 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:57:46 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:57:48 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:57:48 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:57:48 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:57:48 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:57:48 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:57:48 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:57:48 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:57:48 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:57:48 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:57:48 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:57:48 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:57:48 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:57:48 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:57:49 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:57:53 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {1: 17}
+2025-07-23 17:57:53 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:57:53 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標1類
+2025-07-23 17:57:55 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:57:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:57:58 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:57:59 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:00 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:01 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:03 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:04 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:05 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:06 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:08 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:08 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:08 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:09 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:09 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:09 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:09 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:10 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:10 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:58:10 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 17:58:10 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 17:58:10 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 17:58:10 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 17:58:11 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 17:58:11 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 17:58:11 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 17:58:11 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 17:58:11 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 17:58:11 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 17:58:11 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 17:58:11 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 18:03:44 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 18:03:44 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:03:44 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 18:03:46 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 18:03:46 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:03:47 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 18:03:47 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 18:03:48 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 18:03:48 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 18:03:50 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 18:03:50 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 18:03:50 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:03:51 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:03:51 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 18:03:51 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 18:03:51 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 18:03:51 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 18:03:51 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:03:51 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:03:51 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 18:03:51 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 18:03:51 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 18:03:51 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 18:03:51 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 18:03:51 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:03:52 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:03:56 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {1: 21}
+2025-07-23 18:03:56 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:03:56 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:04:00 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
+2025-07-23 18:04:00 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:04:00 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:04:03 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
+2025-07-23 18:04:03 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:04:03 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:04:09 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:04:09 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:04:10 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:04:12 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:04:14 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
+2025-07-23 18:04:14 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:04:14 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:04:21 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:04:21 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:04:22 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:04:23 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:04:26 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
+2025-07-23 18:04:26 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:04:26 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類

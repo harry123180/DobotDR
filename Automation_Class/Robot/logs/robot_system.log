@@ -499,3 +499,585 @@
 2025-07-23 17:09:02 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
 2025-07-23 17:09:02 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
 2025-07-23 17:09:02 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 17:14:37 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:14:37 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:14:37 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:14:39 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:14:39 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:14:40 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:14:40 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:14:40 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:14:40 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:14:42 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:14:42 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:14:42 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:14:44 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:14:44 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:14:44 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:14:44 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:14:44 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:14:44 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:14:44 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:14:44 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:14:44 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:14:44 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:14:44 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:14:44 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:14:44 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:14:45 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:14:52 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {1: 50, 0: 11}
+2025-07-23 17:14:52 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:14:52 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:14:53 [INFO] Robot:_log_info:1857 - 關節運動到座標: (223.14, 189.28, 238.86, 83.37)
+2025-07-23 17:14:53 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:14:53 [INFO] Robot:_log_info:1857 - 關節運動到座標: (-25.23, 291.51, 238.86, 137.11)
+2025-07-23 17:14:54 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:14:59 [INFO] Robot:_log_info:1857 - 關節運動到座標: (223.14, 189.28, 238.86, 83.37)
+2025-07-23 17:14:59 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:14:59 [INFO] Robot:_log_info:1857 - 關節運動到座標: (-25.23, 291.51, 238.86, 137.11)
+2025-07-23 17:15:00 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:15:05 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 17:15:05 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 17:15:05 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 17:15:05 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 17:15:06 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 17:15:06 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 17:15:06 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 17:15:06 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 17:15:06 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 17:15:06 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 17:15:06 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 17:15:06 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 17:21:40 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:21:40 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:21:40 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:21:42 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:21:42 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:21:43 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:21:43 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:21:44 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:21:44 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:21:46 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:21:46 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:21:46 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:21:47 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:21:47 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:21:47 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:21:47 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:21:47 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:21:47 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:21:47 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:21:47 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:21:47 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:21:47 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:21:47 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:21:47 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:21:47 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:21:48 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:21:54 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {1: 26}
+2025-07-23 17:21:54 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:21:54 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標1類
+2025-07-23 17:21:55 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:21:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:21:58 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:21:59 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:00 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:01 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:03 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:04 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:05 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:06 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:08 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:08 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:09 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:10 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:11 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:12 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:12 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:13 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:14 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:15 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:15 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:16 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:17 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:18 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:18 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:19 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:20 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:21 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:22 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:22 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:23 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:24 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:25 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:25 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:26 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:27 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:28 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:29 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:29 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:30 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:31 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:32 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:32 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:33 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:34 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:35 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:35 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:36 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:37 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:38 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:39 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:39 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:40 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:41 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:42 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:42 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:43 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:44 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:45 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:46 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:46 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:47 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:48 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:49 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:49 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:50 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:51 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:52 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:52 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:53 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:54 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:55 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:57 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:58 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:59 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:22:59 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:00 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:01 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:02 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:03 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:03 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:04 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:05 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:06 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:06 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:07 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:08 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:09 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:10 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:10 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:11 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:12 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:13 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:13 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:14 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:15 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:16 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:16 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:17 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:18 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:19 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:20 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:20 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:21 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:22 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:23 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:23 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:24 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:25 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:26 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:27 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:27 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:28 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:29 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:30 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:30 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:31 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:32 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:33 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:34 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:34 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:35 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:36 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:37 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:37 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:38 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:39 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:40 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:41 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:41 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:42 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:43 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:44 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:44 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:45 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:46 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:47 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:48 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:48 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:49 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:50 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:51 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:51 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:52 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:53 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:54 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:55 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:55 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:57 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:58 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:58 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:23:59 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:00 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:01 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:01 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:02 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:03 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:04 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:05 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:05 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:06 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:07 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:08 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:08 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:09 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:10 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:11 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:11 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:12 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:13 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:14 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:15 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:15 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:16 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:17 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:18 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:18 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:19 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:20 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:21 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:22 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:22 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:23 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:24 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:25 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:25 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:26 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:27 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:28 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:29 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:29 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:30 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:31 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:32 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:32 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:33 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:34 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:35 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:36 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:36 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:37 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:38 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:39 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:39 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:40 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:41 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:42 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:42 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:43 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:44 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:45 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:46 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:46 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:47 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:48 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:49 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:49 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:50 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:51 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:52 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:53 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:53 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:54 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:55 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:57 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:58 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:24:59 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:25:00 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:25:00 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:25:11 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:25:11 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:25:11 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:25:13 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:25:13 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:25:14 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:25:14 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:25:14 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:25:14 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:25:16 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:25:16 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:25:16 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:25:17 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:25:17 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:25:17 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:25:17 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:25:17 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:25:17 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:25:17 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:25:17 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:25:17 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:25:17 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:25:17 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:25:17 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:25:17 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:25:19 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:25:26 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 10, 1: 51}
+2025-07-23 17:25:26 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:25:26 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:25:26 [INFO] Robot:_log_info:1857 - 關節運動到座標: (223.14, 189.28, 238.86, 83.37)
+2025-07-23 17:25:26 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:26 [INFO] Robot:_log_info:1857 - 關節運動到座標: (-25.23, 291.51, 238.86, 137.11)
+2025-07-23 17:25:27 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:27 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:28 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:29 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:29 [INFO] Robot:_log_info:1857 - 關節運動到座標: (223.14, 189.28, 238.86, 83.37)
+2025-07-23 17:25:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:30 [INFO] Robot:_log_info:1857 - 關節運動到座標: (260.89, -17.57, 241.39, 44.86)
+2025-07-23 17:25:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:30 [INFO] Robot:_log_info:1857 - 關節運動到座標: (260.89, -17.37, 212.0, 44.89)
+2025-07-23 17:25:31 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:31 [INFO] Robot:_log_info:1857 - 關節運動到座標: (260.89, -17.57, 241.39, 44.86)
+2025-07-23 17:25:31 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:31 [INFO] Robot:_log_info:1857 - 關節運動到座標: (223.14, 189.28, 238.86, 83.37)
+2025-07-23 17:25:32 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:32 [INFO] Robot:_log_info:1857 - 關節運動到座標: (260.89, -17.57, 241.39, 44.86)
+2025-07-23 17:25:33 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:33 [INFO] Robot:_log_info:1857 - 關節運動到座標: (260.89, -17.37, 212.0, 44.89)
+2025-07-23 17:25:33 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:34 [INFO] Robot:_log_info:1857 - 關節運動到座標: (260.89, -17.57, 241.39, 44.86)
+2025-07-23 17:25:34 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:25:34 [INFO] Robot:_log_info:1857 - 關節運動到座標: (-60.62, -381.97, 177.35, 43.06)
+2025-07-23 17:25:34 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:16 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:31:16 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:31:16 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:31:18 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:31:18 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:31:19 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:31:19 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:31:19 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:31:19 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:31:21 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:31:21 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:31:21 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:31:22 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:31:22 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:31:22 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:31:22 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:31:22 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:31:22 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:31:22 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:31:22 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:31:22 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:31:22 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:31:22 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:31:22 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:31:22 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:31:24 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:31:31 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 9, 1: 53}
+2025-07-23 17:31:31 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:31:31 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標2類
+2025-07-23 17:31:31 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:32 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:33 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:33 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:35 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:36 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:36 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:37 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:38 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:39 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:40 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:40 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:41 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:42 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:48 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:49 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:50 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:51 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:51 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:52 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:52 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:53 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:54 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:55 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:56 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:56 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:57 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:58 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:31:59 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:00 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:01 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:02 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:08 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:08 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:09 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:10 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:10 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:11 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:12 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:12 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:14 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:15 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:15 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:16 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:17 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:17 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:18 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:19 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:20 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:21 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:27 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:27 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:28 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:31 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:31 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:32 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:33 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:34 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:35 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:35 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:36 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:37 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:38 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:38 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:39 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:41 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:46 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:47 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:48 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:49 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:49 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:50 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:51 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:51 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:53 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:54 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:55 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:55 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:56 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:57 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:58 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:58 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:32:59 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:01 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:06 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:07 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:08 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:09 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:09 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:10 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:11 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:11 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:13 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:14 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:14 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:15 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:16 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:17 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:18 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:18 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:19 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:21 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:26 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:26 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:28 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:29 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:29 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:31 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:33 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:33 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:34 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:35 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:36 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:36 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:37 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:38 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:39 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:40 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:33:40 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 17:33:40 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 17:33:40 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 17:33:40 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 17:33:41 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 17:33:41 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 17:33:41 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 17:33:42 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 17:33:42 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 17:33:42 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 17:33:42 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 17:33:42 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 17:39:37 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 17:39:37 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:39:37 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 17:39:39 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 17:39:39 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 17:39:40 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 17:39:40 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 17:39:40 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 17:39:40 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 17:39:40 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 17:39:40 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 17:39:40 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 17:39:41 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:39:41 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 17:39:41 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 17:39:41 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 17:39:41 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 17:39:41 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:39:41 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 17:39:41 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 17:39:41 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 17:39:41 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 17:39:41 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 17:39:41 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 17:39:41 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 17:39:42 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 17:39:47 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {1: 23}
+2025-07-23 17:39:47 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 17:39:47 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標1類
+2025-07-23 17:39:49 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:39:50 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:39:51 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:39:52 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:39:54 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:39:55 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:39:56 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:39:57 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:39:59 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:40:00 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:40:01 [ERROR] Robot:_log_error:1412 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 17:40:01 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 17:40:02 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 17:40:02 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 17:40:02 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 17:40:03 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 17:40:03 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 17:40:03 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 17:40:03 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 17:40:03 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 17:40:04 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 17:40:04 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 17:40:04 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 17:40:04 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開

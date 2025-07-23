@@ -87701,3 +87701,44 @@ serial.serialutil.SerialException: ClearCommError failed (OSError(9, '控制代�
 2025-07-23 17:07:59 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 46.6ms
 2025-07-23 17:07:59 [INFO] GripperOptimized:stop:528 - 最終性能統計: 總循環=270, 總指令=1, 總錯誤=0
 2025-07-23 17:07:59 [INFO] GripperOptimized:stop:532 - 夾爪模組已停止
+2025-07-23 17:31:05 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-23 17:31:05 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-23 17:31:05 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-23 17:31:05 [INFO] GripperOptimized:start:509 - 夾爪模組已啟動 - 高性能模式
+2025-07-23 17:31:05 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-23 17:31:05 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-23 17:31:05 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 43.0ms
+2025-07-23 17:31:06 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 37.2ms
+2025-07-23 17:31:07 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 32.4ms
+2025-07-23 17:31:08 [INFO] GripperOptimized:stop:519 - 正在停止夾爪模組...
+2025-07-23 17:31:08 [ERROR] GripperOptimized:read_gripper_status:273 - PGC狀態讀取異常: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+Traceback (most recent call last):
+  File "c:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper.py", line 250, in read_gripper_status
+    result = self.rtu_client.read_holding_registers(address=0x0200, count=3, slave=unit_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\mixin.py", line 113, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 136, in sync_execute
+    return self.sync_get_response(request.dev_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 86, in sync_get_response
+    if not (data := self.sync_client.recv(None)):
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 302, in recv
+    size = self._wait_for_data()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 288, in _wait_for_data
+    available = self._in_waiting()
+                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 262, in _in_waiting
+    return getattr(self.socket, "in_waiting") if hasattr(self.socket, "in_waiting") else getattr(self.socket, "inWaiting")()
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\serial\serialwin32.py", line 259, in in_waiting
+    raise SerialException("ClearCommError failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+2025-07-23 17:31:08 [INFO] GripperOptimized:stop:528 - 最終性能統計: 總循環=155, 總指令=0, 總錯誤=0
+2025-07-23 17:31:08 [INFO] GripperOptimized:stop:532 - 夾爪模組已停止

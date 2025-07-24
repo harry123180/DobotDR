@@ -518,59 +518,59 @@ class YOLODetector:
             self.memory_monitor.create_checkpoint("before_inference")
             
             # 執行推論 - 使用上下文管理器
-            with auto_cleanup() as _:
-                results = current_model(image, conf=self.confidence_threshold, verbose=False)
+             
+            results = current_model(image, conf=self.confidence_threshold, verbose=False)
+            
+            # 記憶體檢查點 - 推論後
+            self.memory_monitor.create_checkpoint("after_inference")
+            
+            if results and len(results) > 0:
+                detections = results[0]
                 
-                # 記憶體檢查點 - 推論後
-                self.memory_monitor.create_checkpoint("after_inference")
+                if detections.boxes is not None and len(detections.boxes) > 0:
+                    # 立即轉換為numpy並處理
+                    boxes_cpu = detections.boxes.cpu().numpy()
+                    
+                    # 處理檢測結果
+                    for box in boxes_cpu:
+                        class_id = int(box.cls[0])
+                        confidence = float(box.conf[0])
+                        
+                        if class_id >= self.config.num_classes:
+                            continue
+                        
+                        if confidence >= self.confidence_threshold:
+                            x1, y1, x2, y2 = box.xyxy[0]
+                            center_x = float((x1 + x2) / 2)
+                            center_y = float((y1 + y2) / 2)
+                            
+                            if class_id not in result.detections_by_class:
+                                result.detections_by_class[class_id] = 0
+                                result.coordinates_by_class[class_id] = []
+                                result.confidences_by_class[class_id] = []
+                            
+                            result.detections_by_class[class_id] += 1
+                            result.coordinates_by_class[class_id].append((center_x, center_y))
+                            result.confidences_by_class[class_id].append(confidence)
+                    
+                    result.total_detections = sum(result.detections_by_class.values())
+                    result.success = True
+                    
+                    # 立即清理boxes數據
+                    del boxes_cpu
+                    
+                # 強制清理檢測結果
+                if hasattr(detections, 'boxes') and detections.boxes is not None:
+                    detections.boxes = None
                 
-                if results and len(results) > 0:
-                    detections = results[0]
-                    
-                    if detections.boxes is not None and len(detections.boxes) > 0:
-                        # 立即轉換為numpy並處理
-                        boxes_cpu = detections.boxes.cpu().numpy()
-                        
-                        # 處理檢測結果
-                        for box in boxes_cpu:
-                            class_id = int(box.cls[0])
-                            confidence = float(box.conf[0])
-                            
-                            if class_id >= self.config.num_classes:
-                                continue
-                            
-                            if confidence >= self.confidence_threshold:
-                                x1, y1, x2, y2 = box.xyxy[0]
-                                center_x = float((x1 + x2) / 2)
-                                center_y = float((y1 + y2) / 2)
-                                
-                                if class_id not in result.detections_by_class:
-                                    result.detections_by_class[class_id] = 0
-                                    result.coordinates_by_class[class_id] = []
-                                    result.confidences_by_class[class_id] = []
-                                
-                                result.detections_by_class[class_id] += 1
-                                result.coordinates_by_class[class_id].append((center_x, center_y))
-                                result.confidences_by_class[class_id].append(confidence)
-                        
-                        result.total_detections = sum(result.detections_by_class.values())
-                        result.success = True
-                        
-                        # 立即清理boxes數據
-                        del boxes_cpu
-                        
-                    # 強制清理檢測結果
-                    if hasattr(detections, 'boxes') and detections.boxes is not None:
-                        detections.boxes = None
-                    
-                    # 清理results
-                    for res in results:
-                        for attr in ['boxes', 'masks', 'keypoints', 'probs']:
-                            if hasattr(res, attr):
-                                setattr(res, attr, None)
-                    
-                    results.clear()
-                    del results
+                # 清理results
+                for res in results:
+                    for attr in ['boxes', 'masks', 'keypoints', 'probs']:
+                        if hasattr(res, attr):
+                            setattr(res, attr, None)
+                
+                results.clear()
+                del results
             
             # 記憶體檢查點 - 處理完成
             self.memory_monitor.create_checkpoint("processing_complete")
@@ -663,58 +663,58 @@ class CameraCoordinateTransformer:
             print(f"   畸變係數檔案: {dist_coeffs_file if dist_coeffs_file else '使用零值'}")
             
             # 使用上下文管理器載入數據
-            with auto_cleanup() as _:
-                # 載入內參
-                intrinsic_data = np.load(intrinsic_file, allow_pickle=True)
-                
-                if hasattr(intrinsic_data, 'shape') and intrinsic_data.shape == (3, 3):
-                    self.camera_matrix = intrinsic_data.copy()  # 創建副本
-                    self.dist_coeffs = np.zeros((1, 5), dtype=np.float32)  
-                elif isinstance(intrinsic_data, dict):
-                    self.camera_matrix = intrinsic_data['camera_matrix'].copy()
-                    self.dist_coeffs = intrinsic_data.get('dist_coeffs', np.zeros((1, 5), dtype=np.float32)).copy()
-                elif hasattr(intrinsic_data, 'item') and callable(intrinsic_data.item):
-                    dict_data = intrinsic_data.item()
-                    if isinstance(dict_data, dict):
-                        self.camera_matrix = dict_data['camera_matrix'].copy()
-                        self.dist_coeffs = dict_data.get('dist_coeffs', np.zeros((1, 5), dtype=np.float32)).copy()
-                else:
-                    self.camera_matrix = intrinsic_data.copy()
-                    self.dist_coeffs = np.zeros((1, 5), dtype=np.float32)
-                
-                # 清理原始數據
-                del intrinsic_data
-                if 'dict_data' in locals():
-                    del dict_data
-                
-                # 載入單獨的畸變係數檔案
-                if dist_coeffs_file and os.path.exists(dist_coeffs_file):
-                    try:
-                        dist_data = np.load(dist_coeffs_file, allow_pickle=True)
-                        if hasattr(dist_data, 'shape'):
-                            self.dist_coeffs = dist_data.copy()
-                            print(f"   載入畸變係數: {dist_data.shape}")
-                        del dist_data
-                    except Exception as e:
-                        print(f"   載入畸變係數失敗，使用零值: {e}")
-                
-                # 載入外參
-                extrinsic_data = np.load(extrinsic_file, allow_pickle=True)
-                
-                if isinstance(extrinsic_data, dict):
-                    self.rvec = extrinsic_data['rvec'].copy()
-                    self.tvec = extrinsic_data['tvec'].copy()
-                elif hasattr(extrinsic_data, 'item') and callable(extrinsic_data.item) and extrinsic_data.shape == ():
-                    dict_data = extrinsic_data.item()
-                    if isinstance(dict_data, dict):
-                        self.rvec = dict_data['rvec'].copy()
-                        self.tvec = dict_data['tvec'].copy()
-                    del dict_data
-                else:
-                    del extrinsic_data
-                    return False
-                
+            #with auto_cleanup() as _:
+            # 載入內參
+            intrinsic_data = np.load(intrinsic_file, allow_pickle=True)
+            
+            if hasattr(intrinsic_data, 'shape') and intrinsic_data.shape == (3, 3):
+                self.camera_matrix = intrinsic_data.copy()  # 創建副本
+                self.dist_coeffs = np.zeros((1, 5), dtype=np.float32)  
+            elif isinstance(intrinsic_data, dict):
+                self.camera_matrix = intrinsic_data['camera_matrix'].copy()
+                self.dist_coeffs = intrinsic_data.get('dist_coeffs', np.zeros((1, 5), dtype=np.float32)).copy()
+            elif hasattr(intrinsic_data, 'item') and callable(intrinsic_data.item):
+                dict_data = intrinsic_data.item()
+                if isinstance(dict_data, dict):
+                    self.camera_matrix = dict_data['camera_matrix'].copy()
+                    self.dist_coeffs = dict_data.get('dist_coeffs', np.zeros((1, 5), dtype=np.float32)).copy()
+            else:
+                self.camera_matrix = intrinsic_data.copy()
+                self.dist_coeffs = np.zeros((1, 5), dtype=np.float32)
+            
+            # 清理原始數據
+            del intrinsic_data
+            if 'dict_data' in locals():
+                del dict_data
+            
+            # 載入單獨的畸變係數檔案
+            if dist_coeffs_file and os.path.exists(dist_coeffs_file):
+                try:
+                    dist_data = np.load(dist_coeffs_file, allow_pickle=True)
+                    if hasattr(dist_data, 'shape'):
+                        self.dist_coeffs = dist_data.copy()
+                        print(f"   載入畸變係數: {dist_data.shape}")
+                    del dist_data
+                except Exception as e:
+                    print(f"   載入畸變係數失敗，使用零值: {e}")
+            
+            # 載入外參
+            extrinsic_data = np.load(extrinsic_file, allow_pickle=True)
+            
+            if isinstance(extrinsic_data, dict):
+                self.rvec = extrinsic_data['rvec'].copy()
+                self.tvec = extrinsic_data['tvec'].copy()
+            elif hasattr(extrinsic_data, 'item') and callable(extrinsic_data.item) and extrinsic_data.shape == ():
+                dict_data = extrinsic_data.item()
+                if isinstance(dict_data, dict):
+                    self.rvec = dict_data['rvec'].copy()
+                    self.tvec = dict_data['tvec'].copy()
+                del dict_data
+            else:
                 del extrinsic_data
+                return False
+            
+            del extrinsic_data
             
             # 計算旋轉矩陣
             self.rotation_matrix, _ = cv2.Rodrigues(self.rvec)
@@ -744,41 +744,41 @@ class CameraCoordinateTransformer:
             
             # 批量處理座標轉換
             for px, py in pixel_coords:
-                with auto_cleanup() as _:
-                    # 去畸變處理
-                    pixel_point = np.array([[[float(px), float(py)]]], dtype=np.float32)
-                    undistorted_points = cv2.undistortPoints(
-                        pixel_point, 
-                        self.camera_matrix, 
-                        self.dist_coeffs
-                    )
-                    
-                    x_norm, y_norm = undistorted_points[0][0]
-                    normalized_coords = np.array([x_norm, y_norm, 1.0], dtype=np.float32)
-                    
-                    # 計算深度係數
-                    R3 = self.rotation_matrix[2, :]
-                    denominator = np.dot(R3, normalized_coords)
-                    
-                    if abs(denominator) < 1e-6:
-                        continue
-                    
-                    depth_scale = (0 - self.tvec[2, 0]) / denominator
-                    camera_point = depth_scale * normalized_coords
-                    
-                    # 轉換到世界座標系
-                    tvec_3d = self.tvec.reshape(3)
-                    translated_point = camera_point - tvec_3d
-                    world_point_3d = np.dot(self.rotation_matrix.T, translated_point)
-                    
-                    world_x = float(world_point_3d[0])
-                    world_y = float(world_point_3d[1])
-                    
-                    world_coords.append((world_x, world_y))
-                    
-                    # 清理臨時數組
-                    del pixel_point, undistorted_points, normalized_coords
-                    del camera_point, translated_point, world_point_3d
+                #with auto_cleanup() as _:
+                # 去畸變處理
+                pixel_point = np.array([[[float(px), float(py)]]], dtype=np.float32)
+                undistorted_points = cv2.undistortPoints(
+                    pixel_point, 
+                    self.camera_matrix, 
+                    self.dist_coeffs
+                )
+                
+                x_norm, y_norm = undistorted_points[0][0]
+                normalized_coords = np.array([x_norm, y_norm, 1.0], dtype=np.float32)
+                
+                # 計算深度係數
+                R3 = self.rotation_matrix[2, :]
+                denominator = np.dot(R3, normalized_coords)
+                
+                if abs(denominator) < 1e-6:
+                    continue
+                
+                depth_scale = (0 - self.tvec[2, 0]) / denominator
+                camera_point = depth_scale * normalized_coords
+                
+                # 轉換到世界座標系
+                tvec_3d = self.tvec.reshape(3)
+                translated_point = camera_point - tvec_3d
+                world_point_3d = np.dot(self.rotation_matrix.T, translated_point)
+                
+                world_x = float(world_point_3d[0])
+                world_y = float(world_point_3d[1])
+                
+                world_coords.append((world_x, world_y))
+                
+                # 清理臨時數組
+                del pixel_point, undistorted_points, normalized_coords
+                del camera_point, translated_point, world_point_3d
             
             # 記憶體檢查點
             self.memory_monitor.create_checkpoint("after_coordinate_transform")
@@ -956,20 +956,20 @@ class ImageSaveManager:
             self.memory_monitor.create_checkpoint("before_create_vis")
             
             # 創建可視化圖像
-            with auto_cleanup() as _:
-                vis_image = self.create_visualization(image.copy(), result)
-                
-                # 記憶體檢查點
-                self.memory_monitor.create_checkpoint("after_create_vis")
-                
-                filename = f"result_{timestamp}.jpg"
-                filepath = os.path.join(self.config.save_dir, filename)
-                
-                # 使用較低的JPEG品質
-                cv2.imwrite(filepath, vis_image, [cv2.IMWRITE_JPEG_QUALITY, 85])
-                
-                # 立即清理可視化圖像
-                del vis_image
+            #with auto_cleanup() as _:
+            vis_image = self.create_visualization(image.copy(), result)
+            
+            # 記憶體檢查點
+            self.memory_monitor.create_checkpoint("after_create_vis")
+            
+            filename = f"result_{timestamp}.jpg"
+            filepath = os.path.join(self.config.save_dir, filename)
+            
+            # 使用較低的JPEG品質
+            cv2.imwrite(filepath, vis_image, [cv2.IMWRITE_JPEG_QUALITY, 85])
+            
+            # 立即清理可視化圖像
+            del vis_image
             
             # 記憶體檢查點
             self.memory_monitor.create_checkpoint("after_save_result")
@@ -1283,20 +1283,20 @@ class CCD1VisionSystem:
             capture_time = time.time() - capture_start
             
             # 使用上下文管理器處理圖像數據
-            with auto_cleanup(frame_data) as _:
-                # 複製圖像數據
-                image_array = np.copy(frame_data.data)
-                
-                # 清理frame_data引用
-                if hasattr(frame_data, 'data'):
-                    delattr(frame_data, 'data')
-                
-                # 格式轉換
-                if len(image_array.shape) == 2:
-                    display_image = cv2.cvtColor(image_array, cv2.COLOR_GRAY2BGR)
-                    del image_array  # 立即清理原始數據
-                else:
-                    display_image = image_array
+            #with auto_cleanup(frame_data) as _:
+            # 複製圖像數據
+            image_array = np.copy(frame_data.data)
+            
+            # 清理frame_data引用
+            if hasattr(frame_data, 'data'):
+                delattr(frame_data, 'data')
+            
+            # 格式轉換
+            if len(image_array.shape) == 2:
+                display_image = cv2.cvtColor(image_array, cv2.COLOR_GRAY2BGR)
+                del image_array  # 立即清理原始數據
+            else:
+                display_image = image_array
             
             # 記憶體檢查點
             self.memory_monitor.create_checkpoint("after_capture")

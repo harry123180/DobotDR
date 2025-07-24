@@ -1372,3 +1372,1153 @@
 2025-07-23 18:04:26 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
 2025-07-23 18:04:26 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
 2025-07-23 18:04:26 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:11:07 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 18:11:07 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:11:07 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 18:11:09 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 18:11:09 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:11:10 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 18:11:10 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 18:11:10 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 18:11:10 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 18:11:13 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 18:11:13 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 18:11:13 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:11:14 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:11:14 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 18:11:14 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 18:11:14 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 18:11:14 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 18:11:14 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:11:14 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:11:14 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 18:11:14 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 18:11:14 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 18:11:14 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 18:11:14 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 18:11:14 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:11:15 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:11:20 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
+2025-07-23 18:11:20 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:11:20 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:11:23 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
+2025-07-23 18:11:23 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:11:23 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:11:29 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:11:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:11:31 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:11:32 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:11:34 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
+2025-07-23 18:11:34 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:11:34 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:11:35 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:11:36 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:13:41 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 18:13:41 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:13:41 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 18:13:43 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 18:13:43 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:13:44 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 18:13:44 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 18:13:44 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 18:13:44 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 18:13:47 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 18:13:47 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 18:13:47 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:13:48 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:13:48 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 18:13:48 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 18:13:48 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 18:13:48 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 18:13:48 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:13:48 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:13:48 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 18:13:48 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 18:13:48 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 18:13:48 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 18:13:48 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 18:13:48 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:13:49 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:14:03 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:14:03 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:14:04 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:14:06 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:14:06 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:14:07 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 18:14:07 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 18:14:07 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 18:14:07 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 18:14:07 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 18:14:08 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 18:14:08 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 18:14:08 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 18:14:08 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 18:14:08 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 18:14:08 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 18:14:08 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 18:16:08 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 18:16:08 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:16:08 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 18:16:10 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 18:16:10 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:16:11 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 18:16:11 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 18:16:11 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 18:16:11 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 18:16:14 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 18:16:14 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 18:16:14 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:16:15 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:16:15 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 18:16:15 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 18:16:15 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 18:16:15 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 18:16:15 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:16:15 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:16:15 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 18:16:15 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 18:16:15 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 18:16:15 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 18:16:15 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 18:16:15 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:16:17 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:16:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:16:30 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:16:31 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:16:32 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:16:32 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:16:33 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 18:16:33 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 18:16:33 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 18:16:34 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 18:16:34 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 18:16:35 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 18:16:35 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 18:16:35 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 18:16:35 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 18:16:35 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 18:16:35 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 18:16:35 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 18:17:14 [INFO] Robot:_log_info:1397 - Robot類別初始化開始
+2025-07-23 18:17:14 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:17:14 [INFO] Robot:_log_info:1397 - 正在初始化CCD1視覺系統...
+2025-07-23 18:17:16 [INFO] Robot:_log_info:1397 - CCD1視覺系統初始化成功
+2025-07-23 18:17:16 [INFO] Robot:_log_info:1397 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:17:17 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統初始化成功
+2025-07-23 18:17:17 [INFO] Robot:_log_info:1397 - 正在初始化震動盤系統...
+2025-07-23 18:17:17 [INFO] Robot:_log_info:1397 - 震動盤系統初始化成功
+2025-07-23 18:17:17 [INFO] Robot:_log_info:1397 - 正在初始化夾爪系統...
+2025-07-23 18:17:20 [INFO] Robot:_log_info:1397 - 夾爪系統初始化成功
+2025-07-23 18:17:20 [INFO] Robot:_log_info:1397 - 正在初始化Dobot機械臂...
+2025-07-23 18:17:20 [INFO] Robot:_log_info:1857 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:17:21 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:17:21 [INFO] Robot:_log_info:1857 - 機械臂自動使能成功
+2025-07-23 18:17:21 [INFO] Robot:_log_info:1397 - Dobot機械臂初始化成功
+2025-07-23 18:17:21 [INFO] Robot:_log_info:1857 - 碰撞檢測等級設定為: 3
+2025-07-23 18:17:21 [INFO] Robot:_log_info:1397 - 碰撞檢測等級設置為: 3
+2025-07-23 18:17:21 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:17:21 [INFO] Robot:_log_info:1397 - 開始初始化所有子系統
+2025-07-23 18:17:21 [WARNING] Robot:_log_warning:1404 - CCD1已經初始化
+2025-07-23 18:17:21 [WARNING] Robot:_log_warning:1404 - CCD3已經初始化
+2025-07-23 18:17:21 [WARNING] Robot:_log_warning:1404 - VP已經初始化
+2025-07-23 18:17:21 [WARNING] Robot:_log_warning:1404 - Gripper已經初始化
+2025-07-23 18:17:21 [WARNING] Robot:_log_warning:1404 - Dobot已經初始化
+2025-07-23 18:17:21 [INFO] Robot:_log_info:1397 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:17:22 [INFO] Robot:_log_info:1857 - 機械臂使能成功
+2025-07-23 18:17:27 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:17:27 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:17:30 [INFO] Robot:_log_info:1397 - CCD1檢測成功: {0: 16, 1: 17}
+2025-07-23 18:17:30 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:17:30 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:17:33 [INFO] Robot:_log_info:1397 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:17:33 [INFO] Robot:_log_info:1397 - CCD1座標獲取成功: 像素座標0類
+2025-07-23 18:17:39 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:17:40 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:17:41 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:17:42 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:17:42 [INFO] Robot:_log_info:1857 - 運動同步完成
+2025-07-23 18:17:43 [INFO] Robot:_log_info:1857 - 機械臂下使能成功
+2025-07-23 18:17:43 [WARNING] Robot:_log_warning:1404 - 執行緊急停止
+2025-07-23 18:17:43 [WARNING] Robot:_log_warning:1864 - 機械臂緊急停止
+2025-07-23 18:17:43 [WARNING] Robot:_log_warning:1404 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 18:17:43 [INFO] Robot:_log_info:1397 - 開始斷開所有系統連接
+2025-07-23 18:17:44 [INFO] Robot:_log_info:1397 - CCD1視覺系統已關閉
+2025-07-23 18:17:44 [INFO] Robot:_log_info:1397 - CCD3角度檢測系統已關閉
+2025-07-23 18:17:44 [INFO] Robot:_log_info:1397 - 震動盤系統已關閉
+2025-07-23 18:17:45 [INFO] Robot:_log_info:1397 - 夾爪系統已關閉
+2025-07-23 18:17:45 [INFO] Robot:_log_info:1857 - Dobot連接已斷開
+2025-07-23 18:17:45 [INFO] Robot:_log_info:1397 - Dobot機械臂已關閉
+2025-07-23 18:17:45 [INFO] Robot:_log_info:1397 - 所有系統連接已斷開
+2025-07-23 18:20:42 [INFO] Robot:_log_info:1415 - Robot類別初始化開始
+2025-07-23 18:20:42 [INFO] Robot:_log_info:1415 - 開始初始化所有子系統
+2025-07-23 18:20:42 [INFO] Robot:_log_info:1415 - 正在初始化CCD1視覺系統...
+2025-07-23 18:20:44 [INFO] Robot:_log_info:1415 - CCD1視覺系統初始化成功
+2025-07-23 18:20:44 [INFO] Robot:_log_info:1415 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:20:45 [INFO] Robot:_log_info:1415 - CCD3角度檢測系統初始化成功
+2025-07-23 18:20:45 [INFO] Robot:_log_info:1415 - 正在初始化震動盤系統...
+2025-07-23 18:20:45 [INFO] Robot:_log_info:1415 - 震動盤系統初始化成功
+2025-07-23 18:20:45 [INFO] Robot:_log_info:1415 - 正在初始化夾爪系統...
+2025-07-23 18:20:48 [INFO] Robot:_log_info:1415 - 夾爪系統初始化成功
+2025-07-23 18:20:48 [INFO] Robot:_log_info:1415 - 正在初始化Dobot機械臂...
+2025-07-23 18:20:48 [INFO] Robot:_log_info:1875 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:20:49 [INFO] Robot:_log_info:1875 - 機械臂使能成功
+2025-07-23 18:20:49 [INFO] Robot:_log_info:1875 - 機械臂自動使能成功
+2025-07-23 18:20:49 [INFO] Robot:_log_info:1415 - Dobot機械臂初始化成功
+2025-07-23 18:20:49 [INFO] Robot:_log_info:1875 - 碰撞檢測等級設定為: 3
+2025-07-23 18:20:49 [INFO] Robot:_log_info:1415 - 碰撞檢測等級設置為: 3
+2025-07-23 18:20:49 [INFO] Robot:_log_info:1415 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:20:49 [INFO] Robot:_log_info:1415 - 開始初始化所有子系統
+2025-07-23 18:20:49 [WARNING] Robot:_log_warning:1422 - CCD1已經初始化
+2025-07-23 18:20:49 [WARNING] Robot:_log_warning:1422 - CCD3已經初始化
+2025-07-23 18:20:49 [WARNING] Robot:_log_warning:1422 - VP已經初始化
+2025-07-23 18:20:49 [WARNING] Robot:_log_warning:1422 - Gripper已經初始化
+2025-07-23 18:20:49 [WARNING] Robot:_log_warning:1422 - Dobot已經初始化
+2025-07-23 18:20:49 [INFO] Robot:_log_info:1415 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:20:50 [INFO] Robot:_log_info:1875 - 機械臂使能成功
+2025-07-23 18:20:55 [INFO] Robot:_log_info:1415 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:20:55 [ERROR] Robot:_log_error:1430 - 座標數據為空，result屬性: ['capture_time', 'cleanup', 'confidence_threshold', 'confidences_by_class', 'coordinates_by_class', 'detections_by_class', 'error_message', 'memory_usage', 'model_id_used', 'processing_time', 'raw_image_path', 'result_image_path', 'success', 'timestamp', 'total_detections', 'total_time', 'world_coord_valid', 'world_coordinates_by_class']
+2025-07-23 18:20:55 [ERROR] Robot:_log_error:1430 - coordinates_by_class值: {}
+2025-07-23 18:20:55 [ERROR] Robot:_log_error:1430 - world_coordinates_by_class值: {}
+2025-07-23 18:20:59 [INFO] Robot:_log_info:1415 - CCD1檢測成功: {0: 16, 1: 16}
+2025-07-23 18:20:59 [INFO] Robot:_log_info:1415 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:20:59 [ERROR] Robot:_log_error:1430 - 座標數據為空，result屬性: ['capture_time', 'cleanup', 'confidence_threshold', 'confidences_by_class', 'coordinates_by_class', 'detections_by_class', 'error_message', 'memory_usage', 'model_id_used', 'processing_time', 'raw_image_path', 'result_image_path', 'success', 'timestamp', 'total_detections', 'total_time', 'world_coord_valid', 'world_coordinates_by_class']
+2025-07-23 18:20:59 [ERROR] Robot:_log_error:1430 - coordinates_by_class值: {}
+2025-07-23 18:20:59 [ERROR] Robot:_log_error:1430 - world_coordinates_by_class值: {}
+2025-07-23 18:21:01 [INFO] Robot:_log_info:1415 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:21:01 [ERROR] Robot:_log_error:1430 - 座標數據為空，result屬性: ['capture_time', 'cleanup', 'confidence_threshold', 'confidences_by_class', 'coordinates_by_class', 'detections_by_class', 'error_message', 'memory_usage', 'model_id_used', 'processing_time', 'raw_image_path', 'result_image_path', 'success', 'timestamp', 'total_detections', 'total_time', 'world_coord_valid', 'world_coordinates_by_class']
+2025-07-23 18:21:01 [ERROR] Robot:_log_error:1430 - coordinates_by_class值: {}
+2025-07-23 18:21:01 [ERROR] Robot:_log_error:1430 - world_coordinates_by_class值: {}
+2025-07-23 18:21:08 [INFO] Robot:_log_info:1875 - 運動同步完成
+2025-07-23 18:21:08 [INFO] Robot:_log_info:1875 - 運動同步完成
+2025-07-23 18:21:09 [INFO] Robot:_log_info:1875 - 運動同步完成
+2025-07-23 18:21:10 [INFO] Robot:_log_info:1875 - 運動同步完成
+2025-07-23 18:21:10 [INFO] Robot:_log_info:1875 - 運動同步完成
+2025-07-23 18:21:11 [INFO] Robot:_log_info:1875 - 機械臂下使能成功
+2025-07-23 18:21:11 [WARNING] Robot:_log_warning:1422 - 執行緊急停止
+2025-07-23 18:21:11 [WARNING] Robot:_log_warning:1882 - 機械臂緊急停止
+2025-07-23 18:21:12 [WARNING] Robot:_log_warning:1422 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 18:21:12 [INFO] Robot:_log_info:1415 - 開始斷開所有系統連接
+2025-07-23 18:21:13 [INFO] Robot:_log_info:1415 - CCD1視覺系統已關閉
+2025-07-23 18:21:13 [INFO] Robot:_log_info:1415 - CCD3角度檢測系統已關閉
+2025-07-23 18:21:13 [INFO] Robot:_log_info:1415 - 震動盤系統已關閉
+2025-07-23 18:21:13 [INFO] Robot:_log_info:1415 - 夾爪系統已關閉
+2025-07-23 18:21:13 [INFO] Robot:_log_info:1875 - Dobot連接已斷開
+2025-07-23 18:21:13 [INFO] Robot:_log_info:1415 - Dobot機械臂已關閉
+2025-07-23 18:21:13 [INFO] Robot:_log_info:1415 - 所有系統連接已斷開
+2025-07-23 18:29:21 [INFO] Robot:_log_info:1447 - Robot類別初始化開始
+2025-07-23 18:29:21 [INFO] Robot:_log_info:1447 - 開始初始化所有子系統
+2025-07-23 18:29:21 [INFO] Robot:_log_info:1447 - 正在初始化CCD1視覺系統...
+2025-07-23 18:29:23 [INFO] Robot:_log_info:1447 - CCD1視覺系統初始化成功
+2025-07-23 18:29:23 [INFO] Robot:_log_info:1447 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:29:24 [INFO] Robot:_log_info:1447 - CCD3角度檢測系統初始化成功
+2025-07-23 18:29:24 [INFO] Robot:_log_info:1447 - 正在初始化震動盤系統...
+2025-07-23 18:29:24 [INFO] Robot:_log_info:1447 - 震動盤系統初始化成功
+2025-07-23 18:29:24 [INFO] Robot:_log_info:1447 - 正在初始化夾爪系統...
+2025-07-23 18:29:27 [INFO] Robot:_log_info:1447 - 夾爪系統初始化成功
+2025-07-23 18:29:27 [INFO] Robot:_log_info:1447 - 正在初始化Dobot機械臂...
+2025-07-23 18:29:27 [INFO] Robot:_log_info:1907 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:29:29 [INFO] Robot:_log_info:1907 - 機械臂使能成功
+2025-07-23 18:29:29 [INFO] Robot:_log_info:1907 - 機械臂自動使能成功
+2025-07-23 18:29:29 [INFO] Robot:_log_info:1447 - Dobot機械臂初始化成功
+2025-07-23 18:29:29 [INFO] Robot:_log_info:1907 - 碰撞檢測等級設定為: 3
+2025-07-23 18:29:29 [INFO] Robot:_log_info:1447 - 碰撞檢測等級設置為: 3
+2025-07-23 18:29:29 [INFO] Robot:_log_info:1447 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:29:29 [INFO] Robot:_log_info:1447 - 開始初始化所有子系統
+2025-07-23 18:29:29 [WARNING] Robot:_log_warning:1454 - CCD1已經初始化
+2025-07-23 18:29:29 [WARNING] Robot:_log_warning:1454 - CCD3已經初始化
+2025-07-23 18:29:29 [WARNING] Robot:_log_warning:1454 - VP已經初始化
+2025-07-23 18:29:29 [WARNING] Robot:_log_warning:1454 - Gripper已經初始化
+2025-07-23 18:29:29 [WARNING] Robot:_log_warning:1454 - Dobot已經初始化
+2025-07-23 18:29:29 [INFO] Robot:_log_info:1447 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:29:30 [INFO] Robot:_log_info:1907 - 機械臂使能成功
+2025-07-23 18:29:34 [INFO] Robot:_log_info:1447 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:29:38 [INFO] Robot:_log_info:1447 - CCD1檢測成功: {0: 16, 1: 15}
+2025-07-23 18:29:38 [INFO] Robot:_log_info:1447 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:29:40 [INFO] Robot:_log_info:1447 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:29:47 [INFO] Robot:_log_info:1907 - 運動同步完成
+2025-07-23 18:29:47 [INFO] Robot:_log_info:1907 - 運動同步完成
+2025-07-23 18:29:48 [INFO] Robot:_log_info:1907 - 運動同步完成
+2025-07-23 18:29:50 [INFO] Robot:_log_info:1907 - 運動同步完成
+2025-07-23 18:29:50 [INFO] Robot:_log_info:1907 - 運動同步完成
+2025-07-23 18:29:51 [INFO] Robot:_log_info:1907 - 機械臂下使能成功
+2025-07-23 18:29:51 [WARNING] Robot:_log_warning:1454 - 執行緊急停止
+2025-07-23 18:29:51 [WARNING] Robot:_log_warning:1914 - 機械臂緊急停止
+2025-07-23 18:29:51 [WARNING] Robot:_log_warning:1454 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 18:29:51 [INFO] Robot:_log_info:1447 - 開始斷開所有系統連接
+2025-07-23 18:29:52 [INFO] Robot:_log_info:1447 - CCD1視覺系統已關閉
+2025-07-23 18:29:52 [INFO] Robot:_log_info:1447 - CCD3角度檢測系統已關閉
+2025-07-23 18:29:52 [INFO] Robot:_log_info:1447 - 震動盤系統已關閉
+2025-07-23 18:29:52 [INFO] Robot:_log_info:1447 - 夾爪系統已關閉
+2025-07-23 18:29:52 [INFO] Robot:_log_info:1907 - Dobot連接已斷開
+2025-07-23 18:29:52 [INFO] Robot:_log_info:1447 - Dobot機械臂已關閉
+2025-07-23 18:29:52 [INFO] Robot:_log_info:1447 - 所有系統連接已斷開
+2025-07-23 18:32:39 [INFO] Robot:_log_info:1463 - Robot類別初始化開始
+2025-07-23 18:32:39 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:32:39 [INFO] Robot:_log_info:1463 - 正在初始化CCD1視覺系統...
+2025-07-23 18:32:41 [INFO] Robot:_log_info:1463 - CCD1視覺系統初始化成功
+2025-07-23 18:32:41 [INFO] Robot:_log_info:1463 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:32:42 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統初始化成功
+2025-07-23 18:32:42 [INFO] Robot:_log_info:1463 - 正在初始化震動盤系統...
+2025-07-23 18:32:43 [INFO] Robot:_log_info:1463 - 震動盤系統初始化成功
+2025-07-23 18:32:43 [INFO] Robot:_log_info:1463 - 正在初始化夾爪系統...
+2025-07-23 18:32:45 [INFO] Robot:_log_info:1463 - 夾爪系統初始化成功
+2025-07-23 18:32:45 [INFO] Robot:_log_info:1463 - 正在初始化Dobot機械臂...
+2025-07-23 18:32:45 [INFO] Robot:_log_info:1923 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:32:47 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:32:47 [INFO] Robot:_log_info:1923 - 機械臂自動使能成功
+2025-07-23 18:32:47 [INFO] Robot:_log_info:1463 - Dobot機械臂初始化成功
+2025-07-23 18:32:47 [INFO] Robot:_log_info:1923 - 碰撞檢測等級設定為: 3
+2025-07-23 18:32:47 [INFO] Robot:_log_info:1463 - 碰撞檢測等級設置為: 3
+2025-07-23 18:32:47 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:32:47 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:32:47 [WARNING] Robot:_log_warning:1470 - CCD1已經初始化
+2025-07-23 18:32:47 [WARNING] Robot:_log_warning:1470 - CCD3已經初始化
+2025-07-23 18:32:47 [WARNING] Robot:_log_warning:1470 - VP已經初始化
+2025-07-23 18:32:47 [WARNING] Robot:_log_warning:1470 - Gripper已經初始化
+2025-07-23 18:32:47 [WARNING] Robot:_log_warning:1470 - Dobot已經初始化
+2025-07-23 18:32:47 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:32:48 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:32:52 [INFO] Robot:_log_info:1463 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:32:52 [ERROR] Robot:_log_error:1478 - 像素座標不存在
+2025-07-23 18:32:52 [ERROR] Robot:_log_error:1478 - 世界座標轉換失敗
+2025-07-23 18:32:52 [WARNING] Robot:_log_warning:1470 - 使用像素座標作為備用
+2025-07-23 18:32:56 [INFO] Robot:_log_info:1463 - CCD1檢測成功: {0: 15, 1: 18}
+2025-07-23 18:32:56 [INFO] Robot:_log_info:1463 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:32:56 [ERROR] Robot:_log_error:1478 - 像素座標不存在
+2025-07-23 18:32:56 [ERROR] Robot:_log_error:1478 - 世界座標轉換失敗
+2025-07-23 18:32:56 [WARNING] Robot:_log_warning:1470 - 使用像素座標作為備用
+2025-07-23 18:32:59 [INFO] Robot:_log_info:1463 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 18:32:59 [ERROR] Robot:_log_error:1478 - 像素座標不存在
+2025-07-23 18:32:59 [ERROR] Robot:_log_error:1478 - 世界座標轉換失敗
+2025-07-23 18:32:59 [WARNING] Robot:_log_warning:1470 - 使用像素座標作為備用
+2025-07-23 18:33:05 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:33:05 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:33:06 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:33:08 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:33:08 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:33:09 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:36:46 [INFO] Robot:_log_info:1463 - Robot類別初始化開始
+2025-07-23 18:36:46 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:36:46 [INFO] Robot:_log_info:1463 - 正在初始化CCD1視覺系統...
+2025-07-23 18:36:48 [INFO] Robot:_log_info:1463 - CCD1視覺系統初始化成功
+2025-07-23 18:36:48 [INFO] Robot:_log_info:1463 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:36:49 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統初始化成功
+2025-07-23 18:36:49 [INFO] Robot:_log_info:1463 - 正在初始化震動盤系統...
+2025-07-23 18:36:49 [INFO] Robot:_log_info:1463 - 震動盤系統初始化成功
+2025-07-23 18:36:49 [INFO] Robot:_log_info:1463 - 正在初始化夾爪系統...
+2025-07-23 18:36:52 [INFO] Robot:_log_info:1463 - 夾爪系統初始化成功
+2025-07-23 18:36:52 [INFO] Robot:_log_info:1463 - 正在初始化Dobot機械臂...
+2025-07-23 18:36:52 [INFO] Robot:_log_info:1923 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:36:53 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:36:53 [INFO] Robot:_log_info:1923 - 機械臂自動使能成功
+2025-07-23 18:36:53 [INFO] Robot:_log_info:1463 - Dobot機械臂初始化成功
+2025-07-23 18:36:53 [INFO] Robot:_log_info:1923 - 碰撞檢測等級設定為: 3
+2025-07-23 18:36:53 [INFO] Robot:_log_info:1463 - 碰撞檢測等級設置為: 3
+2025-07-23 18:36:53 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:36:53 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:36:53 [WARNING] Robot:_log_warning:1470 - CCD1已經初始化
+2025-07-23 18:36:53 [WARNING] Robot:_log_warning:1470 - CCD3已經初始化
+2025-07-23 18:36:53 [WARNING] Robot:_log_warning:1470 - VP已經初始化
+2025-07-23 18:36:53 [WARNING] Robot:_log_warning:1470 - Gripper已經初始化
+2025-07-23 18:36:53 [WARNING] Robot:_log_warning:1470 - Dobot已經初始化
+2025-07-23 18:36:53 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:36:54 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:37:08 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:37:08 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:37:09 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:37:11 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:37:11 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:37:12 [INFO] Robot:_log_info:1923 - 機械臂下使能成功
+2025-07-23 18:37:12 [WARNING] Robot:_log_warning:1470 - 執行緊急停止
+2025-07-23 18:37:12 [WARNING] Robot:_log_warning:1930 - 機械臂緊急停止
+2025-07-23 18:37:12 [WARNING] Robot:_log_warning:1470 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 18:37:12 [INFO] Robot:_log_info:1463 - 開始斷開所有系統連接
+2025-07-23 18:37:13 [INFO] Robot:_log_info:1463 - CCD1視覺系統已關閉
+2025-07-23 18:37:13 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統已關閉
+2025-07-23 18:37:13 [INFO] Robot:_log_info:1463 - 震動盤系統已關閉
+2025-07-23 18:37:13 [INFO] Robot:_log_info:1463 - 夾爪系統已關閉
+2025-07-23 18:37:13 [INFO] Robot:_log_info:1923 - Dobot連接已斷開
+2025-07-23 18:37:13 [INFO] Robot:_log_info:1463 - Dobot機械臂已關閉
+2025-07-23 18:37:13 [INFO] Robot:_log_info:1463 - 所有系統連接已斷開
+2025-07-23 18:38:38 [INFO] Robot:_log_info:1463 - Robot類別初始化開始
+2025-07-23 18:38:38 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:38:38 [INFO] Robot:_log_info:1463 - 正在初始化CCD1視覺系統...
+2025-07-23 18:38:40 [INFO] Robot:_log_info:1463 - CCD1視覺系統初始化成功
+2025-07-23 18:38:40 [INFO] Robot:_log_info:1463 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:38:41 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統初始化成功
+2025-07-23 18:38:41 [INFO] Robot:_log_info:1463 - 正在初始化震動盤系統...
+2025-07-23 18:38:41 [INFO] Robot:_log_info:1463 - 震動盤系統初始化成功
+2025-07-23 18:38:41 [INFO] Robot:_log_info:1463 - 正在初始化夾爪系統...
+2025-07-23 18:38:44 [INFO] Robot:_log_info:1463 - 夾爪系統初始化成功
+2025-07-23 18:38:44 [INFO] Robot:_log_info:1463 - 正在初始化Dobot機械臂...
+2025-07-23 18:38:44 [INFO] Robot:_log_info:1923 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:38:45 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:38:45 [INFO] Robot:_log_info:1923 - 機械臂自動使能成功
+2025-07-23 18:38:45 [INFO] Robot:_log_info:1463 - Dobot機械臂初始化成功
+2025-07-23 18:38:45 [INFO] Robot:_log_info:1923 - 碰撞檢測等級設定為: 3
+2025-07-23 18:38:45 [INFO] Robot:_log_info:1463 - 碰撞檢測等級設置為: 3
+2025-07-23 18:38:45 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:38:45 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:38:45 [WARNING] Robot:_log_warning:1470 - CCD1已經初始化
+2025-07-23 18:38:45 [WARNING] Robot:_log_warning:1470 - CCD3已經初始化
+2025-07-23 18:38:45 [WARNING] Robot:_log_warning:1470 - VP已經初始化
+2025-07-23 18:38:45 [WARNING] Robot:_log_warning:1470 - Gripper已經初始化
+2025-07-23 18:38:45 [WARNING] Robot:_log_warning:1470 - Dobot已經初始化
+2025-07-23 18:38:45 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:38:46 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:38:52 [INFO] Robot:_log_info:1463 - CCD1檢測成功: {1: 30}
+2025-07-23 18:38:52 [INFO] Robot:_log_info:1463 - 執行CCD1重新檢測獲取座標
+2025-07-23 18:38:53 [INFO] Robot:_log_info:1463 - 像素座標數據獲取成功: 1類
+2025-07-23 18:38:53 [INFO] Robot:_log_info:1463 - 像素座標 - STACK: 29個物件
+2025-07-23 18:38:53 [ERROR] Robot:_log_error:1478 - 世界座標轉換失敗
+2025-07-23 18:38:53 [WARNING] Robot:_log_warning:1470 - 使用像素座標作為備用
+2025-07-23 18:38:54 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:38:55 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:38:57 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:38:58 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:38:59 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:39:00 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:39:02 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:39:03 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:39:04 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:39:17 [INFO] Robot:_log_info:1463 - Robot類別初始化開始
+2025-07-23 18:39:17 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:39:17 [INFO] Robot:_log_info:1463 - 正在初始化CCD1視覺系統...
+2025-07-23 18:39:19 [INFO] Robot:_log_info:1463 - CCD1視覺系統初始化成功
+2025-07-23 18:39:19 [INFO] Robot:_log_info:1463 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:39:20 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統初始化成功
+2025-07-23 18:39:20 [INFO] Robot:_log_info:1463 - 正在初始化震動盤系統...
+2025-07-23 18:39:20 [INFO] Robot:_log_info:1463 - 震動盤系統初始化成功
+2025-07-23 18:39:20 [INFO] Robot:_log_info:1463 - 正在初始化夾爪系統...
+2025-07-23 18:39:22 [INFO] Robot:_log_info:1463 - 夾爪系統初始化成功
+2025-07-23 18:39:22 [INFO] Robot:_log_info:1463 - 正在初始化Dobot機械臂...
+2025-07-23 18:39:22 [INFO] Robot:_log_info:1923 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:39:23 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:39:23 [INFO] Robot:_log_info:1923 - 機械臂自動使能成功
+2025-07-23 18:39:23 [INFO] Robot:_log_info:1463 - Dobot機械臂初始化成功
+2025-07-23 18:39:23 [INFO] Robot:_log_info:1923 - 碰撞檢測等級設定為: 3
+2025-07-23 18:39:23 [INFO] Robot:_log_info:1463 - 碰撞檢測等級設置為: 3
+2025-07-23 18:39:23 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:39:23 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:39:23 [WARNING] Robot:_log_warning:1470 - CCD1已經初始化
+2025-07-23 18:39:23 [WARNING] Robot:_log_warning:1470 - CCD3已經初始化
+2025-07-23 18:39:23 [WARNING] Robot:_log_warning:1470 - VP已經初始化
+2025-07-23 18:39:23 [WARNING] Robot:_log_warning:1470 - Gripper已經初始化
+2025-07-23 18:39:23 [WARNING] Robot:_log_warning:1470 - Dobot已經初始化
+2025-07-23 18:39:23 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:39:24 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:39:25 [WARNING] Robot:_log_warning:1470 - 執行緊急停止
+2025-07-23 18:39:25 [WARNING] Robot:_log_warning:1930 - 機械臂緊急停止
+2025-07-23 18:39:25 [WARNING] Robot:_log_warning:1470 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 18:39:25 [INFO] Robot:_log_info:1463 - 開始斷開所有系統連接
+2025-07-23 18:39:26 [INFO] Robot:_log_info:1463 - CCD1視覺系統已關閉
+2025-07-23 18:39:26 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統已關閉
+2025-07-23 18:39:26 [INFO] Robot:_log_info:1463 - 震動盤系統已關閉
+2025-07-23 18:39:26 [INFO] Robot:_log_info:1463 - 夾爪系統已關閉
+2025-07-23 18:39:26 [INFO] Robot:_log_info:1923 - 機械臂下使能成功
+2025-07-23 18:39:26 [INFO] Robot:_log_info:1923 - Dobot連接已斷開
+2025-07-23 18:39:26 [INFO] Robot:_log_info:1463 - Dobot機械臂已關閉
+2025-07-23 18:39:26 [INFO] Robot:_log_info:1463 - 所有系統連接已斷開
+2025-07-23 18:39:55 [INFO] Robot:_log_info:1463 - Robot類別初始化開始
+2025-07-23 18:39:55 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:39:55 [INFO] Robot:_log_info:1463 - 正在初始化CCD1視覺系統...
+2025-07-23 18:39:57 [INFO] Robot:_log_info:1463 - CCD1視覺系統初始化成功
+2025-07-23 18:39:57 [INFO] Robot:_log_info:1463 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:39:58 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統初始化成功
+2025-07-23 18:39:58 [INFO] Robot:_log_info:1463 - 正在初始化震動盤系統...
+2025-07-23 18:39:59 [INFO] Robot:_log_info:1463 - 震動盤系統初始化成功
+2025-07-23 18:39:59 [INFO] Robot:_log_info:1463 - 正在初始化夾爪系統...
+2025-07-23 18:40:01 [INFO] Robot:_log_info:1463 - 夾爪系統初始化成功
+2025-07-23 18:40:01 [INFO] Robot:_log_info:1463 - 正在初始化Dobot機械臂...
+2025-07-23 18:40:01 [INFO] Robot:_log_info:1923 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:40:03 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:40:03 [INFO] Robot:_log_info:1923 - 機械臂自動使能成功
+2025-07-23 18:40:03 [INFO] Robot:_log_info:1463 - Dobot機械臂初始化成功
+2025-07-23 18:40:03 [INFO] Robot:_log_info:1923 - 碰撞檢測等級設定為: 3
+2025-07-23 18:40:03 [INFO] Robot:_log_info:1463 - 碰撞檢測等級設置為: 3
+2025-07-23 18:40:03 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:40:03 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:40:03 [WARNING] Robot:_log_warning:1470 - CCD1已經初始化
+2025-07-23 18:40:03 [WARNING] Robot:_log_warning:1470 - CCD3已經初始化
+2025-07-23 18:40:03 [WARNING] Robot:_log_warning:1470 - VP已經初始化
+2025-07-23 18:40:03 [WARNING] Robot:_log_warning:1470 - Gripper已經初始化
+2025-07-23 18:40:03 [WARNING] Robot:_log_warning:1470 - Dobot已經初始化
+2025-07-23 18:40:03 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:40:04 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:40:09 [INFO] Robot:_log_info:1463 - CCD1檢測成功: {1: 32}
+2025-07-23 18:40:09 [INFO] Robot:_log_info:1463 - 執行CCD1重新檢測獲取座標
+2025-07-23 18:40:10 [INFO] Robot:_log_info:1463 - 像素座標數據獲取成功: 1類
+2025-07-23 18:40:10 [INFO] Robot:_log_info:1463 - 像素座標 - STACK: 32個物件
+2025-07-23 18:40:10 [ERROR] Robot:_log_error:1478 - 世界座標轉換失敗
+2025-07-23 18:40:10 [WARNING] Robot:_log_warning:1470 - 使用像素座標作為備用
+2025-07-23 18:40:11 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:13 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:14 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:15 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:16 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:18 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:19 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:20 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:21 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:23 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:24 [ERROR] Robot:_log_error:1478 - CCD1檢測失敗: YOLO檢測器未載入
+2025-07-23 18:40:24 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:40:25 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:41:09 [INFO] Robot:_log_info:1463 - Robot類別初始化開始
+2025-07-23 18:41:09 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:41:09 [INFO] Robot:_log_info:1463 - 正在初始化CCD1視覺系統...
+2025-07-23 18:41:11 [INFO] Robot:_log_info:1463 - CCD1視覺系統初始化成功
+2025-07-23 18:41:11 [INFO] Robot:_log_info:1463 - 正在初始化CCD3角度檢測系統...
+2025-07-23 18:41:12 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統初始化成功
+2025-07-23 18:41:12 [INFO] Robot:_log_info:1463 - 正在初始化震動盤系統...
+2025-07-23 18:41:12 [INFO] Robot:_log_info:1463 - 震動盤系統初始化成功
+2025-07-23 18:41:12 [INFO] Robot:_log_info:1463 - 正在初始化夾爪系統...
+2025-07-23 18:41:14 [INFO] Robot:_log_info:1463 - 夾爪系統初始化成功
+2025-07-23 18:41:14 [INFO] Robot:_log_info:1463 - 正在初始化Dobot機械臂...
+2025-07-23 18:41:14 [INFO] Robot:_log_info:1923 - Dobot連接成功: 192.168.1.6
+2025-07-23 18:41:15 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:41:15 [INFO] Robot:_log_info:1923 - 機械臂自動使能成功
+2025-07-23 18:41:15 [INFO] Robot:_log_info:1463 - Dobot機械臂初始化成功
+2025-07-23 18:41:15 [INFO] Robot:_log_info:1923 - 碰撞檢測等級設定為: 3
+2025-07-23 18:41:15 [INFO] Robot:_log_info:1463 - 碰撞檢測等級設置為: 3
+2025-07-23 18:41:15 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:41:15 [INFO] Robot:_log_info:1463 - 開始初始化所有子系統
+2025-07-23 18:41:15 [WARNING] Robot:_log_warning:1470 - CCD1已經初始化
+2025-07-23 18:41:15 [WARNING] Robot:_log_warning:1470 - CCD3已經初始化
+2025-07-23 18:41:15 [WARNING] Robot:_log_warning:1470 - VP已經初始化
+2025-07-23 18:41:15 [WARNING] Robot:_log_warning:1470 - Gripper已經初始化
+2025-07-23 18:41:15 [WARNING] Robot:_log_warning:1470 - Dobot已經初始化
+2025-07-23 18:41:15 [INFO] Robot:_log_info:1463 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 18:41:17 [INFO] Robot:_log_info:1923 - 機械臂使能成功
+2025-07-23 18:41:22 [INFO] Robot:_log_info:1463 - CCD1檢測成功: {0: 11, 1: 20}
+2025-07-23 18:41:22 [INFO] Robot:_log_info:1463 - 執行CCD1重新檢測獲取座標
+2025-07-23 18:41:23 [INFO] Robot:_log_info:1463 - 像素座標數據獲取成功: 2類
+2025-07-23 18:41:23 [INFO] Robot:_log_info:1463 - 像素座標 - DR_F: 11個物件
+2025-07-23 18:41:23 [INFO] Robot:_log_info:1463 - 像素座標 - STACK: 20個物件
+2025-07-23 18:41:23 [ERROR] Robot:_log_error:1478 - 世界座標轉換失敗
+2025-07-23 18:41:23 [WARNING] Robot:_log_warning:1470 - 使用像素座標作為備用
+2025-07-23 18:41:23 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:41:24 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:41:24 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:41:24 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:57 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:57 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:57 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:57 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:58 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:58 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:58 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:58 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:59 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:59 [INFO] Robot:_log_info:1923 - 運動同步完成
+2025-07-23 18:42:59 [WARNING] Robot:_log_warning:1470 - 執行緊急停止
+2025-07-23 18:42:59 [WARNING] Robot:_log_warning:1930 - 機械臂緊急停止
+2025-07-23 18:42:59 [WARNING] Robot:_log_warning:1470 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 18:42:59 [INFO] Robot:_log_info:1463 - 開始斷開所有系統連接
+2025-07-23 18:43:00 [INFO] Robot:_log_info:1463 - CCD1視覺系統已關閉
+2025-07-23 18:43:00 [INFO] Robot:_log_info:1463 - CCD3角度檢測系統已關閉
+2025-07-23 18:43:00 [INFO] Robot:_log_info:1463 - 震動盤系統已關閉
+2025-07-23 18:43:00 [INFO] Robot:_log_info:1463 - 夾爪系統已關閉
+2025-07-23 18:43:00 [ERROR] Robot:_log_error:1937 - 機械臂下使能失敗: 
+2025-07-23 18:43:00 [INFO] Robot:_log_info:1923 - Dobot連接已斷開
+2025-07-23 18:43:00 [INFO] Robot:_log_info:1463 - Dobot機械臂已關閉
+2025-07-23 18:43:00 [INFO] Robot:_log_info:1463 - 所有系統連接已斷開
+2025-07-23 18:49:34 [INFO] Robot:_log_info:1463 - Robot類別初始化開始
+2025-07-23 18:49:34 [INFO] Robot:_log_info:1463 - 正在初始化CCD1視覺系統...
+2025-07-23 18:49:36 [INFO] Robot:_log_info:1463 - CCD1視覺系統初始化成功
+2025-07-23 18:49:40 [INFO] Robot:_log_info:1463 - CCD1檢測成功: {1: 32}
+2025-07-23 18:49:40 [INFO] Robot:_log_info:1463 - 執行CCD1重新檢測獲取座標
+2025-07-23 18:49:41 [INFO] Robot:_log_info:1463 - 像素座標數據獲取成功: 1類
+2025-07-23 18:49:41 [INFO] Robot:_log_info:1463 - 像素座標 - STACK: 32個物件
+2025-07-23 18:49:41 [ERROR] Robot:_log_error:1478 - 世界座標轉換失敗
+2025-07-23 18:49:41 [WARNING] Robot:_log_warning:1470 - 使用像素座標作為備用
+2025-07-23 18:49:42 [INFO] Robot:_log_info:1463 - 開始斷開所有系統連接
+2025-07-23 18:49:42 [INFO] Robot:_log_info:1463 - CCD1視覺系統已關閉
+2025-07-23 18:49:42 [INFO] Robot:_log_info:1463 - 所有系統連接已斷開
+2025-07-23 19:43:02 [INFO] Robot:_log_info:1456 - Robot類別初始化開始
+2025-07-23 19:43:02 [INFO] Robot:_log_info:1456 - 開始初始化所有子系統
+2025-07-23 19:43:02 [INFO] Robot:_log_info:1456 - 正在初始化CCD1視覺系統...
+2025-07-23 19:43:04 [INFO] Robot:_log_info:1456 - CCD1視覺系統初始化成功
+2025-07-23 19:43:04 [INFO] Robot:_log_info:1456 - 正在初始化CCD3角度檢測系統...
+2025-07-23 19:43:05 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統初始化成功
+2025-07-23 19:43:05 [INFO] Robot:_log_info:1456 - 正在初始化震動盤系統...
+2025-07-23 19:43:05 [INFO] Robot:_log_info:1456 - 震動盤系統初始化成功
+2025-07-23 19:43:05 [INFO] Robot:_log_info:1456 - 正在初始化夾爪系統...
+2025-07-23 19:43:07 [INFO] Robot:_log_info:1456 - 夾爪系統初始化成功
+2025-07-23 19:43:07 [INFO] Robot:_log_info:1456 - 正在初始化Dobot機械臂...
+2025-07-23 19:43:07 [INFO] Robot:_log_info:1916 - Dobot連接成功: 192.168.1.6
+2025-07-23 19:43:08 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 19:43:08 [INFO] Robot:_log_info:1916 - 機械臂自動使能成功
+2025-07-23 19:43:08 [INFO] Robot:_log_info:1456 - Dobot機械臂初始化成功
+2025-07-23 19:43:08 [INFO] Robot:_log_info:1916 - 碰撞檢測等級設定為: 3
+2025-07-23 19:43:08 [INFO] Robot:_log_info:1456 - 碰撞檢測等級設置為: 3
+2025-07-23 19:43:08 [INFO] Robot:_log_info:1456 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 19:43:08 [INFO] Robot:_log_info:1456 - 開始初始化所有子系統
+2025-07-23 19:43:08 [INFO] Robot:_log_info:1456 - 正在初始化CCD1視覺系統...
+2025-07-23 19:43:09 [INFO] Robot:_log_info:1456 - CCD1視覺系統初始化成功
+2025-07-23 19:43:09 [WARNING] Robot:_log_warning:1463 - CCD3已經初始化
+2025-07-23 19:43:09 [WARNING] Robot:_log_warning:1463 - VP已經初始化
+2025-07-23 19:43:09 [WARNING] Robot:_log_warning:1463 - Gripper已經初始化
+2025-07-23 19:43:09 [WARNING] Robot:_log_warning:1463 - Dobot已經初始化
+2025-07-23 19:43:09 [INFO] Robot:_log_info:1456 - 系統初始化完成: 5/5 個子系統成功
+2025-07-23 19:43:10 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 19:43:11 [ERROR] Robot:_log_error:1471 - CCD1檢測失敗: 圖像捕獲失敗
+2025-07-23 19:43:11 [WARNING] Robot:_log_warning:1463 - 執行緊急停止
+2025-07-23 19:43:11 [WARNING] Robot:_log_warning:1923 - 機械臂緊急停止
+2025-07-23 19:43:11 [WARNING] Robot:_log_warning:1463 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 19:43:11 [INFO] Robot:_log_info:1456 - 開始斷開所有系統連接
+2025-07-23 19:43:12 [INFO] Robot:_log_info:1456 - CCD1視覺系統已關閉
+2025-07-23 19:43:12 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統已關閉
+2025-07-23 19:43:12 [INFO] Robot:_log_info:1456 - 震動盤系統已關閉
+2025-07-23 19:43:12 [INFO] Robot:_log_info:1456 - 夾爪系統已關閉
+2025-07-23 19:43:12 [INFO] Robot:_log_info:1916 - 機械臂下使能成功
+2025-07-23 19:43:12 [INFO] Robot:_log_info:1916 - Dobot連接已斷開
+2025-07-23 19:43:12 [INFO] Robot:_log_info:1456 - Dobot機械臂已關閉
+2025-07-23 19:43:12 [INFO] Robot:_log_info:1456 - 所有系統連接已斷開
+2025-07-23 19:52:13 [INFO] Robot:_log_info:1456 - Robot類別初始化開始
+2025-07-23 19:52:13 [INFO] Robot:_log_info:1456 - 正在初始化CCD1視覺系統...
+2025-07-23 19:52:15 [INFO] Robot:_log_info:1456 - CCD1視覺系統初始化成功
+2025-07-23 19:52:15 [INFO] Robot:_log_info:1456 - 正在初始化CCD3角度檢測系統...
+2025-07-23 19:52:16 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統初始化成功
+2025-07-23 19:52:16 [INFO] Robot:_log_info:1456 - 正在初始化震動盤系統...
+2025-07-23 19:52:16 [INFO] Robot:_log_info:1456 - 震動盤系統初始化成功
+2025-07-23 19:52:16 [INFO] Robot:_log_info:1456 - 正在初始化夾爪系統...
+2025-07-23 19:52:18 [INFO] Robot:_log_info:1456 - 夾爪系統初始化成功
+2025-07-23 19:52:18 [INFO] Robot:_log_info:1456 - 正在初始化Dobot機械臂...
+2025-07-23 19:52:18 [INFO] Robot:_log_info:1916 - Dobot連接成功: 192.168.1.6
+2025-07-23 19:52:20 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 19:52:20 [INFO] Robot:_log_info:1916 - 機械臂自動使能成功
+2025-07-23 19:52:20 [INFO] Robot:_log_info:1456 - Dobot機械臂初始化成功
+2025-07-23 19:52:20 [INFO] Robot:_log_info:1916 - 碰撞檢測等級設定為: 3
+2025-07-23 19:52:20 [INFO] Robot:_log_info:1456 - 碰撞檢測等級設置為: 3
+2025-07-23 19:52:21 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 19:52:23 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:23 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:23 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:23 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:23 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:23 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:24 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:24 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:24 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:24 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:24 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:24 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:25 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:25 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:25 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:25 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:25 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:25 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:26 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:27 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:27 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:27 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:27 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:27 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:27 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:28 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:28 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:28 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:28 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:28 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:28 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:29 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:30 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:52:30 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:52:30 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:52:30 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:52:30 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:52:30 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:52:31 [WARNING] Robot:_log_warning:1463 - 執行緊急停止
+2025-07-23 19:52:31 [WARNING] Robot:_log_warning:1923 - 機械臂緊急停止
+2025-07-23 19:52:31 [WARNING] Robot:_log_warning:1463 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 19:52:31 [INFO] Robot:_log_info:1456 - 開始斷開所有系統連接
+2025-07-23 19:52:31 [INFO] Robot:_log_info:1456 - CCD1視覺系統已關閉
+2025-07-23 19:52:31 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統已關閉
+2025-07-23 19:52:31 [INFO] Robot:_log_info:1456 - 震動盤系統已關閉
+2025-07-23 19:52:32 [INFO] Robot:_log_info:1456 - 夾爪系統已關閉
+2025-07-23 19:52:32 [INFO] Robot:_log_info:1916 - 機械臂下使能成功
+2025-07-23 19:52:32 [INFO] Robot:_log_info:1916 - Dobot連接已斷開
+2025-07-23 19:52:32 [INFO] Robot:_log_info:1456 - Dobot機械臂已關閉
+2025-07-23 19:52:32 [INFO] Robot:_log_info:1456 - 所有系統連接已斷開
+2025-07-23 19:55:32 [INFO] Robot:_log_info:1456 - Robot類別初始化開始
+2025-07-23 19:55:32 [INFO] Robot:_log_info:1456 - 正在初始化CCD1視覺系統...
+2025-07-23 19:55:34 [INFO] Robot:_log_info:1456 - CCD1視覺系統初始化成功
+2025-07-23 19:55:34 [INFO] Robot:_log_info:1456 - 正在初始化CCD3角度檢測系統...
+2025-07-23 19:55:35 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統初始化成功
+2025-07-23 19:55:35 [INFO] Robot:_log_info:1456 - 正在初始化震動盤系統...
+2025-07-23 19:55:35 [INFO] Robot:_log_info:1456 - 震動盤系統初始化成功
+2025-07-23 19:55:35 [INFO] Robot:_log_info:1456 - 正在初始化夾爪系統...
+2025-07-23 19:55:37 [INFO] Robot:_log_info:1456 - 夾爪系統初始化成功
+2025-07-23 19:55:37 [INFO] Robot:_log_info:1456 - 正在初始化Dobot機械臂...
+2025-07-23 19:55:37 [INFO] Robot:_log_info:1916 - Dobot連接成功: 192.168.1.6
+2025-07-23 19:55:38 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 19:55:38 [INFO] Robot:_log_info:1916 - 機械臂自動使能成功
+2025-07-23 19:55:38 [INFO] Robot:_log_info:1456 - Dobot機械臂初始化成功
+2025-07-23 19:55:38 [INFO] Robot:_log_info:1916 - 碰撞檢測等級設定為: 3
+2025-07-23 19:55:38 [INFO] Robot:_log_info:1456 - 碰撞檢測等級設置為: 3
+2025-07-23 19:55:40 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 19:55:42 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 32}
+2025-07-23 19:55:42 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:55:42 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 19:55:42 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 32個物件
+2025-07-23 19:55:42 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 19:55:42 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 32個物件
+2025-07-23 19:55:44 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {0: 10, 1: 20}
+2025-07-23 19:55:44 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:55:44 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 2類
+2025-07-23 19:55:44 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤0: 10個物件
+2025-07-23 19:55:44 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 20個物件
+2025-07-23 19:55:44 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 2類
+2025-07-23 19:55:44 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤0: 10個物件
+2025-07-23 19:55:44 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 20個物件
+2025-07-23 19:55:45 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:46 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:46 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:47 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:48 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:49 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:50 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:50 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:53 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:53 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:54 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:55:56 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:02 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:02 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:53 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:53 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:53 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:53 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:54 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:54 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:59 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:59 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:59 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:56:59 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:00 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:00 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:00 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:00 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:02 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:02 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:07 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:07 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:08 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:08 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:15 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:15 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:16 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:16 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:17 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:17 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:17 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:17 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:19 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:19 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:24 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:24 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:24 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:24 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:26 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:26 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:26 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:26 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:32 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:32 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:33 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:33 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:35 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:35 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:35 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:35 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:36 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:36 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:41 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:41 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:41 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:41 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:42 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:42 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:42 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:42 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:43 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:43 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:43 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:43 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:44 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:44 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:44 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:44 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:44 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:44 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:49 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:49 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:50 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:50 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:57:52 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:09 [INFO] Robot:_log_info:1456 - Robot類別初始化開始
+2025-07-23 19:59:09 [INFO] Robot:_log_info:1456 - 正在初始化CCD1視覺系統...
+2025-07-23 19:59:11 [INFO] Robot:_log_info:1456 - CCD1視覺系統初始化成功
+2025-07-23 19:59:11 [INFO] Robot:_log_info:1456 - 正在初始化CCD3角度檢測系統...
+2025-07-23 19:59:12 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統初始化成功
+2025-07-23 19:59:12 [INFO] Robot:_log_info:1456 - 正在初始化震動盤系統...
+2025-07-23 19:59:12 [INFO] Robot:_log_info:1456 - 震動盤系統初始化成功
+2025-07-23 19:59:12 [INFO] Robot:_log_info:1456 - 正在初始化夾爪系統...
+2025-07-23 19:59:15 [INFO] Robot:_log_info:1456 - 夾爪系統初始化成功
+2025-07-23 19:59:15 [INFO] Robot:_log_info:1456 - 正在初始化Dobot機械臂...
+2025-07-23 19:59:15 [INFO] Robot:_log_info:1916 - Dobot連接成功: 192.168.1.6
+2025-07-23 19:59:16 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 19:59:16 [INFO] Robot:_log_info:1916 - 機械臂自動使能成功
+2025-07-23 19:59:16 [INFO] Robot:_log_info:1456 - Dobot機械臂初始化成功
+2025-07-23 19:59:16 [INFO] Robot:_log_info:1916 - 碰撞檢測等級設定為: 3
+2025-07-23 19:59:16 [INFO] Robot:_log_info:1456 - 碰撞檢測等級設置為: 3
+2025-07-23 19:59:18 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 19:59:20 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {0: 13, 1: 20}
+2025-07-23 19:59:20 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 19:59:20 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 2類
+2025-07-23 19:59:20 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤0: 13個物件
+2025-07-23 19:59:20 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 20個物件
+2025-07-23 19:59:20 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 2類
+2025-07-23 19:59:20 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤0: 13個物件
+2025-07-23 19:59:20 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 20個物件
+2025-07-23 19:59:21 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:21 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:22 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:22 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:23 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:24 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:28 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:28 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:30 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:31 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:37 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:37 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:38 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:39 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:41 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:41 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:42 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:43 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:44 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:45 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:45 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:46 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:47 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:48 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:48 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:49 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:50 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:57 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:57 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 19:59:58 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:00 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:02 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:02 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:03 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:04 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:05 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:06 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:06 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:07 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:08 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:12 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:19 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:20 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:21 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:22 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:23 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:23 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:26 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:26 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:28 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:29 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:29 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:30 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:31 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:32 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:38 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:38 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:39 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:41 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:42 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:43 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:43 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:44 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:45 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:46 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:47 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:47 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:48 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:49 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:50 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:50 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:51 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:53 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:59 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:00:59 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:00 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:02 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:03 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:04 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:05 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:06 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:07 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:08 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:08 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:11 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:11 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:12 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:14 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:19 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:20 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:21 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:22 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:23 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:24 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:25 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:27 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:28 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:28 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:29 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:30 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:31 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:31 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:32 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:33 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:34 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:01:34 [WARNING] Robot:_log_warning:1463 - 執行緊急停止
+2025-07-23 20:01:34 [WARNING] Robot:_log_warning:1923 - 機械臂緊急停止
+2025-07-23 20:01:34 [INFO] Robot:_log_info:1456 - 開始斷開所有系統連接
+2025-07-23 20:03:58 [INFO] Robot:_log_info:1456 - Robot類別初始化開始
+2025-07-23 20:03:58 [INFO] Robot:_log_info:1456 - 正在初始化CCD1視覺系統...
+2025-07-23 20:04:00 [INFO] Robot:_log_info:1456 - CCD1視覺系統初始化成功
+2025-07-23 20:04:00 [INFO] Robot:_log_info:1456 - 正在初始化CCD3角度檢測系統...
+2025-07-23 20:04:01 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統初始化成功
+2025-07-23 20:04:01 [INFO] Robot:_log_info:1456 - 正在初始化震動盤系統...
+2025-07-23 20:04:01 [INFO] Robot:_log_info:1456 - 震動盤系統初始化成功
+2025-07-23 20:04:01 [INFO] Robot:_log_info:1456 - 正在初始化夾爪系統...
+2025-07-23 20:04:03 [INFO] Robot:_log_info:1456 - 夾爪系統初始化成功
+2025-07-23 20:04:03 [INFO] Robot:_log_info:1456 - 正在初始化Dobot機械臂...
+2025-07-23 20:04:03 [INFO] Robot:_log_info:1916 - Dobot連接成功: 192.168.1.6
+2025-07-23 20:04:04 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 20:04:04 [INFO] Robot:_log_info:1916 - 機械臂自動使能成功
+2025-07-23 20:04:04 [INFO] Robot:_log_info:1456 - Dobot機械臂初始化成功
+2025-07-23 20:04:04 [INFO] Robot:_log_info:1916 - 碰撞檢測等級設定為: 3
+2025-07-23 20:04:04 [INFO] Robot:_log_info:1456 - 碰撞檢測等級設置為: 3
+2025-07-23 20:04:05 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 20:04:08 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {0: 13, 1: 17}
+2025-07-23 20:04:08 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 20:04:08 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 2類
+2025-07-23 20:04:08 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤0: 13個物件
+2025-07-23 20:04:08 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 17個物件
+2025-07-23 20:04:08 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 2類
+2025-07-23 20:04:08 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤0: 13個物件
+2025-07-23 20:04:08 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 17個物件
+2025-07-23 20:04:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:10 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:11 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:12 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:13 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:14 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:14 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:15 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:16 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:17 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:17 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:18 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:04:20 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:08:49 [INFO] Robot:_log_info:1456 - Robot類別初始化開始
+2025-07-23 20:08:49 [INFO] Robot:_log_info:1456 - 正在初始化CCD1視覺系統...
+2025-07-23 20:08:51 [INFO] Robot:_log_info:1456 - CCD1視覺系統初始化成功
+2025-07-23 20:08:51 [INFO] Robot:_log_info:1456 - 正在初始化CCD3角度檢測系統...
+2025-07-23 20:08:52 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統初始化成功
+2025-07-23 20:08:52 [INFO] Robot:_log_info:1456 - 正在初始化震動盤系統...
+2025-07-23 20:08:52 [INFO] Robot:_log_info:1456 - 震動盤系統初始化成功
+2025-07-23 20:08:52 [INFO] Robot:_log_info:1456 - 正在初始化夾爪系統...
+2025-07-23 20:08:52 [INFO] Robot:_log_info:1456 - 夾爪系統初始化成功
+2025-07-23 20:08:52 [INFO] Robot:_log_info:1456 - 正在初始化Dobot機械臂...
+2025-07-23 20:08:52 [INFO] Robot:_log_info:1916 - Dobot連接成功: 192.168.1.6
+2025-07-23 20:08:53 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 20:08:53 [INFO] Robot:_log_info:1916 - 機械臂自動使能成功
+2025-07-23 20:08:53 [INFO] Robot:_log_info:1456 - Dobot機械臂初始化成功
+2025-07-23 20:08:53 [INFO] Robot:_log_info:1916 - 碰撞檢測等級設定為: 3
+2025-07-23 20:08:53 [INFO] Robot:_log_info:1456 - 碰撞檢測等級設置為: 3
+2025-07-23 20:08:54 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 20:08:57 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {0: 12, 1: 19}
+2025-07-23 20:08:57 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 20:08:57 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 2類
+2025-07-23 20:08:57 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤0: 12個物件
+2025-07-23 20:08:57 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 19個物件
+2025-07-23 20:08:57 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 2類
+2025-07-23 20:08:57 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤0: 12個物件
+2025-07-23 20:08:57 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 19個物件
+2025-07-23 20:08:58 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:08:59 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:08:59 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:00 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:02 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:03 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:03 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:04 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:05 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:06 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:06 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:07 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:09 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:09:09 [WARNING] Robot:_log_warning:1463 - 執行緊急停止
+2025-07-23 20:09:09 [WARNING] Robot:_log_warning:1923 - 機械臂緊急停止
+2025-07-23 20:09:09 [WARNING] Robot:_log_warning:1463 - 緊急停止完成: 3 個系統成功停止
+2025-07-23 20:09:09 [INFO] Robot:_log_info:1456 - 開始斷開所有系統連接
+2025-07-23 20:09:09 [INFO] Robot:_log_info:1456 - CCD1視覺系統已關閉
+2025-07-23 20:09:09 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統已關閉
+2025-07-23 20:09:09 [INFO] Robot:_log_info:1456 - 震動盤系統已關閉
+2025-07-23 20:09:10 [INFO] Robot:_log_info:1456 - 夾爪系統已關閉
+2025-07-23 20:09:10 [INFO] Robot:_log_info:1916 - 機械臂下使能成功
+2025-07-23 20:09:10 [INFO] Robot:_log_info:1916 - Dobot連接已斷開
+2025-07-23 20:09:10 [INFO] Robot:_log_info:1456 - Dobot機械臂已關閉
+2025-07-23 20:09:10 [INFO] Robot:_log_info:1456 - 所有系統連接已斷開
+2025-07-23 20:13:49 [INFO] Robot:_log_info:1456 - Robot類別初始化開始
+2025-07-23 20:13:49 [INFO] Robot:_log_info:1456 - 正在初始化CCD1視覺系統...
+2025-07-23 20:13:51 [INFO] Robot:_log_info:1456 - CCD1視覺系統初始化成功
+2025-07-23 20:13:51 [INFO] Robot:_log_info:1456 - 正在初始化CCD3角度檢測系統...
+2025-07-23 20:13:52 [INFO] Robot:_log_info:1456 - CCD3角度檢測系統初始化成功
+2025-07-23 20:13:52 [INFO] Robot:_log_info:1456 - 正在初始化震動盤系統...
+2025-07-23 20:13:52 [INFO] Robot:_log_info:1456 - 震動盤系統初始化成功
+2025-07-23 20:13:52 [INFO] Robot:_log_info:1456 - 正在初始化夾爪系統...
+2025-07-23 20:13:52 [INFO] Robot:_log_info:1456 - 夾爪系統初始化成功
+2025-07-23 20:13:52 [INFO] Robot:_log_info:1456 - 正在初始化Dobot機械臂...
+2025-07-23 20:13:52 [INFO] Robot:_log_info:1916 - Dobot連接成功: 192.168.1.6
+2025-07-23 20:13:53 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 20:13:53 [INFO] Robot:_log_info:1916 - 機械臂自動使能成功
+2025-07-23 20:13:53 [INFO] Robot:_log_info:1456 - Dobot機械臂初始化成功
+2025-07-23 20:13:53 [INFO] Robot:_log_info:1916 - 碰撞檢測等級設定為: 3
+2025-07-23 20:13:53 [INFO] Robot:_log_info:1456 - 碰撞檢測等級設置為: 3
+2025-07-23 20:13:55 [INFO] Robot:_log_info:1916 - 機械臂使能成功
+2025-07-23 20:13:57 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {1: 22}
+2025-07-23 20:13:57 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 20:13:57 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 1類
+2025-07-23 20:13:57 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 22個物件
+2025-07-23 20:13:57 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 1類
+2025-07-23 20:13:57 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 22個物件
+2025-07-23 20:13:59 [INFO] Robot:_log_info:1456 - CCD1檢測成功: {0: 12, 1: 18}
+2025-07-23 20:13:59 [INFO] Robot:_log_info:1456 - 使用上次CCD1檢測結果獲取座標
+2025-07-23 20:13:59 [INFO] Robot:_log_info:1456 - 像素座標數據獲取成功: 2類
+2025-07-23 20:13:59 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤0: 12個物件
+2025-07-23 20:13:59 [INFO] Robot:_log_info:1456 - 像素座標 - 標籤1: 18個物件
+2025-07-23 20:13:59 [INFO] Robot:_log_info:1456 - 世界座標數據獲取成功: 2類
+2025-07-23 20:13:59 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤0: 12個物件
+2025-07-23 20:13:59 [INFO] Robot:_log_info:1456 - 世界座標 - 標籤1: 18個物件
+2025-07-23 20:14:00 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:14:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:14:01 [INFO] Robot:_log_info:1916 - 運動同步完成
+2025-07-23 20:14:02 [INFO] Robot:_log_info:1916 - 運動同步完成

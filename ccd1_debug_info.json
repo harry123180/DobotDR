@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-07-23 18:27:39",
+  "result_attributes": {
+    "capture_time": "204.99610900878906",
+    "confidence_threshold": "0.8",
+    "confidences_by_class": "{}",
+    "coordinates_by_class": "{}",
+    "detections_by_class": "{1: 29}",
+    "error_message": "",
+    "memory_usage": "{'baseline': 388.515625, 'current': 374.09765625, 'total_change': -14.41796875, 'growth_rate': -3.711039613915142, 'checkpoints': {}}",
+    "model_id_used": "1",
+    "processing_time": "1512.103796005249",
+    "raw_image_path": "",
+    "result_image_path": "./images\\result_20250723_182721.jpg",
+    "success": "True",
+    "timestamp": "20250723_182721",
+    "total_detections": "29",
+    "total_time": "4197.71933555603",
+    "world_coord_valid": "True",
+    "world_coordinates_by_class": "{}"
+  },
+  "ccd1_attributes": {},
+  "detection_success": true
+}

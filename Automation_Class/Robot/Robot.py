@@ -23,7 +23,7 @@ sys.path.append(current_dir)
 
 # 導入各子系統
 try:
-    from CCD1_Headless_Vision_System import CCD1VisionSystem, CCD1VisionConfig
+    from CCD1_Simple_Vison_System import CCD1VisionSystem, CCD1VisionConfig
     CCD1_AVAILABLE = True
 except ImportError as e:
     print(f"CCD1模組導入失敗: {e}")
@@ -257,22 +257,22 @@ class Robot:
     
     def init_ccd1(self) -> bool:
         """初始化CCD1視覺系統"""
-        if not CCD1_AVAILABLE:
-            self._log_error("CCD1模組不可用")
-            return False
-        
-        if self.subsystem_status['CCD1']:
-            self._log_warning("CCD1已經初始化")
-            return True
-        
         try:
             self._log_info("正在初始化CCD1視覺系統...")
+            
+            # 修改這裡 - 使用新的CCD1_Simple_Vision_System
+            from CCD1_Simple_Vison_System import CCD1VisionSystem, CCD1VisionConfig
+            
             ccd1_config = CCD1VisionConfig(
                 camera_ip=self.config.ccd1_ip,
-                auto_retry_on_error=self.config.auto_retry_on_error,
-                max_retry_count=self.config.max_retry_count
+                enable_world_coord=True,  # 啟用世界座標轉換
+                confidence_threshold=0.8,
+                num_classes=3,  # 支援標籤0、1、2
+                class_names={0: "標籤0", 1: "標籤1", 2: "標籤2"}
             )
+            
             self.CCD1 = CCD1VisionSystem(ccd1_config)
+            
             if self.CCD1.initialized:
                 self.subsystem_status['CCD1'] = True
                 self._log_info("CCD1視覺系統初始化成功")
@@ -280,6 +280,7 @@ class Robot:
             else:
                 self._log_error("CCD1視覺系統初始化失敗")
                 return False
+                
         except Exception as e:
             self._log_error(f"CCD1初始化異常: {e}", exc_info=True)
             return False
@@ -584,15 +585,16 @@ class Robot:
             self._log_error(f"斷開連接失敗: {e}")
     
     # ==================== CCD1視覺檢測接口 (英文方法) ====================
-    
     def get_detections(self) -> Dict[str, Any]:
-        """獲取DR_F和STACK的數量與座標"""
+        """獲取標籤0、標籤1、標籤2的數量與座標"""
         if not self.subsystem_status['CCD1']:
             return {
-                'dr_f_count': 0,
-                'stack_count': 0,
-                'dr_f_coords': [],
-                'stack_coords': []
+                'label0_count': 0,
+                'label1_count': 0,
+                'label2_count': 0,
+                'label0_coords': [],
+                'label1_coords': [],
+                'label2_coords': []
             }
         
         try:
@@ -601,7 +603,7 @@ class Robot:
                     old_stdout = sys.stdout
                     sys.stdout = devnull
                     try:
-                        # 檢查模型是否被清理，如果是則重新載入
+                        # 檢查模型是否被載入，如果沒有則重新載入
                         if (hasattr(self.CCD1, 'yolo_detector') and
                             hasattr(self.CCD1.yolo_detector, 'model_manager') and 
                             not self.CCD1.yolo_detector.model_manager.is_model_loaded()):
@@ -615,29 +617,42 @@ class Robot:
             
             if result.success:
                 detections = result.detections_by_class
-                coords = result.coordinates_by_class if hasattr(result, 'coordinates_by_class') else {}
+                
+                # 優先使用世界座標，如果不存在則使用像素座標
+                if hasattr(result, 'world_coordinates_by_class') and result.world_coordinates_by_class:
+                    coords = result.world_coordinates_by_class
+                elif hasattr(result, 'coordinates_by_class') and result.coordinates_by_class:
+                    coords = result.coordinates_by_class
+                else:
+                    coords = {}
                 
                 return {
-                    'dr_f_count': detections.get(0, 0),
-                    'stack_count': detections.get(1, 0), 
-                    'dr_f_coords': coords.get(0, []),
-                    'stack_coords': coords.get(1, [])
+                    'label0_count': detections.get(0, 0),
+                    'label1_count': detections.get(1, 0),
+                    'label2_count': detections.get(2, 0),
+                    'label0_coords': coords.get(0, []),
+                    'label1_coords': coords.get(1, []),
+                    'label2_coords': coords.get(2, [])
                 }
             else:
                 return {
-                    'dr_f_count': 0,
-                    'stack_count': 0,
-                    'dr_f_coords': [],
-                    'stack_coords': []
+                    'label0_count': 0,
+                    'label1_count': 0,
+                    'label2_count': 0,
+                    'label0_coords': [],
+                    'label1_coords': [],
+                    'label2_coords': []
                 }
         except Exception:
             return {
-                'dr_f_count': 0,
-                'stack_count': 0,
-                'dr_f_coords': [],
-                'stack_coords': []
+                'label0_count': 0,
+                'label1_count': 0,
+                'label2_count': 0,
+                'label0_coords': [],
+                'label1_coords': [],
+                'label2_coords': []
             }
-    
+
     def switch_ccd1_model(self, model_id: int) -> bool:
         """切換CCD1檢測模型"""
         if not self.subsystem_status['CCD1']:
@@ -656,15 +671,24 @@ class Robot:
                 return self.CCD1.switch_yolo_model(model_id)
         except Exception:
             return False
-    
+
     def get_ccd1_counts(self) -> Dict[int, int]:
         """獲取CCD1檢測到的物件數量"""
+        if not self.subsystem_status['CCD1']:
+            return {}
+        
         try:
-            if not self.CCD1:
-                self._log_error("CCD1系統未初始化")
-                return {}
+            if self.config.silent_mode:
+                with open(os.devnull, 'w') as devnull:
+                    old_stdout = sys.stdout
+                    sys.stdout = devnull
+                    try:
+                        result = self.CCD1.detect_objects()
+                    finally:
+                        sys.stdout = old_stdout
+            else:
+                result = self.CCD1.detect_objects()
             
-            result = self.CCD1.detect_objects()
             if result.success:
                 self._log_info(f"CCD1檢測成功: {result.detections_by_class}")
                 return result.detections_by_class
@@ -675,46 +699,81 @@ class Robot:
         except Exception as e:
             self._log_error(f"CCD1獲得數量失敗: {e}")
             return {}
-    
+
     def get_ccd1_coordinates(self, use_last_result: bool = True) -> Dict[str, Dict[int, List[Tuple[float, float]]]]:
         """
         獲取CCD1檢測到的物件座標
         
         Args:
             use_last_result: 是否使用上次檢測結果，避免重複檢測
-        """
-        try:
-            if not self.CCD1:
-                self._log_error("CCD1系統未初始化")
-                return {}
             
+        Returns:
+            Dict[str, Dict[int, List[Tuple[float, float]]]]: 格式為 {
+                'pixel': {class_id: [(x, y), ...]},
+                'world': {class_id: [(x, y), ...]},
+                'world_coordinates': {class_id: [(x, y), ...]}  # 為了相容性也加入這個鍵
+            }
+        """
+        if not self.subsystem_status['CCD1']:
+            return {'pixel': {}, 'world': {}, 'world_coordinates': {}}
+        
+        try:
             # 如果使用上次結果且結果可用
-            if use_last_result and self.CCD1.last_result and self.CCD1.last_result.success:
+            if use_last_result and hasattr(self.CCD1, 'last_result') and self.CCD1.last_result and self.CCD1.last_result.success:
                 result = self.CCD1.last_result
                 self._log_info("使用上次CCD1檢測結果獲取座標")
             else:
                 # 重新檢測
-                result = self.CCD1.detect_objects()
+                self._log_info("執行CCD1重新檢測獲取座標")
+                if self.config.silent_mode:
+                    with open(os.devnull, 'w') as devnull:
+                        old_stdout = sys.stdout
+                        sys.stdout = devnull
+                        try:
+                            result = self.CCD1.detect_objects()
+                        finally:
+                            sys.stdout = old_stdout
+                else:
+                    result = self.CCD1.detect_objects()
             
-            if result.success:
-                coords = {}
-                # 像素座標
-                if result.coordinates_by_class:
-                    coords['pixel'] = result.coordinates_by_class
-                # 世界座標（如果可用）
-                if result.world_coordinates_by_class:
-                    coords['world'] = result.world_coordinates_by_class
+            if not result.success:
+                self._log_error(f"CCD1檢測失敗: {result.error_message}")
+                raise RuntimeError(f"CCD1檢測失敗: {result.error_message}")
+            
+            coords = {}
+            
+            # 像素座標
+            if result.coordinates_by_class:
+                coords['pixel'] = result.coordinates_by_class.copy()
+                self._log_info(f"像素座標數據獲取成功: {len(result.coordinates_by_class)}類")
                 
-                self._log_info(f"CCD1座標獲取成功: 像素座標{len(result.coordinates_by_class)}類")
-                return coords
+                # 輸出像素座標詳情
+                for class_id, coord_list in result.coordinates_by_class.items():
+                    self._log_info(f"像素座標 - 標籤{class_id}: {len(coord_list)}個物件")
             else:
-                self._log_error(f"CCD1座標獲取失敗: {result.error_message}")
-                return {}
+                self._log_error("像素座標不存在")
+                raise RuntimeError("像素座標數據不存在")
+            
+            # 世界座標（必須成功，否則拋出錯誤）
+            if result.world_coordinates_by_class:
+                coords['world'] = result.world_coordinates_by_class.copy()
+                coords['world_coordinates'] = result.world_coordinates_by_class.copy()  # 相容性
+                self._log_info(f"世界座標數據獲取成功: {len(result.world_coordinates_by_class)}類")
                 
+                # 輸出世界座標詳情
+                for class_id, coord_list in result.world_coordinates_by_class.items():
+                    self._log_info(f"世界座標 - 標籤{class_id}: {len(coord_list)}個物件")
+            else:
+                self._log_error("世界座標轉換失敗")
+                raise RuntimeError("世界座標轉換失敗，標定數據可能已損壞")
+            
+            return coords
+            
         except Exception as e:
-            self._log_error(f"CCD1獲得座標失敗: {e}")
-            return {}
-    
+            self._log_error(f"CCD1座標獲取失敗: {e}")
+            raise  # 重新拋出異常，不再提供備用方案
+
+
     # ==================== CCD3角度檢測接口 (英文方法) ====================
     
     def get_angle(self) -> float:

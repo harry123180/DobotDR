@@ -5,7 +5,7 @@ CCD1VisionCode_YOLOv11_Enhanced.py - CCD1視覺控制系統 YOLOv11版本
 基於Modbus TCP Client架構，實現握手式狀態機控制
 適配pymodbus 3.9.2
 """
-
+import gc  # 新增這行
 import sys
 import os
 import time
@@ -287,7 +287,12 @@ class YOLOv11Detector:
                     del boxes
                     if hasattr(detections, 'boxes') and detections.boxes is not None:
                         del detections.boxes
-                
+                else:
+                    # 🔥 新增：檢測成功但無目標
+                    result.success = True
+            else:
+                # 🔥 新增：檢測成功但無結果
+                result.success = True
             # 🔥 修正：強制清理模型輸出
             if results:
                 for res in results:
@@ -2608,7 +2613,7 @@ def get_completion_status():
 
 
 
-@app.route('/api/capture_and_detect', methods=['POST'])
+
 @app.route('/api/capture_and_detect', methods=['POST'])
 def capture_and_detect():
     """拍照並檢測 - 修正JSON序列化 + Modbus寄存器寫入"""

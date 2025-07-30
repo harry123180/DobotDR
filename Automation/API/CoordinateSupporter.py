@@ -213,13 +213,14 @@ class CoordinateSupporter:
             conn.close()
     
     def best_algorithm(self, capture1: List[CoordinatePoint], 
-                      capture2: List[CoordinatePoint], 
-                      capture3: List[CoordinatePoint],
-                      tolerance_mm: float,
-                      circle_diameter: float = 60.0) -> List[CoordinatePoint]:
+                  capture2: List[CoordinatePoint], 
+                  capture3: List[CoordinatePoint],
+                  tolerance_mm: float,
+                  circle_diameter: float = 60.0) -> List[CoordinatePoint]:
         """
-        Best算法 - 三次拍攝匹配算法
+        Best算法 - 三次拍攝匹配算法 (修正版)
         找出三次拍攝中誤差範圍內都存在的點
+        支援三次拍攝數量不同的情況
         
         Args:
             capture1: 第一次拍攝座標
@@ -233,29 +234,52 @@ class CoordinateSupporter:
         """
         result = []
         
+        self.logger.debug(f"Best算法開始: 輸入數量 [{len(capture1)}, {len(capture2)}, {len(capture3)}]")
+        self.logger.debug(f"參數: tolerance_mm={tolerance_mm}, circle_diameter={circle_diameter}")
+        
         # 遍歷第一次拍攝的每個點
-        for p1 in capture1:
+        for i, p1 in enumerate(capture1):
+            self.logger.debug(f"處理capture1[{i}]: ({p1.x:.1f}, {p1.y:.1f})")
+            
             # 在第二次拍攝中找匹配點
-            matches2 = [p2 for p2 in capture2 if p1.distance_to(p2) <= tolerance_mm]
+            matches2 = []
+            for j, p2 in enumerate(capture2):
+                distance = p1.distance_to(p2)
+                if distance <= tolerance_mm:
+                    matches2.append(p2)
+                    self.logger.debug(f"  找到capture2[{j}]匹配: ({p2.x:.1f}, {p2.y:.1f}), 距離={distance:.2f}mm")
+            
             if not matches2:
+                self.logger.debug(f"  capture1[{i}]在capture2中無匹配點")
                 continue
             
             # 在第三次拍攝中找匹配點
-            matches3 = [p3 for p3 in capture3 if p1.distance_to(p3) <= tolerance_mm]
+            matches3 = []
+            for k, p3 in enumerate(capture3):
+                distance = p1.distance_to(p3)
+                if distance <= tolerance_mm:
+                    matches3.append(p3)
+                    self.logger.debug(f"  找到capture3[{k}]匹配: ({p3.x:.1f}, {p3.y:.1f}), 距離={distance:.2f}mm")
+            
             if not matches3:
+                self.logger.debug(f"  capture1[{i}]在capture3中無匹配點")
                 continue
             
+            # 🔥 修正：取第一個匹配點（最接近的）
+            best_match2 = min(matches2, key=lambda p: p1.distance_to(p))
+            best_match3 = min(matches3, key=lambda p: p1.distance_to(p))
+            
             # 計算三點平均位置
-            avg_x = (p1.x + matches2[0].x + matches3[0].x) / 3.0
-            avg_y = (p1.y + matches2[0].y + matches3[0].y) / 3.0
-            avg_confidence = (p1.confidence + matches2[0].confidence + matches3[0].confidence) / 3.0
+            avg_x = (p1.x + best_match2.x + best_match3.x) / 3.0
+            avg_y = (p1.y + best_match2.y + best_match3.y) / 3.0
+            avg_confidence = (p1.confidence + best_match2.confidence + best_match3.confidence) / 3.0
             
             # 世界座標平均
             world_x = None
             world_y = None
-            if all(p.world_x is not None for p in [p1, matches2[0], matches3[0]]):
-                world_x = (p1.world_x + matches2[0].world_x + matches3[0].world_x) / 3.0
-                world_y = (p1.world_y + matches2[0].world_y + matches3[0].world_y) / 3.0
+            if all(p.world_x is not None for p in [p1, best_match2, best_match3]):
+                world_x = (p1.world_x + best_match2.world_x + best_match3.world_x) / 3.0
+                world_y = (p1.world_y + best_match2.world_y + best_match3.world_y) / 3.0
             
             candidate = CoordinatePoint(
                 x=avg_x,
@@ -266,12 +290,39 @@ class CoordinateSupporter:
                 label_id=p1.label_id
             )
             
-            # 檢查是否與已加入的結果重疊
-            overlap = any(candidate.distance_to(r) < circle_diameter for r in result)
+            self.logger.debug(f"  候選點: ({candidate.x:.1f}, {candidate.y:.1f})")
+            
+            # 🔥 修正：檢查是否與已加入的結果重疊
+            overlap = False
+            for existing in result:
+                distance = candidate.distance_to(existing)
+                if distance < circle_diameter:
+                    self.logger.debug(f"  與現有點重疊，距離={distance:.2f}mm < {circle_diameter}mm，跳過")
+                    overlap = True
+                    break
+            
             if not overlap:
                 result.append(candidate)
-        
+                self.logger.debug(f"  ✓ 加入結果列表，當前結果數量: {len(result)}")
+            
         self.logger.info(f"Best算法完成: 輸入{len(capture1)}+{len(capture2)}+{len(capture3)}點, 輸出{len(result)}點")
+        
+        # 🔥 新增：詳細統計信息
+        if len(result) == 0:
+            self.logger.warning("Best算法無結果可能原因:")
+            self.logger.warning(f"  1. 容忍距離過小: {tolerance_mm}mm")
+            self.logger.warning(f"  2. 三次拍攝位置差異過大")
+            self.logger.warning(f"  3. 圓直徑設定過大: {circle_diameter}mm")
+            
+            # 統計各次拍攝的平均距離
+            if len(capture1) > 0 and len(capture2) > 0:
+                min_dist_12 = min(p1.distance_to(p2) for p1 in capture1 for p2 in capture2)
+                self.logger.warning(f"  capture1-capture2最小距離: {min_dist_12:.2f}mm")
+            
+            if len(capture1) > 0 and len(capture3) > 0:
+                min_dist_13 = min(p1.distance_to(p3) for p1 in capture1 for p3 in capture3)
+                self.logger.warning(f"  capture1-capture3最小距離: {min_dist_13:.2f}mm")
+        
         return result
     
     def find_algorithm(self, input_points: List[CoordinatePoint], 

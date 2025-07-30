@@ -1,166 +1,122 @@
-# AutoFeeding模組增強功能技術文檔
+# AutoFeeding模組SQLite增強版技術文檔
 
-## 修改概要
+## 版本資訊
+- **版本**: AutoFeeding SQLite增強版 v2.0
+- **基地址**: 900-999
+- **新增核心功能**: SQLite篩選結果寫入、AutoProgram旗標管理
+- **更新日期**: 2025年7月
 
-基於現有AutoFeeding模組，新增外部控制能力、參數動態調整、自動參數初始化和記憶體監控功能。
+---
 
-## 新增功能清單
+## 📊 系統概述
 
-### 1. 外部控制功能
-- **控制地址**: 920寄存器
-- **控制邏輯**: 0=停止AutoFeeding, 1=啟動AutoFeeding
-- **實現方式**: 主循環中檢查920寄存器值變化，動態啟動/停止檢測
+### 核心增強功能
+基於原有AutoFeeding模組，新增以下核心功能：
 
-### 2. VP震動參數可調
-- **參數地址**: 930-949寄存器
-- **包含參數**: 兩組震動動作+停止參數
-- **實現方式**: 每次VP操作前從寄存器讀取最新參數
+1. **SQLite篩選結果寫入**: 將Best+Find算法篩選後的座標自動寫入SQLite數據庫
+2. **AutoProgram旗標管理**: 透過970寄存器與AutoProgram模組協調
+3. **智能檢測執行邏輯**: 只有在條件滿足時才執行新的檢測
+4. **向後兼容性**: 保持原有960-964寄存器交握功能
 
-### 3. Flow4直振參數可調
-- **參數地址**: 950-959寄存器
-- **包含參數**: 脈衝持續時間、脈衝間隔
-- **實現方式**: 每次Flow4操作前從寄存器讀取最新參數
-
-### 4. 系統參數可調
-- **參數地址**: 980-999寄存器
-- **包含參數**: 檢測週期、超時設定、閾值設定等
-- **實現方式**: 每個檢測週期開始時讀取最新參數
-
-### 5. 自動參數初始化
-- **觸發條件**: 檢測到關鍵寄存器(930-939, 950-951, 980-989)全為0時
-- **初始化內容**: 硬編碼預設參數寫入對應寄存器
-- **執行時機**: 連接Modbus服務器成功後
-
-### 6. 記憶體使用量監控
-- **監控地址**: 906寄存器
-- **更新頻率**: 每10分鐘
-- **數值格式**: MB單位，無條件捨去小數點後的整數
-- **實現方式**: 獨立執行緒使用psutil獲取記憶體使用量
-
-## 核心程式碼修改
-
-### 地址重新分配
-```python
-# 座標交握寄存器調整為960-979
-self.COORD_START = 960
-# DR_F可用標誌: 960
-# X座標: 961(高位), 962(低位)  
-# Y座標: 963(高位), 964(低位)
-# 已讀取標誌: 965
+### 系統架構流程
+```
+AutoFeeding檢測 → 篩選出N個座標 → 寫入SQLite → 設置旗標970=1 
+                                                    ↓
+AutoProgram讀取SQLite ← 旗標被清0 ← AutoProgram讀取完成
+        ↓
+重新開始檢測循環
 ```
 
-### 硬編碼預設參數
-```python
-# VP震動參數(兩組動作)
-DEFAULT_VP_PARAMS = {
-    "action1": {"action_code": 4, "strength": 45, "frequency": 43, "duration": 800},
-    "action2": {"action_code": 11, "strength": 98, "frequency": 64, "duration": 800},
-    "stop": {"command_code": 3, "delay": 100}
-}
+---
 
-# Flow4直振參數
-DEFAULT_FLOW4_PARAMS = {
-    "pulse_duration": 100,    # 0.1秒
-    "pulse_interval": 50      # 0.05秒
-}
+## 🚀 新增功能詳解
 
-# 系統運行參數
-DEFAULT_SYSTEM_PARAMS = {
-    "cycle_interval": 1000,         # 1秒檢測週期
-    "ccd1_timeout": 5000,           # 5秒CCD1超時
-    "progress_threshold": 44,       # 進度阻擋閾值
-    "large_count_threshold": 5,     # 異常檢測大量閾值
-    "sudden_drop_threshold": 1,     # 異常檢測驟減閾值
-    # ... 其他參數
-}
+### 1. SQLite篩選結果寫入功能
+
+#### 觸發條件
+- 三次拍攝+Best算法+Find算法完成
+- 篩選結果數量 > 0 (至少1個座標)
+
+#### 存儲位置
+```
+數據庫文件: C:\Users\user\Documents\GitHub\DobotDR\Automation\CCD1\ccd1_coordinate_supporter.db
+存儲表格: find_algorithm_results
 ```
 
-### 初始化檢測邏輯
+#### 存儲內容
+- 像素座標 (x, y)
+- 世界座標 (world_x, world_y) 
+- 置信度 (confidence)
+- 標籤ID (label_id = 0, DR_F正面物件)
+- 時間戳 (timestamp)
+
+#### 核心方法
 ```python
-def check_need_initialization(self) -> bool:
-    """檢查關鍵寄存器是否全為0"""
-    vp_params_zero = all(self.read_register(930 + i) == 0 for i in range(10))
-    flow4_params_zero = all(self.read_register(950 + i) == 0 for i in range(2))
-    system_params_zero = all(self.read_register(980 + i) == 0 for i in range(10))
+def save_screening_results_to_sqlite(self, final_results: List[CoordinatePoint]) -> bool:
+    """將篩選結果保存到SQLite數據庫"""
+    # 只有當len(final_results) > 0時才寫入
+    # 使用coordinate_supporter.save_find_algorithm_results()
+```
+
+### 2. AutoProgram旗標管理系統
+
+#### 核心旗標地址
+- **970寄存器**: AutoFeeding篩選完成旗標
+  - `1` = 有結果可讀取 (AutoFeeding設置)
+  - `0` = 已被讀取 (AutoProgram清除)
+
+#### 協調邏輯
+```python
+def set_screening_complete_flag(self) -> bool:
+    """設置篩選完成旗標，通知AutoProgram可以讀取"""
     
-    return vp_params_zero and flow4_params_zero and system_params_zero
-```
-
-### 參數動態讀取
-```python
-def read_vp_params(self) -> Dict[str, Any]:
-    """從寄存器讀取VP參數並進行範圍驗證"""
-    params = {
-        "action1": {
-            "action_code": max(0, min(11, self.read_register(930) or 4)),
-            "strength": max(0, min(100, self.read_register(931) or 45)),
-            # ... 其他參數
-        }
-    }
-    return params
-```
-
-### 記憶體監控執行緒
-```python
-def _memory_monitor_worker(self):
-    """記憶體監控工作執行緒"""
-    while self.memory_monitor_running:
-        try:
-            process = psutil.Process()
-            memory_bytes = process.memory_info().rss
-            memory_mb = int(memory_bytes / (1024 * 1024))  # 無條件捨去小數點
-            
-            self.write_register(906, memory_mb)
-            
-            # 等待10分鐘
-            for _ in range(600):
-                if not self.memory_monitor_running:
-                    break
-                time.sleep(1)
-        except Exception as e:
-            self.logger.error(f"記憶體監控異常: {e}")
-            time.sleep(60)
-```
-
-### 外部控制邏輯
-```python
-def check_external_control(self) -> bool:
-    """檢查外部控制狀態"""
-    control_value = self.read_register(920)
-    should_run = (control_value == 1)
+def check_screening_flag_cleared(self) -> bool:
+    """檢查篩選完成旗標是否被AutoProgram清除"""
     
-    if should_run != self.external_control_running:
-        self.external_control_running = should_run
-        if should_run:
-            self.logger.info("外部控制啟動AutoFeeding (920=1)")
-        else:
-            self.logger.info("外部控制停止AutoFeeding (920=0)")
-    
-    return should_run
+def should_execute_detection(self) -> bool:
+    """判斷是否應該執行檢測
+    執行條件：
+    1. 外部控制啟用 (920=1)
+    2. 篩選完成旗標被清除 (970=0)
+    """
 ```
 
-## 操作流程變更
+### 3. 智能檢測執行邏輯
 
-### 原有流程
-1. 程序啟動自動開始檢測
-2. 參數來自配置檔案
-3. 無外部控制能力
+#### 檢測執行條件
+AutoFeeding只有在同時滿足以下條件時才執行新的檢測：
+1. **外部控制啟用**: 920寄存器 = 1
+2. **篩選旗標已清除**: 970寄存器 = 0 (AutoProgram已讀取完成)
 
-### 新增流程  
-1. 程序啟動後檢查參數初始化需求
-2. 自動寫入硬編碼預設參數(如需要)
-3. 等待外部控制信號(920=1)啟動檢測
-4. 運行過程中參數可動態調整
-5. 記憶體使用量持續監控
+#### 執行流程
+```
+檢測完成 → SQLite寫入 → 設置970=1 → 等待AutoProgram讀取 
+                                        ↓
+970=0且920=1 → 重新執行檢測 ← AutoProgram清除970=0
+```
 
-## 寄存器使用規劃
+### 4. 向後兼容性功能
+
+#### 兼容性座標設置
+篩選結果的第一個座標會同時設置到原有960-964寄存器：
+```python
+# 兼容性設置：第一個座標到960-964寄存器
+first_point = final_results[0]
+target_coords = (first_point.world_x, first_point.world_y)
+self.set_dr_f_available(target_coords)
+```
+
+---
+
+## 📋 寄存器映射表
 
 ### 狀態寄存器 (900-919) - 只讀
-| 地址 | 功能 | 原有/新增 |
-|------|------|----------|
-| 900-905 | 原有狀態統計 | 原有 |
-| 906 | 記憶體使用量(MB) | 新增 |
-| 907-910 | 原有狀態 | 原有 |
+| 地址 | 功能 | 類型 | 說明 |
+|------|------|------|------|
+| 900-905 | 原有狀態統計 | 原有 | 模組狀態、計數器等 |
+| 906 | 記憶體使用量(MB) | 原有 | 每10分鐘更新 |
+| 907-912 | 原有狀態 | 原有 | 錯誤代碼、操作狀態等 |
+| **913** | **篩選旗標狀態監控** | **新增** | **顯示當前970旗標狀態(調試用)** |
 
 ### 控制寄存器 (920-929) - 讀寫
 | 地址 | 功能 | 說明 |
@@ -184,101 +140,219 @@ def check_external_control(self) -> bool:
 ### 座標交握寄存器 (960-979) - 混合讀寫
 | 地址 | 功能 | 說明 |
 |------|------|------|
-| 960 | DR_F可用標誌 | 調整自原940 |
-| 961-964 | DR_F座標 | 調整自原941-944 |
-| 965 | 座標已讀取標誌 | 調整自原945 |
+| 960 | DR_F可用標誌 | 兼容性功能 |
+| 961-964 | DR_F座標 | 兼容性功能(第一個座標) |
+| 965 | 座標已讀取標誌 | 兼容性功能 |
+| **970** | **篩選完成旗標** | **核心新功能** |
 
 ### 系統參數寄存器 (980-999) - 讀寫
 | 地址 | 功能 | 預設值 |
 |------|------|--------|
 | 980 | 檢測週期間隔(ms) | 1000 |
 | 981 | CCD1超時(ms) | 5000 |
-| 982-989 | 其他系統參數 | 各種閾值設定 |
+| 982-993 | 其他系統參數 | 各種閾值設定 |
 
-## 使用範例
+---
 
-### 外部控制AutoFeeding
+## 🛠️ 使用方式
+
+### 外部控制AutoFeeding (SQLite增強版)
 ```python
 from pymodbus.client import ModbusTcpClient
 
 client = ModbusTcpClient('127.0.0.1', port=502)
 client.connect()
 
-# 啟動AutoFeeding
+# 啟動AutoFeeding (具備SQLite寫入功能)
 client.write_register(920, 1, slave=1)
 
 # 檢查運行狀態
 status = client.read_holding_registers(900, 1, slave=1).registers[0]
 print(f"AutoFeeding狀態: {status}")
 
-# 調整VP第一組強度為70
-client.write_register(931, 70, slave=1)
+# 監控篩選完成旗標
+screening_flag = client.read_holding_registers(970, 1, slave=1).registers[0]
+print(f"篩選完成旗標: {screening_flag} (1=可讀, 0=已讀)")
 
-# 調整檢測週期為2秒
-client.write_register(980, 2000, slave=1)
-
-# 檢查記憶體使用量
-memory_mb = client.read_holding_registers(906, 1, slave=1).registers[0]
-print(f"記憶體使用量: {memory_mb} MB")
-
-# 停止AutoFeeding
-client.write_register(920, 0, slave=1)
+# 監控旗標狀態 (調試用)
+flag_status = client.read_holding_registers(913, 1, slave=1).registers[0]
+print(f"旗標狀態監控: {flag_status}")
 
 client.close()
 ```
 
-### Flow1座標讀取
+### AutoProgram讀取篩選結果
 ```python
-# Flow1程序中讀取座標(座標地址已調整)
-def read_autofeeding_coordinates():
-    dr_f_available = read_register(960)  # 調整自940
-    if dr_f_available == 1:
-        x = read_32bit_register(961, 962)  # 調整自941,942
-        y = read_32bit_register(963, 964)  # 調整自943,944
-        
-        write_register(965, 1)  # 調整自945
-        return (x, y)
-    return None
+from CoordinateSupporter import CoordinateSupporter
+
+# 1. 檢查篩選完成旗標
+screening_flag = modbus_client.read_register(970)
+if screening_flag == 1:
+    # 2. 讀取SQLite篩選結果
+    supporter = CoordinateSupporter(db_path="ccd1_coordinate_supporter.db")
+    results = supporter.get_find_algorithm_results(label_id=0)
+    
+    print(f"讀取到 {len(results)} 個篩選結果:")
+    for i, point in enumerate(results):
+        print(f"  點{i+1}: 世界座標({point.world_x:.2f}, {point.world_y:.2f})mm")
+    
+    # 3. 處理完成後清除旗標
+    modbus_client.write_register(970, 0)
 ```
 
-## 重要技術細節
+### SQLite數據查看
+```python
+# 方法1: 使用CoordinateSupporter
+from CoordinateSupporter import CoordinateSupporter
 
-### 參數驗證機制
-所有從寄存器讀取的參數都進行範圍驗證，超出範圍時使用預設值並記錄警告。
+supporter = CoordinateSupporter(db_path="C:/Users/user/Documents/GitHub/DobotDR/Automation/CCD1/ccd1_coordinate_supporter.db")
+results = supporter.get_find_algorithm_results()
 
-### 記憶體監控精度
-使用`int(memory_bytes / (1024 * 1024))`確保無條件捨去小數點，符合要求。
+print(f"當前SQLite中有 {len(results)} 個篩選結果")
+for point in results:
+    print(f"像素({point.x:.1f}, {point.y:.1f}) -> 世界({point.world_x:.2f}, {point.world_y:.2f})mm")
+```
 
-### 執行緒安全
-記憶體監控執行緒使用daemon模式，程序退出時自動清理。
+```sql
+-- 方法2: 直接SQL查詢
+SELECT * FROM find_algorithm_results ORDER BY id DESC LIMIT 10;
+```
 
-### 錯誤處理
-所有新增功能都包含完整的異常處理，不影響原有檢測邏輯穩定性。
+---
 
-### 向後相容性
-原有的檢測邏輯和API保持不變，新功能為額外增強，不破壞既有整合。
+## 🔄 運作流程
 
-## 部署注意事項
+### 完整工作流程
+```
+1. 外部控制啟動 (920=1)
+   ↓
+2. 檢查篩選旗標 (970=0?)
+   ↓
+3. 執行三次拍攝+Best+Find算法
+   ↓
+4. 篩選出N個座標 (N>0?)
+   ↓
+5. 寫入SQLite數據庫
+   ↓
+6. 設置篩選完成旗標 (970=1)
+   ↓
+7. 設置兼容性座標 (960-964，第一個座標)
+   ↓
+8. 等待AutoProgram讀取
+   ↓
+9. AutoProgram清除旗標 (970=0)
+   ↓
+10. 重新開始檢測循環
+```
 
-1. **依賴套件**: 需要安裝`psutil`套件進行記憶體監控
-2. **寄存器地址**: 座標交握地址從940-945調整為960-965，Flow1程序需要相應修改
-3. **初始化檢查**: 首次運行會自動初始化參數，後續運行保持寄存器值
-4. **外部控制**: 預設狀態為停止(920=0)，需要外部設置920=1才會開始檢測
-5. **記憶體監控**: 獨立執行緒，不影響主要檢測功能
+### 異常處理流程
+```
+SQLite寫入失敗 → 記錄錯誤 → 不設置旗標 → 重試檢測
+旗標設置失敗 → 記錄錯誤 → 本週期失敗 → 重試檢測
+無篩選結果 → 觸發Flow4送料 → VP震動清空 → 重新檢測
+```
 
-## 測試驗證
+---
 
-### 功能測試項目
-1. 外部控制啟動/停止功能
-2. 參數動態調整生效驗證
-3. 自動初始化功能測試
-4. 記憶體監控準確性
-5. 原有檢測邏輯不受影響
-6. 座標交握功能正常
+## ⚠️ 重要注意事項
 
-### 性能測試
-1. 記憶體使用量是否穩定
-2. 參數讀取對檢測週期影響
-3. 執行緒資源消耗檢查
+### 部署要求
+1. **依賴模組**: CoordinateSupporter.py必須在API目錄
+2. **SQLite路徑**: 確保C:\Users\user\Documents\GitHub\DobotDR\Automation\CCD1\目錄存在
+3. **pymodbus版本**: 必須使用pymodbus==3.9.2
+4. **psutil套件**: 用於記憶體監控
 
-這些增強功能提供了完整的外部控制能力，同時保持了系統的穩定性和可維護性。
+### 操作順序
+1. 啟動主Modbus TCP Server (端口502)
+2. 啟動CCD1視覺檢測模組 (v5.2以上，支援SQLite)
+3. 啟動VP震動盤模組
+4. **啟動AutoFeeding模組 (SQLite增強版)**
+5. **最後啟動AutoProgram模組**
+
+### 數據特性
+- **覆蓋式存儲**: 每次檢測會覆蓋SQLite中舊數據
+- **旗標協調**: 970寄存器是AutoFeeding和AutoProgram的核心協調機制
+- **向後兼容**: 保持960-964寄存器功能，不影響現有Flow1程序
+
+### 監控建議
+- **913寄存器**: 監控當前旗標狀態（調試用）
+- **906寄存器**: 監控記憶體使用量
+- **900寄存器**: 監控模組整體狀態
+
+---
+
+## 🐛 故障排除
+
+### 常見問題
+
+#### 1. SQLite寫入失敗
+```
+症狀: 日誌顯示"SQLite保存失敗"
+原因: CoordinateSupporter初始化失敗或數據庫路徑問題
+解決: 檢查API目錄下是否有CoordinateSupporter.py
+```
+
+#### 2. 旗標設置失敗
+```
+症狀: 日誌顯示"旗標設置失敗"
+原因: Modbus寫入970寄存器失敗
+解決: 檢查Modbus連接狀態和寄存器範圍
+```
+
+#### 3. AutoProgram無法讀取
+```
+症狀: AutoProgram等待AutoFeeding結果超時
+原因: 970旗標未設置或SQLite數據為空
+解決: 檢查913寄存器顯示的旗標狀態
+```
+
+#### 4. 檢測不執行
+```
+症狀: 920=1但不執行檢測
+原因: 970旗標未被清除(AutoProgram未讀取)
+解決: 手動清除970寄存器或重新啟動AutoProgram
+```
+
+### 調試指令
+```python
+# 檢查核心狀態
+screening_flag = read_register(970)  # 篩選完成旗標
+flag_monitor = read_register(913)    # 旗標狀態監控
+external_control = read_register(920) # 外部控制狀態
+
+print(f"外部控制: {external_control}, 篩選旗標: {screening_flag}, 監控: {flag_monitor}")
+
+# 強制清除旗標 (緊急情況)
+write_register(970, 0)
+
+# 檢查SQLite記錄數量
+from CoordinateSupporter import CoordinateSupporter
+supporter = CoordinateSupporter()
+results = supporter.get_find_algorithm_results()
+print(f"SQLite中有 {len(results)} 個記錄")
+```
+
+---
+
+## 📈 性能特性
+
+### 記憶體使用
+- **監控頻率**: 每10分鐘更新906寄存器
+- **存儲精度**: 整數MB，無條件捨去小數點
+- **獨立執行緒**: 不影響主檢測邏輯
+
+### 檢測效率
+- **智能觸發**: 只有在條件滿足時才執行檢測
+- **SQLite緩存**: 利用CoordinateSupporter的數據庫連接池
+- **兼容並行**: 960-964寄存器和970旗標並行工作
+
+### 穩定性保證
+- **異常隔離**: SQLite錯誤不影響基本檢測功能
+- **向後兼容**: 原有功能完全保留
+- **資源管理**: 執行緒自動清理，無記憶體洩漏
+
+---
+
+**版本更新**: SQLite增強版 v2.0  
+**適用場景**: DR專案AutoFeeding與AutoProgram協調工作  
+**技術支援**: 透過913寄存器監控旗標狀態，透過日誌查看詳細運行信息

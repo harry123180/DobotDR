@@ -438,7 +438,7 @@ class DrFlow1VisionPickExecutor:
         self.target_angle = None
         self.command_angle = None
         self.angle_acquisition_success = False
-        self.ANGLE_OFFSET = 45.0
+        self.ANGLE_OFFSET = 40.0
         
         # 優化參數
         self.angle_detection_timeout = 3.0
@@ -550,6 +550,7 @@ class DrFlow1VisionPickExecutor:
             {'type': 'move_to_detected_position_high', 'params': {
                 'speed_l': 100, 
                 'acc_l': 100, 
+                'high': 180,
                 'sync': False
             }},
             {'type': 'move_to_detected_position_low', 'params': {

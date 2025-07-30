@@ -37,18 +37,33 @@ class SystemStatus(Enum):
 
 
 class ProtectionZone:
-    """保護區域判斷 - 與AutoFeeding相同的定義"""
+    """DR保護區域判斷 - 射線投射法"""
     
-    @staticmethod
-    def is_point_in_rect(x: float, y: float) -> bool:
-        """判斷點是否在DR保護區域矩形內"""
-        # DR保護區域四點座標
-        x_min = -112.0
-        x_max = -4.0
-        y_min = 243.0
-        y_max = 339.21
+    def __init__(self, points=None):
+        # 預設四點座標 (逆時針)
+        if points is None:
+            points = [
+                (-127.83, 194.7),   # 左下
+                (-113.75, 348.31),     # 右下  
+                (6.21, 348.25),    # 右上
+                (6.20, 194.76)   # 左上
+            ]
+        self.points = points
+    def is_point_in_rect(self, x, y):
+        """射線投射法判斷點是否在多邊形內"""
+        n = len(self.points)
+        inside = False
+        j = n - 1
         
-        return x_min <= x <= x_max and y_min <= y <= y_max
+        for i in range(n):
+            xi, yi = self.points[i]
+            xj, yj = self.points[j]
+            
+            if ((yi > y) != (yj > y)) and (x < (xj - xi) * (y - yi) / (yj - yi) + xi):
+                inside = not inside
+            j = i
+            
+        return inside
 
 
 class AutoProgramController:
@@ -201,7 +216,7 @@ class AutoProgramController:
         """初始化系統寄存器 - 修正版"""
         try:
             # AutoProgram狀態寄存器 (1300-1319)
-            self.write_register(1300, SystemStatus.STOPPED.value)
+            self.write_register(self.BASE_ADDRESS, SystemStatus.STOPPED.value)
             self.write_register(1301, 0)  # prepare_done狀態
             self.write_register(1302, 1 if self.auto_program_enabled else 0)
             self.write_register(1303, 0)  # AutoFeeding DR_F狀態
@@ -499,6 +514,8 @@ class AutoProgramController:
     def check_flow1_complete(self) -> bool:
         """檢查Flow1是否完成"""
         flow1_complete = self.read_register(self.DOBOT_FLOW1_COMPLETE)
+        if(flow1_complete):
+            self.write_register(1313,1)
         return flow1_complete == 1
     
     
@@ -506,6 +523,8 @@ class AutoProgramController:
     def check_flow2_complete(self) -> bool:
         """檢查Flow2是否完成"""
         flow2_complete = self.read_register(self.DOBOT_FLOW2_COMPLETE)
+        if(flow2_complete):
+            self.write_register(1314,1)
         return flow2_complete == 1
     
     def clear_flow2_complete(self):
@@ -559,7 +578,7 @@ class AutoProgramController:
             # 🔥 修正：第一優先級 - 檢查Flow2完成狀態（最高優先級，始終檢查）
             if self.check_flow2_complete():
                 print("[AutoProgram] 檢測到Flow2完成，料件已送至組立區")
-                self.clear_flow2_complete()
+                #self.clear_flow2_complete()
                 self.prepare_done = False
                 print("[AutoProgram] ✓ Flow2完成 → prepare_done=False")
                 print("[AutoProgram] 開始新週期，準備檢查AutoFeeding新座標")

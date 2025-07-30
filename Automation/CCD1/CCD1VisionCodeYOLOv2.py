@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-CCD1VisionCode_YOLOv11_ModbusOnly.py - CCD1視覺控制系統 純Modbus版本
+CCD1VisionCode_YOLOv11_ModbusOnly_NoSQLite.py - CCD1視覺控制系統 純Modbus版本 (移除SQLite)
 整合YOLOv11物件檢測功能，支援DR_F/STACK分類檢測
 基於Modbus TCP Client架構，實現握手式狀態機控制
 移除Web介面，支援自動初始化和自我重載功能
+移除SQLite功能，純Modbus寫入
 適配pymodbus 3.9.2
 """
 
@@ -54,18 +55,6 @@ except ImportError as e:
     print(f"❌ 無法導入 camera_manager 模組: {e}")
     CAMERA_MANAGER_AVAILABLE = False
 
-coordinate_supporter_path = os.path.join(os.path.dirname(__file__), '..', 'API')
-if coordinate_supporter_path not in sys.path:
-    sys.path.append(coordinate_supporter_path)
-
-try:
-    from CoordinateSupporter import CoordinateSupporter, CoordinatePoint
-    COORDINATE_SUPPORTER_AVAILABLE = True
-    print("✅ CoordinateSupporter模組導入成功")
-except ImportError as e:
-    print(f"❌ CoordinateSupporter模組導入失敗: {e}")
-    COORDINATE_SUPPORTER_AVAILABLE = False
-
 # ==================== 枚舉定義 ====================
 class ControlCommand(IntEnum):
     """控制指令枚舉"""
@@ -92,8 +81,8 @@ class YOLODetectionResult:
     stack_count: int = 0
     dr_f_coords: List[Tuple[float, float]] = None
     stack_coords: List[Tuple[float, float]] = None
-    dr_f_confidences: List[float] = None  # 🔥 新增：DR_F置信度列表
-    stack_confidences: List[float] = None  # 🔥 新增：STACK置信度列表
+    dr_f_confidences: List[float] = None
+    stack_confidences: List[float] = None
     dr_f_world_coords: List[Tuple[float, float]] = None
     total_detections: int = 0
     confidence_threshold: float = 0.8
@@ -109,9 +98,9 @@ class YOLODetectionResult:
             self.dr_f_coords = []
         if self.stack_coords is None:
             self.stack_coords = []
-        if self.dr_f_confidences is None:  # 🔥 新增
+        if self.dr_f_confidences is None:
             self.dr_f_confidences = []
-        if self.stack_confidences is None:  # 🔥 新增
+        if self.stack_confidences is None:
             self.stack_confidences = []
         if self.dr_f_world_coords is None:
             self.dr_f_world_coords = []
@@ -130,7 +119,14 @@ class CalibrationStatus:
     dist_coeffs_file: str = ""
     working_dir: str = ""
 
-
+class ImageSaveMode:
+    """圖片保存模式"""
+    NEVER = 0           # 從不保存
+    SUCCESS_ONLY = 1    # 只保存成功檢測（當前模式）
+    ALWAYS = 2          # 總是保存
+    FAILURE_ONLY = 3    # 只保存失敗檢測
+    WITH_OBJECTS = 4    # 有檢測到物件時保存
+    WITHOUT_OBJECTS = 5 # 沒有檢測到物件時保存
 # ==================== YOLO模型管理器 ====================
 class YOLOModelManager:
     """YOLO模型管理器 - 支援多模型動態切換"""
@@ -232,6 +228,15 @@ class YOLOv11Detector:
         self.model_manager = YOLOModelManager(working_dir)
         self.class_names = ['DR_F', 'stack']
         self._detection_count = 0
+        
+        # 🔥 如果發現模型1，自動載入作為預設模型
+        if 1 in self.model_manager.model_paths:
+            print(f"🎯 自動載入模型1作為預設模型: {self.model_manager.model_paths[1]}")
+            success = self.model_manager.load_model(1)
+            if success:
+                print("✅ 預設模型1載入成功")
+            else:
+                print("❌ 預設模型1載入失敗")
 
     @property
     def is_loaded(self) -> bool:
@@ -274,7 +279,7 @@ class YOLOv11Detector:
                     
                     for box in boxes:
                         class_id = int(box.cls[0])
-                        confidence = float(box.conf[0])  # 🔥 獲取實際置信度
+                        confidence = float(box.conf[0])
                         
                         if confidence >= self.confidence_threshold:
                             x1, y1, x2, y2 = box.xyxy[0]
@@ -283,11 +288,11 @@ class YOLOv11Detector:
                             
                             if class_id == 0:  # DR_F
                                 result.dr_f_coords.append((center_x, center_y))
-                                result.dr_f_confidences.append(confidence)  # 🔥 記錄實際置信度
+                                result.dr_f_confidences.append(confidence)
                                 result.dr_f_count += 1
                             elif class_id == 1:  # stack  
                                 result.stack_coords.append((center_x, center_y))
-                                result.stack_confidences.append(confidence)  # 🔥 記錄實際置信度
+                                result.stack_confidences.append(confidence)
                                 result.stack_count += 1
                     
                     result.total_detections = result.dr_f_count + result.stack_count
@@ -404,12 +409,12 @@ class CameraCoordinateTransformer:
                 return False
             
             # 驗證載入的數據
-            print(f"   📊 載入數據驗證:")
-            print(f"      相機矩陣: {self.camera_matrix.shape}, det={np.linalg.det(self.camera_matrix):.2f}")
-            print(f"      畸變係數: {self.dist_coeffs.shape}, 非零個數: {np.count_nonzero(self.dist_coeffs)}")
-            print(f"      旋轉向量: {self.rvec.shape}, 範圍: [{self.rvec.min():.3f}, {self.rvec.max():.3f}]")
-            print(f"      平移向量: {self.tvec.shape}, 範圍: [{self.tvec.min():.3f}, {self.tvec.max():.3f}]")
-            print(f"      旋轉矩陣: {self.rotation_matrix.shape}, det={np.linalg.det(self.rotation_matrix):.3f}")
+            # print(f"   📊 載入數據驗證:")
+            # print(f"      相機矩陣: {self.camera_matrix.shape}, det={np.linalg.det(self.camera_matrix):.2f}")
+            # print(f"      畸變係數: {self.dist_coeffs.shape}, 非零個數: {np.count_nonzero(self.dist_coeffs)}")
+            # print(f"      旋轉向量: {self.rvec.shape}, 範圍: [{self.rvec.min():.3f}, {self.rvec.max():.3f}]")
+            # print(f"      平移向量: {self.tvec.shape}, 範圍: [{self.tvec.min():.3f}, {self.tvec.max():.3f}]")
+            # print(f"      旋轉矩陣: {self.rotation_matrix.shape}, det={np.linalg.det(self.rotation_matrix):.3f}")
             
             self.is_valid_flag = True
             print(f"   ✅ 座標轉換器載入成功")
@@ -431,7 +436,7 @@ class CameraCoordinateTransformer:
             world_coords = []
             
             for px, py in pixel_coords:
-                print(f"🔄 轉換像素座標: ({px:.1f}, {py:.1f})")
+                #print(f"🔄 轉換像素座標: ({px:.1f}, {py:.1f})")
                 
                 # 去畸變處理
                 pixel_point = np.array([[[float(px), float(py)]]], dtype=np.float32)
@@ -443,7 +448,7 @@ class CameraCoordinateTransformer:
                 
                 # 獲取歸一化座標
                 x_norm, y_norm = undistorted_points[0][0]
-                print(f"   去畸變後歸一化座標: ({x_norm:.6f}, {y_norm:.6f})")
+                #print(f"   去畸變後歸一化座標: ({x_norm:.6f}, {y_norm:.6f})")
                 
                 # 構建歸一化齊次座標
                 normalized_coords = np.array([x_norm, y_norm, 1.0])
@@ -457,11 +462,11 @@ class CameraCoordinateTransformer:
                     continue
                 
                 depth_scale = (0 - self.tvec[2, 0]) / denominator
-                print(f"   深度係數: {depth_scale:.6f}")
+                #print(f"   深度係數: {depth_scale:.6f}")
                 
                 # 計算相機座標系中的3D點
                 camera_point = depth_scale * normalized_coords
-                print(f"   相機座標系點: ({camera_point[0]:.3f}, {camera_point[1]:.3f}, {camera_point[2]:.3f})")
+                #print(f"   相機座標系點: ({camera_point[0]:.3f}, {camera_point[1]:.3f}, {camera_point[2]:.3f})")
                 
                 # 轉換到世界座標系
                 tvec_3d = self.tvec.reshape(3)
@@ -471,11 +476,11 @@ class CameraCoordinateTransformer:
                 world_x = world_point_3d[0]
                 world_y = world_point_3d[1]
                 
-                print(f"   ✅ 世界座標: ({world_x:.3f}, {world_y:.3f}) mm")
+                #print(f"   ✅ 世界座標: ({world_x:.3f}, {world_y:.3f}) mm")
                 
                 world_coords.append((float(world_x), float(world_y)))
             
-            print(f"✅ 座標轉換完成，共轉換{len(world_coords)}個點")
+            #print(f"✅ 座標轉換完成，共轉換{len(world_coords)}個點")
             return world_coords
             
         except Exception as e:
@@ -637,7 +642,7 @@ class SystemStateMachine:
 
 # ==================== Modbus TCP Client服務 ====================
 class EnhancedModbusTcpClientService:
-    """增強版Modbus TCP Client服務 - 純Modbus版本"""
+    """增強版Modbus TCP Client服務 - 純Modbus版本 (移除SQLite)"""
     
     def __init__(self, server_ip="127.0.0.1", server_port=502):
         self.server_ip = server_ip
@@ -659,7 +664,7 @@ class EnhancedModbusTcpClientService:
         self.last_memory_update = 0
         self.memory_update_interval = 60  # 1分鐘更新一次
         
-        # CCD1 Modbus寄存器映射 (基地址200) - 新增SQLite寄存器
+        # CCD1 Modbus寄存器映射 (基地址200) - 移除SQLite寄存器
         self.REGISTERS = {
             # 控制寄存器 (200-201)
             'CONTROL_COMMAND': 200,
@@ -723,11 +728,12 @@ class EnhancedModbusTcpClientService:
             'UPTIME_HOURS': 292,
             'UPTIME_MINUTES': 293,
             
-            # 新增寄存器
+            # 系統管理寄存器
             'MEMORY_USAGE_MB': 295,
             'SYSTEM_RELOAD': 296,
             'RELOAD_STATUS': 297,
-            'SQLITE_WRITE_COMPLETE': 298,  # 🔥 新增：SQLite寫入完成旗標
+            'SAVE_IMAGE_CONTROL': 298,    # 新增：圖片保存控制
+            'SAVE_IMAGE_MODE': 299,       # 新增：保存模式設定
         }
         
         # 狀態追蹤
@@ -747,28 +753,9 @@ class EnhancedModbusTcpClientService:
         
         # 系統重載控制
         self.last_reload_trigger = 0
-        
-        # 🔥 新增：CoordinateSupporter初始化
-        self.coordinate_supporter = None
-        if COORDINATE_SUPPORTER_AVAILABLE:
-            try:
-                # 在工作目錄中創建SQLite檔案
-                db_path = os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)), 
-                    "ccd1_coordinate_supporter.db"
-                )
-                self.coordinate_supporter = CoordinateSupporter(db_path)
-                print(f"✅ CoordinateSupporter初始化成功: {db_path}")
-            except Exception as e:
-                print(f"❌ CoordinateSupporter初始化失敗: {e}")
-                self.coordinate_supporter = None
+    
     def connect(self) -> bool:
-        """
-        連接到Modbus TCP服務器
-        
-        Returns:
-            bool: 連接是否成功
-        """
+        """連接到Modbus TCP服務器"""
         if not MODBUS_AVAILABLE:
             print("❌ Modbus Client不可用")
             return False
@@ -810,6 +797,7 @@ class EnhancedModbusTcpClientService:
             print(f"❌ Modbus TCP連接異常: {e}")
             self.connected = False
             return False
+    
     def disconnect(self):
         """斷開Modbus連接"""
         self.stop_sync()
@@ -827,8 +815,9 @@ class EnhancedModbusTcpClientService:
         self.client = None
 
     def set_vision_controller(self, controller):
-            """設置視覺控制器引用"""
-            self.vision_controller = controller    
+        """設置視覺控制器引用"""
+        self.vision_controller = controller    
+    
     def start_sync(self):
         """啟動同步線程"""
         if self.sync_running:
@@ -842,7 +831,6 @@ class EnhancedModbusTcpClientService:
         self.start_memory_monitor()
         
         print("✅ Modbus握手同步線程已啟動")
- 
     
     def stop_sync(self):
         """停止同步線程"""
@@ -909,35 +897,9 @@ class EnhancedModbusTcpClientService:
             
         except Exception as e:
             print(f"❌ 更新記憶體使用量失敗: {e}")
-    def get_sqlite_status(self) -> Dict[str, Any]:
-        """獲取SQLite相關狀態"""
-        try:
-            status = {
-                'coordinate_supporter_available': self.coordinate_supporter is not None,
-                'sqlite_write_complete_flag': self.read_register('SQLITE_WRITE_COMPLETE') or 0,
-                'db_path': getattr(self.coordinate_supporter, 'db_path', '') if self.coordinate_supporter else ''
-            }
-            
-            if self.coordinate_supporter:
-                # 獲取各表的記錄數量
-                ccd1_status = self.coordinate_supporter.get_processing_status('ccd1_detection_results')
-                status.update({
-                    'ccd1_record_count': ccd1_status['record_count'],
-                    'ccd1_last_update': ccd1_status['last_update'],
-                    'ccd1_has_data': ccd1_status['has_data']
-                })
-            
-            return status
-            
-        except Exception as e:
-            print(f"❌ 獲取SQLite狀態失敗: {e}")
-            return {
-                'coordinate_supporter_available': False,
-                'sqlite_write_complete_flag': 0,
-                'error': str(e)
-            }
+    
     def _write_initial_status_and_defaults(self):
-        """寫入初始狀態並檢查預設值 - 包含SQLite旗標"""
+        """寫入初始狀態並檢查預設值 - 移除SQLite相關"""
         try:
             print("📊 寫入初始狀態並檢查預設值...")
             
@@ -946,7 +908,7 @@ class EnhancedModbusTcpClientService:
             
             # 版本資訊
             self.write_register('VERSION_MAJOR', 5)  # YOLOv11版本
-            self.write_register('VERSION_MINOR', 2)  # CoordinateSupporter整合版本
+            self.write_register('VERSION_MINOR', 3)  # 移除SQLite版本
             
             # 計數器
             self.write_register('OPERATION_COUNT', self.operation_count)
@@ -956,27 +918,34 @@ class EnhancedModbusTcpClientService:
             # 重載狀態初始化
             self.write_register('RELOAD_STATUS', 0)
             
-            # 🔥 新增：初始化SQLite旗標
-            self.write_register('SQLITE_WRITE_COMPLETE', 0)  # 初始狀態為已清除
-            
             # 立即更新一次記憶體使用量
             self._update_memory_usage()
             
-            print("📊 初始狀態和預設值寫入完成 (包含SQLite支援)")
+            print("📊 初始狀態和預設值寫入完成 (移除SQLite功能)")
             
         except Exception as e:
             print(f"❌ 寫入初始狀態失敗: {e}")
     
     def _check_and_write_defaults(self):
-        """檢查Modbus寄存器，如果為0則寫入預設值"""
+        """檢查Modbus寄存器，如果為0則寫入預設值並自動載入模型1"""
         try:
             print("🔍 檢查Modbus寄存器預設值...")
             
             # 檢查模型選擇寄存器
             model_select = self.read_register('MODEL_SELECT')
             if model_select is None or model_select == 0:
-                print("📝 MODEL_SELECT為0，寫入預設值: 0 (未載入模型)")
-                self.write_register('MODEL_SELECT', 0)
+                # 檢查是否有可用的模型1
+                if (self.vision_controller and 
+                    self.vision_controller.yolo_detector and 
+                    1 in self.vision_controller.yolo_detector.model_manager.model_paths):
+                    print("📝 MODEL_SELECT為0但發現模型1，自動載入模型1")
+                    self.write_register('MODEL_SELECT', 1)
+                    # 立即觸發模型載入
+                    self.vision_controller.yolo_detector.switch_model(1)
+                    print("✅ 模型1自動載入成功")
+                else:
+                    print("📝 MODEL_SELECT為0，寫入預設值: 0 (未載入模型)")
+                    self.write_register('MODEL_SELECT', 0)
             else:
                 print(f"📋 MODEL_SELECT現有值: {model_select}")
             
@@ -1012,18 +981,18 @@ class EnhancedModbusTcpClientService:
                 # 2. 處理模型管理指令
                 self._handle_model_management()
                 
-                # 3. 處理系統重載指令 (新增)
+                # 3. 處理系統重載指令
                 self._handle_system_reload()
                 
                 # 4. 讀取控制指令並處理握手邏輯
                 self._handle_control_command_enhanced()
-                
+                self._handle_image_save_control()
                 # 5. 處理完成狀態邏輯
                 self._handle_completion_status()
                 
                 # 6. 更新統計資訊
                 self._update_statistics()
-                
+                # 
                 # 定期記憶體清理
                 self._sync_counter += 1
                 if self._sync_counter >= self._cleanup_frequency:
@@ -1046,7 +1015,28 @@ class EnhancedModbusTcpClientService:
         
         self.sync_running = False
         print("⏹️ 增強版同步線程已退出")
-    
+    def _handle_image_save_control(self):
+        """處理圖片保存控制"""
+        try:
+            save_control = self.read_register('SAVE_IMAGE_CONTROL')
+            save_mode = self.read_register('SAVE_IMAGE_MODE') or 1
+            
+            if save_control == 1:  # 啟用圖片保存
+                if self.vision_controller:  # 🔥 設置到正確的控制器
+                    self.vision_controller.image_save_enabled = True
+                    self.vision_controller.image_save_mode = save_mode
+                    print(f"✅ 圖片保存已啟用，模式：{save_mode}")
+                # 清除控制位
+                self.write_register('SAVE_IMAGE_CONTROL', 0)
+                
+            elif save_control == 2:  # 禁用圖片保存
+                if self.vision_controller:  # 🔥 設置到正確的控制器
+                    self.vision_controller.image_save_enabled = False
+                    print(f"⏸️ 圖片保存已禁用")
+                self.write_register('SAVE_IMAGE_CONTROL', 0)
+                
+        except Exception as e:
+            print(f"❌ 處理圖片保存控制失敗: {e}")
     def _handle_system_reload(self):
         """處理系統重載指令"""
         try:
@@ -1159,91 +1149,7 @@ class EnhancedModbusTcpClientService:
                     
         except Exception as e:
             print(f"❌ 處理模型管理指令失敗: {e}")
-    def _check_sqlite_flag_before_detection(self) -> bool:
-        """檢查SQLite旗標，防止重複檢測"""
-        sqlite_flag = self.read_register('SQLITE_WRITE_COMPLETE')
-        
-        if sqlite_flag == 1:
-            print("⚠️ SQLite寫入完成旗標未被清除，拒絕執行檢測")
-            self._set_error_state(50, "SQLite寫入未完成錯誤")  # 錯誤代碼50
-            return False
-        
-        return True   
-    # 🔥 在這裡添加
-    def _write_detection_results_to_sqlite(self, result: YOLODetectionResult) -> bool:
-        """將YOLO檢測結果寫入SQLite - CoordinateSupporter格式"""
-        try:
-            if not self.coordinate_supporter:
-                print("⚠️ CoordinateSupporter不可用，跳過SQLite寫入")
-                return True  # 不影響主要檢測流程
-            
-            print("💾 開始寫入檢測結果到SQLite...")
-            
-            # 步驟1: 構建detection_dict格式
-            detection_dict = {
-                0: result.dr_f_count,      # label_id 0 = DR_F
-                1: result.stack_count      # label_id 1 = STACK
-            }
-            
-            # 步驟2: 構建objects_detail格式
-            objects_detail = {}
-            
-            # 處理DR_F物件 (label_id = 0)
-            if result.dr_f_coords:
-                objects_detail[0] = []
-                for i, (x, y) in enumerate(result.dr_f_coords):
-                    # 獲取對應的置信度
-                    confidence = result.dr_f_confidences[i] if i < len(result.dr_f_confidences) else 0.9
-                    
-                    # 獲取對應的世界座標（如果有）
-                    world_x = None
-                    world_y = None
-                    if (result.dr_f_world_coords and 
-                        i < len(result.dr_f_world_coords)):
-                        world_x, world_y = result.dr_f_world_coords[i]
-                    
-                    objects_detail[0].append({
-                        'x': float(x),
-                        'y': float(y),
-                        'confidence': float(confidence),
-                        'world_x': float(world_x) if world_x is not None else None,
-                        'world_y': float(world_y) if world_y is not None else None
-                    })
-            
-            # 處理STACK物件 (label_id = 1)
-            if result.stack_coords:
-                objects_detail[1] = []
-                for i, (x, y) in enumerate(result.stack_coords):
-                    # 獲取對應的置信度
-                    confidence = result.stack_confidences[i] if i < len(result.stack_confidences) else 0.9
-                    
-                    objects_detail[1].append({
-                        'x': float(x),
-                        'y': float(y),
-                        'confidence': float(confidence),
-                        'world_x': None,  # STACK暫時不轉換世界座標
-                        'world_y': None
-                    })
-            
-            # 步驟3: 調用CoordinateSupporter寫入
-            success = self.coordinate_supporter.save_ccd1_detection_results(
-                detection_dict, objects_detail
-            )
-            
-            if success:
-                print(f"💾 SQLite寫入成功: DR_F={result.dr_f_count}, STACK={result.stack_count}")
-                print(f"   總物件數: {result.total_detections}")
-                print(f"   模型ID: {result.model_id_used}")
-                return True
-            else:
-                print(f"❌ SQLite寫入失敗")
-                return False
-                
-        except Exception as e:
-            print(f"❌ SQLite寫入異常: {e}")
-            import traceback
-            print(f"詳細錯誤: {traceback.format_exc()}")
-            return False
+    
     def _handle_control_command_enhanced(self):
         """處理控制指令握手邏輯 - 增強版"""
         try:
@@ -1280,21 +1186,21 @@ class EnhancedModbusTcpClientService:
     def _execute_command_enhanced(self, command: ControlCommand):
         """執行控制指令 - 增強版"""
         try:
-            print(f"🚀 開始處理控制指令: {command}")
+            #print(f"🚀 開始處理控制指令: {command}")
             
             if not self.vision_controller:
-                print("❌ 視覺控制器不存在")
+                #print("❌ 視覺控制器不存在")
                 self._set_error_state(1, "視覺控制器不存在")
                 return
             
             if not self.vision_controller.state_machine.is_ready():
-                print("⚠️ 系統未Ready，忽略指令")
+                #print("⚠️ 系統未Ready，忽略指令")
                 self._set_error_state(2, "系統未Ready")
                 return
             
             self.vision_controller.state_machine.set_running(True)
             self.vision_controller.state_machine.set_ready(False)
-            print(f"🔄 狀態變更: Ready=0, Running=1")
+            #print(f"🔄 狀態變更: Ready=0, Running=1")
             
             running_start = time.time()
             
@@ -1306,22 +1212,22 @@ class EnhancedModbusTcpClientService:
             elif command == ControlCommand.INITIALIZE:
                 result = self._handle_initialize_command_enhanced()
             else:
-                print(f"⚠️ 未知控制指令: {command}")
+                #print(f"⚠️ 未知控制指令: {command}")
                 self._set_error_state(3, f"未知指令: {command}")
                 return
             
             running_duration = time.time() - running_start
             if running_duration < self.min_running_duration:
                 remaining_time = self.min_running_duration - running_duration
-                print(f"⏱️ Running狀態延長 {remaining_time:.2f} 秒以確保可見性")
+                #print(f"⏱️ Running狀態延長 {remaining_time:.2f} 秒以確保可見性")
                 time.sleep(remaining_time)
             
             if result:
                 self._set_completion_state(True, command)
-                print(f"✅ 指令 {command} 執行成功")
+                #print(f"✅ 指令 {command} 執行成功")
             else:
                 self._set_completion_state(False, command)
-                print(f"❌ 指令 {command} 執行失敗")
+                #print(f"❌ 指令 {command} 執行失敗")
             
         except Exception as e:
             print(f"❌ 執行控制指令異常: {e}")
@@ -1331,41 +1237,26 @@ class EnhancedModbusTcpClientService:
             self.vision_controller.state_machine.set_running(False)
             self.command_processing = False
             self.completion_start_time = time.time()
-            print(f"🔄 狀態變更: Running=0, 等待指令清零後恢復Ready")
+            #print(f"🔄 狀態變更: Running=0, 等待指令清零後恢復Ready")
     
     def _handle_capture_detect_command_enhanced(self):
-        """處理拍照+檢測指令 - 整合CoordinateSupporter"""
+        """處理拍照+檢測指令 - 純Modbus版本"""
         try:
-            print("🔍 執行拍照+YOLOv11檢測指令")
+            #print("🔍 執行拍照+YOLOv11檢測指令")
             
-            # 🔥 步驟1: 檢查SQLite旗標狀態
-            if not self._check_sqlite_flag_before_detection():
-                return False
-            
-            # 🔥 步驟2: 執行原有檢測流程
             result = self.vision_controller.capture_and_detect()
             
             if result and result.success:
-                # 🔥 步驟3: 更新檢測結果到Modbus (原有邏輯)
+                # 更新檢測結果到Modbus
                 self.update_detection_results(result)
                 self.write_register('CAPTURE_COMPLETE', 1)
                 self.write_register('DETECT_COMPLETE', 1)
                 
-                # 🔥 步驟4: 寫入SQLite數據庫
-                sqlite_success = self._write_detection_results_to_sqlite(result)
-                
-                if sqlite_success:
-                    # 🔥 步驟5: 設置SQLite寫入完成旗標
-                    self.write_register('SQLITE_WRITE_COMPLETE', 1)
-                    print("✅ SQLite寫入完成，旗標已設置")
-                else:
-                    print("❌ SQLite寫入失敗，但檢測成功")
-                
-                print(f"✅ YOLOv11檢測成功，DR_F={result.dr_f_count}, STACK={result.stack_count}")
+                #print(f"✅ YOLOv11檢測成功，DR_F={result.dr_f_count}, STACK={result.stack_count}")
                 return True
             else:
                 error_msg = result.error_message if result else "檢測結果為空"
-                print(f"❌ YOLOv11檢測失敗: {error_msg}")
+                #print(f"❌ YOLOv11檢測失敗: {error_msg}")
                 self.error_count += 1
                 self._clear_detection_results()
                 self.write_register('CAPTURE_COMPLETE', 0)
@@ -1373,7 +1264,7 @@ class EnhancedModbusTcpClientService:
                 return False
                 
         except Exception as e:
-            print(f"❌ 檢測指令執行失敗: {e}")
+            #print(f"❌ 檢測指令執行失敗: {e}")
             self.error_count += 1
             self._clear_detection_results()
             self.write_register('CAPTURE_COMPLETE', 0)
@@ -1532,12 +1423,12 @@ class EnhancedModbusTcpClientService:
             self.write_register('DETECTION_SUCCESS', 1 if result.success else 0)
             self.write_register('MODEL_ID_USED', result.model_id_used)
             
-            print(f"📊 檢測數量寫入寄存器:")
-            print(f"   240(DR_F_COUNT) = {result.dr_f_count}")
-            print(f"   242(STACK_COUNT) = {result.stack_count}")
-            print(f"   243(TOTAL_DETECTIONS) = {result.total_detections}")
-            print(f"   244(DETECTION_SUCCESS) = {1 if result.success else 0}")
-            print(f"   259(MODEL_ID_USED) = {result.model_id_used}")
+            # print(f"📊 檢測數量寫入寄存器:")
+            # print(f"   240(DR_F_COUNT) = {result.dr_f_count}")
+            # print(f"   242(STACK_COUNT) = {result.stack_count}")
+            # print(f"   243(TOTAL_DETECTIONS) = {result.total_detections}")
+            # print(f"   244(DETECTION_SUCCESS) = {1 if result.success else 0}")
+            # print(f"   259(MODEL_ID_USED) = {result.model_id_used}")
 
             # 寫入DR_F座標 (最多5個)
             for i in range(5):
@@ -1545,8 +1436,8 @@ class EnhancedModbusTcpClientService:
                     x, y = result.dr_f_coords[i]
                     self.write_register(f'DR_F_{i+1}_X', int(float(x)))
                     self.write_register(f'DR_F_{i+1}_Y', int(float(y)))
-                    print(f"   {245+i*2}(DR_F_{i+1}_X) = {int(float(x))}")
-                    print(f"   {246+i*2}(DR_F_{i+1}_Y) = {int(float(y))}")
+                    #print(f"   {245+i*2}(DR_F_{i+1}_X) = {int(float(x))}")
+                    #print(f"   {246+i*2}(DR_F_{i+1}_Y) = {int(float(y))}")
                 else:
                     self.write_register(f'DR_F_{i+1}_X', 0)
                     self.write_register(f'DR_F_{i+1}_Y', 0)
@@ -1556,8 +1447,8 @@ class EnhancedModbusTcpClientService:
                 x, y = result.stack_coords[0]
                 self.write_register('STACK_1_X', int(float(x)))
                 self.write_register('STACK_1_Y', int(float(y)))
-                print(f"   257(STACK_1_X) = {int(float(x))}")
-                print(f"   258(STACK_1_Y) = {int(float(y))}")
+                #print(f"   257(STACK_1_X) = {int(float(x))}")
+                #print(f"   258(STACK_1_Y) = {int(float(y))}")
             else:
                 self.write_register('STACK_1_X', 0)
                 self.write_register('STACK_1_Y', 0)
@@ -1576,7 +1467,7 @@ class EnhancedModbusTcpClientService:
                 
                 if world_coords:
                     self.write_register('WORLD_COORD_VALID', 1)
-                    print(f"🌍 世界座標轉換成功，共{len(world_coords)}個DR_F目標")
+                    #print(f"🌍 世界座標轉換成功，共{len(world_coords)}個DR_F目標")
                     
                     # 寫入前5個世界座標 (×100存儲)
                     for i in range(min(5, len(world_coords))):
@@ -1586,8 +1477,8 @@ class EnhancedModbusTcpClientService:
                         world_x_int = int(float(world_x) * 100)
                         world_y_int = int(float(world_y) * 100)
                         
-                        print(f"   處理 DR_F {i+1}: 原始值=({world_x:.2f}, {world_y:.2f})")
-                        print(f"   ×100後整數值: x_int={world_x_int}, y_int={world_y_int}")
+                        #print(f"   處理 DR_F {i+1}: 原始值=({world_x:.2f}, {world_y:.2f})")
+                        #print(f"   ×100後整數值: x_int={world_x_int}, y_int={world_y_int}")
                         
                         # 處理負數
                         if world_x_int < 0:
@@ -1600,7 +1491,7 @@ class EnhancedModbusTcpClientService:
                         else:
                             world_y_uint32 = world_y_int
                         
-                        print(f"   32位無符號值: x_uint32={world_x_uint32}, y_uint32={world_y_uint32}")
+                        #print(f"   32位無符號值: x_uint32={world_x_uint32}, y_uint32={world_y_uint32}")
                         
                         # 分割32位為高16位和低16位
                         world_x_high = (world_x_uint32 >> 16) & 0xFFFF
@@ -1608,8 +1499,8 @@ class EnhancedModbusTcpClientService:
                         world_y_high = (world_y_uint32 >> 16) & 0xFFFF
                         world_y_low = world_y_uint32 & 0xFFFF
                         
-                        print(f"   分割結果: x_high={world_x_high}, x_low={world_x_low}")
-                        print(f"   分割結果: y_high={world_y_high}, y_low={world_y_low}")
+                        # print(f"   分割結果: x_high={world_x_high}, x_low={world_x_low}")
+                        # print(f"   分割結果: y_high={world_y_high}, y_low={world_y_low}")
                         
                         # 驗證重組
                         reconstructed_x = (world_x_high << 16) | world_x_low
@@ -1628,7 +1519,7 @@ class EnhancedModbusTcpClientService:
                         reconstructed_x_mm = reconstructed_x_signed / 100.0
                         reconstructed_y_mm = reconstructed_y_signed / 100.0
                         
-                        print(f"   驗證重組: ({reconstructed_x_mm:.2f}, {reconstructed_y_mm:.2f}) mm")
+                        #print(f"   驗證重組: ({reconstructed_x_mm:.2f}, {reconstructed_y_mm:.2f}) mm")
                         
                         # 寫入世界座標寄存器
                         self.write_register(f'DR_F_{i+1}_WORLD_X_HIGH', world_x_high)
@@ -1636,16 +1527,16 @@ class EnhancedModbusTcpClientService:
                         self.write_register(f'DR_F_{i+1}_WORLD_Y_HIGH', world_y_high)
                         self.write_register(f'DR_F_{i+1}_WORLD_Y_LOW', world_y_low)
                         
-                        print(f"   DR_F {i+1} 世界座標寫入:")
-                        print(f"     {261+i*4}(WORLD_X_HIGH) = {world_x_high}")
-                        print(f"     {262+i*4}(WORLD_X_LOW) = {world_x_low}")
-                        print(f"     {263+i*4}(WORLD_Y_HIGH) = {world_y_high}")
-                        print(f"     {264+i*4}(WORLD_Y_LOW) = {world_y_low}")
-                        print(f"     實際值: ({world_x:.2f}, {world_y:.2f}) mm")
-                        print(f"     驗證值: ({reconstructed_x_mm:.2f}, {reconstructed_y_mm:.2f}) mm")
-                        print()
+                    #     print(f"   DR_F {i+1} 世界座標寫入:")
+                    #     print(f"     {261+i*4}(WORLD_X_HIGH) = {world_x_high}")
+                    #     print(f"     {262+i*4}(WORLD_X_LOW) = {world_x_low}")
+                    #     print(f"     {263+i*4}(WORLD_Y_HIGH) = {world_y_high}")
+                    #     print(f"     {264+i*4}(WORLD_Y_LOW) = {world_y_low}")
+                    #     print(f"     實際值: ({world_x:.2f}, {world_y:.2f}) mm")
+                    #     print(f"     驗證值: ({reconstructed_x_mm:.2f}, {reconstructed_y_mm:.2f}) mm")
+                    #     print()
                     
-                    print(f"✅ 共寫入{len(world_coords)}個DR_F世界座標到Modbus寄存器")
+                    # print(f"✅ 共寫入{len(world_coords)}個DR_F世界座標到Modbus寄存器")
                     
                     # 清空未使用的世界座標寄存器
                     for i in range(len(world_coords), 5):
@@ -1750,7 +1641,7 @@ class EnhancedModbusTcpClientService:
 
 # ==================== 主控制器 ====================
 class CCD1VisionController:
-    """CCD1視覺檢測主控制器 - 純Modbus版本"""
+    """CCD1視覺檢測主控制器 - 純Modbus版本 (移除SQLite)"""
     
     def __init__(self):
         # 基本配置
@@ -1782,7 +1673,9 @@ class CCD1VisionController:
         self._memory_cleanup_frequency = 50
         self._last_comprehensive_cleanup = time.time()
         self._comprehensive_cleanup_interval = 300  # 5分鐘
-        
+        # 圖片保存控制
+        self.image_save_enabled = False
+        self.image_save_mode = 1  # 預設SUCCESS_ONLY模式
         # 設置日誌
         self.logger = logging.getLogger("CCD1Vision")
         self.logger.setLevel(logging.INFO)
@@ -1823,6 +1716,12 @@ class CCD1VisionController:
             if modbus_success:
                 self.modbus_client.start_sync()
                 print("✅ Modbus TCP連接成功並啟動同步")
+                
+                # 🔥 同步模型狀態到Modbus
+                if self.yolo_detector and self.yolo_detector.is_loaded:
+                    current_model_id = self.yolo_detector.model_manager.current_model_id
+                    self.modbus_client.write_register('MODEL_SELECT', current_model_id)
+                    print(f"🎯 模型狀態已同步到Modbus: 模型{current_model_id}")
                 
                 # 讀取並同步置信度閾值
                 confidence = self.modbus_client.read_confidence_threshold()
@@ -2045,7 +1944,7 @@ class CCD1VisionController:
             
             # 僅轉換DR_F座標
             if result.dr_f_coords:
-                print(f"   轉換{len(result.dr_f_coords)}個DR_F目標座標")
+                #print(f"   轉換{len(result.dr_f_coords)}個DR_F目標座標")
                 try:
                     world_coords = self.calibration_manager.transformer.pixel_to_world(result.dr_f_coords)
                     
@@ -2056,10 +1955,10 @@ class CCD1VisionController:
                             world_y = float(wy)
                             result.dr_f_world_coords.append((world_x, world_y))
                         
-                        for i, ((px, py), (wx, wy)) in enumerate(zip(result.dr_f_coords, result.dr_f_world_coords)):
-                            print(f"   DR_F {i+1}: 像素({px:.1f}, {py:.1f}) → 世界({wx:.2f}, {wy:.2f}) mm")
+                        #for i, ((px, py), (wx, wy)) in enumerate(zip(result.dr_f_coords, result.dr_f_world_coords)):
+                            #print(f"   DR_F {i+1}: 像素({px:.1f}, {py:.1f}) → 世界({wx:.2f}, {wy:.2f}) mm")
                         
-                        print(f"✅ 世界座標轉換成功，共轉換{len(world_coords)}個DR_F目標")
+                        #print(f"✅ 世界座標轉換成功，共轉換{len(world_coords)}個DR_F目標")
                     else:
                         print(f"❌ 世界座標轉換失敗：轉換結果為空")
                         result.dr_f_world_coords = []
@@ -2105,6 +2004,28 @@ class CCD1VisionController:
             print(f"❌ 保存檢測結果圖像異常: {e}")
             import traceback
             print(f"詳細錯誤: {traceback.format_exc()}")
+    
+    def _should_save_image(self, result: YOLODetectionResult) -> bool:
+        """根據Modbus控制判斷是否應該保存圖片"""
+        if not hasattr(self, 'image_save_enabled') or not self.image_save_enabled:
+            return False
+        
+        save_mode = getattr(self, 'image_save_mode', 1)
+        
+        if save_mode == ImageSaveMode.NEVER:
+            return False
+        elif save_mode == ImageSaveMode.SUCCESS_ONLY:
+            return result.success
+        elif save_mode == ImageSaveMode.ALWAYS:
+            return True
+        elif save_mode == ImageSaveMode.FAILURE_ONLY:
+            return not result.success
+        elif save_mode == ImageSaveMode.WITH_OBJECTS:
+            return result.total_detections > 0
+        elif save_mode == ImageSaveMode.WITHOUT_OBJECTS:
+            return result.total_detections == 0
+        else:
+            return result.success  # 預設模式
     def _create_yolo_visualization(self, image: np.ndarray, result: YOLODetectionResult):
         """創建YOLOv11檢測結果可視化 - 記憶體優化版"""
         try:
@@ -2139,8 +2060,11 @@ class CCD1VisionController:
             stats_text = f"YOLOv11 (Model{result.model_id_used}): F={result.dr_f_count}, S={result.stack_count}"
             cv2.putText(vis_image, stats_text, (20, 40), 
                     cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 255), 3)
-            if result.success:  # 僅在檢測成功時保存
+            should_save = self._should_save_image(result)
+            if should_save:  # 僅在檢測成功時保存
+                print("要保存阿AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                 self._save_detection_image(vis_image, result)
+            
             # 清理輸入圖像引用
             del image
             
@@ -2215,7 +2139,7 @@ class CCD1VisionController:
             print(f"❌ 綜合記憶體清理失敗: {e}")
     
     def get_status(self) -> Dict[str, Any]:
-        """獲取系統狀態 - 包含SQLite狀態"""
+        """獲取系統狀態 - 移除SQLite狀態"""
         status = {
             'ready': self.state_machine.is_ready(),
             'running': self.state_machine.is_running(),
@@ -2230,8 +2154,7 @@ class CCD1VisionController:
             'error_count': self.error_count,
             'last_result': asdict(self.last_result) if self.last_result else None,
             'calibration_status': self.calibration_manager.get_status(),
-            'modbus_status': self.modbus_client.get_connection_status(),
-            'sqlite_status': self.modbus_client.get_sqlite_status()  # 🔥 新增SQLite狀態
+            'modbus_status': self.modbus_client.get_connection_status()
         }
         
         return status
@@ -2251,9 +2174,9 @@ class CCD1VisionController:
 
 # ==================== 主函數 ====================
 def main():
-    """主函數 - 純Modbus版本"""
+    """主函數 - 純Modbus版本 (移除SQLite)"""
     print("=" * 80)
-    print("🚀 CCD1視覺控制系統啟動中 (YOLOv11純Modbus版本)...")
+    print("🚀 CCD1視覺控制系統啟動中 (YOLOv11純Modbus版本 - 移除SQLite)...")
     print("📊 功能特性:")
     print("   • YOLOv11物件檢測 (DR_F/STACK)")
     print("   • 握手式狀態機控制")
@@ -2263,6 +2186,7 @@ def main():
     print("   • 記憶體使用量監控")
     print("   • 100ms高頻輪詢")
     print("   • 世界座標轉換")
+    print("   • 移除SQLite功能，純Modbus寫入")
     print("=" * 80)
     
     if not CAMERA_MANAGER_AVAILABLE:
@@ -2293,13 +2217,14 @@ def main():
         print("   • 結果: 240-259 (檢測結果/座標)")
         print("   • 世界座標: 260-279 (座標轉換)")
         print("   • 統計: 280-299 (時間/計數/版本)")
-        print("   • 新增: 295(記憶體MB), 296(重載觸發), 297(重載狀態)")
+        print("   • 系統: 295(記憶體MB), 296(重載觸發), 297(重載狀態)")
         
         print("🔗 控制方式:")
         print("   1. 透過PLC寫入寄存器200(控制指令)")
         print("   2. 透過寄存器202選擇YOLO模型(0-20)")
         print("   3. 透過寄存器296觸發系統重載")
         print("   4. 監控寄存器295獲取記憶體使用量")
+        print("   5. 檢測結果直接寫入Modbus寄存器，無SQLite存儲")
         print("=" * 80)
         print("🎉 系統啟動完成，等待Modbus控制指令...")
         print("💡 系統將持續運行，按Ctrl+C退出")

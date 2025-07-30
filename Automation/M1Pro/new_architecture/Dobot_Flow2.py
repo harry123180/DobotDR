@@ -317,7 +317,7 @@ class DrFlow2UnloadExecutor:
                 'speed_j': 100,    
                 'acc_j': 100,
                 
-                'sync': False
+                'sync': True
             }},
             
             # 5. 切換回右手手勢

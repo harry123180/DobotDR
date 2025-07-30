@@ -1,0 +1,32 @@
+{
+  "autoprogram": {
+    "coordination_interval": 0.2,
+    "auto_program_enabled": true,
+    "flow1_trigger_delay": 0.1,
+    "coords_confirm_delay": 0.1,
+    "batch_complete_delay": 1.0,
+    "coordinates_timeout": 30.0
+  },
+  "ccd1_monitoring": {
+    "memory_check_interval": 5.0,
+    "memory_limit_mb": 800,
+    "reload_timeout": 30.0,
+    "reload_check_interval": 1.0
+  },
+  "autofeeding_control": {
+    "stop_confirm_delay": 0.2,
+    "start_confirm_delay": 0.5,
+    "screening_flag_timeout": 10.0
+  },
+  "protection_zone": {
+    "x_min": -112.0,
+    "x_max": -4.0,
+    "y_min": 243.0,
+    "y_max": 339.21
+  },
+  "timing": {
+    "register_clear_delay": 0.05,
+    "flow1_response_timeout": 10.0,
+    "flow2_response_timeout": 30.0
+  }
+}

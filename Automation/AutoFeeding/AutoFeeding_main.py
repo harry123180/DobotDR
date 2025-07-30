@@ -107,18 +107,33 @@ class AnomalyDetection:
 
 
 class ProtectionZone:
-    """DR保護區域判斷"""
+    """DR保護區域判斷 - 射線投射法"""
     
-    @staticmethod
-    def is_point_in_rect(x: float, y: float) -> bool:
-        """判斷點是否在DR保護區域矩形內"""
-        # DR保護區域四點座標
-        x_min = -112.0
-        x_max = -4.0
-        y_min = 243.0
-        y_max = 339.21
+    def __init__(self, points=None):
+        # 預設四點座標 (逆時針)
+        if points is None:
+            points = [
+                (-127.83, 194.7),   # 左下
+                (-113.75, 348.31),     # 右下  
+                (6.21, 348.25),    # 右上
+                (6.20, 194.76)   # 左上
+            ]
+        self.points = points
+    def is_point_in_rect(self, x, y):
+        """射線投射法判斷點是否在多邊形內"""
+        n = len(self.points)
+        inside = False
+        j = n - 1
         
-        return x_min <= x <= x_max and y_min <= y <= y_max
+        for i in range(n):
+            xi, yi = self.points[i]
+            xj, yj = self.points[j]
+            
+            if ((yi > y) != (yj > y)) and (x < (xj - xi) * (y - yi) / (yj - yi) + xi):
+                inside = not inside
+            j = i
+            
+        return inside
 
 
 class AutoFeedingModule:
@@ -551,7 +566,7 @@ class AutoFeedingModule:
         # 調試: 檢查指令發送前的狀態
         initial_status = self.read_register(201)
         self.logger.debug(f"發送檢測指令前 - 201狀態: {initial_status}")
-        
+        time.sleep(1)
         # 觸發拍照+檢測
         if not self.write_register(200, 16):
             self.logger.error("無法寫入控制指令到寄存器200")
@@ -644,12 +659,12 @@ class AutoFeedingModule:
             return False
         
         # 震動持續時間
-        time.sleep(0.8)
+        time.sleep(1.2)
         success = True
         success &= self.write_register(320, 5)  # execute_action
         success &= self.write_register(321, 11) #擴散
-        success &= self.write_register(322, 98)#強度
-        success &= self.write_register(323, 64)#頻率
+        success &= self.write_register(322, 132)#強度
+        success &= self.write_register(323, 49)#頻率
         success &= self.write_register(324, int(time.time()) % 65535)
         
         if not success:
@@ -657,7 +672,7 @@ class AutoFeedingModule:
             return False
         
         # 震動持續時間
-        time.sleep(0.8)
+        time.sleep(1.8)
         success = True
         success &= self.write_register(320, 5)  # execute_action
         success &= self.write_register(321, 0) #擴散
@@ -777,10 +792,12 @@ class AutoFeedingModule:
                 self.logger.info(f"料件不足 (總數={detection_result.total_detections}<4)，觸發Flow4送料")
                 
                 if self.trigger_flow4_feeding():
+                    
                     self.flow4_trigger_count += 1
                     self.flow4_consecutive_count += 1
                     self.logger.info(f"Flow4送料完成 (連續{self.flow4_consecutive_count}次)")
-                    
+                    time.sleep(2)
+                    self.trigger_vp_vibration()
                     # 檢查連續直振限制
                     if self.flow4_consecutive_count >= self.config['autofeeding']['flow4_consecutive_limit']:
                         self.logger.warning("達到連續直振限制，需要VP清空")

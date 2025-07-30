@@ -1,19 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AutoFeeding_main.py - DR專案獨立入料檢測模組 (增強版)
+AutoFeeding_main.py - DR專案獨立入料檢測模組 (超強化版)
 基地址：900-999
-功能：持續檢測確保DR_F存在於保護區域內
-增強功能：
-1. 外部控制啟動/停止 (920寄存器)
-2. 可調整VP和Flow4參數 (930-959寄存器)
-3. 自動初始化硬編碼參數
-4. 記憶體使用量監控 (906寄存器)
-5. 監控1201當值為1時暫停自動進料程序  
-6. 監控1202當前進度，<44時停止運作，>=44時恢復
-7. 異常數量檢測：檢測到大量物件後突然驟減時進行二次檢測
-保護區域：(-112, 243) 到 (-4, 339)四點矩形
-檢測對象：DR_F (正面物件) 和 STACK (堆疊物件) 二分類檢測
+新增功能：
+1. 監控200地址是否卡16，自動歸零
+2. 監控CCD1報警狀態，自動初始化
+3. 監控記憶體使用量，自動重載
+4. 增強的CCD1狀態監控
 """
 
 import time
@@ -21,8 +15,6 @@ import math
 import os
 import json
 import logging
-import threading
-import psutil
 from logging.handlers import RotatingFileHandler
 from typing import Dict, Any, Optional, Tuple, List
 from dataclasses import dataclass
@@ -39,30 +31,25 @@ except ImportError:
 
 def setup_logging(module_name: str):
     """統一設置logging配置"""
-    # 日誌目錄：執行檔同層目錄下的logs資料夾
     log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
     os.makedirs(log_dir, exist_ok=True)
     
-    # 格式化器
     formatter = logging.Formatter(
         '%(asctime)s [%(levelname)s] %(name)s:%(funcName)s:%(lineno)d - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
     
-    # 文件處理器 (輪替日誌，保存一週)
     file_handler = RotatingFileHandler(
         os.path.join(log_dir, f'{module_name}.log'),
-        maxBytes=10*1024*1024,  # 10MB
-        backupCount=7,          # 保留7個檔案
+        maxBytes=10*1024*1024,
+        backupCount=7,
         encoding='utf-8'
     )
     file_handler.setFormatter(formatter)
     
-    # 控制台處理器
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
     
-    # 配置logger
     logger = logging.getLogger(module_name)
     logger.setLevel(logging.DEBUG)
     logger.addHandler(file_handler)
@@ -75,10 +62,12 @@ class AutoFeedingStatus(Enum):
     """AutoFeeding狀態"""
     STOPPED = 0
     RUNNING = 1
-    FLOW1_PAUSED = 2  # Flow1執行時暫停
+    FLOW1_PAUSED = 2
     DETECTING = 3
     VP_VIBRATING = 4
     ERROR = 5
+    CCD1_RECOVERY = 6    # 新增：CCD1恢復中
+    MEMORY_RECOVERY = 7  # 新增：記憶體恢復中
 
 
 class OperationStatus(Enum):
@@ -87,6 +76,8 @@ class OperationStatus(Enum):
     CCD_DETECTING = 1
     VP_CONTROLLING = 2
     FLOW4_TRIGGERING = 3
+    CCD1_INIT_RECOVERY = 4  # 新增：CCD1初始化恢復
+    MEMORY_RELOAD = 5       # 新增：記憶體重載
 
 
 @dataclass
@@ -115,23 +106,37 @@ class AnomalyDetection:
 class ProtectionZone:
     """DR保護區域判斷"""
     
-    @staticmethod
-    def is_point_in_rect(x: float, y: float) -> bool:
-        """判斷點是否在DR保護區域矩形內"""
-        # DR保護區域四點座標
-        x_min = -112.0
-        x_max = -4.0
-        y_min = 243.0
-        y_max = 339.21
+    def __init__(self, points=None):
+        if points is None:
+            points = [
+                (-127.83, 194.7),
+                (-113.75, 348.31),
+                (6.21, 348.25),
+                (6.20, 194.76)
+            ]
+        self.points = points
+
+    def is_point_in_rect(self, x, y):
+        """射線投射法判斷點是否在多邊形內"""
+        n = len(self.points)
+        inside = False
+        j = n - 1
         
-        return x_min <= x <= x_max and y_min <= y <= y_max
+        for i in range(n):
+            xi, yi = self.points[i]
+            xj, yj = self.points[j]
+            
+            if ((yi > y) != (yj > y)) and (x < (xj - xi) * (y - yi) / (yj - yi) + xi):
+                inside = not inside
+            j = i
+            
+        return inside
 
 
 class AutoFeedingModule:
-    """DR AutoFeeding獨立模組 (增強版)"""
+    """DR AutoFeeding獨立模組 (超強化版)"""
     
     def __init__(self, modbus_host: str = "127.0.0.1", modbus_port: int = 502):
-        # 初始化logging
         self.logger = setup_logging('AutoFeeding')
         
         self.modbus_host = modbus_host
@@ -148,40 +153,11 @@ class AutoFeedingModule:
         self.FLOW4_ADDRESS = 448
         
         # 監控地址
-        self.CURRENT_MOTION_FLOW = 1201  # 當前運動Flow (0=無, 1=Flow1, 2=Flow2, 5=Flow5)
-        self.CURRENT_PROGRESS = 1202     # 當前進度
+        self.CURRENT_MOTION_FLOW = 1201
+        self.CURRENT_PROGRESS = 1202
         
-        # 寄存器地址定義
-        self.CONTROL_START = 920         # 控制寄存器起始
-        self.VP_PARAMS_START = 930       # VP參數寄存器起始
-        self.FLOW4_PARAMS_START = 950    # Flow4參數寄存器起始
-        self.COORD_START = 960           # 座標交握寄存器起始
-        self.SYSTEM_PARAMS_START = 980   # 系統參數寄存器起始
-        
-        # 硬編碼預設參數
-        self.DEFAULT_VP_PARAMS = {
-            "action1": {"action_code": 4, "strength": 45, "frequency": 43, "duration": 800},
-            "action2": {"action_code": 11, "strength": 98, "frequency": 64, "duration": 800},
-            "stop": {"command_code": 3, "delay": 100}
-        }
-        
-        self.DEFAULT_FLOW4_PARAMS = {
-            "pulse_duration": 100,
-            "pulse_interval": 50
-        }
-        
-        self.DEFAULT_SYSTEM_PARAMS = {
-            "cycle_interval": 1000,
-            "ccd1_timeout": 5000,
-            "flow4_consecutive_limit": 5,
-            "vp_empty_check_count": 3,
-            "progress_threshold": 44,
-            "large_count_threshold": 5,
-            "sudden_drop_threshold": 1,
-            "redetection_delay": 500,
-            "vp_stabilize_delay": 150,
-            "flow1_check_interval": 100
-        }
+        # 載入配置
+        self.config = self.load_config()
         
         # 保護區域判斷
         self.protection_zone = ProtectionZone()
@@ -190,7 +166,6 @@ class AutoFeedingModule:
         self.status = AutoFeedingStatus.STOPPED
         self.operation_status = OperationStatus.IDLE
         self.running = False
-        self.external_control_running = False  # 外部控制運行狀態
         self.flow1_active = False
         self.progress_blocking = False
         self.vp_clearing_mode = False
@@ -210,18 +185,95 @@ class AutoFeedingModule:
         self.error_code = 0
         self.anomaly_redetection_count = 0
         
+        # 🔥 新增：CCD1監控相關變數
+        self.ccd1_command_stuck_count = 0       # 指令卡住計數
+        self.ccd1_alarm_recovery_count = 0      # 報警恢復計數
+        self.last_ccd1_command = 0              # 上次CCD1指令
+        self.last_ccd1_status = None            # 上次CCD1狀態
+        self.ccd1_stuck_threshold = 5           # 指令卡住閾值
+        
+        # 🔥 新增：記憶體監控相關變數
+        self.memory_usage_check_interval = 10   # 記憶體檢查間隔(秒)
+        self.last_memory_check_time = 0         # 上次記憶體檢查時間
+        self.memory_threshold = 500             # 記憶體閾值(MB)
+        self.memory_reload_in_progress = False  # 記憶體重載進行中
+        self.memory_reload_count = 0            # 記憶體重載計數
+        
         # 異常檢測
         self.anomaly_detection = AnomalyDetection()
         
-        # 記憶體監控
-        self.memory_monitor_thread = None
-        self.memory_monitor_running = False
+        self.logger.info(f"DR AutoFeeding獨立模組初始化 (超強化版) - 基地址{self.BASE_ADDRESS}")
+        self.logger.info(f"新增功能:")
+        self.logger.info(f"  ✓ CCD1指令卡住監控(200地址)")
+        self.logger.info(f"  ✓ CCD1報警狀態監控與自動初始化")
+        self.logger.info(f"  ✓ 記憶體使用量監控(295地址)與自動重載(296地址)")
+        self.logger.info(f"  ✓ 增強的狀態恢復機制")
+    
+    def load_config(self) -> Dict[str, Any]:
+        """載入配置檔案"""
+        default_config = {
+            "autofeeding": {
+                "cycle_interval": 1.0,
+                "ccd1_timeout": 5.0,
+                "flow4_consecutive_limit": 5,
+                "vp_empty_check_count": 3,
+                "auto_start": True,
+                "progress_threshold": 44
+            },
+            "anomaly_detection": {
+                "large_count_threshold": 5,
+                "sudden_drop_threshold": 1,
+                "redetection_delay": 0.5
+            },
+            "ccd1_monitoring": {                    # 🔥 新增：CCD1監控配置
+                "command_stuck_threshold": 5,       # 指令卡住閾值
+                "alarm_recovery_timeout": 10.0,     # 報警恢復超時
+                "status_check_interval": 0.5        # 狀態檢查間隔
+            },
+            "memory_monitoring": {                  # 🔥 新增：記憶體監控配置
+                "check_interval": 10,               # 檢查間隔(秒)
+                "threshold_mb": 500,                # 記憶體閾值(MB)
+                "reload_timeout": 30.0              # 重載超時
+            },
+            "vp_params": {
+                "spread_action_code": 4,
+                "spread_strength": 45,
+                "spread_frequency": 43,
+                "spread_duration": 0.3,
+                "stop_command_code": 3,
+                "stop_delay": 0.1
+            },
+            "flow4_params": {
+                "pulse_duration": 0.1,
+                "pulse_interval": 0.05
+            },
+            "timing": {
+                "command_delay": 0.05,
+                "status_check_interval": 0.05,
+                "register_clear_delay": 0.02,
+                "vp_stabilize_delay": 0.15,
+                "flow1_check_interval": 0.1
+            },
+            "coordination": {
+                "coords_taken_timeout": 10.0
+            }
+        }
         
-        self.logger.info(f"DR AutoFeeding獨立模組初始化 (增強版) - 基地址{self.BASE_ADDRESS}")
-        self.logger.info(f"新增功能: 外部控制(920), VP參數(930-949), Flow4參數(950-959), 記憶體監控(906)")
-        self.logger.info(f"保護區域: X(-112.0 ~ -4.0mm), Y(243.0 ~ 339.21mm)")
-        self.logger.info(f"監控當前執行Flow地址: {self.CURRENT_MOTION_FLOW}")
-        self.logger.info(f"監控當前進度地址: {self.CURRENT_PROGRESS}")
+        try:
+            config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'autofeeding_config.json')
+            if os.path.exists(config_path):
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    loaded_config = json.load(f)
+                    default_config.update(loaded_config)
+                self.logger.info(f"配置檔案已載入: {config_path}")
+            else:
+                with open(config_path, 'w', encoding='utf-8') as f:
+                    json.dump(default_config, f, indent=2, ensure_ascii=False)
+                self.logger.info(f"預設配置檔案已創建: {config_path}")
+        except Exception as e:
+            self.logger.error(f"配置檔案處理失敗: {e}", exc_info=True)
+            
+        return default_config
     
     def connect(self) -> bool:
         """連接Modbus服務器"""
@@ -242,14 +294,7 @@ class AutoFeedingModule:
             
             if self.connected:
                 self.logger.info("連接建立成功")
-                
-                # 檢查是否需要初始化參數
-                if self.check_need_initialization():
-                    self.logger.info("檢測到參數未初始化，執行硬編碼參數初始化...")
-                    self.initialize_default_parameters()
-                
                 self.init_registers()
-                self.start_memory_monitor()
                 return True
             else:
                 self.logger.warning("連接失敗，將在主循環中重試")
@@ -262,170 +307,51 @@ class AutoFeedingModule:
     def disconnect(self):
         """斷開Modbus連接"""
         if self.modbus_client and self.connected:
-            self.stop_memory_monitor()
             self.modbus_client.close()
             self.connected = False
             self.logger.info("Modbus連接已斷開")
-    
-    def check_need_initialization(self) -> bool:
-        """檢查是否需要初始化參數"""
-        try:
-            # 檢查關鍵寄存器是否全為0
-            vp_params_zero = all(self.read_register(self.VP_PARAMS_START + i) == 0 for i in range(10))
-            flow4_params_zero = all(self.read_register(self.FLOW4_PARAMS_START + i) == 0 for i in range(2))
-            system_params_zero = all(self.read_register(self.SYSTEM_PARAMS_START + i) == 0 for i in range(10))
-            
-            need_init = vp_params_zero and flow4_params_zero and system_params_zero
-            
-            if need_init:
-                self.logger.info("檢測到關鍵寄存器全為0，需要初始化")
-            else:
-                self.logger.info("檢測到參數已存在，跳過初始化")
-            
-            return need_init
-            
-        except Exception as e:
-            self.logger.error(f"初始化檢查失敗: {e}", exc_info=True)
-            return True  # 發生錯誤時執行初始化
-    
-    def initialize_default_parameters(self) -> bool:
-        """初始化硬編碼預設參數到寄存器"""
-        try:
-            self.logger.info("開始寫入硬編碼預設參數...")
-            
-            # VP參數初始化 (930-949)
-            vp_success = True
-            vp_success &= self.write_register(930, self.DEFAULT_VP_PARAMS["action1"]["action_code"])
-            vp_success &= self.write_register(931, self.DEFAULT_VP_PARAMS["action1"]["strength"])
-            vp_success &= self.write_register(932, self.DEFAULT_VP_PARAMS["action1"]["frequency"])
-            vp_success &= self.write_register(933, self.DEFAULT_VP_PARAMS["action1"]["duration"])
-            vp_success &= self.write_register(934, self.DEFAULT_VP_PARAMS["action2"]["action_code"])
-            vp_success &= self.write_register(935, self.DEFAULT_VP_PARAMS["action2"]["strength"])
-            vp_success &= self.write_register(936, self.DEFAULT_VP_PARAMS["action2"]["frequency"])
-            vp_success &= self.write_register(937, self.DEFAULT_VP_PARAMS["action2"]["duration"])
-            vp_success &= self.write_register(938, self.DEFAULT_VP_PARAMS["stop"]["command_code"])
-            vp_success &= self.write_register(939, self.DEFAULT_VP_PARAMS["stop"]["delay"])
-            
-            if vp_success:
-                self.logger.info("VP參數初始化成功 (930-939)")
-            else:
-                self.logger.error("VP參數初始化失敗")
-            
-            # Flow4參數初始化 (950-959)
-            flow4_success = True
-            flow4_success &= self.write_register(950, self.DEFAULT_FLOW4_PARAMS["pulse_duration"])
-            flow4_success &= self.write_register(951, self.DEFAULT_FLOW4_PARAMS["pulse_interval"])
-            
-            if flow4_success:
-                self.logger.info("Flow4參數初始化成功 (950-951)")
-            else:
-                self.logger.error("Flow4參數初始化失敗")
-            
-            # 系統參數初始化 (980-999)
-            system_success = True
-            system_success &= self.write_register(980, self.DEFAULT_SYSTEM_PARAMS["cycle_interval"])
-            system_success &= self.write_register(981, self.DEFAULT_SYSTEM_PARAMS["ccd1_timeout"])
-            system_success &= self.write_register(982, self.DEFAULT_SYSTEM_PARAMS["flow4_consecutive_limit"])
-            system_success &= self.write_register(983, self.DEFAULT_SYSTEM_PARAMS["vp_empty_check_count"])
-            system_success &= self.write_register(984, self.DEFAULT_SYSTEM_PARAMS["progress_threshold"])
-            system_success &= self.write_register(985, self.DEFAULT_SYSTEM_PARAMS["large_count_threshold"])
-            system_success &= self.write_register(986, self.DEFAULT_SYSTEM_PARAMS["sudden_drop_threshold"])
-            system_success &= self.write_register(987, self.DEFAULT_SYSTEM_PARAMS["redetection_delay"])
-            system_success &= self.write_register(988, self.DEFAULT_SYSTEM_PARAMS["vp_stabilize_delay"])
-            system_success &= self.write_register(989, self.DEFAULT_SYSTEM_PARAMS["flow1_check_interval"])
-            
-            if system_success:
-                self.logger.info("系統參數初始化成功 (980-989)")
-            else:
-                self.logger.error("系統參數初始化失敗")
-            
-            overall_success = vp_success and flow4_success and system_success
-            
-            if overall_success:
-                self.logger.info("硬編碼參數初始化完成")
-            else:
-                self.logger.error("硬編碼參數初始化部分失敗")
-            
-            return overall_success
-            
-        except Exception as e:
-            self.logger.error(f"參數初始化異常: {e}", exc_info=True)
-            return False
-    
-    def start_memory_monitor(self):
-        """啟動記憶體監控執行緒"""
-        try:
-            if self.memory_monitor_thread is None or not self.memory_monitor_thread.is_alive():
-                self.memory_monitor_running = True
-                self.memory_monitor_thread = threading.Thread(target=self._memory_monitor_worker, daemon=True)
-                self.memory_monitor_thread.start()
-                self.logger.info("記憶體監控執行緒已啟動 (每10分鐘更新)")
-        except Exception as e:
-            self.logger.error(f"記憶體監控啟動失敗: {e}", exc_info=True)
-    
-    def stop_memory_monitor(self):
-        """停止記憶體監控執行緒"""
-        self.memory_monitor_running = False
-        if self.memory_monitor_thread and self.memory_monitor_thread.is_alive():
-            self.memory_monitor_thread.join(timeout=1.0)
-            self.logger.info("記憶體監控執行緒已停止")
-    
-    def _memory_monitor_worker(self):
-        """記憶體監控工作執行緒"""
-        while self.memory_monitor_running:
-            try:
-                if self.connected:
-                    # 獲取當前進程記憶體使用量
-                    process = psutil.Process()
-                    memory_bytes = process.memory_info().rss
-                    memory_mb = int(memory_bytes / (1024 * 1024))  # 無條件捨去小數點
-                    
-                    # 更新到906寄存器
-                    if self.write_register(906, memory_mb):
-                        self.logger.debug(f"記憶體使用量更新: {memory_mb} MB")
-                    else:
-                        self.logger.warning("記憶體使用量寫入寄存器失敗")
-                
-                # 等待10分鐘 (600秒)
-                for _ in range(600):
-                    if not self.memory_monitor_running:
-                        break
-                    time.sleep(1)
-                    
-            except Exception as e:
-                self.logger.error(f"記憶體監控執行緒異常: {e}", exc_info=True)
-                time.sleep(60)  # 發生錯誤時等待1分鐘後重試
     
     def init_registers(self):
         """初始化寄存器"""
         try:
             # 狀態寄存器 (900-919)
-            self.write_register(900, AutoFeedingStatus.STOPPED.value)  # 模組狀態
-            self.write_register(901, self.cycle_count)                  # 週期計數
-            self.write_register(902, self.dr_f_found_count)            # DR_F找到次數
-            self.write_register(903, self.flow4_trigger_count)         # Flow4觸發次數
-            self.write_register(904, self.vp_vibration_count)          # VP震動次數
-            self.write_register(905, self.anomaly_redetection_count)   # 異常重檢次數
-            # 906 記憶體使用量由監控執行緒更新
-            self.write_register(907, 0)  # 錯誤代碼
-            self.write_register(908, OperationStatus.IDLE.value)       # 操作狀態
-            self.write_register(909, 0)  # Flow1監控狀態
-            self.write_register(910, 0)  # 進度阻擋狀態
+            self.write_register(900, AutoFeedingStatus.STOPPED.value)
+            self.write_register(901, self.cycle_count)
+            self.write_register(902, self.dr_f_found_count)
+            self.write_register(903, self.flow4_trigger_count)
+            self.write_register(904, self.vp_vibration_count)
+            self.write_register(905, self.anomaly_redetection_count)
+            self.write_register(906, self.ccd1_alarm_recovery_count)    # 🔥 新增
+            self.write_register(907, self.error_code)
+            self.write_register(908, OperationStatus.IDLE.value)
+            self.write_register(909, 0)
+            self.write_register(910, 0)
             
-            # 控制寄存器 (920-929) - 保持現有值或設為0
-            current_control = self.read_register(920)
-            if current_control is None:
-                self.write_register(920, 0)  # 預設停止狀態
+            # 🔥 新增：CCD1監控寄存器 (911-915)
+            self.write_register(911, 0)  # CCD1指令卡住標誌
+            self.write_register(912, 0)  # CCD1報警恢復標誌
+            self.write_register(913, 0)  # 記憶體重載標誌
+            self.write_register(914, self.memory_reload_count)
+            self.write_register(915, 0)  # 保留
             
-            # DR_F狀態寄存器 (960-979) - 座標交握區域
-            self.write_register(960, 0)  # DR_F可用標誌
-            self.write_register(961, 0)  # X座標高位
-            self.write_register(962, 0)  # X座標低位
-            self.write_register(963, 0)  # Y座標高位
-            self.write_register(964, 0)  # Y座標低位
-            self.write_register(965, 0)  # 座標已讀取標誌
+            # DR_F狀態寄存器 (940-959)
+            self.write_register(940, 0)
+            self.write_register(941, 0)
+            self.write_register(942, 0)
+            self.write_register(943, 0)
+            self.write_register(944, 0)
+            self.write_register(945, 0)
+            self.write_register(946, 0)
+            self.write_register(947, 0)
             
-            self.logger.info("寄存器初始化完成")
+            # 配置參數寄存器 (960-979)
+            self.write_register(960, int(self.config['autofeeding']['cycle_interval'] * 1000))
+            self.write_register(961, int(self.config['autofeeding']['ccd1_timeout'] * 1000))
+            self.write_register(962, self.config['vp_params']['spread_strength'])
+            self.write_register(963, self.config['vp_params']['spread_frequency'])
+            self.write_register(964, int(self.config['vp_params']['spread_duration'] * 1000))
+            
+            self.logger.info("寄存器初始化完成 (新增CCD1監控和記憶體管理)")
         except Exception as e:
             self.logger.error(f"寄存器初始化失敗: {e}", exc_info=True)
     
@@ -455,26 +381,20 @@ class AutoFeedingModule:
         if high_val is None or low_val is None:
             return 0.0
         
-        # 合併32位值
         combined = (high_val << 16) + low_val
         
-        # 處理補碼(負數)
-        if combined >= 2147483648:  # 2^31
-            combined = combined - 4294967296  # 2^32
+        if combined >= 2147483648:
+            combined = combined - 4294967296
         
-        # 轉換為毫米(除以100)
         return combined / 100.0
     
     def write_32bit_register(self, high_addr: int, low_addr: int, value: float) -> bool:
         """寫入32位世界座標"""
-        # 轉換為整數形式(×100)
         value_int = int(value * 100)
         
-        # 處理負數(補碼)
         if value_int < 0:
-            value_int = value_int + 4294967296  # 2^32
+            value_int = value_int + 4294967296
         
-        # 分解為高低位
         high_val = (value_int >> 16) & 0xFFFF
         low_val = value_int & 0xFFFF
         
@@ -484,88 +404,169 @@ class AutoFeedingModule:
         
         return success
     
-    def read_vp_params(self) -> Dict[str, Any]:
-        """從寄存器讀取VP參數"""
+    def check_ccd1_command_stuck(self) -> bool:
+        """🔥 新增：檢查CCD1指令是否卡住"""
         try:
-            params = {
-                "action1": {
-                    "action_code": max(0, min(11, self.read_register(930) or 4)),
-                    "strength": max(0, min(100, self.read_register(931) or 45)),
-                    "frequency": max(0, min(100, self.read_register(932) or 43)),
-                    "duration": max(100, min(5000, self.read_register(933) or 800))
-                },
-                "action2": {
-                    "action_code": max(0, min(11, self.read_register(934) or 11)),
-                    "strength": max(0, min(100, self.read_register(935) or 98)),
-                    "frequency": max(0, min(100, self.read_register(936) or 64)),
-                    "duration": max(100, min(5000, self.read_register(937) or 800))
-                },
-                "stop": {
-                    "command_code": max(0, min(255, self.read_register(938) or 3)),
-                    "delay": max(10, min(1000, self.read_register(939) or 100))
-                }
-            }
-            return params
-        except Exception as e:
-            self.logger.error(f"VP參數讀取失敗: {e}", exc_info=True)
-            return self.DEFAULT_VP_PARAMS
-    
-    def read_flow4_params(self) -> Dict[str, int]:
-        """從寄存器讀取Flow4參數"""
-        try:
-            params = {
-                "pulse_duration": max(10, min(5000, self.read_register(950) or 100)),
-                "pulse_interval": max(10, min(1000, self.read_register(951) or 50))
-            }
-            return params
-        except Exception as e:
-            self.logger.error(f"Flow4參數讀取失敗: {e}", exc_info=True)
-            return self.DEFAULT_FLOW4_PARAMS
-    
-    def read_system_params(self) -> Dict[str, int]:
-        """從寄存器讀取系統參數"""
-        try:
-            params = {
-                "cycle_interval": max(100, min(10000, self.read_register(980) or 1000)),
-                "ccd1_timeout": max(1000, min(30000, self.read_register(981) or 5000)),
-                "flow4_consecutive_limit": max(1, min(20, self.read_register(982) or 5)),
-                "vp_empty_check_count": max(1, min(10, self.read_register(983) or 3)),
-                "progress_threshold": max(0, min(100, self.read_register(984) or 44)),
-                "large_count_threshold": max(1, min(20, self.read_register(985) or 5)),
-                "sudden_drop_threshold": max(0, min(10, self.read_register(986) or 1)),
-                "redetection_delay": max(100, min(5000, self.read_register(987) or 500)),
-                "vp_stabilize_delay": max(50, min(2000, self.read_register(988) or 150)),
-                "flow1_check_interval": max(50, min(1000, self.read_register(989) or 100))
-            }
-            return params
-        except Exception as e:
-            self.logger.error(f"系統參數讀取失敗: {e}", exc_info=True)
-            return self.DEFAULT_SYSTEM_PARAMS
-    
-    def check_external_control(self) -> bool:
-        """檢查外部控制狀態"""
-        try:
-            control_value = self.read_register(920)
-            if control_value is None:
+            current_command = self.read_register(200)  # 控制指令
+            
+            if current_command is None:
                 return False
             
-            should_run = (control_value == 1)
-            
-            # 檢查狀態變化
-            if should_run != self.external_control_running:
-                self.external_control_running = should_run
-                if should_run:
-                    self.logger.info("外部控制啟動AutoFeeding (920=1)")
-                    return True
+            # 檢查指令是否卡在16
+            if current_command == 16:
+                if self.last_ccd1_command == 16:
+                    self.ccd1_command_stuck_count += 1
+                    self.logger.debug(f"CCD1指令卡住檢測: 連續{self.ccd1_command_stuck_count}次檢測到16")
+                    
+                    # 達到閾值，執行清除操作
+                    if self.ccd1_command_stuck_count >= self.ccd1_stuck_threshold:
+                        self.logger.warning(f"檢測到CCD1指令卡住(200={current_command})，執行歸零操作")
+                        success = self.write_register(200, 0)
+                        if success:
+                            self.logger.info("CCD1指令已歸零，重置卡住計數")
+                            self.ccd1_command_stuck_count = 0
+                            self.write_register(911, 1)  # 設置卡住標誌
+                            return True
+                        else:
+                            self.logger.error("CCD1指令歸零失敗")
                 else:
-                    self.logger.info("外部控制停止AutoFeeding (920=0)")
-                    return False
-            
-            return should_run
+                    self.ccd1_command_stuck_count = 1
+            else:
+                self.ccd1_command_stuck_count = 0
+                
+            self.last_ccd1_command = current_command
+            return False
             
         except Exception as e:
-            self.logger.error(f"外部控制檢查失敗: {e}", exc_info=True)
+            self.logger.error(f"CCD1指令檢查失敗: {e}", exc_info=True)
             return False
+    
+    def check_ccd1_alarm_status(self) -> bool:
+        """🔥 新增：檢查CCD1報警狀態並自動初始化"""
+        try:
+            ccd1_status = self.read_register(201)
+            
+            if ccd1_status is None:
+                return False
+            
+            # 解析狀態位
+            ccd1_alarm = bool(ccd1_status & 0x04)  # bit2=Alarm
+            
+            if ccd1_alarm:
+                # 狀態變化時記錄
+                if self.last_ccd1_status is None or not bool(self.last_ccd1_status & 0x04):
+                    self.logger.warning(f"檢測到CCD1進入報警狀態 (201={ccd1_status})")
+                    
+                # 執行初始化恢復
+                self.logger.info("執行CCD1自動初始化恢復...")
+                success = self.write_register(200, 32)  # 初始化指令
+                
+                if success:
+                    self.logger.info("CCD1初始化指令已發送(200=32)")
+                    self.ccd1_alarm_recovery_count += 1
+                    self.write_register(912, 1)  # 設置報警恢復標誌
+                    
+                    # 等待初始化完成
+                    timeout = self.config['ccd1_monitoring']['alarm_recovery_timeout']
+                    start_time = time.time()
+                    
+                    while (time.time() - start_time) < timeout:
+                        time.sleep(0.5)
+                        current_status = self.read_register(201)
+                        if current_status is not None:
+                            current_alarm = bool(current_status & 0x04)
+                            if not current_alarm:
+                                self.logger.info("CCD1報警狀態已清除，初始化成功")
+                                # 清除控制指令
+                                self.write_register(200, 0)
+                                return True
+                    
+                    self.logger.warning("CCD1初始化超時，報警狀態未清除")
+                else:
+                    self.logger.error("CCD1初始化指令發送失敗")
+                    
+            self.last_ccd1_status = ccd1_status
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"CCD1報警檢查失敗: {e}", exc_info=True)
+            return False
+    
+    def check_memory_usage(self) -> bool:
+        """🔥 新增：檢查記憶體使用量並觸發重載"""
+        try:
+            current_time = time.time()
+            
+            # 檢查時間間隔
+            if current_time - self.last_memory_check_time < self.memory_monitoring_check_interval:
+                return False
+            
+            self.last_memory_check_time = current_time
+            
+            # 讀取記憶體使用量(MB)
+            memory_usage = self.read_register(295)
+            
+            if memory_usage is None:
+                return False
+            
+            # 檢查是否超過閾值
+            if memory_usage > self.memory_threshold and not self.memory_reload_in_progress:
+                self.logger.warning(f"記憶體使用量超過閾值: {memory_usage}MB > {self.memory_threshold}MB")
+                self.logger.info("觸發CCD1系統重載...")
+                
+                # 觸發重載
+                success = self.write_register(296, 1)  # 系統重載觸發
+                
+                if success:
+                    self.logger.info("系統重載指令已發送(296=1)")
+                    self.memory_reload_in_progress = True
+                    self.write_register(913, 1)  # 設置記憶體重載標誌
+                    
+                    # 等待重載完成
+                    timeout = self.config['memory_monitoring']['reload_timeout']
+                    start_time = time.time()
+                    
+                    while (time.time() - start_time) < timeout:
+                        time.sleep(1.0)
+                        reload_status = self.read_register(297)  # 重載狀態
+                        
+                        if reload_status == 1:
+                            self.logger.info("檢測到重載狀態變為1，清除重載觸發")
+                            # 清除重載觸發
+                            self.write_register(296, 0)
+                            
+                            # 等待重載完成(狀態回到0)
+                            while (time.time() - start_time) < timeout:
+                                time.sleep(1.0)
+                                reload_status = self.read_register(297)
+                                if reload_status == 0:
+                                    self.logger.info("重載完成，記憶體恢復正常")
+                                    self.memory_reload_in_progress = False
+                                    self.memory_reload_count += 1
+                                    # 檢查重載後記憶體
+                                    new_memory = self.read_register(295)
+                                    if new_memory:
+                                        self.logger.info(f"重載後記憶體使用量: {new_memory}MB")
+                                    return True
+                            
+                            self.logger.warning("重載狀態未回到0，可能重載失敗")
+                            break
+                    
+                    self.logger.error("記憶體重載超時")
+                    self.memory_reload_in_progress = False
+                else:
+                    self.logger.error("記憶體重載觸發失敗")
+            
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"記憶體檢查失敗: {e}", exc_info=True)
+            return False
+    
+    @property 
+    def memory_monitoring_check_interval(self):
+        """獲取記憶體監控間隔"""
+        return self.config['memory_monitoring']['check_interval']
     
     def update_status_registers(self):
         """更新狀態寄存器"""
@@ -576,16 +577,18 @@ class AutoFeedingModule:
             self.write_register(903, self.flow4_trigger_count)
             self.write_register(904, self.vp_vibration_count)
             self.write_register(905, self.anomaly_redetection_count)
+            self.write_register(906, self.ccd1_alarm_recovery_count)
             self.write_register(907, self.error_code)
             self.write_register(908, self.operation_status.value)
             self.write_register(909, 1 if self.flow1_active else 0)
             self.write_register(910, 1 if self.progress_blocking else 0)
+            self.write_register(914, self.memory_reload_count)
             
             # 更新DR_F狀態
-            self.write_register(960, 1 if self.dr_f_available else 0)
+            self.write_register(940, 1 if self.dr_f_available else 0)
             if self.dr_f_available:
-                self.write_32bit_register(961, 962, self.dr_f_coords[0])
-                self.write_32bit_register(963, 964, self.dr_f_coords[1])
+                self.write_32bit_register(941, 942, self.dr_f_coords[0])
+                self.write_32bit_register(943, 944, self.dr_f_coords[1])
         except Exception as e:
             self.logger.error(f"狀態寄存器更新失敗: {e}", exc_info=True)
     
@@ -598,24 +601,16 @@ class AutoFeedingModule:
             if current_motion_flow is None or current_progress is None:
                 return False
             
-            # 獲取當前進度阻擋閾值
-            system_params = self.read_system_params()
-            progress_threshold = system_params["progress_threshold"]
-            
-            # 檢查Flow1狀態變化
             flow1_now_active = (current_motion_flow == 1)
-            
-            # 檢查進度阻擋條件：1201=1 且 1202<threshold
+            progress_threshold = self.config['autofeeding'].get('progress_threshold', 44)
             progress_now_blocking = (current_motion_flow == 1 and current_progress < progress_threshold)
             
-            # 記錄狀態變化
             if flow1_now_active != self.flow1_active:
                 self.flow1_active = flow1_now_active
                 if self.flow1_active:
                     self.logger.info(f"檢測到Flow1正在執行 ({self.CURRENT_MOTION_FLOW}=1)")
                 else:
                     self.logger.info(f"檢測到Flow1執行完成 ({self.CURRENT_MOTION_FLOW}=0)")
-                    # Flow1完成後，檢查座標是否被讀取
                     self.check_coords_taken()
             
             if progress_now_blocking != self.progress_blocking:
@@ -629,7 +624,6 @@ class AutoFeedingModule:
                     if self.status == AutoFeedingStatus.FLOW1_PAUSED:
                         self.status = AutoFeedingStatus.RUNNING
             
-            # 調試日誌 - 減少頻率
             if self.cycle_count % 100 == 1:
                 self.logger.debug(f"Flow監控: 1201={current_motion_flow}, 1202={current_progress}, 阻擋={self.progress_blocking}")
             
@@ -644,18 +638,16 @@ class AutoFeedingModule:
             return
         
         try:
-            coords_taken = self.read_register(965)  # Flow1設置此標誌表示已讀取座標
+            coords_taken = self.read_register(945)
             if coords_taken == 1:
                 self.logger.info("座標已被Flow1讀取，清除DR_F狀態")
-                # 清除DR_F狀態，繼續檢測新的
                 self.dr_f_available = False
                 self.dr_f_coords = (0.0, 0.0)
                 self.dr_f_taken = True
                 
-                # 清除相關寄存器
-                self.write_register(960, 0)  # DR_F可用標誌
-                self.write_register(965, 0)  # 座標已讀取標誌
-                for addr in [961, 962, 963, 964]:
+                self.write_register(940, 0)
+                self.write_register(945, 0)
+                for addr in [941, 942, 943, 944]:
                     self.write_register(addr, 0)
                 
                 self.logger.info("DR_F狀態已清除，繼續檢測新的正面物件")
@@ -663,7 +655,16 @@ class AutoFeedingModule:
             self.logger.error(f"座標讀取檢查失敗: {e}", exc_info=True)
     
     def check_modules_status(self) -> bool:
-        """檢查CCD1、VP模組狀態"""
+        """檢查CCD1、VP模組狀態 - 增強版"""
+        # 🔥 新增：檢查CCD1指令是否卡住
+        if self.check_ccd1_command_stuck():
+            self.logger.info("CCD1指令卡住問題已處理")
+        
+        # 🔥 新增：檢查CCD1報警狀態
+        if self.check_ccd1_alarm_status():
+            self.logger.info("CCD1報警狀態已處理")
+            return False  # 報警恢復中，暫停檢測
+        
         # 檢查CCD1狀態
         ccd1_status = self.read_register(201)
         if ccd1_status is None:
@@ -672,16 +673,14 @@ class AutoFeedingModule:
             self.error_code = 101
             return False
         
-        # 解析CCD1狀態位
         ccd1_ready = bool(ccd1_status & 0x01)
         ccd1_running = bool(ccd1_status & 0x02)
         ccd1_alarm = bool(ccd1_status & 0x04)
         ccd1_initialized = bool(ccd1_status & 0x08)
         
-        if self.cycle_count % 100 == 1:  # 減少打印頻率
+        if self.cycle_count % 100 == 1:
             self.logger.debug(f"CCD1狀態: {ccd1_status} (Ready={ccd1_ready}, Running={ccd1_running}, Alarm={ccd1_alarm}, Init={ccd1_initialized})")
         
-        # 檢查CCD1是否準備就緒 (應該是狀態9: Ready=1, Initialized=1)
         if ccd1_alarm:
             if self.cycle_count % 50 == 1:
                 error_code = self.read_register(206)
@@ -721,20 +720,15 @@ class AutoFeedingModule:
     
     def check_for_anomaly(self, current_result: CCD1DetectionResult) -> bool:
         """檢查異常數量變化，決定是否需要重檢"""
-        # 獲取當前異常檢測參數
-        system_params = self.read_system_params()
-        large_threshold = system_params["large_count_threshold"]
-        drop_threshold = system_params["sudden_drop_threshold"]
+        large_threshold = self.config['anomaly_detection'].get('large_count_threshold', 5)
+        drop_threshold = self.config['anomaly_detection'].get('sudden_drop_threshold', 1)
         
-        # 檢查前一次是否有大量檢測
         prev_had_large = (self.anomaly_detection.previous_dr_f_count >= large_threshold or 
                          self.anomaly_detection.previous_total_count >= large_threshold)
         
-        # 檢查當前是否驟減
         current_has_drop = (current_result.dr_f_count <= drop_threshold and 
                            current_result.total_detections <= drop_threshold)
         
-        # 判斷是否需要重檢
         if prev_had_large and current_has_drop:
             self.logger.warning(f"檢測到異常：前次大量檢測(DR_F={self.anomaly_detection.previous_dr_f_count}, 總數={self.anomaly_detection.previous_total_count})，當前驟減(DR_F={current_result.dr_f_count}, 總數={current_result.total_detections})")
             return True
@@ -747,15 +741,14 @@ class AutoFeedingModule:
         self.anomaly_detection.previous_total_count = result.total_detections
     
     def trigger_ccd1_detection(self) -> CCD1DetectionResult:
-        """觸發CCD1檢測 - 適配DR專案的YOLO檢測"""
+        """觸發CCD1檢測"""
         self.operation_status = OperationStatus.CCD_DETECTING
         result = CCD1DetectionResult()
         
-        # 獲取當前CCD1超時參數
-        system_params = self.read_system_params()
-        timeout = system_params["ccd1_timeout"] / 1000.0  # 轉換為秒
+        initial_status = self.read_register(201)
+        self.logger.debug(f"發送檢測指令前 - 201狀態: {initial_status}")
+        time.sleep(1)
         
-        # 觸發拍照+檢測
         if not self.write_register(200, 16):
             self.logger.error("無法寫入控制指令到寄存器200")
             self.error_code = 201
@@ -763,7 +756,7 @@ class AutoFeedingModule:
         
         self.logger.debug("已發送控制指令16到寄存器200")
         
-        # 等待檢測完成
+        timeout = self.config['autofeeding']['ccd1_timeout']
         start_time = time.time()
         check_interval = 0.02
         
@@ -772,6 +765,9 @@ class AutoFeedingModule:
             detect_complete = self.read_register(204)
             operation_success = self.read_register(205)
             current_status = self.read_register(201)
+            
+            if self.cycle_count <= 5:
+                self.logger.debug(f"檢測等待: 201={current_status}, 203={capture_complete}, 204={detect_complete}, 205={operation_success}")
             
             if capture_complete == 1 and detect_complete == 1 and operation_success == 1:
                 result.operation_success = True
@@ -792,14 +788,13 @@ class AutoFeedingModule:
             return result
         
         # 讀取DR YOLO檢測結果
-        result.dr_f_count = self.read_register(240) or 0        # DR_F數量
-        stack_count = self.read_register(242) or 0              # STACK數量  
-        result.total_detections = self.read_register(243) or 0  # 總檢測數量 (DR_F + STACK)
+        result.dr_f_count = self.read_register(240) or 0
+        stack_count = self.read_register(242) or 0
+        result.total_detections = self.read_register(243) or 0
         
         # 提取DR_F世界座標
         if result.dr_f_count > 0:
             for i in range(min(result.dr_f_count, 5)):
-                # DR YOLO版本世界座標地址 (261-280)
                 base_addr = 261 + (i * 4)
                 world_x = self.read_32bit_register(base_addr, base_addr + 1)
                 world_y = self.read_32bit_register(base_addr + 2, base_addr + 3)
@@ -825,71 +820,67 @@ class AutoFeedingModule:
         return None
     
     def trigger_vp_vibration(self) -> bool:
-        """觸發VP震動 - 使用寄存器參數"""
+        """觸發VP震動"""
         self.operation_status = OperationStatus.VP_CONTROLLING
+        self.logger.debug(f"VP震動參數: {self.config['vp_params']['spread_action_code']}, {self.config['vp_params']['spread_strength']}, {self.config['vp_params']['spread_frequency']}")
         
-        # 讀取當前VP參數
-        vp_params = self.read_vp_params()
-        
-        self.logger.debug(f"VP震動參數: action1={vp_params['action1']}, action2={vp_params['action2']}")
-        
-        # 第一組震動
         success = True
-        success &= self.write_register(320, 5)  # execute_action
-        success &= self.write_register(321, vp_params["action1"]["action_code"])
-        success &= self.write_register(322, vp_params["action1"]["strength"])
-        success &= self.write_register(323, vp_params["action1"]["frequency"])
+        success &= self.write_register(320, 5)
+        success &= self.write_register(321, self.config['vp_params']['spread_action_code'])
+        success &= self.write_register(322, self.config['vp_params']['spread_strength'])
+        success &= self.write_register(323, self.config['vp_params']['spread_frequency'])
         success &= self.write_register(324, int(time.time()) % 65535)
                 
         if not success:
             self.error_code = 301
             return False
         
-        # 第一組震動持續時間
-        time.sleep(vp_params["action1"]["duration"] / 1000.0)
+        time.sleep(1.2)
+        success = True
+        success &= self.write_register(320, 5)
+        success &= self.write_register(321, 11)
+        success &= self.write_register(322, 132)
+        success &= self.write_register(323, 49)
+        success &= self.write_register(324, int(time.time()) % 65535)
         
-        # 第二組震動 (如果動作碼不為0)
-        if vp_params["action2"]["action_code"] > 0:
-            success = True
-            success &= self.write_register(320, 5)  # execute_action
-            success &= self.write_register(321, vp_params["action2"]["action_code"])
-            success &= self.write_register(322, vp_params["action2"]["strength"])
-            success &= self.write_register(323, vp_params["action2"]["frequency"])
-            success &= self.write_register(324, int(time.time()) % 65535)
-            
-            if not success:
-                self.error_code = 301  
-                return False
-            
-            # 第二組震動持續時間
-            time.sleep(vp_params["action2"]["duration"] / 1000.0)
+        if not success:
+            self.error_code = 301
+            return False
         
-        # 停止震動
+        time.sleep(1.8)
+        success = True
+        success &= self.write_register(320, 5)
+        success &= self.write_register(321, 0)
+        success &= self.write_register(322, 0)
+        success &= self.write_register(323, 0)
+        success &= self.write_register(324, int(time.time()) % 65535)
+        if not success:
+            self.error_code = 301
+            return False
+        
+        time.sleep(0.8)
+        
         return self.stop_vp_vibration()
     
     def stop_vp_vibration(self) -> bool:
-        """停止VP震動 - 使用寄存器參數"""
-        vp_params = self.read_vp_params()
-        
+        """停止VP震動"""
         success = True
-        success &= self.write_register(320, vp_params["stop"]["command_code"])
+        success &= self.write_register(320, self.config['vp_params']['stop_command_code'])
         success &= self.write_register(321, 0)
         success &= self.write_register(322, 0)
         success &= self.write_register(323, 0)
         success &= self.write_register(324, 99)
         
         if success:
-            time.sleep(vp_params["stop"]["delay"] / 1000.0)
+            time.sleep(self.config['vp_params']['stop_delay'])
         
         return success
     
     def trigger_flow4_feeding(self) -> bool:
-        """觸發Flow4送料 - 使用寄存器參數"""
+        """觸發Flow4送料"""
         self.operation_status = OperationStatus.FLOW4_TRIGGERING
         
-        # 讀取當前Flow4參數
-        flow4_params = self.read_flow4_params()
-        pulse_duration = flow4_params["pulse_duration"] / 1000.0  # 轉換為秒
+        pulse_duration = self.config['flow4_params']['pulse_duration']
         
         if not self.write_register(self.FLOW4_ADDRESS, 1):
             self.error_code = 401
@@ -909,22 +900,26 @@ class AutoFeedingModule:
         self.dr_f_coords = coords
         self.dr_f_taken = False
         
-        # 立即更新寄存器讓Flow1可以讀取
-        self.write_register(960, 1)  # DR_F可用標誌
-        self.write_32bit_register(961, 962, coords[0])  # X座標
-        self.write_32bit_register(963, 964, coords[1])  # Y座標
+        self.write_register(940, 1)
+        self.write_32bit_register(941, 942, coords[0])
+        self.write_32bit_register(943, 944, coords[1])
         
         self.logger.info(f"DR_F已就緒: {coords}, Flow1可直接讀取座標")
     
     def feeding_cycle(self) -> bool:
-        """執行一次入料檢測週期 - 使用寄存器參數"""
+        """執行一次入料檢測週期 - 超強化版本"""
         try:
             self.cycle_count += 1
             self.status = AutoFeedingStatus.DETECTING
             
-            # 快速檢查模組狀態
+            # 🔥 新增：記憶體使用量檢查
+            if self.check_memory_usage():
+                self.logger.info("記憶體重載操作已處理")
+                return False  # 重載中暫停檢測
+            
+            # 快速檢查模組狀態（包含CCD1監控）
             if not self.check_modules_status():
-                if self.error_code == 102:  # CCD1初始化中
+                if self.error_code == 102:
                     self.status = AutoFeedingStatus.RUNNING
                     return True
                 return False
@@ -937,55 +932,48 @@ class AutoFeedingModule:
             
             self.logger.info(f"週期{self.cycle_count} 檢測結果: DR_F={detection_result.dr_f_count}, 總數={detection_result.total_detections}")
             
-            # 異常檢測 - 檢查是否需要重檢
+            # 異常檢測
             need_redetection = self.check_for_anomaly(detection_result)
             if need_redetection:
                 self.logger.warning("執行異常重檢...")
-                system_params = self.read_system_params()
-                redetection_delay = system_params["redetection_delay"] / 1000.0
+                redetection_delay = self.config['anomaly_detection'].get('redetection_delay', 0.5)
                 time.sleep(redetection_delay)
                 
                 retry_result = self.trigger_ccd1_detection()
                 if retry_result.operation_success:
                     self.logger.info(f"重檢結果: DR_F={retry_result.dr_f_count}, 總數={retry_result.total_detections}")
-                    detection_result = retry_result  # 使用重檢結果
+                    detection_result = retry_result
                     self.anomaly_redetection_count += 1
                 else:
                     self.logger.warning("重檢失敗，使用原檢測結果")
             
-            # 更新異常檢測記錄
             self.update_anomaly_detection(detection_result)
             
             # 尋找保護區域內的DR_F
             target_coords = self.find_dr_f_in_protection_zone(detection_result)
             
             if target_coords:
-                # 找到正面物件 - 設置可用狀態，但繼續檢測
                 self.dr_f_found_count += 1
                 self.flow4_consecutive_count = 0
                 self.logger.info(f"找到保護區內DR_F: {target_coords}")
-                
-                # 設置DR_F可用狀態
                 self.set_dr_f_available(target_coords)
                 
             elif detection_result.total_detections < 4:
-                # 料件不足，觸發Flow4送料
                 self.logger.info(f"料件不足 (總數={detection_result.total_detections}<4)，觸發Flow4送料")
                 
                 if self.trigger_flow4_feeding():
                     self.flow4_trigger_count += 1
                     self.flow4_consecutive_count += 1
                     self.logger.info(f"Flow4送料完成 (連續{self.flow4_consecutive_count}次)")
+                    time.sleep(2)
+                    self.trigger_vp_vibration()
                     
-                    # 檢查連續直振限制
-                    system_params = self.read_system_params()
-                    if self.flow4_consecutive_count >= system_params["flow4_consecutive_limit"]:
+                    if self.flow4_consecutive_count >= self.config['autofeeding']['flow4_consecutive_limit']:
                         self.logger.warning("達到連續直振限制，需要VP清空")
                 else:
                     self.logger.warning("Flow4送料失敗")
                 
             else:
-                # 料件充足但無正面，VP震動重檢
                 self.logger.info(f"料件充足 (總數={detection_result.total_detections}>=4) 但無正面，VP震動重檢")
                 self.flow4_consecutive_count = 0
                 
@@ -993,11 +981,8 @@ class AutoFeedingModule:
                     self.vp_vibration_count += 1
                     self.logger.info("VP震動完成，等待穩定後重新檢測")
                     
-                    # 等待穩定
-                    system_params = self.read_system_params()
-                    time.sleep(system_params["vp_stabilize_delay"] / 1000.0)
+                    time.sleep(self.config['timing']['vp_stabilize_delay'])
                     
-                    # 立即重新檢測
                     retry_result = self.trigger_ccd1_detection()
                     if retry_result.operation_success:
                         self.logger.info(f"震動後重檢: DR_F={retry_result.dr_f_count}, 總數={retry_result.total_detections}")
@@ -1021,14 +1006,16 @@ class AutoFeedingModule:
         if self.running:
             return
         
-        self.logger.info("啟動持續入料檢測")
-        self.logger.info("目標：保持保護區域內始終有DR_F可用")
+        self.logger.info("啟動持續入料檢測 (超強化版)")
+        self.logger.info("新增監控功能：")
+        self.logger.info("  ✓ CCD1指令卡住檢測與自動清除")
+        self.logger.info("  ✓ CCD1報警狀態監控與自動初始化")
+        self.logger.info("  ✓ 記憶體使用量監控與自動重載")
         
         self.running = True
         self.status = AutoFeedingStatus.RUNNING
         self.error_code = 0
         
-        # 重置DR_F狀態
         self.dr_f_available = False
         self.dr_f_coords = (0.0, 0.0)
         self.dr_f_taken = False
@@ -1050,21 +1037,18 @@ class AutoFeedingModule:
             pass
     
     def main_loop(self):
-        """主循環"""
-        self.logger.info("主循環啟動 (增強版)")
+        """主循環 - 超強化版"""
+        self.logger.info("主循環啟動 (超強化版)")
         self.logger.info("新增特性：")
-        self.logger.info("  ✓ 外部控制啟動/停止 (920寄存器)")
-        self.logger.info("  ✓ 可調整VP參數 (930-949寄存器)")
-        self.logger.info("  ✓ 可調整Flow4參數 (950-959寄存器)")
-        self.logger.info("  ✓ 可調整系統參數 (980-999寄存器)")
-        self.logger.info("  ✓ 記憶體使用量監控 (906寄存器)")
-        self.logger.info("  ✓ 自動初始化硬編碼參數")
-        self.logger.info("  ✓ 監控當前執行Flow狀態 (1201) 和進度 (1202)")
-        self.logger.info("  ✓ 異常數量檢測和二次重檢")
-        self.logger.info("  ✓ 持續檢測確保DR_F可用")
-        self.logger.info("  ✓ 簡化交握邏輯")
-        self.logger.info("  ✓ Flow1直接讀取座標")
-        self.logger.info("  ✓ DR保護區域: X(-112~-4mm), Y(243~339.21mm)")
+        self.logger.info("  ✓ CCD1指令卡住監控 (200地址自動歸零)")
+        self.logger.info("  ✓ CCD1報警狀態監控 (自動32初始化)")
+        self.logger.info("  ✓ 記憶體使用量監控 (295>500MB觸發296重載)")
+        self.logger.info("  ✓ 重載狀態確認 (297=1→0完成恢復)")
+        self.logger.info("  ✓ 增強的異常恢復機制")
+        
+        auto_start = self.config['autofeeding'].get('auto_start', True)
+        if auto_start:
+            self.start_feeding()
         
         loop_count = 0
         
@@ -1072,25 +1056,14 @@ class AutoFeedingModule:
             try:
                 loop_count += 1
                 
-                # 定期打印狀態
                 if loop_count % 200 == 1:
-                    self.logger.debug(f"主循環 {loop_count}: running={self.running}, status={self.status.name}, external_control={self.external_control_running}, flow1_active={self.flow1_active}, progress_blocking={self.progress_blocking}, dr_f_available={self.dr_f_available}")
+                    self.logger.debug(f"主循環 {loop_count}: running={self.running}, status={self.status.name}, flow1_active={self.flow1_active}, progress_blocking={self.progress_blocking}, dr_f_available={self.dr_f_available}")
                 
-                # 檢查連接狀態
                 if not self.connected:
                     self.logger.debug("Modbus連接斷開，嘗試重連")
                     if not self.connect():
                         time.sleep(5.0)
                         continue
-                
-                # 檢查外部控制狀態
-                should_run_external = self.check_external_control()
-                
-                # 外部控制啟動/停止邏輯
-                if should_run_external and not self.running:
-                    self.start_feeding()
-                elif not should_run_external and self.running:
-                    self.stop_feeding()
                 
                 # 監控Flow和進度狀態
                 self.check_flow_and_progress_status()
@@ -1102,22 +1075,17 @@ class AutoFeedingModule:
                 # 更新狀態寄存器
                 self.update_status_registers()
                 
-                # 執行入料檢測 - 只有在運行且未被阻擋時
-                if self.running and not self.progress_blocking and not self.vp_clearing_mode:
+                # 執行入料檢測
+                if self.running and not self.progress_blocking and not self.vp_clearing_mode and not self.memory_reload_in_progress:
                     if not self.feeding_cycle():
                         self.logger.debug(f"入料檢測失敗，錯誤碼: {self.error_code}")
                         self.status = AutoFeedingStatus.ERROR
                         time.sleep(0.5)
                     else:
-                        # 檢測成功，使用寄存器參數決定檢測間隔
-                        system_params = self.read_system_params()
-                        cycle_interval = system_params["cycle_interval"] / 1000.0
+                        cycle_interval = self.config['autofeeding']['cycle_interval']
                         time.sleep(cycle_interval)
                 else:
-                    # 非運行狀態或被阻擋，短間隔檢查
-                    system_params = self.read_system_params()
-                    check_interval = system_params["flow1_check_interval"] / 1000.0
-                    time.sleep(check_interval)
+                    time.sleep(self.config['timing']['flow1_check_interval'])
                     
             except KeyboardInterrupt:
                 self.logger.info("收到中斷信號，準備退出")
@@ -1126,70 +1094,40 @@ class AutoFeedingModule:
                 self.logger.error(f"主循環異常: {e}", exc_info=True)
                 time.sleep(1.0)
         
-        # 清理資源
         self.stop_feeding()
         self.disconnect()
         self.logger.info("程序已退出")
 
 
 def main():
-    """主程序入口"""
-    print("=== DR AutoFeeding獨立模組啟動 (增強版) ===")
+    """主程序入口 - 超強化版"""
+    print("=== DR AutoFeeding獨立模組啟動 (超強化版) ===")
     print("基地址範圍: 900-999")
-    print("主要功能:")
-    print("  ✓ 外部控制啟動/停止 (920=0停止, 920=1啟動)")
-    print("  ✓ 可調整VP震動參數 (930-949寄存器)")
-    print("  ✓ 可調整Flow4直振參數 (950-959寄存器)")
-    print("  ✓ 可調整系統運行參數 (980-999寄存器)")
-    print("  ✓ 記憶體使用量監控 (906寄存器，每10分鐘更新)")
-    print("  ✓ 自動初始化硬編碼參數 (檢測到寄存器全為0時)")
-    print("  ✓ 監控當前執行Flow地址(1201)和進度(1202)")
-    print("  ✓ 當1201=1且1202<44時停止所有操作")
-    print("  ✓ 異常數量檢測和二次重檢")
-    print("  ✓ 持續檢測保持DR_F可用")
-    print("  ✓ 簡化交握邏輯")
-    print("  ✓ Flow1直接讀取座標(960-964)")
-    print("  ✓ DR保護區域: X(-112~-4mm), Y(243~339.21mm)")
-    print("  ✓ 完整logging記錄")
+    print("新增監控功能:")
+    print("  ✓ CCD1指令卡住檢測: 監控200地址，卡16時自動歸零")
+    print("  ✓ CCD1報警狀態監控: 檢測201 bit2，報警時自動發送32初始化")
+    print("  ✓ 記憶體使用量監控: 監控295地址，>500MB時觸發296重載")
+    print("  ✓ 重載狀態確認: 確認297=1→0完成後恢復Feeding循環")
+    print("  ✓ 增強的狀態寄存器: 911-915新增CCD1和記憶體監控狀態")
     print()
-    print("*** 重要提醒 ***")
-    print("請確保以下模組已啟動:")
-    print("  1. 主Modbus TCP Server (端口502)")
-    print("  2. CCD1視覺檢測模組 (CCD1VisionCodeYOLO.py)")
-    print("  3. VP震動盤模組")
-    print("  4. 然後啟動本AutoFeeding模組")
-    print()
-    print("*** 外部控制方式 ***") 
-    print("  • 啟動AutoFeeding: 寫入920寄存器值為1")
-    print("  • 停止AutoFeeding: 寫入920寄存器值為0")
-    print("  • 調整VP參數: 寫入930-949寄存器")
-    print("  • 調整Flow4參數: 寫入950-959寄存器")
-    print("  • 調整系統參數: 寫入980-999寄存器")
-    print("  • 監控記憶體使用: 讀取906寄存器(MB)")
+    print("*** 監控邏輯 ***")
+    print("1. CCD1指令監控: 連續5次檢測到200=16時執行歸零")
+    print("2. CCD1報警監控: 檢測到201 bit2=1時發送200=32初始化")
+    print("3. 記憶體監控: 每10秒檢查295，>500MB時觸發296=1重載")
+    print("4. 重載確認: 296=1→等待297=1→296=0→等待297=0→恢復")
     print()
     
-    # 檢查Modbus可用性
     if not MODBUS_AVAILABLE:
         print("[ERROR] pymodbus未安裝，請安裝: pip install pymodbus==3.9.2")
         return
     
-    # 檢查psutil可用性
-    try:
-        import psutil
-    except ImportError:
-        print("[ERROR] psutil未安裝，請安裝: pip install psutil")
-        return
-    
-    # 創建AutoFeeding模組
     autofeeding = AutoFeedingModule()
     
-    # 連接Modbus
     if not autofeeding.connect():
         print("[ERROR] Modbus連接失敗，程序退出")
         print("[建議] 請檢查主Modbus TCP Server是否在127.0.0.1:502運行")
         return
     
-    # 啟動主循環
     autofeeding.main_loop()
 
 

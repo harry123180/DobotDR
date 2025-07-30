@@ -1,0 +1,187 @@
+2025-07-30 15:16:35,890 - StartManager - INFO - Modbus TCP連接成功: 127.0.0.1:502
+2025-07-30 15:16:35,891 - StartManager - INFO - 添加模組: VP_main
+2025-07-30 15:16:35,892 - StartManager - INFO - 添加模組: VP_app
+2025-07-30 15:16:35,893 - StartManager - INFO - 添加模組: Gripper
+2025-07-30 15:16:35,894 - StartManager - INFO - 添加模組: Gripper_app
+2025-07-30 15:16:35,895 - StartManager - INFO - 添加模組: Dobot_main
+2025-07-30 15:16:35,896 - StartManager - INFO - 添加模組: CCD3_main_app
+2025-07-30 15:16:35,897 - StartManager - INFO - 添加模組: CCD1VisionCode
+2025-07-30 15:16:35,898 - StartManager - INFO - 添加模組: AutoProgram_main
+2025-07-30 15:16:35,899 - StartManager - INFO - 添加模組: AutoFeeding_main
+2025-07-30 15:16:35,900 - StartManager - INFO - 添加模組: AutoProgram_app
+2025-07-30 15:16:35,901 - StartManager - INFO - 添加模組: LED_main
+2025-07-30 15:16:35,902 - StartManager - INFO - 添加模組: LED_app
+2025-07-30 15:16:47,943 - StartManager - INFO - 啟動模組完成: 12/12
+2025-07-30 15:16:47,943 - StartManager - INFO - 監控執行緒已啟動
+2025-07-30 15:31:08,005 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper
+2025-07-30 15:31:08,005 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:31:08,005 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoFeeding_main
+2025-07-30 15:31:13,077 - StartManager - INFO - 監控執行緒已停止
+2025-07-30 15:31:18,011 - StartManager - INFO - 監控執行緒已停止
+2025-07-30 15:31:18,011 - StartManager - INFO - StartManager清理完成
+2025-07-30 15:32:11,008 - StartManager - INFO - Modbus TCP連接成功: 127.0.0.1:502
+2025-07-30 15:32:11,014 - StartManager - INFO - 添加模組: VP_main
+2025-07-30 15:32:11,015 - StartManager - INFO - 添加模組: VP_app
+2025-07-30 15:32:11,015 - StartManager - INFO - 添加模組: Gripper
+2025-07-30 15:32:11,016 - StartManager - INFO - 添加模組: Gripper_app
+2025-07-30 15:32:11,017 - StartManager - INFO - 添加模組: Dobot_main
+2025-07-30 15:32:11,017 - StartManager - INFO - 添加模組: CCD3_main_app
+2025-07-30 15:32:11,018 - StartManager - INFO - 添加模組: CCD1VisionCode
+2025-07-30 15:32:11,019 - StartManager - INFO - 添加模組: AutoProgram_main
+2025-07-30 15:32:11,019 - StartManager - INFO - 添加模組: AutoFeeding_main
+2025-07-30 15:32:11,020 - StartManager - INFO - 添加模組: AutoProgram_app
+2025-07-30 15:32:11,021 - StartManager - INFO - 添加模組: LED_main
+2025-07-30 15:32:11,022 - StartManager - INFO - 添加模組: LED_app
+2025-07-30 15:32:38,209 - StartManager - INFO - 啟動模組完成: 12/12
+2025-07-30 15:32:38,209 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:32:38,209 - StartManager - INFO - 監控執行緒已啟動
+2025-07-30 15:32:38,209 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:32:38,210 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:32:38,210 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:32:38,210 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:32:48,218 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:32:48,218 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:32:48,218 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:32:48,218 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:32:48,218 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:32:48,218 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:32:58,226 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:32:58,226 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:32:58,226 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:32:58,226 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:32:58,226 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:32:58,226 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:33:08,233 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:33:08,233 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:33:08,233 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:33:08,234 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:33:08,234 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:33:08,234 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:33:18,240 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:33:18,240 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:33:18,240 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:33:18,240 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:33:18,240 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:33:18,240 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:33:28,249 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:33:28,249 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:33:28,249 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:33:28,249 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:33:28,249 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:33:28,249 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:33:38,256 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:33:38,256 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:33:38,256 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:33:38,256 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:33:38,256 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:33:38,256 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:33:48,264 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:33:48,264 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:33:48,264 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:33:48,264 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:33:48,264 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:33:48,264 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:33:58,272 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:33:58,272 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:33:58,272 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:33:58,272 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:33:58,272 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:33:58,272 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:34:08,280 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:34:08,280 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:34:08,280 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:34:08,280 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:34:08,280 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:34:08,280 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:34:18,288 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:34:18,288 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:34:18,288 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:34:18,288 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:34:18,288 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:34:18,288 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:34:28,296 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:34:28,296 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:34:28,296 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:34:28,296 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:34:28,296 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:34:28,297 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:34:38,304 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:34:38,304 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:34:38,304 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:34:38,304 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:34:38,304 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:34:38,304 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:34:48,312 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:34:48,312 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:34:48,312 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:34:48,312 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:34:48,312 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:34:48,312 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:34:58,319 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:34:58,319 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:34:58,319 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:34:58,319 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:34:58,319 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:34:58,319 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:35:08,326 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:35:08,326 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:35:08,326 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:35:08,326 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:35:08,326 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:35:08,326 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:35:18,335 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:35:18,335 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:35:18,335 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:35:18,335 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_main
+2025-07-30 15:35:18,335 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:35:18,335 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:35:28,342 - StartManager - INFO - 監控執行緒已停止
+2025-07-30 15:35:28,343 - StartManager - INFO - 監控執行緒已停止
+2025-07-30 15:35:28,344 - StartManager - INFO - StartManager清理完成
+2025-07-30 15:35:30,554 - StartManager - INFO - Modbus TCP連接成功: 127.0.0.1:502
+2025-07-30 15:35:30,560 - StartManager - INFO - 添加模組: VP_main
+2025-07-30 15:35:30,561 - StartManager - INFO - 添加模組: VP_app
+2025-07-30 15:35:30,562 - StartManager - INFO - 添加模組: Gripper
+2025-07-30 15:35:30,563 - StartManager - INFO - 添加模組: Gripper_app
+2025-07-30 15:35:30,565 - StartManager - INFO - 添加模組: Dobot_main
+2025-07-30 15:35:30,566 - StartManager - INFO - 添加模組: CCD3_main_app
+2025-07-30 15:35:30,567 - StartManager - INFO - 添加模組: CCD1VisionCode
+2025-07-30 15:35:30,569 - StartManager - INFO - 添加模組: AutoProgram_main
+2025-07-30 15:35:30,570 - StartManager - INFO - 添加模組: AutoFeeding_main
+2025-07-30 15:35:30,571 - StartManager - INFO - 添加模組: AutoProgram_app
+2025-07-30 15:35:30,572 - StartManager - INFO - 添加模組: LED_main
+2025-07-30 15:35:30,573 - StartManager - INFO - 添加模組: LED_app
+2025-07-30 15:36:20,327 - StartManager - INFO - 啟動模組完成: 11/12
+2025-07-30 15:36:20,327 - StartManager - INFO - 監控執行緒已啟動
+2025-07-30 15:36:20,327 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:36:23,565 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:36:26,820 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:36:30,072 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:36:33,541 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:37:06,856 - StartManager - WARNING - 檢測到模組關閉，重新啟動: Gripper_app
+2025-07-30 15:37:10,084 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD3_main_app
+2025-07-30 15:37:13,315 - StartManager - WARNING - 檢測到模組關閉，重新啟動: CCD1VisionCode
+2025-07-30 15:37:16,622 - StartManager - ERROR - 重啟模組失敗: CCD1VisionCode
+2025-07-30 15:37:16,623 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoFeeding_main
+2025-07-30 15:37:19,834 - StartManager - WARNING - 檢測到模組關閉，重新啟動: AutoProgram_app
+2025-07-30 15:37:20,345 - StartManager - INFO - 監控執行緒已停止
+2025-07-30 15:37:23,035 - StartManager - ERROR - 重啟模組失敗: AutoProgram_app
+2025-07-30 15:37:23,036 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_main
+2025-07-30 15:37:26,228 - StartManager - WARNING - 檢測到模組關閉，重新啟動: LED_app
+2025-07-30 15:37:28,042 - StartManager - INFO - 監控執行緒已停止
+2025-07-30 15:37:29,442 - StartManager - INFO - StartManager清理完成
+2025-07-30 15:43:59,256 - StartManager - INFO - Modbus TCP連接成功: 127.0.0.1:502
+2025-07-30 15:43:59,261 - StartManager - INFO - 添加模組: VP_main
+2025-07-30 15:43:59,262 - StartManager - INFO - 添加模組: VP_app
+2025-07-30 15:43:59,262 - StartManager - INFO - 添加模組: Gripper
+2025-07-30 15:43:59,263 - StartManager - INFO - 添加模組: Gripper_app
+2025-07-30 15:43:59,264 - StartManager - INFO - 添加模組: Dobot_main
+2025-07-30 15:43:59,264 - StartManager - INFO - 添加模組: CCD3_main_app
+2025-07-30 15:43:59,265 - StartManager - INFO - 添加模組: CCD1VisionCode
+2025-07-30 15:43:59,266 - StartManager - INFO - 添加模組: AutoProgram_main
+2025-07-30 15:43:59,266 - StartManager - INFO - 添加模組: AutoFeeding_main
+2025-07-30 15:43:59,267 - StartManager - INFO - 添加模組: AutoProgram_app
+2025-07-30 15:43:59,268 - StartManager - INFO - 添加模組: LED_main
+2025-07-30 15:43:59,269 - StartManager - INFO - 添加模組: LED_app
+2025-07-30 15:45:02,129 - StartManager - INFO - 啟動模組完成: 12/12
+2025-07-30 15:45:02,129 - StartManager - INFO - 監控執行緒已啟動

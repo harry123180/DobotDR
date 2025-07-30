@@ -1,0 +1,97 @@
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: # >>>>>>>>>>>>>>>>>>>>>> ERROR REPORT <<<<<<<<<<<<<<<<<<<<<<
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: Traceback (most recent call last):
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: File "C:\Users\user\anaconda3\Lib\site-packages\conda\exception_handler.py", line 18, in __call__
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: return func(*args, **kwargs)
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: ^^^^^^^^^^^^^^^^^^^^^
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: File "C:\Users\user\anaconda3\Lib\site-packages\conda\cli\main.py", line 61, in main_subshell
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: exit_code = do_call(args, parser)
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: ^^^^^^^^^^^^^^^^^^^^^
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: File "C:\Users\user\anaconda3\Lib\site-packages\conda\cli\conda_argparse.py", line 205, in do_call
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: result = getattr(module, func_name)(args, parser)
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: File "C:\Users\user\anaconda3\Lib\site-packages\conda\cli\main_run.py", line 118, in execute
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: print(response.stdout, file=sys.stdout)
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: UnicodeEncodeError: 'cp950' codec can't encode character '\ufffd' in position 3: illegal multibyte sequence
+2025-07-30 15:16:47,670 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: `$ C:\Users\user\anaconda3\Scripts\conda-script.py run -n ROBOT python C:\Users\user\Documents\GitHub\DobotDR\Automation\AutoProgram\AutoProgram_app.py`
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: environment variables:
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: BUNDLED_DEBUGPY_PATH=c:\Users\user\.vscode\extensions\ms-
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: python.debugpy-2025.10.0-win32-x64\bundled\libs\debugpy
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: CIO_TEST=<not set>
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: CONDA_ALLOW_SOFTLINKS=false
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: CONDA_ROOT=C:\Users\user\anaconda3
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: CURL_CA_BUNDLE=<not set>
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: GENICAM_GENTL32_PATH=C:\Program Files (x86)\Common Files\MVS\Runtime\Win32_i86
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: GENICAM_GENTL64_PATH=C:\Program Files (x86)\Common Files\MVS\Runtime\Win64_x64
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: HOMEPATH=\Users\user
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: LD_PRELOAD=<not set>
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: PATH=C:\Program Files (x86)\Common Files\MVS\Runtime\Win32_i86;C:\Program
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: Files (x86)\Common Files\MVS\Runtime\Win64_x64;C:\Windows\system32;C:\
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: \v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: user\anaconda3;C:\Users\user\anaconda3\Library\mingw-
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: w64\bin;C:\Users\user\anaconda3\Library\usr\bin;C:\Users\user\anaconda
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: 3\Library\bin;C:\Users\user\anaconda3\Scripts;C:\Users\user\AppData\Lo
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: cal\Microsoft\WindowsApps;C:\Users\user\AppData\Local\GitHubDesktop\bi
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: n;C:\Users\user\AppData\Local\Programs\Microsoft VS
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: Code\bin;c:\Users\user\.vscode\extensions\ms-
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: python.debugpy-2025.10.0-win32-x64\bundled\scripts\noConfigScripts
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: PSMODULEPATH=C:\Users\user\Documents\WindowsPowerShell\Modules;C:\Program Files\Win
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: dowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modu
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: les
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: REQUESTS_CA_BUNDLE=<not set>
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: SSL_CERT_FILE=<not set>
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: active environment : None
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: user config file : C:\Users\user\.condarc
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: populated config files : C:\Users\user\anaconda3\.condarc
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: C:\Users\user\.condarc
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: conda version : 24.9.2
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: conda-build version : 24.9.0
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: python version : 3.12.7.final.0
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: solver : libmamba (default)
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: virtual packages : __archspec=1=skylake
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: __conda=24.9.2=0
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: __win=0=0
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: base environment : C:\Users\user\anaconda3  (writable)
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: conda av data dir : C:\Users\user\anaconda3\etc\conda
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: conda av metadata url : None
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: channel URLs : https://repo.anaconda.com/pkgs/main/win-64
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: https://repo.anaconda.com/pkgs/main/noarch
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: https://repo.anaconda.com/pkgs/r/win-64
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: https://repo.anaconda.com/pkgs/r/noarch
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: https://repo.anaconda.com/pkgs/msys2/win-64
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: https://repo.anaconda.com/pkgs/msys2/noarch
+2025-07-30 15:16:47,671 - ModuleManager_AutoProgram_app - ERROR - STDERR: package cache : C:\Users\user\anaconda3\pkgs
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: C:\Users\user\.conda\pkgs
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: C:\Users\user\AppData\Local\conda\conda\pkgs
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: envs directories : C:\Users\user\anaconda3\envs
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: C:\Users\user\.conda\envs
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: C:\Users\user\AppData\Local\conda\conda\envs
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: platform : win-64
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: user-agent : conda/24.9.2 requests/2.32.3 CPython/3.12.7 Windows/10 Windows/10.0.19045 solver/libmamba conda-libmamba-solver/24.9.0 libmambapy/1.5.8
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: administrator : False
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: netrc file : None
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: offline mode : False
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: An unexpected error has occurred. Conda has prepared the above report.
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: If you suspect this error is being caused by a malfunctioning plugin,
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: consider using the --no-plugins option to turn off plugins.
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: Example: conda --no-plugins install <package>
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: Alternatively, you can set the CONDA_NO_PLUGINS environment variable on
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: the command line to run the command without plugins enabled.
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: Example: CONDA_NO_PLUGINS=true conda install <package>
+2025-07-30 15:16:47,672 - ModuleManager_AutoProgram_app - ERROR - STDERR: 
+2025-07-30 15:36:30,072 - ModuleManager_AutoProgram_app - ERROR - 模組進程已結束，退出碼: 0
+2025-07-30 15:44:50,632 - ModuleManager_AutoProgram_app - ERROR - STDERR: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+2025-07-30 15:44:50,632 - ModuleManager_AutoProgram_app - ERROR - STDERR: * Running on all addresses (0.0.0.0)
+2025-07-30 15:44:50,632 - ModuleManager_AutoProgram_app - ERROR - STDERR: * Running on http://127.0.0.1:5094
+2025-07-30 15:44:50,632 - ModuleManager_AutoProgram_app - ERROR - STDERR: * Running on http://192.168.50.51:5094
+2025-07-30 15:44:50,632 - ModuleManager_AutoProgram_app - ERROR - STDERR: Press CTRL+C to quit

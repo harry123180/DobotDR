@@ -1,0 +1,197 @@
+2025-07-30 15:44:45,387 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:load_config:248 - 配置檔案已載入: C:\Users\user\Documents\GitHub\DobotDR\Automation\AutoFeeding\autofeeding_config.json
+2025-07-30 15:44:45,387 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:__init__:195 - DR AutoFeeding獨立模組初始化 - 基地址900
+2025-07-30 15:44:45,387 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:__init__:196 - 保護區域: X(-112.0 ~ -4.0mm), Y(243.0 ~ 339.21mm)
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:__init__:197 - 監控當前執行Flow地址: 1201
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:__init__:198 - 監控當前進度地址: 1202
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:__init__:199 - 當1201=1且1202<44時停止運作，1201≠1或1202≥44時恢復
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:__init__:200 - 異常檢測：大量物件(>5)後驟減(<2)時進行二次檢測
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:connect:265 - 正在連接 127.0.0.1:502
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:connect:276 - 連接建立成功
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:init_registers:327 - 寄存器初始化完成
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:874 - 主循環啟動
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:875 - 特性：
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:876 -   ✓ 監控當前執行Flow狀態 (1201) 和進度 (1202)
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:877 -   ✓ 當1201=1且1202<44時停止所有操作
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:878 -   ✓ 異常數量檢測和二次重檢
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:879 -   ✓ 持續檢測確保DR_F可用
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:880 -   ✓ 簡化交握邏輯
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:881 -   ✓ Flow1直接讀取座標
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:main_loop:882 -   ✓ DR保護區域: X(-112~-4mm), Y(243~339.21mm)
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:start_feeding:844 - 啟動持續入料檢測
+2025-07-30 15:44:45,388 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [INFO] AutoFeeding:start_feeding:845 - 目標：保持保護區域內始終有DR_F可用
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [DEBUG] AutoFeeding:main_loop:897 - 主循環 1: running=True, status=RUNNING, flow1_active=False, progress_blocking=False, dr_f_available=False
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [DEBUG] AutoFeeding:check_modules_status:495 - CCD1狀態: 9 (Ready=True, Running=False, Alarm=False, Init=True)
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:42 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=9, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=9, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=9, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=9, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=9, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=9, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=9, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=10, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=10, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=10, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=10, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=10, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=10, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,389 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=10, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,408 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,428 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,449 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,470 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,492 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,513 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,533 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,554 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,576 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,596 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,618 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,639 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,659 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,680 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,701 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,721 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,742 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,764 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,785 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,806 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,827 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,848 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,869 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,890 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,911 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,931 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,951 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,972 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:45,993 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,014 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,035 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,056 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,077 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,097 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,118 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,140 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,161 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,181 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,202 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,223 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,244 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,265 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,286 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,306 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,328 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,348 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,369 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,391 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,412 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,433 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,454 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,475 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,495 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,516 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,538 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,560 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,580 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,600 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,621 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,642 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,664 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,684 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,705 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,725 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,746 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,767 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,788 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,809 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,829 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,851 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,872 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,892 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,913 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,934 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,955 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,977 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:46,998 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,019 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,040 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,061 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,082 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,103 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,124 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,145 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,166 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,187 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,207 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,229 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,250 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,271 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,292 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,313 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,334 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,355 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,376 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,398 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,419 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,439 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,460 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,481 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,502 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,522 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,544 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,565 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,586 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,607 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,628 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,650 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,672 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,692 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,714 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,734 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,756 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,777 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,798 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,820 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,840 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,862 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,882 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,904 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,925 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,946 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,967 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:47,988 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,009 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,030 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,052 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,073 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,094 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,115 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,136 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,158 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,178 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,199 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,221 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,242 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,263 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,284 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,305 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,326 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,347 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,368 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,390 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,411 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,431 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,452 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,473 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,494 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,515 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:591 - 檢測等待: 201=12, 203=0, 204=0, 205=0
+2025-07-30 15:44:48,535 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [ERROR] AutoFeeding:trigger_ccd1_detection:602 - CCD1檢測超時 (5.01s)，最終狀態:
+2025-07-30 15:44:48,535 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [ERROR] AutoFeeding:trigger_ccd1_detection:603 -   201狀態: 12
+2025-07-30 15:44:48,536 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [ERROR] AutoFeeding:trigger_ccd1_detection:604 -   203拍照完成: 0
+2025-07-30 15:44:48,536 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [ERROR] AutoFeeding:trigger_ccd1_detection:605 -   204檢測完成: 0
+2025-07-30 15:44:48,536 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [ERROR] AutoFeeding:trigger_ccd1_detection:606 -   205操作成功: 0
+2025-07-30 15:44:48,536 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [ERROR] AutoFeeding:trigger_ccd1_detection:607 -   206錯誤代碼: 20
+2025-07-30 15:44:48,536 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [WARNING] AutoFeeding:feeding_cycle:753 - 週期1 CCD1檢測失敗
+2025-07-30 15:44:48,536 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:48 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 202
+2025-07-30 15:44:49,037 - ModuleManager_AutoFeeding_main - ERROR - STDERR: 2025-07-30 15:44:49 [DEBUG] AutoFeeding:check_flow_and_progress_status:447 - Flow監控: 1201=0, 1202=0, 阻擋=False

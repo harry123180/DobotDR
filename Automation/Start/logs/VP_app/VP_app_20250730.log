@@ -1,0 +1,5 @@
+2025-07-30 15:44:08,772 - ModuleManager_VP_app - ERROR - STDERR: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+2025-07-30 15:44:08,772 - ModuleManager_VP_app - ERROR - STDERR: * Running on all addresses (0.0.0.0)
+2025-07-30 15:44:08,773 - ModuleManager_VP_app - ERROR - STDERR: * Running on http://127.0.0.1:5053
+2025-07-30 15:44:08,773 - ModuleManager_VP_app - ERROR - STDERR: * Running on http://192.168.50.51:5053
+2025-07-30 15:44:08,773 - ModuleManager_VP_app - ERROR - STDERR: Press CTRL+C to quit

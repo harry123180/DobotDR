@@ -488,8 +488,7 @@ class GripperModule:
                 sleep_time = self.fast_loop_interval - loop_elapsed
                 if sleep_time > 0:
                     time.sleep(sleep_time)
-                elif loop_elapsed > self.fast_loop_interval * 1.5:
-                    self.logger.warning(f"主循環執行時間過長: {loop_elapsed*1000:.1f}ms")
+                
                     
             except KeyboardInterrupt:
                 self.logger.info("收到中斷信號，停止主循環")

@@ -1,0 +1,32 @@
+
+2025-07-30 15:35:46,422 - ModuleManager_Gripper_app - ERROR - STDERR: Traceback (most recent call last):
+2025-07-30 15:35:46,422 - ModuleManager_Gripper_app - ERROR - STDERR: File "C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper_app.py", line 379, in <module>
+2025-07-30 15:35:46,422 - ModuleManager_Gripper_app - ERROR - STDERR: app.run()
+2025-07-30 15:35:46,422 - ModuleManager_Gripper_app - ERROR - STDERR: File "C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper_app.py", line 370, in run
+2025-07-30 15:35:46,422 - ModuleManager_Gripper_app - ERROR - STDERR: self.socketio.run(
+2025-07-30 15:35:46,422 - ModuleManager_Gripper_app - ERROR - STDERR: File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask_socketio\__init__.py", line 650, in run
+2025-07-30 15:35:46,422 - ModuleManager_Gripper_app - ERROR - STDERR: raise RuntimeError('The Werkzeug web server is not '
+2025-07-30 15:35:46,423 - ModuleManager_Gripper_app - ERROR - STDERR: RuntimeError: The Werkzeug web server is not designed to run in production. Pass allow_unsafe_werkzeug=True to the run() method to disable this error.
+2025-07-30 15:35:46,423 - ModuleManager_Gripper_app - ERROR - STDERR: ERROR conda.cli.main_run:execute(125): `conda run python C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper_app.py` failed. (See above for error)
+2025-07-30 15:36:20,327 - ModuleManager_Gripper_app - ERROR - 模組進程已結束，退出碼: 1
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: Traceback (most recent call last):
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: File "C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper_app.py", line 379, in <module>
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: app.run()
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: File "C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper_app.py", line 370, in run
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: self.socketio.run(
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\flask_socketio\__init__.py", line 650, in run
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: raise RuntimeError('The Werkzeug web server is not '
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: RuntimeError: The Werkzeug web server is not designed to run in production. Pass allow_unsafe_werkzeug=True to the run() method to disable this error.
+2025-07-30 15:36:23,578 - ModuleManager_Gripper_app - ERROR - STDERR: ERROR conda.cli.main_run:execute(125): `conda run python C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper_app.py` failed. (See above for error)
+2025-07-30 15:44:19,203 - ModuleManager_Gripper_app - ERROR - STDERR: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+2025-07-30 15:44:19,203 - ModuleManager_Gripper_app - ERROR - STDERR: * Running on all addresses (0.0.0.0)
+2025-07-30 15:44:19,203 - ModuleManager_Gripper_app - ERROR - STDERR: * Running on http://127.0.0.1:5054
+2025-07-30 15:44:19,203 - ModuleManager_Gripper_app - ERROR - STDERR: * Running on http://192.168.50.51:5054
+2025-07-30 15:44:19,203 - ModuleManager_Gripper_app - ERROR - STDERR: Press CTRL+C to quit
+2025-07-30 15:45:01,272 - ModuleManager_Gripper_app - ERROR - STDERR: 127.0.0.1 - - [30/Jul/2025 15:45:01] "GET / HTTP/1.1" 200 -
+2025-07-30 15:45:01,291 - ModuleManager_Gripper_app - ERROR - STDERR: 127.0.0.1 - - [30/Jul/2025 15:45:01] "GET /socket.io/?EIO=4&transport=polling&t=PXQIh5g HTTP/1.1" 200 -
+2025-07-30 15:45:01,509 - ModuleManager_Gripper_app - ERROR - STDERR: 127.0.0.1 - - [30/Jul/2025 15:45:01] "POST /socket.io/?EIO=4&transport=polling&t=PXQIh6l&sid=UcO4anoJdKv6qewFAAAA HTTP/1.1" 200 -
+2025-07-30 15:45:01,664 - ModuleManager_Gripper_app - ERROR - STDERR: 127.0.0.1 - - [30/Jul/2025 15:45:01] "GET /socket.io/?EIO=4&transport=polling&t=PXQIh6m&sid=UcO4anoJdKv6qewFAAAA HTTP/1.1" 200 -
+2025-07-30 15:45:01,666 - ModuleManager_Gripper_app - ERROR - STDERR: 127.0.0.1 - - [30/Jul/2025 15:45:01] "GET /favicon.ico HTTP/1.1" 404 -
+2025-07-30 15:45:01,970 - ModuleManager_Gripper_app - ERROR - STDERR: 127.0.0.1 - - [30/Jul/2025 15:45:01] "GET /socket.io/?EIO=4&transport=polling&t=PXQIhBW&sid=UcO4anoJdKv6qewFAAAA HTTP/1.1" 200 -
+2025-07-30 15:45:02,666 - ModuleManager_Gripper_app - ERROR - STDERR: 127.0.0.1 - - [30/Jul/2025 15:45:02] "POST /api/connect HTTP/1.1" 200 -

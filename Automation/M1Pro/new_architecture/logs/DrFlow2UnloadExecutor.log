@@ -61747,3 +61747,39 @@
 2025-07-28 14:12:21 [INFO] DrFlow2UnloadExecutor:execute:429 - 角度控制: 目標角度=24.65°, 指令角度=64.65°
 2025-07-28 14:12:21 [INFO] DrFlow2UnloadExecutor:execute:430 - 角度來源: flow1_direct
 2025-07-28 14:12:21 [INFO] DrFlow2UnloadExecutor:execute:431 - J4角度應用: put_asm_top和put_asm_down都使用指令角度64.65°
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:260 - Flow2正在載入外部點位檔案...
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:278 - 所有必要點位載入成功
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:build_flow_steps:339 - Flow2支援CASE參數流程步驟建構完成，共5步
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:build_flow_steps:340 - 新增功能: 手勢切換 + 速度優化 + J4角度控制
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:__init__:232 - DrFlow2UnloadExecutor初始化完成 (支援CASE參數版)
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:__init__:233 - 精簡流程: 僅保留組裝序列，put_asm_top和put_asm_down使用Flow1角度值
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:initialize:242 - Flow2執行器初始化完成 (支援CASE參數版)
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:initialize:243 -   可用模組: Gripper=True
+2025-07-30 15:16:44 [INFO] DrFlow2UnloadExecutor:initialize:244 -   Flow1角度數據: 可用
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:260 - Flow2正在載入外部點位檔案...
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:278 - 所有必要點位載入成功
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:build_flow_steps:339 - Flow2支援CASE參數流程步驟建構完成，共5步
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:build_flow_steps:340 - 新增功能: 手勢切換 + 速度優化 + J4角度控制
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:__init__:232 - DrFlow2UnloadExecutor初始化完成 (支援CASE參數版)
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:__init__:233 - 精簡流程: 僅保留組裝序列，put_asm_top和put_asm_down使用Flow1角度值
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:initialize:242 - Flow2執行器初始化完成 (支援CASE參數版)
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:initialize:243 -   可用模組: Gripper=True
+2025-07-30 15:32:26 [INFO] DrFlow2UnloadExecutor:initialize:244 -   Flow1角度數據: 可用
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:260 - Flow2正在載入外部點位檔案...
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:278 - 所有必要點位載入成功
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:build_flow_steps:339 - Flow2支援CASE參數流程步驟建構完成，共5步
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:build_flow_steps:340 - 新增功能: 手勢切換 + 速度優化 + J4角度控制
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:__init__:232 - DrFlow2UnloadExecutor初始化完成 (支援CASE參數版)
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:__init__:233 - 精簡流程: 僅保留組裝序列，put_asm_top和put_asm_down使用Flow1角度值
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:initialize:242 - Flow2執行器初始化完成 (支援CASE參數版)
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:initialize:243 -   可用模組: Gripper=True
+2025-07-30 15:35:53 [INFO] DrFlow2UnloadExecutor:initialize:244 -   Flow1角度數據: 可用
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:260 - Flow2正在載入外部點位檔案...
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:278 - 所有必要點位載入成功
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:build_flow_steps:339 - Flow2支援CASE參數流程步驟建構完成，共5步
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:build_flow_steps:340 - 新增功能: 手勢切換 + 速度優化 + J4角度控制
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:__init__:232 - DrFlow2UnloadExecutor初始化完成 (支援CASE參數版)
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:__init__:233 - 精簡流程: 僅保留組裝序列，put_asm_top和put_asm_down使用Flow1角度值
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:initialize:242 - Flow2執行器初始化完成 (支援CASE參數版)
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:initialize:243 -   可用模組: Gripper=True
+2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:initialize:244 -   Flow1角度數據: 可用

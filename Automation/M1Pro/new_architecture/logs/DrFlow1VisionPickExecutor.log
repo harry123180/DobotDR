@@ -10152,3 +10152,139 @@
 2025-07-28 14:12:29 [INFO] DrFlow1VisionPickExecutor:execute:765 - 角度控制: 目標角度=47.14°, 指令角度=87.14°
 2025-07-28 14:12:29 [INFO] DrFlow1VisionPickExecutor:_safe_set_flow1_complete_status:1421 - [Flow1] 設置Flow1完成狀態: True
 2025-07-28 14:12:29 [INFO] DrFlow1VisionPickExecutor:_safe_set_flow1_complete_status:1427 - [Flow1] 透過狀態機設置Flow1完成狀態: True
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:496 - Flow1正在載入外部點位檔案...
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:514 - 所有必要點位載入成功
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:650 - Flow1支援DR參數流程步驟建構完成，共21步
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:651 - 新增功能: 支援速度/加速度控制 + 工具座標系切換
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:__init__:479 - DrFlow1VisionPickExecutor初始化完成 (支援DR參數版)
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:__init__:480 -   sync控制: 停用
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:__init__:481 -   座標來源: AutoProgram模組 (地址1350-1354)
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:__init__:482 -   角度檢測: 超時3.0秒
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:initialize:490 - Flow1執行器初始化完成
+2025-07-30 15:16:44 [INFO] DrFlow1VisionPickExecutor:initialize:491 -   可用模組: Gripper=True, Angle=True
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:496 - Flow1正在載入外部點位檔案...
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:514 - 所有必要點位載入成功
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:650 - Flow1支援DR參數流程步驟建構完成，共21步
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:651 - 新增功能: 支援速度/加速度控制 + 工具座標系切換
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:__init__:479 - DrFlow1VisionPickExecutor初始化完成 (支援DR參數版)
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:__init__:480 -   sync控制: 停用
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:__init__:481 -   座標來源: AutoProgram模組 (地址1350-1354)
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:__init__:482 -   角度檢測: 超時3.0秒
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:initialize:490 - Flow1執行器初始化完成
+2025-07-30 15:32:26 [INFO] DrFlow1VisionPickExecutor:initialize:491 -   可用模組: Gripper=True, Angle=True
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:496 - Flow1正在載入外部點位檔案...
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:514 - 所有必要點位載入成功
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:650 - Flow1支援DR參數流程步驟建構完成，共21步
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:651 - 新增功能: 支援速度/加速度控制 + 工具座標系切換
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:__init__:479 - DrFlow1VisionPickExecutor初始化完成 (支援DR參數版)
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:__init__:480 -   sync控制: 停用
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:__init__:481 -   座標來源: AutoProgram模組 (地址1350-1354)
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:__init__:482 -   角度檢測: 超時3.0秒
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:initialize:490 - Flow1執行器初始化完成
+2025-07-30 15:35:53 [INFO] DrFlow1VisionPickExecutor:initialize:491 -   可用模組: Gripper=True, Angle=True
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:496 - Flow1正在載入外部點位檔案...
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:514 - 所有必要點位載入成功
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:650 - Flow1支援DR參數流程步驟建構完成，共21步
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:651 - 新增功能: 支援速度/加速度控制 + 工具座標系切換
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:__init__:479 - DrFlow1VisionPickExecutor初始化完成 (支援DR參數版)
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:__init__:480 -   sync控制: 停用
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:__init__:481 -   座標來源: AutoProgram模組 (地址1350-1354)
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:__init__:482 -   角度檢測: 超時3.0秒
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:initialize:490 - Flow1執行器初始化完成
+2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:initialize:491 -   可用模組: Gripper=True, Angle=True
+2025-07-30 15:48:24 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 1/21: autoprogram_coordinates_read
+2025-07-30 15:48:24 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 2/21: arm_orientation_change
+2025-07-30 15:48:24 [INFO] DrFlow1VisionPickExecutor:_execute_arm_orientation_change:803 - 切換機械臂手勢到: 左手手勢 (Left)
+2025-07-30 15:48:24 [INFO] DrFlow1VisionPickExecutor:_execute_arm_orientation_change:811 - 機械臂手勢切換成功: SetArmOrientation(1)
+2025-07-30 15:48:24 [DEBUG] DrFlow1VisionPickExecutor:_execute_arm_orientation_change:812 - API回應: 0,{},SetArmOrientation(1);
+2025-07-30 15:48:24 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 3/21: move_to_point
+2025-07-30 15:48:24 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 standby (J)
+2025-07-30 15:48:24 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:929 -   移動到 standby 成功 (J)
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 4/21: gripper_close
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:_execute_gripper_close:1180 - 夾爪關閉成功
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 5/21: move_to_point
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 VP_TOPSIDE (J)
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:929 -   移動到 VP_TOPSIDE 成功 (J)
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 6/21: move_to_detected_position_high
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1136 - 移動到檢測位置:
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1137 -   AutoProgram座標XY: (-79.40, 248.21)
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1138 -   目標高度Z: 238.86
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1139 -   繼承R: 137.11 (VP_TOPSIDE角度)
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1140 -   運動參數: speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1163 -   移動到檢測位置完成
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 7/21: move_to_detected_position_low
+2025-07-30 15:48:25 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1136 - 移動到檢測位置:
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1137 -   AutoProgram座標XY: (-79.40, 248.21)
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1138 -   目標高度Z: 147.52
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1139 -   繼承R: 137.11 (VP_TOPSIDE角度)
+2025-07-30 15:48:25 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1140 -   運動參數: speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_detected_position_with_parameters:1161 -   移動到檢測位置完成 (含Sync)
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 8/21: gripper_smart_release
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:_execute_gripper_smart_release:1195 - 夾爪智能撐開到位置: 360
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:_execute_gripper_smart_release:1206 - 夾爪智能撐開指令發送成功
+2025-07-30 15:48:26 [DEBUG] DrFlow1VisionPickExecutor:_execute_gripper_smart_release:1209 - 等待夾爪撐開動作完成...
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:_execute_gripper_smart_release:1212 - 夾爪智能撐開完成 - 位置360
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 9/21: move_to_point
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 VP_TOPSIDE (L)
+2025-07-30 15:48:26 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:929 -   移動到 VP_TOPSIDE 成功 (L)
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 10/21: move_to_point
+2025-07-30 15:48:26 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 standby (J)
+2025-07-30 15:48:26 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:27 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:929 -   移動到 standby 成功 (J)
+2025-07-30 15:48:27 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 11/21: move_to_point
+2025-07-30 15:48:27 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 Rotate_top (J)
+2025-07-30 15:48:27 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:27 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:929 -   移動到 Rotate_top 成功 (J)
+2025-07-30 15:48:27 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 12/21: move_to_point
+2025-07-30 15:48:27 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 Rotate_down (J)
+2025-07-30 15:48:27 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:28 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:927 -   移動到 Rotate_down 成功 (J) (含Sync)
+2025-07-30 15:48:28 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 13/21: gripper_close
+2025-07-30 15:48:28 [INFO] DrFlow1VisionPickExecutor:_execute_gripper_close:1180 - 夾爪關閉成功
+2025-07-30 15:48:28 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 14/21: move_to_point
+2025-07-30 15:48:28 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 Rotate_top (J)
+2025-07-30 15:48:28 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:28 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:929 -   移動到 Rotate_top 成功 (J)
+2025-07-30 15:48:28 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 15/21: move_to_point
+2025-07-30 15:48:28 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 standby (J)
+2025-07-30 15:48:28 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:29 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:927 -   移動到 standby 成功 (J) (含Sync)
+2025-07-30 15:48:29 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 16/21: angle_detection_fast
+2025-07-30 15:48:29 [INFO] DrFlow1VisionPickExecutor:_execute_angle_detection_fast:1003 - [快速角度檢測] 開始檢測...
+2025-07-30 15:48:29 [INFO] DrFlow1VisionPickExecutor:_execute_angle_detection_fast:1014 - [快速角度檢測] 使用外部模組中的角度API
+2025-07-30 15:48:29 [INFO] DrFlow1VisionPickExecutor:_execute_angle_detection_fast:1025 - [快速角度檢測] 執行CCD3角度檢測(DR模式)...
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_angle_detection_fast:1046 - [快速角度檢測] 角度檢測成功 (耗時: 0.50秒):
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_angle_detection_fast:1047 -     目標角度: 74.82°
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_angle_detection_fast:1048 -     指令角度: 114.82°
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 17/21: move_to_point
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 Rotate_top (J)
+2025-07-30 15:48:30 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:929 -   移動到 Rotate_top 成功 (J)
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 18/21: move_to_point
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 Rotate_down (J)
+2025-07-30 15:48:30 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:927 -   移動到 Rotate_down 成功 (J) (含Sync)
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 19/21: gripper_smart_release
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_gripper_smart_release:1195 - 夾爪智能撐開到位置: 360
+2025-07-30 15:48:30 [INFO] DrFlow1VisionPickExecutor:_execute_gripper_smart_release:1206 - 夾爪智能撐開指令發送成功
+2025-07-30 15:48:30 [DEBUG] DrFlow1VisionPickExecutor:_execute_gripper_smart_release:1209 - 等待夾爪撐開動作完成...
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_execute_gripper_smart_release:1212 - 夾爪智能撐開完成 - 位置360
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 20/21: move_to_point
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:873 - 移動到點位 Rotate_top (J)
+2025-07-30 15:48:31 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:876 -   運動參數: speed_j=100, acc_j=100, speed_l=100, acc_l=100, tool=0
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_parameters:929 -   移動到 Rotate_top 成功 (J)
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:execute:704 - Flow1 步驟 21/21: move_to_point_with_j4
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_j4:960 - 移動到點位 put_asm_top (使用計算J4角度)
+2025-07-30 15:48:31 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_j4:961 -   關節角度: (j1:-84.4, j2:-29.7, j3:177.3, j4:114.8)
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_j4:962 -   計算角度: target=74.8° + offset=40.0° = command=114.8°
+2025-07-30 15:48:31 [DEBUG] DrFlow1VisionPickExecutor:_execute_move_to_point_with_j4:969 -   運動參數: speed_j=100, acc_j=100, tool=0
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_execute_move_to_point_with_j4:992 -   移動到 put_asm_top 成功 (J4:114.8°)
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_safe_set_flow1_complete_status:1421 - [Flow1] 設置Flow1完成狀態: True
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_safe_set_flow1_complete_status:1427 - [Flow1] 透過狀態機設置Flow1完成狀態: True
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:execute:763 - Flow1執行完成！總耗時: 6.70秒
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:execute:765 - 角度控制: 目標角度=74.82°, 指令角度=114.82°
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_safe_set_flow1_complete_status:1421 - [Flow1] 設置Flow1完成狀態: True
+2025-07-30 15:48:31 [INFO] DrFlow1VisionPickExecutor:_safe_set_flow1_complete_status:1427 - [Flow1] 透過狀態機設置Flow1完成狀態: True

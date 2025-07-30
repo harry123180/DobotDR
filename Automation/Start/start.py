@@ -1,405 +1,362 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-start.py - DobotDR系統模組啟動器 (Flask Web版)
-依序啟動所有模組並提供Web介面控制和監控
+start.py - 主啟動控制器
+依序啟動所有執行模組並進行記憶體監控和日誌管理
 """
 
-import subprocess
 import time
-import threading
-import os
 import signal
 import sys
-from datetime import datetime
-from queue import Queue, Empty
-from flask import Flask, render_template, jsonify, request
-from flask_socketio import SocketIO, emit
-import json
+from pathlib import Path
+from start_class import StartManager
 
-class ModuleLauncher:
+# ==================== 模組地址映射配置 ====================
+MODULE_MODBUS_CONFIG = {
+    # 模組名稱: {memory_address: Modbus記憶體地址, log_control_address: 日誌控制地址}
+    'VP_main': {'memory_address': 100, 'log_control_address': 120},
+    'VP_app': {'memory_address': 101, 'log_control_address': 121},
+    'Gripper': {'memory_address': 102, 'log_control_address': 122},
+    'Gripper_app': {'memory_address': 103, 'log_control_address': 123},
+    'Dobot_main': {'memory_address': 104, 'log_control_address': 124},
+    'CCD3_main_app': {'memory_address': 105, 'log_control_address': 125},
+    'CCD1VisionCode': {'memory_address': 106, 'log_control_address': 126},
+    'AutoProgram_main': {'memory_address': 107, 'log_control_address': 127},
+    'AutoFeeding_main': {'memory_address': 108, 'log_control_address': 128},
+    'AutoProgram_app': {'memory_address': 109, 'log_control_address': 129},
+    'LED_main': {'memory_address': 110, 'log_control_address': 130},
+    'LED_app': {'memory_address': 111, 'log_control_address': 131},
+}
+
+# ==================== 執行模組路徑配置 ====================
+MODULE_PATHS = [
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\VP\VP_main.py',
+        'name': 'VP_main'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\VP\VP_app.py',
+        'name': 'VP_app'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper.py',
+        'name': 'Gripper'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper_app.py',
+        'name': 'Gripper_app'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\Dobot_main.py',
+        'name': 'Dobot_main'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\CCD3\CCD3_main_app.py',
+        'name': 'CCD3_main_app'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\CCD1\CCD1VisionCodeYOLO.py',
+        'name': 'CCD1VisionCode'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\AutoProgram\AutoProgram_main.py',
+        'name': 'AutoProgram_main'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\AutoFeeding\AutoFeeding_main.py',
+        'name': 'AutoFeeding_main'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\AutoProgram\AutoProgram_app.py',
+        'name': 'AutoProgram_app'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\light\LED_main.py',
+        'name': 'LED_main'
+    },
+    {
+        'path': r'C:\Users\user\Documents\GitHub\DobotDR\Automation\light\LED_app.py',
+        'name': 'LED_app'
+    },
+]
+
+class StartController:
+    """主啟動控制器"""
+    
     def __init__(self):
-        self.processes = {}
-        self.output_queues = {}
-        self.module_logs = {}
-        self.conda_env = "ROBOT"
+        """初始化控制器"""
+        self.start_manager = StartManager(modbus_host="127.0.0.1", modbus_port=502)
         self.running = True
         
-        # 模組配置 (名稱, 路徑, 延遲秒數)
-        self.modules = {
-            "modbus": {
-                "name": "ModbusTCP Server",
-                "path": r"C:\Users\user\Documents\GitHub\DobotDR\ModbusServer\TCPServer.py",
-                "delay": 0,
-                "required": True,
-                "enabled": False,
-                "status": "停止"
-            },
-            "vp": {
-                "name": "VP震動盤",
-                "path": r"C:\Users\user\Documents\GitHub\DobotDR\Automation\VP\VP_main.py",
-                "delay": 2,
-                "required": False,
-                "enabled": False,
-                "status": "停止"
-            },
-            "led": {
-                "name": "LED控制器",
-                "path": r"C:\Users\user\Documents\GitHub\DobotDR\Automation\light\LED_main.py",
-                "delay": 1,
-                "required": False,
-                "enabled": False,
-                "status": "停止"
-            },
-            "gripper": {
-                "name": "Gripper夾爪",
-                "path": r"C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper.py",
-                "delay": 1,
-                "required": False,
-                "enabled": False,
-                "status": "停止"
-            },
-            "ccd1": {
-                "name": "CCD1視覺",
-                "path": r"C:\Users\user\Documents\GitHub\DobotDR\Automation\CCD1\CCD1VisionCodeYOLO.py",
-                "delay": 1,
-                "required": False,
-                "enabled": False,
-                "status": "停止"
-            },
-            "ccd3": {
-                "name": "CCD3角度",
-                "path": r"C:\Users\user\Documents\GitHub\DobotDR\Automation\CCD3\CCD3_main_app.py",
-                "delay": 1,
-                "required": False,
-                "enabled": False,
-                "status": "停止"
-            }
-        }
+        # 設置信號處理
+        signal.signal(signal.SIGINT, self.signal_handler)
+        signal.signal(signal.SIGTERM, self.signal_handler)
         
-        # 初始化日誌
-        for module_id in self.modules:
-            self.module_logs[module_id] = []
+        print("[StartController] 主啟動控制器初始化完成")
     
-    def get_conda_python_path(self):
-        """獲取conda環境的python路徑"""
-        conda_paths = [
-            f"C:\\Users\\{os.getenv('USERNAME')}\\anaconda3\\envs\\{self.conda_env}\\python.exe",
-            f"C:\\Users\\{os.getenv('USERNAME')}\\miniconda3\\envs\\{self.conda_env}\\python.exe",
-            f"C:\\ProgramData\\Anaconda3\\envs\\{self.conda_env}\\python.exe"
-        ]
-        
-        for path in conda_paths:
-            if os.path.exists(path):
-                return path
-        
-        try:
-            result = subprocess.run(
-                "conda info --envs", 
-                shell=True, capture_output=True, text=True, encoding='utf-8'
-            )
-            if result.returncode == 0:
-                for line in result.stdout.split('\n'):
-                    if self.conda_env in line and '*' not in line:
-                        parts = line.split()
-                        if len(parts) >= 2:
-                            env_path = parts[-1]
-                            python_path = os.path.join(env_path, "python.exe")
-                            if os.path.exists(python_path):
-                                return python_path
-        except:
-            pass
-                
-        return "python"
-    
-    def start_module(self, module_id):
-        """啟動單個模組"""
-        if module_id not in self.modules:
-            return False
-            
-        module = self.modules[module_id]
-        
-        # 檢查ModbusTCP Server是否先啟動
-        if module_id != "modbus" and not self.modules["modbus"]["enabled"]:
-            self.add_log(module_id, "錯誤: 必須先啟動ModbusTCP Server")
-            return False
-        
-        if module["enabled"]:
-            self.add_log(module_id, "模組已在運行中")
-            return True
-            
-        self.add_log(module_id, f"正在啟動 {module['name']}...")
-        
-        try:
-            # 檢查檔案
-            if not os.path.exists(module["path"]):
-                self.add_log(module_id, f"錯誤: 找不到檔案 {module['path']}")
-                return False
-                
-            python_cmd = self.get_conda_python_path()
-            cmd = f'"{python_cmd}" "{module["path"]}"'
-            
-            # 設置環境變量
-            env = os.environ.copy()
-            env['PYTHONIOENCODING'] = 'utf-8'
-            env['CONDA_NO_PLUGINS'] = 'true'
-            
-            # 啟動進程
-            process = subprocess.Popen(
-                cmd,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                bufsize=1,
-                universal_newlines=True,
-                env=env,
-                encoding='utf-8',
-                errors='replace'
-            )
-            
-            # 儲存進程
-            self.processes[module_id] = process
-            
-            # 創建輸出隊列
-            output_queue = Queue()
-            self.output_queues[module_id] = output_queue
-            
-            # 啟動輸出讀取線程
-            def read_output():
-                try:
-                    for line in iter(process.stdout.readline, ''):
-                        if line and self.running:
-                            clean_line = line.rstrip()
-                            output_queue.put(clean_line)
-                            self.add_log(module_id, clean_line)
-                except:
-                    pass
-                finally:
-                    output_queue.put(None)
-                    
-            thread = threading.Thread(target=read_output, daemon=True)
-            thread.start()
-            
-            # 更新狀態
-            module["enabled"] = True
-            module["status"] = "運行中"
-            
-            self.add_log(module_id, f"✓ {module['name']} 啟動成功 (PID: {process.pid})")
-            return True
-            
-        except Exception as e:
-            self.add_log(module_id, f"✗ {module['name']} 啟動失敗: {e}")
-            module["status"] = "錯誤"
-            return False
-    
-    def stop_module(self, module_id):
-        """停止單個模組"""
-        if module_id not in self.modules:
-            return False
-            
-        module = self.modules[module_id]
-        
-        if not module["enabled"]:
-            return True
-            
-        try:
-            process = self.processes.get(module_id)
-            if process and process.poll() is None:
-                self.add_log(module_id, f"正在停止 {module['name']}...")
-                process.terminate()
-                
-                try:
-                    process.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    self.add_log(module_id, f"強制終止 {module['name']}...")
-                    process.kill()
-                    
-                self.add_log(module_id, f"✓ {module['name']} 已停止")
-            
-            # 更新狀態
-            module["enabled"] = False
-            module["status"] = "停止"
-            
-            # 清理
-            if module_id in self.processes:
-                del self.processes[module_id]
-            if module_id in self.output_queues:
-                del self.output_queues[module_id]
-                
-            return True
-            
-        except Exception as e:
-            self.add_log(module_id, f"停止失敗: {e}")
-            return False
-    
-    def start_all_modules(self):
-        """一鍵啟動所有模組 (按順序)"""
-        # 模組啟動順序
-        start_order = ["modbus", "vp", "led", "gripper", "ccd1", "ccd3"]
-        
-        for module_id in start_order:
-            if module_id in self.modules:
-                module = self.modules[module_id]
-                
-                # 添加延遲 (除了第一個)
-                if module_id != "modbus":
-                    delay = module.get("delay", 1)
-                    self.add_log(module_id, f"等待 {delay} 秒後啟動...")
-                    time.sleep(delay)
-                
-                # 啟動模組
-                if not module["enabled"]:
-                    self.start_module(module_id)
-                    
-        return True
-    
-    def stop_all_modules(self):
-        """一鍵關閉所有模組 (按逆序)"""
-        # 模組關閉順序 (逆序，ModbusTCP最後關閉)
-        stop_order = ["ccd3", "ccd1", "gripper", "led", "vp", "modbus"]
-        
-        for module_id in stop_order:
-            if module_id in self.modules and self.modules[module_id]["enabled"]:
-                self.stop_module(module_id)
-                # 關閉間隔
-                if module_id != "modbus":
-                    time.sleep(1)
-                    
-        return True
-    
-    def add_log(self, module_id, message):
-        """添加日誌"""
-        timestamp = datetime.now().strftime("%H:%M:%S")
-        log_entry = f"[{timestamp}] {message}"
-        
-        if module_id in self.module_logs:
-            self.module_logs[module_id].append(log_entry)
-            # 保持最新100條日誌
-            if len(self.module_logs[module_id]) > 100:
-                self.module_logs[module_id] = self.module_logs[module_id][-100:]
-    
-    def get_status(self):
-        """獲取系統狀態"""
-        status = {}
-        for module_id, module in self.modules.items():
-            # 檢查進程狀態
-            if module["enabled"]:
-                process = self.processes.get(module_id)
-                if process and process.poll() is not None:
-                    # 進程已結束
-                    module["enabled"] = False
-                    module["status"] = "錯誤"
-                    self.add_log(module_id, f"{module['name']} 意外停止")
-            
-            status[module_id] = {
-                "name": module["name"],
-                "enabled": module["enabled"],
-                "status": module["status"],
-                "required": module["required"],
-                "logs": self.module_logs[module_id][-20:]  # 最新20條日誌
-            }
-        
-        return status
-    
-    def stop_all(self):
-        """停止所有模組"""
+    def signal_handler(self, signum, frame):
+        """信號處理器"""
+        print(f"\n[StartController] 收到信號 {signum}，正在關閉...")
         self.running = False
-        self.stop_all_modules()
-
-# Flask應用
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dobot_launcher_secret'
-socketio = SocketIO(app, cors_allowed_origins="*")
-
-# 全局啟動器實例
-launcher = ModuleLauncher()
-
-@app.route('/')
-def index():
-    """主頁面"""
-    return render_template('start.html')
-
-@app.route('/api/status')
-def api_status():
-    """獲取系統狀態API"""
-    return jsonify(launcher.get_status())
-
-@app.route('/api/toggle/<module_id>', methods=['POST'])
-def api_toggle(module_id):
-    """切換模組狀態API"""
-    data = request.get_json()
-    enable = data.get('enable', False)
     
-    if enable:
-        success = launcher.start_module(module_id)
-    else:
-        success = launcher.stop_module(module_id)
+    def initialize(self) -> bool:
+        """初始化系統"""
+        print("[StartController] 開始初始化系統...")
+        
+        # 連接Modbus伺服器
+        if not self.start_manager.connect_modbus():
+            print("[StartController] Modbus連接失敗，無法繼續")
+            return False
+        
+        # 添加所有執行模組
+        for module_config in MODULE_PATHS:
+            module_path = module_config['path']
+            module_name = module_config['name']
+            
+            # 檢查模組路徑是否存在
+            if not Path(module_path).exists():
+                print(f"[StartController] 警告: 模組路徑不存在 {module_path}")
+                continue
+            
+            # 添加模組到管理器
+            success = self.start_manager.add_module(
+                module_path=module_path,
+                module_name=module_name,
+                conda_env="ROBOT",
+                log_level="ERROR",
+                log_retention_minutes=5  # 5分鐘清空一次日誌
+            )
+            
+            if success:
+                print(f"[StartController] 成功添加模組: {module_name}")
+            else:
+                print(f"[StartController] 添加模組失敗: {module_name}")
+        
+        print("[StartController] 系統初始化完成")
+        return True
     
-    return jsonify({
-        'success': success,
-        'status': launcher.get_status()
-    })
-
-@app.route('/api/start_all', methods=['POST'])
-def api_start_all():
-    """一鍵啟動所有模組API"""
-    def start_all_async():
-        launcher.start_all_modules()
+    def start_all_modules(self) -> bool:
+        """啟動所有模組"""
+        print("[StartController] 開始啟動所有模組...")
+        
+        success = self.start_manager.start_all_modules()
+        
+        if success:
+            print("[StartController] 所有模組啟動成功")
+        else:
+            print("[StartController] 部分模組啟動失敗")
+        
+        return success
     
-    # 在背景執行啟動流程
-    thread = threading.Thread(target=start_all_async, daemon=True)
-    thread.start()
+    def start_monitoring(self):
+        """啟動監控系統"""
+        print("[StartController] 啟動監控系統...")
+        
+        # 啟動模組監控
+        self.start_manager.start_monitoring()
+        
+        # 啟動記憶體更新執行緒
+        import threading
+        memory_thread = threading.Thread(target=self._memory_update_loop, daemon=True)
+        memory_thread.start()
+        
+        print("[StartController] 監控系統已啟動")
     
-    return jsonify({
-        'success': True,
-        'message': '正在依序啟動所有模組...'
-    })
-
-@app.route('/api/stop_all', methods=['POST'])
-def api_stop_all():
-    """一鍵關閉所有模組API"""
-    def stop_all_async():
-        launcher.stop_all_modules()
+    def _memory_update_loop(self):
+        """記憶體更新迴圈 - 每分鐘更新一次到Modbus"""
+        last_update_time = 0
+        
+        while self.running:
+            try:
+                current_time = time.time()
+                
+                # 每60秒更新一次記憶體數據到Modbus
+                if current_time - last_update_time >= 60:
+                    self._update_memory_to_modbus()
+                    last_update_time = current_time
+                
+                time.sleep(10)  # 每10秒檢查一次
+                
+            except Exception as e:
+                print(f"[StartController] 記憶體更新迴圈異常: {e}")
+                time.sleep(10)
     
-    # 在背景執行關閉流程
-    thread = threading.Thread(target=stop_all_async, daemon=True)
-    thread.start()
-    
-    return jsonify({
-        'success': True,
-        'message': '正在依序關閉所有模組...'
-    })
-
-@socketio.on('connect')
-def handle_connect():
-    """WebSocket連接"""
-    emit('status_update', launcher.get_status())
-
-def status_broadcast_thread():
-    """狀態廣播線程"""
-    while launcher.running:
+    def _update_memory_to_modbus(self):
+        """更新記憶體使用量到Modbus寄存器"""
         try:
-            socketio.emit('status_update', launcher.get_status())
-            time.sleep(2)  # 每2秒更新一次
-        except:
-            break
+            for module_name, manager in self.start_manager.modules.items():
+                # 更新模組記憶體使用量
+                manager.update_memory_usage()
+                
+                # 獲取Modbus地址配置
+                if module_name in MODULE_MODBUS_CONFIG:
+                    config = MODULE_MODBUS_CONFIG[module_name]
+                    memory_address = config['memory_address']
+                    memory_mb = manager.memory_usage_mb
+                    
+                    # 寫入記憶體使用量到Modbus
+                    success = self.start_manager.write_modbus_register(memory_address, memory_mb)
+                    
+                    if success:
+                        print(f"[StartController] 更新記憶體: {module_name} = {memory_mb}MB -> 地址{memory_address}")
+                    else:
+                        print(f"[StartController] 記憶體更新失敗: {module_name}")
+        
+        except Exception as e:
+            print(f"[StartController] 更新記憶體到Modbus失敗: {e}")
+    
+    def handle_log_control(self):
+        """處理日誌控制 - 檢查Modbus地址並調整日誌等級"""
+        try:
+            if not self.start_manager.connected:
+                return
+            
+            for module_name, manager in self.start_manager.modules.items():
+                if module_name in MODULE_MODBUS_CONFIG:
+                    config = MODULE_MODBUS_CONFIG[module_name]
+                    log_control_address = config['log_control_address']
+                    
+                    # 讀取日誌控制寄存器
+                    try:
+                        result = self.start_manager.modbus_client.read_holding_registers(
+                            log_control_address, count=1, slave=1
+                        )
+                        
+                        if not result.isError() and len(result.registers) > 0:
+                            control_value = result.registers[0]
+                            
+                            # 根據控制值設置日誌等級
+                            # 0=關閉, 1=ERROR, 2=WARNING, 3=INFO, 4=DEBUG
+                            log_levels = {0: 'CRITICAL', 1: 'ERROR', 2: 'WARNING', 3: 'INFO', 4: 'DEBUG'}
+                            
+                            if control_value in log_levels:
+                                new_level = log_levels[control_value]
+                                
+                                if manager.log_level != new_level:
+                                    manager.set_log_level(new_level)
+                                    print(f"[StartController] 調整日誌等級: {module_name} -> {new_level}")
+                    
+                    except Exception as e:
+                        print(f"[StartController] 讀取日誌控制失敗 {module_name}: {e}")
+        
+        except Exception as e:
+            print(f"[StartController] 處理日誌控制異常: {e}")
+    
+    def print_status(self):
+        """打印系統狀態"""
+        status = self.start_manager.get_all_status()
+        
+        print("\n" + "="*60)
+        print("[StartController] 系統狀態報告")
+        print("="*60)
+        
+        manager_info = status['manager_info']
+        print(f"總模組數: {manager_info['total_modules']}")
+        print(f"運行中模組: {manager_info['running_modules']}")
+        print(f"Modbus連接: {'正常' if manager_info['modbus_connected'] else '異常'}")
+        print(f"監控狀態: {'啟用' if manager_info['monitoring_active'] else '停用'}")
+        
+        print("\n模組狀態:")
+        print("-" * 60)
+        
+        for module_name, module_status in status['modules'].items():
+            status_str = "運行中" if module_status['is_running'] else "已停止"
+            memory_mb = module_status['memory_usage_mb']
+            restart_count = module_status['restart_count']
+            
+            print(f"{module_name:20} | {status_str:6} | {memory_mb:4}MB | 重啟{restart_count}次")
+        
+        print("="*60)
+    
+    def run(self):
+        """主運行迴圈"""
+        print("[StartController] 開始運行主迴圈...")
+        
+        status_print_interval = 300  # 每5分鐘打印一次狀態
+        log_control_interval = 30    # 每30秒檢查一次日誌控制
+        last_status_print = 0
+        last_log_control = 0
+        
+        try:
+            while self.running:
+                current_time = time.time()
+                
+                # 定期打印狀態
+                if current_time - last_status_print >= status_print_interval:
+                    self.print_status()
+                    last_status_print = current_time
+                
+                # 定期檢查日誌控制
+                if current_time - last_log_control >= log_control_interval:
+                    self.handle_log_control()
+                    last_log_control = current_time
+                
+                time.sleep(5)  # 主迴圈間隔
+                
+        except KeyboardInterrupt:
+            print("\n[StartController] 收到中斷信號")
+        except Exception as e:
+            print(f"[StartController] 主迴圈異常: {e}")
+        finally:
+            self.shutdown()
+    
+    def shutdown(self):
+        """關閉系統"""
+        print("[StartController] 開始關閉系統...")
+        
+        # 停止監控
+        self.start_manager.stop_monitoring()
+        
+        # 停止所有模組
+        for module_name in self.start_manager.modules:
+            print(f"[StartController] 停止模組: {module_name}")
+            self.start_manager.stop_module(module_name)
+        
+        # 清理資源
+        self.start_manager.cleanup()
+        
+        print("[StartController] 系統關閉完成")
+
 
 def main():
     """主函數"""
-    print("DobotDR系統模組啟動器 - Web版")
-    print("Web介面: http://localhost:5000")
+    print("="*60)
+    print("[StartController] DobotDR 自動化系統啟動控制器")
+    print("="*60)
     
-    # 啟動狀態廣播線程
-    broadcast_thread = threading.Thread(target=status_broadcast_thread, daemon=True)
-    broadcast_thread.start()
+    # 創建控制器
+    controller = StartController()
     
     try:
-        socketio.run(app, host='0.0.0.0', port=5000, debug=False)
-    except KeyboardInterrupt:
-        print("\n正在關閉...")
-    finally:
-        launcher.stop_all()
+        # 初始化系統
+        if not controller.initialize():
+            print("[StartController] 系統初始化失敗，退出")
+            return 1
+        
+        # 啟動所有模組
+        controller.start_all_modules()
+        
+        # 啟動監控系統
+        controller.start_monitoring()
+        
+        # 等待模組啟動穩定
+        print("[StartController] 等待模組啟動穩定...")
+        time.sleep(10)
+        
+        # 打印初始狀態
+        controller.print_status()
+        
+        # 進入主運行迴圈
+        controller.run()
+        
+        return 0
+        
+    except Exception as e:
+        print(f"[StartController] 主函數異常: {e}")
+        controller.shutdown()
+        return 1
+
 
 if __name__ == "__main__":
-    main()
+    exit_code = main()
+    sys.exit(exit_code)

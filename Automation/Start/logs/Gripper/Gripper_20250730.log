@@ -1,0 +1,10 @@
+2025-07-30 15:44:13,985 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:11 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-30 15:44:13,985 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:11 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-30 15:44:13,985 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:11 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-30 15:44:13,985 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:11 [INFO] GripperOptimized:start:508 - 夾爪模組已啟動 - 高性能模式
+2025-07-30 15:44:13,985 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:11 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-30 15:44:13,985 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:11 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-30 15:44:24,981 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:24 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=1, 參數1=0, 參數2=0, ID=1
+2025-07-30 15:44:24,999 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:24 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:44:32,120 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:32 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=1000, 平均耗時=13.5ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:44:53,167 - ModuleManager_Gripper - ERROR - STDERR: 2025-07-30 15:44:53 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=2000, 平均耗時=13.1ms, 最大耗時=49.0ms, 指令數=1

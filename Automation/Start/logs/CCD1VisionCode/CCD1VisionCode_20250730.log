@@ -1,0 +1,162 @@
+2025-07-30 15:16:49,159 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,159 - ModuleManager_CCD1VisionCode - ERROR - STDERR: # >>>>>>>>>>>>>>>>>>>>>> ERROR REPORT <<<<<<<<<<<<<<<<<<<<<<
+2025-07-30 15:16:49,159 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,159 - ModuleManager_CCD1VisionCode - ERROR - STDERR: Traceback (most recent call last):
+2025-07-30 15:16:49,159 - ModuleManager_CCD1VisionCode - ERROR - STDERR: File "C:\Users\user\anaconda3\Lib\site-packages\conda\exception_handler.py", line 18, in __call__
+2025-07-30 15:16:49,159 - ModuleManager_CCD1VisionCode - ERROR - STDERR: return func(*args, **kwargs)
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: ^^^^^^^^^^^^^^^^^^^^^
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: File "C:\Users\user\anaconda3\Lib\site-packages\conda\cli\main.py", line 61, in main_subshell
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: exit_code = do_call(args, parser)
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: ^^^^^^^^^^^^^^^^^^^^^
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: File "C:\Users\user\anaconda3\Lib\site-packages\conda\cli\conda_argparse.py", line 205, in do_call
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: result = getattr(module, func_name)(args, parser)
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: File "C:\Users\user\anaconda3\Lib\site-packages\conda\cli\main_run.py", line 118, in execute
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: print(response.stdout, file=sys.stdout)
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: UnicodeEncodeError: 'cp950' codec can't encode character '\ufffd' in position 0: illegal multibyte sequence
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: `$ C:\Users\user\anaconda3\Scripts\conda-script.py run -n ROBOT python C:\Users\user\Documents\GitHub\DobotDR\Automation\CCD1\CCD1VisionCodeYOLO.py`
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: environment variables:
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: BUNDLED_DEBUGPY_PATH=c:\Users\user\.vscode\extensions\ms-
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: python.debugpy-2025.10.0-win32-x64\bundled\libs\debugpy
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: CIO_TEST=<not set>
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: CONDA_ALLOW_SOFTLINKS=false
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: CONDA_ROOT=C:\Users\user\anaconda3
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: CURL_CA_BUNDLE=<not set>
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: GENICAM_GENTL32_PATH=C:\Program Files (x86)\Common Files\MVS\Runtime\Win32_i86
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: GENICAM_GENTL64_PATH=C:\Program Files (x86)\Common Files\MVS\Runtime\Win64_x64
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: HOMEPATH=\Users\user
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: LD_PRELOAD=<not set>
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: PATH=C:\Program Files (x86)\Common Files\MVS\Runtime\Win32_i86;C:\Program
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: Files (x86)\Common Files\MVS\Runtime\Win64_x64;C:\Windows\system32;C:\
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: \v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\
+2025-07-30 15:16:49,161 - ModuleManager_CCD1VisionCode - ERROR - STDERR: user\anaconda3;C:\Users\user\anaconda3\Library\mingw-
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: w64\bin;C:\Users\user\anaconda3\Library\usr\bin;C:\Users\user\anaconda
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 3\Library\bin;C:\Users\user\anaconda3\Scripts;C:\Users\user\AppData\Lo
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: cal\Microsoft\WindowsApps;C:\Users\user\AppData\Local\GitHubDesktop\bi
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: n;C:\Users\user\AppData\Local\Programs\Microsoft VS
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: Code\bin;c:\Users\user\.vscode\extensions\ms-
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: python.debugpy-2025.10.0-win32-x64\bundled\scripts\noConfigScripts
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: PSMODULEPATH=C:\Users\user\Documents\WindowsPowerShell\Modules;C:\Program Files\Win
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: dowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modu
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: les
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: REQUESTS_CA_BUNDLE=<not set>
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: SSL_CERT_FILE=<not set>
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: active environment : None
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: user config file : C:\Users\user\.condarc
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: populated config files : C:\Users\user\anaconda3\.condarc
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: C:\Users\user\.condarc
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: conda version : 24.9.2
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: conda-build version : 24.9.0
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: python version : 3.12.7.final.0
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: solver : libmamba (default)
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: virtual packages : __archspec=1=skylake
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: __conda=24.9.2=0
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: __win=0=0
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: base environment : C:\Users\user\anaconda3  (writable)
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: conda av data dir : C:\Users\user\anaconda3\etc\conda
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: conda av metadata url : None
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: channel URLs : https://repo.anaconda.com/pkgs/main/win-64
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: https://repo.anaconda.com/pkgs/main/noarch
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: https://repo.anaconda.com/pkgs/r/win-64
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: https://repo.anaconda.com/pkgs/r/noarch
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: https://repo.anaconda.com/pkgs/msys2/win-64
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: https://repo.anaconda.com/pkgs/msys2/noarch
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: package cache : C:\Users\user\anaconda3\pkgs
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: C:\Users\user\.conda\pkgs
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: C:\Users\user\AppData\Local\conda\conda\pkgs
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: envs directories : C:\Users\user\anaconda3\envs
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: C:\Users\user\.conda\envs
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: C:\Users\user\AppData\Local\conda\conda\envs
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: platform : win-64
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: user-agent : conda/24.9.2 requests/2.32.3 CPython/3.12.7 Windows/10 Windows/10.0.19045 solver/libmamba conda-libmamba-solver/24.9.0 libmambapy/1.5.8
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: administrator : False
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: netrc file : None
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: offline mode : False
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: An unexpected error has occurred. Conda has prepared the above report.
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: If you suspect this error is being caused by a malfunctioning plugin,
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: consider using the --no-plugins option to turn off plugins.
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: Example: conda --no-plugins install <package>
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: Alternatively, you can set the CONDA_NO_PLUGINS environment variable on
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: the command line to run the command without plugins enabled.
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: Example: CONDA_NO_PLUGINS=true conda install <package>
+2025-07-30 15:16:49,162 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:29,519 - CameraManager - INFO - ��豢��蝞∠����典��憪����摰���� - ��餃祝��批�嗥��
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:29,519 - CameraManager - INFO - 瘛餃����豢�� ccd1_camera - IP: 192.168.1.8, ��餃祝: 200Mbps
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,144 - CameraManager - INFO - ���憪����蝵桅�餃祝��批��: 200Mbps
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,163 - CameraManager - INFO - ��� 閮剔蔭���憭批��: 1500 bytes
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,169 - CameraManager - INFO - ��� 閮剔蔭������撱園��: 5000 ticks
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,169 - CameraManager - INFO - ��餃祝閮�蝞�: ���憭佝PS=4.13, 撖阡��FPS=4.13
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,170 - CameraManager - INFO - ��� �����喳����貉身蝵格�����
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,170 - CameraManager - INFO - ��� GVSP頞����閮剔蔭: 5000ms
+2025-07-30 15:32:31,908 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,173 - CameraManager - INFO - ��� 閮剖��銝���舀�渡�湔�仿�餃祝�����塚��雿輻�典�嗡����寞����批��
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,173 - CameraManager - INFO - ��餃祝��批�園��蝵桀�����
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,191 - CameraManager - WARNING - 閮剔蔭���蝝���澆��憭望��: 0x80000106
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,202 - CameraManager - INFO - ��� ������������閮剔蔭: 20000.0弮s
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,210 - CameraManager - INFO - ��� 撟����閮剔蔭: 5.0 FPS
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,214 - CameraManager - INFO - ��� 閫貊�潭芋撘�
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,214 - CameraManager - INFO - ��� 蝺拙��蝭�暺�: 1 (�����啣��璅∪��)
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,214 - CameraManager - INFO - ��� ������蝑����: ��������啣��
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,214 - CameraManager - INFO - ��豢�� ccd1_camera �����賊��蝵桀�����
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,215 - CameraManager - INFO - ��豢�� ccd1_camera �����交����� - ��餃祝������: 200Mbps
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:30,239 - CameraManager - INFO - ��豢�� ccd1_camera ���憪�銝脫�� - 5.0FPS
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:31,239 - CameraManager - INFO - ���憪���������豢��蝞∠�����...
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:31,254 - CameraManager - INFO - ��豢�� ccd1_camera ���甇Ｖ葡瘚�
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:31,351 - CameraManager - INFO - ��豢�� ccd1_camera 撌脫�琿��
+2025-07-30 15:32:31,909 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:32:31,535 - CameraManager - INFO - ��豢��蝞∠����典歇������
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:00,570 - CameraManager - INFO - ��豢��蝞∠����典��憪����摰���� - ��餃祝��批�嗥��
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:00,570 - CameraManager - INFO - 瘛餃����豢�� ccd1_camera - IP: 192.168.1.8, ��餃祝: 200Mbps
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,199 - CameraManager - INFO - ���憪����蝵桅�餃祝��批��: 200Mbps
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,209 - CameraManager - INFO - ��� 閮剔蔭���憭批��: 1500 bytes
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,217 - CameraManager - INFO - ��� 閮剔蔭������撱園��: 5000 ticks
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,217 - CameraManager - INFO - ��餃祝閮�蝞�: ���憭佝PS=4.13, 撖阡��FPS=4.13
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,217 - CameraManager - INFO - ��� �����喳����貉身蝵格�����
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,218 - CameraManager - INFO - ��� GVSP頞����閮剔蔭: 5000ms
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,223 - CameraManager - INFO - ��� 閮剖��銝���舀�渡�湔�仿�餃祝�����塚��雿輻�典�嗡����寞����批��
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,223 - CameraManager - INFO - ��餃祝��批�園��蝵桀�����
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,243 - CameraManager - WARNING - 閮剔蔭���蝝���澆��憭望��: 0x80000106
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,257 - CameraManager - INFO - ��� ������������閮剔蔭: 20000.0弮s
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,265 - CameraManager - INFO - ��� 撟����閮剔蔭: 5.0 FPS
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,270 - CameraManager - INFO - ��� 閫貊�潭芋撘�
+2025-07-30 15:36:02,860 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,271 - CameraManager - INFO - ��� 蝺拙��蝭�暺�: 1 (�����啣��璅∪��)
+2025-07-30 15:36:02,861 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,271 - CameraManager - INFO - ��� ������蝑����: ��������啣��
+2025-07-30 15:36:02,861 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,271 - CameraManager - INFO - ��豢�� ccd1_camera �����賊��蝵桀�����
+2025-07-30 15:36:02,861 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,271 - CameraManager - INFO - ��豢�� ccd1_camera �����交����� - ��餃祝������: 200Mbps
+2025-07-30 15:36:02,861 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:01,295 - CameraManager - INFO - ��豢�� ccd1_camera ���憪�銝脫�� - 5.0FPS
+2025-07-30 15:36:02,861 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:02,297 - CameraManager - INFO - ���憪���������豢��蝞∠�����...
+2025-07-30 15:36:02,861 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:02,315 - CameraManager - INFO - ��豢�� ccd1_camera ���甇Ｖ葡瘚�
+2025-07-30 15:36:02,861 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:02,393 - CameraManager - INFO - ��豢�� ccd1_camera 撌脫�琿��
+2025-07-30 15:36:02,861 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:36:02,578 - CameraManager - INFO - ��豢��蝞∠����典歇������
+2025-07-30 15:36:26,820 - ModuleManager_CCD1VisionCode - ERROR - 模組進程已結束，退出碼: 0
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:33,927 - CameraManager - INFO - 相機管理器初始化完成 - 頻寬控制版
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:33,928 - CameraManager - INFO - 添加相機 ccd1_camera - IP: 192.168.1.8, 頻寬: 200Mbps
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,558 - CameraManager - INFO - 開始配置頻寬控制: 200Mbps
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,564 - CameraManager - INFO - ✓ 設置包大小: 1500 bytes
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,571 - CameraManager - INFO - ✓ 設置包間延遲: 5000 ticks
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,571 - CameraManager - INFO - 頻寬計算: 最大FPS=4.13, 實際FPS=4.13
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,573 - CameraManager - INFO - ✓ 重傳參數設置成功
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,573 - CameraManager - INFO - ✓ GVSP超時設置: 5000ms
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,581 - CameraManager - INFO - ○ 設備不支援直接頻寬限制，使用其他方法控制
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,581 - CameraManager - INFO - 頻寬控制配置完成
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,605 - CameraManager - WARNING - 設置像素格式失敗: 0x80000106
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,616 - CameraManager - INFO - ✓ 曝光時間設置: 20000.0μs
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,624 - CameraManager - INFO - ✓ 幀率設置: 5.0 FPS
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,629 - CameraManager - INFO - ✓ 觸發模式
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,629 - CameraManager - INFO - ✓ 緩存節點: 1 (最新幀模式)
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,629 - CameraManager - INFO - ✓ 抓取策略: 僅最新幀
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,629 - CameraManager - INFO - 相機 ccd1_camera 參數配置完成
+2025-07-30 15:44:34,885 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,629 - CameraManager - INFO - 相機 ccd1_camera 連接成功 - 頻寬限制: 200Mbps
+2025-07-30 15:44:34,886 - ModuleManager_CCD1VisionCode - ERROR - STDERR: 2025-07-30 15:44:34,652 - CameraManager - INFO - 相機 ccd1_camera 開始串流 - 5.0FPS
+2025-07-30 15:44:36,520 - ModuleManager_CCD1VisionCode - ERROR - STDERR: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+2025-07-30 15:44:36,520 - ModuleManager_CCD1VisionCode - ERROR - STDERR: * Running on all addresses (0.0.0.0)
+2025-07-30 15:44:36,520 - ModuleManager_CCD1VisionCode - ERROR - STDERR: * Running on http://127.0.0.1:5051
+2025-07-30 15:44:36,520 - ModuleManager_CCD1VisionCode - ERROR - STDERR: * Running on http://192.168.50.51:5051
+2025-07-30 15:44:36,520 - ModuleManager_CCD1VisionCode - ERROR - STDERR: Press CTRL+C to quit

@@ -1,0 +1,62 @@
+
+2025-07-30 15:35:56,188 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:���憪����蝵桅�餃祝��批��: 200Mbps
+2025-07-30 15:35:56,188 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 閮剔蔭���憭批��: 1500 bytes
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 閮剔蔭������撱園��: 5000 ticks
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��餃祝閮�蝞�: ���憭佝PS=4.13, 撖阡��FPS=4.13
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� �����喳����貉身蝵格�����
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� GVSP頞����閮剔蔭: 5000ms
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 閮剖��銝���舀�渡�湔�仿�餃祝�����塚��雿輻�典�嗡����寞����批��
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��餃祝��批�園��蝵桀�����
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: WARNING:__main__:閮剔蔭���蝝���澆��憭望��: 0x80000106
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� ������������閮剔蔭: 20000.0弮s
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 撟����閮剔蔭: 30.0 FPS
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 閫貊�潭芋撘�
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 蝺拙��蝭�暺�: 1 (�����啣��璅∪��)
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� ������蝑����: ��������啣��
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera �����賊��蝵桀�����
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera �����交����� - ��餃祝������: 200Mbps
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera ���憪�銝脫�� - 30.0FPS
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera ���甇Ｖ葡瘚�
+2025-07-30 15:35:56,189 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera 撌脫�琿��
+2025-07-30 15:36:23,565 - ModuleManager_CCD3_main_app - ERROR - 模組進程已結束，退出碼: 0
+2025-07-30 15:36:28,202 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:���憪����蝵桅�餃祝��批��: 200Mbps
+2025-07-30 15:36:28,202 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 閮剔蔭���憭批��: 1500 bytes
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 閮剔蔭������撱園��: 5000 ticks
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��餃祝閮�蝞�: ���憭佝PS=4.13, 撖阡��FPS=4.13
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� �����喳����貉身蝵格�����
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� GVSP頞����閮剔蔭: 5000ms
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 閮剖��銝���舀�渡�湔�仿�餃祝�����塚��雿輻�典�嗡����寞����批��
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��餃祝��批�園��蝵桀�����
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: WARNING:__main__:閮剔蔭���蝝���澆��憭望��: 0x80000106
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� ������������閮剔蔭: 20000.0弮s
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 撟����閮剔蔭: 30.0 FPS
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 閫貊�潭芋撘�
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� 蝺拙��蝭�暺�: 1 (�����啣��璅∪��)
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��� ������蝑����: ��������啣��
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera �����賊��蝵桀�����
+2025-07-30 15:36:28,203 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera �����交����� - ��餃祝������: 200Mbps
+2025-07-30 15:36:28,204 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera ���憪�銝脫�� - 30.0FPS
+2025-07-30 15:36:28,204 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera ���甇Ｖ葡瘚�
+2025-07-30 15:36:28,204 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:��豢�� ccd3_camera 撌脫�琿��
+2025-07-30 15:44:29,646 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:開始配置頻寬控制: 200Mbps
+2025-07-30 15:44:29,646 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ 設置包大小: 1500 bytes
+2025-07-30 15:44:29,646 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ 設置包間延遲: 5000 ticks
+2025-07-30 15:44:29,646 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:頻寬計算: 最大FPS=4.13, 實際FPS=4.13
+2025-07-30 15:44:29,646 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ 重傳參數設置成功
+2025-07-30 15:44:29,646 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ GVSP超時設置: 5000ms
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:○ 設備不支援直接頻寬限制，使用其他方法控制
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:頻寬控制配置完成
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: WARNING:__main__:設置像素格式失敗: 0x80000106
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ 曝光時間設置: 20000.0μs
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ 幀率設置: 30.0 FPS
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ 觸發模式
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ 緩存節點: 1 (最新幀模式)
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:✓ 抓取策略: 僅最新幀
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:相機 ccd3_camera 參數配置完成
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:相機 ccd3_camera 連接成功 - 頻寬限制: 200Mbps
+2025-07-30 15:44:29,647 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:__main__:相機 ccd3_camera 開始串流 - 30.0FPS
+2025-07-30 15:44:30,661 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-07-30 15:44:30,661 - ModuleManager_CCD3_main_app - ERROR - STDERR: * Running on all addresses (0.0.0.0)
+2025-07-30 15:44:30,661 - ModuleManager_CCD3_main_app - ERROR - STDERR: * Running on http://127.0.0.1:5052
+2025-07-30 15:44:30,661 - ModuleManager_CCD3_main_app - ERROR - STDERR: * Running on http://192.168.50.51:5052
+2025-07-30 15:44:30,661 - ModuleManager_CCD3_main_app - ERROR - STDERR: INFO:werkzeug:[33mPress CTRL+C to quit[0m

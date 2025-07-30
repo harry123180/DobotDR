@@ -30490,3 +30490,432 @@
 2025-07-29 19:52:38 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 32.2ms
 2025-07-29 19:52:39 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 33.9ms
 2025-07-29 19:52:40 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 35.6ms
+2025-07-30 14:29:35 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-30 14:29:35 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-30 14:29:35 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-30 14:29:35 [INFO] GripperOptimized:start:509 - 夾爪模組已啟動 - 高性能模式
+2025-07-30 14:29:35 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-30 14:29:35 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-30 14:29:35 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 52.9ms
+2025-07-30 14:29:36 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 31.7ms
+2025-07-30 14:29:38 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 38.2ms
+2025-07-30 14:29:39 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 39.3ms
+2025-07-30 14:29:40 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 36.2ms
+2025-07-30 14:29:42 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 36.4ms
+2025-07-30 14:29:44 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 32.5ms
+2025-07-30 14:29:48 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 35.0ms
+2025-07-30 14:29:50 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 33.1ms
+2025-07-30 14:29:51 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 37.7ms
+2025-07-30 14:29:53 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 37.6ms
+2025-07-30 14:29:54 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 37.2ms
+2025-07-30 14:29:55 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 34.7ms
+2025-07-30 14:29:56 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=1000, 平均耗時=14.8ms, 最大耗時=52.9ms, 指令數=0
+2025-07-30 14:29:56 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 37.3ms
+2025-07-30 14:29:58 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 35.4ms
+2025-07-30 14:29:59 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 31.4ms
+2025-07-30 14:30:02 [INFO] GripperOptimized:stop:519 - 正在停止夾爪模組...
+2025-07-30 14:30:02 [ERROR] GripperOptimized:read_gripper_status:273 - PGC狀態讀取異常: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+Traceback (most recent call last):
+  File "c:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper.py", line 250, in read_gripper_status
+    result = self.rtu_client.read_holding_registers(address=0x0200, count=3, slave=unit_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\mixin.py", line 113, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 136, in sync_execute
+    return self.sync_get_response(request.dev_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 86, in sync_get_response
+    if not (data := self.sync_client.recv(None)):
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 302, in recv
+    size = self._wait_for_data()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 288, in _wait_for_data
+    available = self._in_waiting()
+                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 262, in _in_waiting
+    return getattr(self.socket, "in_waiting") if hasattr(self.socket, "in_waiting") else getattr(self.socket, "inWaiting")()
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\serial\serialwin32.py", line 259, in in_waiting
+    raise SerialException("ClearCommError failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+2025-07-30 14:30:02 [WARNING] GripperOptimized:fast_loop:492 - 主循環執行時間過長: 33.0ms
+2025-07-30 14:30:02 [INFO] GripperOptimized:stop:528 - 最終性能統計: 總循環=1267, 總指令=0, 總錯誤=0
+2025-07-30 14:30:02 [INFO] GripperOptimized:stop:532 - 夾爪模組已停止
+2025-07-30 14:30:04 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-30 14:30:04 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-30 14:30:04 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-30 14:30:04 [INFO] GripperOptimized:start:508 - 夾爪模組已啟動 - 高性能模式
+2025-07-30 14:30:04 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-30 14:30:04 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-30 14:30:25 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=1000, 平均耗時=16.1ms, 最大耗時=67.9ms, 指令數=0
+2025-07-30 14:30:25 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=8, 參數1=0, 參數2=0, ID=49899
+2025-07-30 14:30:25 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 14:30:47 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=2000, 平均耗時=16.0ms, 最大耗時=67.9ms, 指令數=1
+2025-07-30 14:31:08 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=3000, 平均耗時=14.5ms, 最大耗時=67.9ms, 指令數=1
+2025-07-30 14:31:15 [INFO] GripperOptimized:stop:518 - 正在停止夾爪模組...
+2025-07-30 14:31:15 [ERROR] GripperOptimized:read_gripper_status:273 - PGC狀態讀取異常: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+Traceback (most recent call last):
+  File "c:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper.py", line 250, in read_gripper_status
+    result = self.rtu_client.read_holding_registers(address=0x0200, count=3, slave=unit_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\mixin.py", line 113, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 136, in sync_execute
+    return self.sync_get_response(request.dev_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 86, in sync_get_response
+    if not (data := self.sync_client.recv(None)):
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 302, in recv
+    size = self._wait_for_data()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 288, in _wait_for_data
+    available = self._in_waiting()
+                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 262, in _in_waiting
+    return getattr(self.socket, "in_waiting") if hasattr(self.socket, "in_waiting") else getattr(self.socket, "inWaiting")()
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\serial\serialwin32.py", line 259, in in_waiting
+    raise SerialException("ClearCommError failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+2025-07-30 14:31:15 [INFO] GripperOptimized:stop:527 - 最終性能統計: 總循環=3350, 總指令=1, 總錯誤=0
+2025-07-30 14:31:15 [INFO] GripperOptimized:stop:531 - 夾爪模組已停止
+2025-07-30 14:32:00 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-30 14:32:00 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-30 14:32:00 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-30 14:32:00 [INFO] GripperOptimized:start:508 - 夾爪模組已啟動 - 高性能模式
+2025-07-30 14:32:00 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-30 14:32:00 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-30 14:32:21 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=1000, 平均耗時=13.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:32:42 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=2000, 平均耗時=14.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:33:03 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=3000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:33:24 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=4000, 平均耗時=13.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:33:45 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=5000, 平均耗時=13.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:34:06 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=6000, 平均耗時=14.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:34:27 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=7000, 平均耗時=14.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:34:48 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=8000, 平均耗時=13.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:35:09 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=9000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:35:30 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=10000, 平均耗時=13.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:35:51 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=11000, 平均耗時=14.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:36:12 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=12000, 平均耗時=13.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:36:33 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=13000, 平均耗時=15.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:36:54 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=14000, 平均耗時=13.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:37:15 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=15000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:37:36 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=16000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:37:57 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=17000, 平均耗時=15.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:38:18 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=18000, 平均耗時=13.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:38:39 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=19000, 平均耗時=13.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:39:01 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=20000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:39:22 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=21000, 平均耗時=14.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:39:43 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=22000, 平均耗時=12.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:40:04 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=23000, 平均耗時=13.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:40:25 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=24000, 平均耗時=13.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:40:46 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=25000, 平均耗時=12.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:41:07 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=26000, 平均耗時=14.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:41:28 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=27000, 平均耗時=13.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:41:49 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=28000, 平均耗時=13.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:42:10 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=29000, 平均耗時=12.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:42:31 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=30000, 平均耗時=14.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:42:52 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=31000, 平均耗時=13.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:43:13 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=32000, 平均耗時=14.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:43:34 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=33000, 平均耗時=12.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:43:55 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=34000, 平均耗時=13.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:44:17 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=35000, 平均耗時=13.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:44:38 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=36000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:44:59 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=37000, 平均耗時=15.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:45:20 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=38000, 平均耗時=12.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:45:41 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=39000, 平均耗時=14.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:46:02 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=40000, 平均耗時=14.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:46:23 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=41000, 平均耗時=13.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:46:44 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=42000, 平均耗時=13.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:47:05 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=43000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:47:26 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=44000, 平均耗時=13.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:47:47 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=45000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:48:08 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=46000, 平均耗時=15.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:48:29 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=47000, 平均耗時=13.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:48:50 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=48000, 平均耗時=12.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:49:11 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=49000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:49:32 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=50000, 平均耗時=14.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:49:53 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=51000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:50:14 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=52000, 平均耗時=13.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:50:35 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=53000, 平均耗時=14.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:50:56 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=54000, 平均耗時=13.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:51:17 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=55000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:51:39 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=56000, 平均耗時=14.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:52:00 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=57000, 平均耗時=13.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:52:21 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=58000, 平均耗時=13.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:52:42 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=59000, 平均耗時=14.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:53:03 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=60000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:53:24 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=61000, 平均耗時=15.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:53:45 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=62000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:54:06 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=63000, 平均耗時=13.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:54:27 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=64000, 平均耗時=12.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:54:48 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=65000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:55:09 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=66000, 平均耗時=14.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:55:30 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=67000, 平均耗時=14.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:55:51 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=68000, 平均耗時=15.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:56:12 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=69000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:56:33 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=70000, 平均耗時=14.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:56:54 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=71000, 平均耗時=12.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:57:16 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=72000, 平均耗時=12.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:57:37 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=73000, 平均耗時=14.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:57:58 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=74000, 平均耗時=14.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:58:19 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=75000, 平均耗時=13.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:58:40 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=76000, 平均耗時=14.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:59:01 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=77000, 平均耗時=13.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:59:22 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=78000, 平均耗時=14.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 14:59:43 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=79000, 平均耗時=14.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:00:04 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=80000, 平均耗時=13.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:00:25 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=81000, 平均耗時=12.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:00:46 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=82000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:01:07 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=83000, 平均耗時=14.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:01:28 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=84000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:01:49 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=85000, 平均耗時=14.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:02:10 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=86000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:02:32 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=87000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:02:53 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=88000, 平均耗時=13.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:03:14 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=89000, 平均耗時=13.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:03:35 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=90000, 平均耗時=13.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:03:56 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=91000, 平均耗時=14.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:04:17 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=92000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:04:38 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=93000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:04:59 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=94000, 平均耗時=13.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:05:20 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=95000, 平均耗時=14.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:05:41 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=96000, 平均耗時=13.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:06:02 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=97000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:06:23 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=98000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:06:44 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=99000, 平均耗時=13.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:07:05 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=100000, 平均耗時=14.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:07:26 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=101000, 平均耗時=12.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:07:47 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=102000, 平均耗時=13.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:08:08 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=103000, 平均耗時=12.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:08:29 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=104000, 平均耗時=14.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:08:51 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=105000, 平均耗時=13.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:09:12 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=106000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:09:33 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=107000, 平均耗時=14.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:09:54 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=108000, 平均耗時=14.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:10:15 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=109000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:10:36 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=110000, 平均耗時=14.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:10:57 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=111000, 平均耗時=12.8ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:11:18 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=112000, 平均耗時=13.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:11:39 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=113000, 平均耗時=13.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:12:00 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=114000, 平均耗時=15.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:12:21 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=115000, 平均耗時=14.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:12:42 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=116000, 平均耗時=13.7ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:13:03 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=117000, 平均耗時=14.2ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:13:24 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=118000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:13:45 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=119000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:14:07 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=120000, 平均耗時=13.6ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:14:28 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=121000, 平均耗時=14.0ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:14:49 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=122000, 平均耗時=13.3ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:15:10 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=123000, 平均耗時=13.4ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:15:31 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=124000, 平均耗時=15.1ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:15:52 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=125000, 平均耗時=13.9ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:16:13 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=126000, 平均耗時=13.5ms, 最大耗時=67.6ms, 指令數=0
+2025-07-30 15:16:39 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-30 15:16:39 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-30 15:16:39 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-30 15:16:39 [INFO] GripperOptimized:start:508 - 夾爪模組已啟動 - 高性能模式
+2025-07-30 15:16:39 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-30 15:16:39 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-30 15:16:44 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=1, 參數1=0, 參數2=0, ID=1
+2025-07-30 15:16:44 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:17:00 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=1000, 平均耗時=13.1ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:17:21 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=2000, 平均耗時=12.9ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:17:42 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=3000, 平均耗時=13.9ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:18:03 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=4000, 平均耗時=14.0ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:18:24 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=5000, 平均耗時=14.1ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:18:45 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=6000, 平均耗時=13.0ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:19:06 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=7000, 平均耗時=13.1ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:19:27 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=8000, 平均耗時=13.6ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:19:48 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=9000, 平均耗時=14.0ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:20:09 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=10000, 平均耗時=13.6ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:20:30 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=11000, 平均耗時=13.2ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:20:51 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=12000, 平均耗時=14.0ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:21:12 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=13000, 平均耗時=14.0ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:21:33 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=14000, 平均耗時=13.2ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:21:54 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=15000, 平均耗時=13.6ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:22:15 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=16000, 平均耗時=13.8ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:22:36 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=17000, 平均耗時=13.6ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:22:57 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=18000, 平均耗時=13.8ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:23:18 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=19000, 平均耗時=13.2ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:23:39 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=20000, 平均耗時=13.5ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:24:00 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=21000, 平均耗時=13.9ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:24:21 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=22000, 平均耗時=14.3ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:24:42 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=23000, 平均耗時=14.2ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:25:03 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=24000, 平均耗時=13.4ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:25:24 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=25000, 平均耗時=13.7ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:25:45 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=26000, 平均耗時=13.3ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:26:06 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=27000, 平均耗時=14.0ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:26:27 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=28000, 平均耗時=13.4ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:26:48 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=29000, 平均耗時=14.3ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:27:09 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=30000, 平均耗時=14.0ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:27:30 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=31000, 平均耗時=13.7ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:27:51 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=32000, 平均耗時=13.2ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:28:12 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=33000, 平均耗時=13.9ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:28:33 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=34000, 平均耗時=13.3ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:28:54 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=35000, 平均耗時=13.3ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:29:15 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=36000, 平均耗時=12.6ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:29:36 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=37000, 平均耗時=13.5ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:29:57 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=38000, 平均耗時=14.1ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:30:18 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=39000, 平均耗時=13.6ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:30:39 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=40000, 平均耗時=13.2ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:31:00 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=41000, 平均耗時=13.2ms, 最大耗時=42.2ms, 指令數=1
+2025-07-30 15:31:07 [INFO] GripperOptimized:stop:518 - 正在停止夾爪模組...
+2025-07-30 15:31:07 [ERROR] GripperOptimized:read_gripper_status:273 - PGC狀態讀取異常: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper.py", line 250, in read_gripper_status
+    result = self.rtu_client.read_holding_registers(address=0x0200, count=3, slave=unit_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\mixin.py", line 113, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 136, in sync_execute
+    return self.sync_get_response(request.dev_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 86, in sync_get_response
+    if not (data := self.sync_client.recv(None)):
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 302, in recv
+    size = self._wait_for_data()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 288, in _wait_for_data
+    available = self._in_waiting()
+                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 262, in _in_waiting
+    return getattr(self.socket, "in_waiting") if hasattr(self.socket, "in_waiting") else getattr(self.socket, "inWaiting")()
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\serial\serialwin32.py", line 259, in in_waiting
+    raise SerialException("ClearCommError failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+2025-07-30 15:31:07 [INFO] GripperOptimized:stop:527 - 最終性能統計: 總循環=41311, 總指令=1, 總錯誤=0
+2025-07-30 15:31:07 [INFO] GripperOptimized:stop:531 - 夾爪模組已停止
+2025-07-30 15:32:18 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-30 15:32:18 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-30 15:32:18 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-30 15:32:18 [INFO] GripperOptimized:start:508 - 夾爪模組已啟動 - 高性能模式
+2025-07-30 15:32:18 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-30 15:32:18 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-30 15:32:26 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=1, 參數1=0, 參數2=0, ID=1
+2025-07-30 15:32:26 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:32:39 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=1000, 平均耗時=13.6ms, 最大耗時=42.8ms, 指令數=1
+2025-07-30 15:33:00 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=2000, 平均耗時=13.2ms, 最大耗時=42.8ms, 指令數=1
+2025-07-30 15:33:21 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=3000, 平均耗時=14.4ms, 最大耗時=42.8ms, 指令數=1
+2025-07-30 15:33:42 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=4000, 平均耗時=13.9ms, 最大耗時=42.8ms, 指令數=1
+2025-07-30 15:34:03 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=5000, 平均耗時=13.7ms, 最大耗時=42.8ms, 指令數=1
+2025-07-30 15:34:24 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=6000, 平均耗時=14.5ms, 最大耗時=42.8ms, 指令數=1
+2025-07-30 15:34:45 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=7000, 平均耗時=14.1ms, 最大耗時=42.8ms, 指令數=1
+2025-07-30 15:35:06 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=8000, 平均耗時=13.6ms, 最大耗時=42.8ms, 指令數=1
+2025-07-30 15:35:26 [INFO] GripperOptimized:stop:518 - 正在停止夾爪模組...
+2025-07-30 15:35:26 [ERROR] GripperOptimized:read_gripper_status:273 - PGC狀態讀取異常: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper.py", line 250, in read_gripper_status
+    result = self.rtu_client.read_holding_registers(address=0x0200, count=3, slave=unit_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\mixin.py", line 113, in read_holding_registers
+    return self.execute(no_response_expected, pdu_reg.ReadHoldingRegistersRequest(address=address, count=count, dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 136, in sync_execute
+    return self.sync_get_response(request.dev_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 86, in sync_get_response
+    if not (data := self.sync_client.recv(None)):
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 302, in recv
+    size = self._wait_for_data()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 288, in _wait_for_data
+    available = self._in_waiting()
+                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\serial.py", line 262, in _in_waiting
+    return getattr(self.socket, "in_waiting") if hasattr(self.socket, "in_waiting") else getattr(self.socket, "inWaiting")()
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\serial\serialwin32.py", line 259, in in_waiting
+    raise SerialException("ClearCommError failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: ClearCommError failed (OSError(9, '控制代碼無效。', None, 6))
+2025-07-30 15:35:26 [INFO] GripperOptimized:stop:527 - 最終性能統計: 總循環=8930, 總指令=1, 總錯誤=0
+2025-07-30 15:35:26 [INFO] GripperOptimized:stop:531 - 夾爪模組已停止
+2025-07-30 15:35:41 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-30 15:35:41 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-30 15:35:41 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-30 15:35:41 [INFO] GripperOptimized:start:508 - 夾爪模組已啟動 - 高性能模式
+2025-07-30 15:35:41 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-30 15:35:41 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-30 15:35:53 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=1, 參數1=0, 參數2=0, ID=1
+2025-07-30 15:35:53 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:36:02 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=1000, 平均耗時=13.4ms, 最大耗時=53.0ms, 指令數=1
+2025-07-30 15:36:23 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=2000, 平均耗時=13.6ms, 最大耗時=53.0ms, 指令數=1
+2025-07-30 15:36:44 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=3000, 平均耗時=13.8ms, 最大耗時=53.0ms, 指令數=1
+2025-07-30 15:37:05 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=4000, 平均耗時=14.1ms, 最大耗時=53.0ms, 指令數=1
+2025-07-30 15:37:15 [INFO] GripperOptimized:stop:518 - 正在停止夾爪模組...
+2025-07-30 15:37:15 [ERROR] GripperOptimized:update_status_registers:381 - 狀態寄存器更新異常: [WinError 10038] 嘗試操作的對象不是通訊端。
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\GitHub\DobotDR\Automation\Gripper\Gripper.py", line 371, in update_status_registers
+    result = self.main_server_client.write_registers(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\mixin.py", line 513, in write_registers
+    return self.execute(no_response_expected, pdu_reg.WriteMultipleRegistersRequest(address=address, registers=values,dev_id=slave))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\base.py", line 203, in execute
+    return self.transaction.sync_execute(no_response_expected, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 132, in sync_execute
+    self.pdu_send(request)
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\transaction\transaction.py", line 199, in pdu_send
+    self.low_level_send(self.trace_packet(True, packet), addr=addr)
+  File "C:\Users\user\anaconda3\envs\ROBOT\Lib\site-packages\pymodbus\client\tcp.py", line 221, in send
+    return self.socket.send(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 10038] 嘗試操作的對象不是通訊端。
+2025-07-30 15:37:15 [INFO] GripperOptimized:stop:527 - 最終性能統計: 總循環=4439, 總指令=1, 總錯誤=0
+2025-07-30 15:37:15 [INFO] GripperOptimized:stop:531 - 夾爪模組已停止
+2025-07-30 15:44:11 [INFO] GripperOptimized:__init__:66 - 夾爪模組啟動 - 優化版本 - 基地址: 500-539
+2025-07-30 15:44:11 [INFO] GripperOptimized:__init__:67 - 性能參數: 主循環=20.0ms, 狀態更新=10.0ms
+2025-07-30 15:44:11 [INFO] GripperOptimized:fast_loop:438 - 夾爪主循環啟動 - 高性能模式
+2025-07-30 15:44:11 [INFO] GripperOptimized:start:508 - 夾爪模組已啟動 - 高性能模式
+2025-07-30 15:44:11 [INFO] GripperOptimized:connect_main_server:158 - 主服務器連接成功: 127.0.0.1:502
+2025-07-30 15:44:11 [INFO] GripperOptimized:connect_rtu_devices:183 - RTU設備連接成功: COM3
+2025-07-30 15:44:24 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=1, 參數1=0, 參數2=0, ID=1
+2025-07-30 15:44:24 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:44:32 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=1000, 平均耗時=13.5ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:44:53 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=2000, 平均耗時=13.1ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:45:14 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=3000, 平均耗時=13.9ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:45:35 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=4000, 平均耗時=13.4ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:45:56 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=5000, 平均耗時=13.6ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:46:17 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=6000, 平均耗時=12.8ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:46:38 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=7000, 平均耗時=13.2ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:46:59 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=8000, 平均耗時=12.6ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:47:20 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=9000, 平均耗時=13.3ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:47:41 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=10000, 平均耗時=16.0ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:48:02 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=11000, 平均耗時=13.0ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:48:23 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=12000, 平均耗時=15.0ms, 最大耗時=49.0ms, 指令數=1
+2025-07-30 15:48:25 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=3, 參數1=100, 參數2=0, ID=2
+2025-07-30 15:48:25 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:48:26 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=3, 參數1=360, 參數2=0, ID=3
+2025-07-30 15:48:26 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:48:28 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=3, 參數1=100, 參數2=0, ID=4
+2025-07-30 15:48:28 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:48:31 [INFO] GripperOptimized:process_commands:412 - 收到PGC指令: 代碼=3, 參數1=360, 參數2=0, ID=5
+2025-07-30 15:48:31 [INFO] GripperOptimized:process_commands:418 - PGC指令執行成功
+2025-07-30 15:48:44 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=13000, 平均耗時=14.0ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:49:05 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=14000, 平均耗時=13.8ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:49:26 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=15000, 平均耗時=14.5ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:49:47 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=16000, 平均耗時=13.6ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:50:08 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=17000, 平均耗時=14.3ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:50:29 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=18000, 平均耗時=14.2ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:50:50 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=19000, 平均耗時=12.7ms, 最大耗時=52.4ms, 指令數=5

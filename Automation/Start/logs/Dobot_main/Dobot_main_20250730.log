@@ -1,0 +1,59 @@
+2025-07-30 15:44:24,948 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:CCD1HighLevel:正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-30 15:44:24,963 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:CCD1HighLevel:Modbus TCP連接成功: 127.0.0.1:502
+2025-07-30 15:44:24,963 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:24 [INFO] GripperHighLevelOptimized:connect:182 - 正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-30 15:44:24,963 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:GripperHighLevelOptimized:正在連接Modbus TCP服務器: 127.0.0.1:502
+2025-07-30 15:44:24,979 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:24 [INFO] GripperHighLevelOptimized:connect:192 - PGC夾爪Modbus連接成功
+2025-07-30 15:44:24,979 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:GripperHighLevelOptimized:PGC夾爪Modbus連接成功
+2025-07-30 15:44:24,979 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:24 [INFO] GripperHighLevelOptimized:initialize:470 - 開始初始化PGC夾爪
+2025-07-30 15:44:24,979 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:GripperHighLevelOptimized:開始初始化PGC夾爪
+2025-07-30 15:44:24,979 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:AngleHighLevel:AngleHighLevel初始化: 127.0.0.1:502, CCD3基地址:800
+2025-07-30 15:44:24,979 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:AngleHighLevel:正在連接Modbus服務器...
+2025-07-30 15:44:24,994 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:AngleHighLevel:CCD3模組連接成功 - Ready:False, Initialized:False
+2025-07-30 15:44:25,009 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:496 - Flow1正在載入外部點位檔案...
+2025-07-30 15:44:25,009 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:Flow1正在載入外部點位檔案...
+2025-07-30 15:44:25,009 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] PointsManager:load_points:341 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-30 15:44:25,009 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:PointsManager:嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-30 15:44:25,009 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] PointsManager:load_points:392 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-30 15:44:25,009 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:PointsManager:載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-30 15:44:25,009 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:_load_and_validate_points:514 - 所有必要點位載入成功
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:所有必要點位載入成功
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:650 - Flow1支援DR參數流程步驟建構完成，共21步
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:Flow1支援DR參數流程步驟建構完成，共21步
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:build_flow_steps:651 - 新增功能: 支援速度/加速度控制 + 工具座標系切換
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:新增功能: 支援速度/加速度控制 + 工具座標系切換
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:__init__:479 - DrFlow1VisionPickExecutor初始化完成 (支援DR參數版)
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:DrFlow1VisionPickExecutor初始化完成 (支援DR參數版)
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:__init__:480 -   sync控制: 停用
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:  sync控制: 停用
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:__init__:481 -   座標來源: AutoProgram模組 (地址1350-1354)
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:  座標來源: AutoProgram模組 (地址1350-1354)
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:__init__:482 -   角度檢測: 超時3.0秒
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:  角度檢測: 超時3.0秒
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:initialize:490 - Flow1執行器初始化完成
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:Flow1執行器初始化完成
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow1VisionPickExecutor:initialize:491 -   可用模組: Gripper=True, Angle=True
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow1VisionPickExecutor:  可用模組: Gripper=True, Angle=True
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:260 - Flow2正在載入外部點位檔案...
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:Flow2正在載入外部點位檔案...
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] PointsManager:load_points:110 - 嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:PointsManager:嘗試載入點位檔案: C:\Users\user\Documents\GitHub\DobotDR\Automation\M1Pro\new_architecture\saved_points/robot_points.json
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-30 15:44:25,010 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] PointsManager:load_points:155 - 載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:PointsManager:載入點位數據成功，共9個點位: ['VP_TOPSIDE', 'Rotate_V2', 'Rotate_down', 'Rotate_top', 'standby', 'put_asm_Pre', 'put_asm_top', 'put_asm_down', 'back_standby_from_asm']
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:_load_and_validate_points:278 - 所有必要點位載入成功
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:所有必要點位載入成功
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:build_flow_steps:339 - Flow2支援CASE參數流程步驟建構完成，共5步
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:Flow2支援CASE參數流程步驟建構完成，共5步
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:build_flow_steps:340 - 新增功能: 手勢切換 + 速度優化 + J4角度控制
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:新增功能: 手勢切換 + 速度優化 + J4角度控制
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:__init__:232 - DrFlow2UnloadExecutor初始化完成 (支援CASE參數版)
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:DrFlow2UnloadExecutor初始化完成 (支援CASE參數版)
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:__init__:233 - 精簡流程: 僅保留組裝序列，put_asm_top和put_asm_down使用Flow1角度值
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:精簡流程: 僅保留組裝序列，put_asm_top和put_asm_down使用Flow1角度值
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:initialize:242 - Flow2執行器初始化完成 (支援CASE參數版)
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:Flow2執行器初始化完成 (支援CASE參數版)
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:initialize:243 -   可用模組: Gripper=True
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:  可用模組: Gripper=True
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: 2025-07-30 15:44:25 [INFO] DrFlow2UnloadExecutor:initialize:244 -   Flow1角度數據: 可用
+2025-07-30 15:44:25,011 - ModuleManager_Dobot_main - ERROR - STDERR: INFO:DrFlow2UnloadExecutor:  Flow1角度數據: 可用

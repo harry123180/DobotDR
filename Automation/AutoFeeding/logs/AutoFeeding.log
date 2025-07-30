@@ -75336,3 +75336,440 @@
 2025-07-30 15:50:57 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
 2025-07-30 15:50:57 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
 2025-07-30 15:50:58 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:50:58 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:50:58 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:50:58 [INFO] AutoFeeding:feeding_cycle:756 - 週期237 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:50:58 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:50:58 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:50:59 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:50:59 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:50:59 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:00 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:00 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:00 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:01 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:01 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:02 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:02 [INFO] AutoFeeding:feeding_cycle:756 - 週期238 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:02 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:51:02 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:51:02 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:02 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:03 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:03 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:03 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:04 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:04 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:04 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:05 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:05 [INFO] AutoFeeding:feeding_cycle:756 - 週期239 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:05 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:05 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:05 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:05 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:06 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:06 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:06 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:07 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:07 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:07 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:08 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:08 [INFO] AutoFeeding:feeding_cycle:756 - 週期240 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:08 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:08 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:08 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:08 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:09 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:09 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:09 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:10 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:10 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:10 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:11 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:11 [INFO] AutoFeeding:feeding_cycle:756 - 週期241 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:11 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:11 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:11 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:11 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:12 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:12 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:12 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:13 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:13 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:13 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:14 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:14 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:14 [INFO] AutoFeeding:feeding_cycle:756 - 週期242 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:14 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:51:14 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:51:14 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:15 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:15 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:15 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:16 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:16 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:16 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:17 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:17 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:17 [INFO] AutoFeeding:feeding_cycle:756 - 週期243 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:17 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:17 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:17 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:18 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:18 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:18 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:19 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:19 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:19 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:20 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:20 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:20 [INFO] AutoFeeding:feeding_cycle:756 - 週期244 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:20 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:20 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:20 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:21 [DEBUG] AutoFeeding:check_modules_status:484 - CCD1模組無回應 (寄存器201無法讀取)
+2025-07-30 15:51:21 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:21 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:21 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:22 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:22 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:22 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:23 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:23 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:23 [INFO] AutoFeeding:feeding_cycle:756 - 週期245 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:23 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:23 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:23 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:24 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:24 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:24 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:25 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:25 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:25 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:26 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:26 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:26 [INFO] AutoFeeding:feeding_cycle:756 - 週期246 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:26 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:51:26 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:51:26 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:27 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:27 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:27 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:28 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:28 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:28 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:29 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:29 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:29 [INFO] AutoFeeding:feeding_cycle:756 - 週期247 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:29 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:51:29 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:51:29 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:30 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:30 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:30 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:31 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:31 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:31 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:32 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:32 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:32 [INFO] AutoFeeding:feeding_cycle:756 - 週期248 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:32 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:51:32 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:51:32 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:33 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:33 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:33 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:34 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:34 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:34 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:35 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:35 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:35 [INFO] AutoFeeding:feeding_cycle:756 - 週期249 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:35 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:35 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:35 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:36 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:36 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:36 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:37 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:37 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:37 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:38 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:38 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:38 [INFO] AutoFeeding:feeding_cycle:756 - 週期250 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:38 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:51:38 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:51:38 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:39 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:39 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:39 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:40 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:40 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:40 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:41 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:41 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:41 [INFO] AutoFeeding:feeding_cycle:756 - 週期251 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:41 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:41 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:41 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:42 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:42 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:42 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:43 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:43 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:44 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:44 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:44 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:44 [INFO] AutoFeeding:feeding_cycle:756 - 週期252 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:44 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:44 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:45 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:45 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:46 [DEBUG] AutoFeeding:check_modules_status:484 - CCD1模組無回應 (寄存器201無法讀取)
+2025-07-30 15:51:46 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:46 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:47 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:47 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:47 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:47 [INFO] AutoFeeding:feeding_cycle:756 - 週期253 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:47 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:47 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:48 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:48 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:48 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:49 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:49 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:49 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:50 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:50 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:50 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:50 [INFO] AutoFeeding:feeding_cycle:756 - 週期254 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:50 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:50 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:51 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:51 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:51 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:52 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:52 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:52 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:53 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:53 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:53 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:53 [INFO] AutoFeeding:feeding_cycle:756 - 週期255 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:53 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:51:53 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:51:54 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:54 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:54 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:55 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:55 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:55 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:56 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:56 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:56 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:51:56 [INFO] AutoFeeding:feeding_cycle:756 - 週期256 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:51:56 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:51:56 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:51:57 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:57 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:57 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:51:58 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:58 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:58 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:51:59 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:51:59 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:00 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:00 [INFO] AutoFeeding:feeding_cycle:756 - 週期257 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:00 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:52:00 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:52:00 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:00 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:01 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:01 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:01 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:02 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:02 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:02 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:03 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:03 [INFO] AutoFeeding:feeding_cycle:756 - 週期258 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:03 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:03 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:03 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:03 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:04 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:04 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:04 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:05 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:05 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:05 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:06 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:06 [INFO] AutoFeeding:feeding_cycle:756 - 週期259 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:06 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:06 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:06 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:06 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:07 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:07 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:07 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:08 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:08 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:08 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:09 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:09 [INFO] AutoFeeding:feeding_cycle:756 - 週期260 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:09 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:09 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:09 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:09 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:10 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:10 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:10 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:11 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:11 [DEBUG] AutoFeeding:check_modules_status:484 - CCD1模組無回應 (寄存器201無法讀取)
+2025-07-30 15:52:11 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:11 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:12 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:12 [INFO] AutoFeeding:feeding_cycle:756 - 週期261 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:12 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:12 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:12 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:12 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:13 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:13 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:13 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:14 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:14 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:14 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:15 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:15 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:15 [INFO] AutoFeeding:feeding_cycle:756 - 週期262 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:15 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:15 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:15 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:16 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:16 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:16 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:17 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:17 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:17 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:18 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:18 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:18 [INFO] AutoFeeding:feeding_cycle:756 - 週期263 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:18 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.54, 211.27)
+2025-07-30 15:52:18 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.54, 211.27), Flow1可直接讀取座標
+2025-07-30 15:52:18 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:19 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:19 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:19 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:20 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:20 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:20 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:21 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:21 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:21 [INFO] AutoFeeding:feeding_cycle:756 - 週期264 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:21 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:21 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:21 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:22 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:22 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:22 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:23 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:23 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:23 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:24 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:24 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:24 [INFO] AutoFeeding:feeding_cycle:756 - 週期265 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:24 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:24 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:24 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:25 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:25 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:25 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:26 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:26 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:26 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:27 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:27 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:27 [INFO] AutoFeeding:feeding_cycle:756 - 週期266 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:27 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.54, 211.27)
+2025-07-30 15:52:27 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.54, 211.27), Flow1可直接讀取座標
+2025-07-30 15:52:27 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:28 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:28 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:28 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:29 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:29 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:29 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:30 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:30 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:30 [INFO] AutoFeeding:feeding_cycle:756 - 週期267 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:30 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:30 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:30 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:31 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:31 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:31 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:32 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:32 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:32 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:33 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:33 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:33 [INFO] AutoFeeding:feeding_cycle:756 - 週期268 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:33 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:33 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:33 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:34 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:34 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:34 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:35 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:35 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:35 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:36 [DEBUG] AutoFeeding:main_loop:897 - 主循環 1801: running=True, status=ERROR, flow1_active=False, progress_blocking=False, dr_f_available=False
+2025-07-30 15:52:36 [DEBUG] AutoFeeding:check_modules_status:484 - CCD1模組無回應 (寄存器201無法讀取)
+2025-07-30 15:52:36 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:36 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:36 [INFO] AutoFeeding:feeding_cycle:756 - 週期269 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:36 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:36 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:36 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:37 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:37 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:37 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:38 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:38 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:38 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:39 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:39 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:39 [INFO] AutoFeeding:feeding_cycle:756 - 週期270 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:39 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:52:39 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:52:39 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:40 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:40 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:40 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:41 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:41 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:41 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:42 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:42 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:42 [INFO] AutoFeeding:feeding_cycle:756 - 週期271 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:42 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.27)
+2025-07-30 15:52:42 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.27), Flow1可直接讀取座標
+2025-07-30 15:52:42 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:43 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:43 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:43 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:44 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:44 [DEBUG] AutoFeeding:trigger_ccd1_detection:576 - 已發送控制指令16到寄存器200
+2025-07-30 15:52:44 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:45 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:45 [DEBUG] AutoFeeding:trigger_ccd1_detection:595 - CCD1檢測完成標誌確認
+2025-07-30 15:52:45 [INFO] AutoFeeding:feeding_cycle:756 - 週期272 檢測結果: DR_F=5, 總數=9
+2025-07-30 15:52:45 [INFO] AutoFeeding:feeding_cycle:783 - 找到保護區內DR_F: (-14.53, 211.26)
+2025-07-30 15:52:45 [INFO] AutoFeeding:set_dr_f_available:735 - DR_F已就緒: (-14.53, 211.26), Flow1可直接讀取座標
+2025-07-30 15:52:45 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:46 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101
+2025-07-30 15:52:46 [DEBUG] AutoFeeding:trigger_ccd1_detection:568 - 發送檢測指令前 - 201狀態: 9
+2025-07-30 15:52:46 [DEBUG] AutoFeeding:main_loop:919 - 入料檢測失敗，錯誤碼: 101

@@ -30919,3 +30919,8 @@ OSError: [WinError 10038] 嘗試操作的對象不是通訊端。
 2025-07-30 15:50:08 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=17000, 平均耗時=14.3ms, 最大耗時=52.4ms, 指令數=5
 2025-07-30 15:50:29 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=18000, 平均耗時=14.2ms, 最大耗時=52.4ms, 指令數=5
 2025-07-30 15:50:50 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=19000, 平均耗時=12.7ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:51:11 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=20000, 平均耗時=12.8ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:51:32 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=21000, 平均耗時=13.1ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:51:53 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=22000, 平均耗時=12.8ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:52:14 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=23000, 平均耗時=13.7ms, 最大耗時=52.4ms, 指令數=5
+2025-07-30 15:52:35 [INFO] GripperOptimized:fast_loop:484 - 性能統計: 循環=24000, 平均耗時=13.3ms, 最大耗時=52.4ms, 指令數=5
